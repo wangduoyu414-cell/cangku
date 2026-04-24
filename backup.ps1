@@ -100,7 +100,13 @@ try {
     $skippedOversizedPaths = Remove-OversizedFilesFromIndex
 
     $trackedStatusLines = @(& git @gitBaseArgs status --porcelain --untracked-files=no)
-    $untrackedPaths = @(& git @gitBaseArgs ls-files --others --exclude-standard)
+    $untrackedRaw = @(& git @gitBaseArgs ls-files --others --exclude-standard -z)
+    $untrackedPaths = if ($untrackedRaw.Count -eq 0) {
+        @()
+    }
+    else {
+        (($untrackedRaw -join "") -split "`0") | Where-Object { $_ }
+    }
     $filteredUntrackedPaths = if ($skippedOversizedPaths.Count -gt 0) {
         $untrackedPaths | Where-Object { $skippedOversizedPaths -notcontains $_ }
     }
