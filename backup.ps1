@@ -61,7 +61,9 @@ function Get-RelativeGitPath {
 
     $resolvedRoot = [System.IO.Path]::GetFullPath($root)
     $resolvedPath = [System.IO.Path]::GetFullPath($FullPath)
-    $relativePath = [System.IO.Path]::GetRelativePath($resolvedRoot, $resolvedPath)
+    $rootUri = New-Object System.Uri(($resolvedRoot.TrimEnd('\') + '\'))
+    $pathUri = New-Object System.Uri($resolvedPath)
+    $relativePath = [System.Uri]::UnescapeDataString($rootUri.MakeRelativeUri($pathUri).ToString())
     return ($relativePath -replace "\\", "/")
 }
 
