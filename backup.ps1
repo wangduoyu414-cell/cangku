@@ -122,7 +122,17 @@ try {
     }
 
     $message = "backup: update repo snapshot {0}" -f (Get-Date -Format "yyyy-MM-dd HH:mm:ss")
-    Invoke-Checked "git commit" { & git @gitBaseArgs commit -m $message }
+    $commitOutput = & git @gitBaseArgs commit -m $message 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        if ($commitOutput) {
+            Write-Log ("Commit output: {0}" -f (($commitOutput | Out-String).Trim()))
+        }
+        throw ("git commit failed with exit code {0}." -f $LASTEXITCODE)
+    }
+
+    if ($commitOutput) {
+        Write-Log ("Commit output: {0}" -f (($commitOutput | Out-String).Trim()))
+    }
     Write-Log "Commit created: $message"
 
     Invoke-GitPushWithRetry
