@@ -93,30 +93,41 @@ function Remove-OversizedFilesFromIndex {
     return $skippedGitPaths
 }
 
+function Test-HasCommitCandidateChanges {
+    $trackedStatusLines = @(& git @gitBaseArgs status --porcelain --untracked-files=no)
+    $trackedStatusLines = @($trackedStatusLines | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+    if ($trackedStatusLines.Count -gt 0) {
+        return $true
+    }
+
+    $untrackedRaw = @(& git @gitBaseArgs ls-files --others --exclude-standard -z)
+    if ($untrackedRaw.Count -eq 0) {
+        return $false
+    }
+
+    $untrackedPaths = (($untrackedRaw -join "") -split "`0") | Where-Object { $_ }
+    foreach ($relativePath in $untrackedPaths) {
+        $fullPath = Join-Path $root ($relativePath -replace "/", "\")
+        if (-not (Test-Path -LiteralPath $fullPath)) {
+            continue
+        }
+
+        $fileInfo = Get-Item -LiteralPath $fullPath
+        if ($fileInfo.Length -le $maxFileSizeBytes) {
+            return $true
+        }
+    }
+
+    return $false
+}
+
 try {
     Write-Log "Backup run started."
 
     Invoke-Checked "git add" { & git @gitBaseArgs add -A -- . }
     $skippedOversizedPaths = Remove-OversizedFilesFromIndex
 
-    $trackedStatusLines = @(& git @gitBaseArgs status --porcelain --untracked-files=no)
-    $untrackedRaw = @(& git @gitBaseArgs ls-files --others --exclude-standard -z)
-    $untrackedPaths = if ($untrackedRaw.Count -eq 0) {
-        @()
-    }
-    else {
-        (($untrackedRaw -join "") -split "`0") | Where-Object { $_ }
-    }
-    $filteredUntrackedPaths = if ($skippedOversizedPaths.Count -gt 0) {
-        $untrackedPaths | Where-Object { $skippedOversizedPaths -notcontains $_ }
-    }
-    else {
-        $untrackedPaths
-    }
-
-    $statusLines = @(@($trackedStatusLines) + @($filteredUntrackedPaths) | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
-    $status = if ($statusLines.Count -eq 0) { "" } else { ($statusLines | Out-String).Trim() }
-    if (-not $status) {
+    if (-not (Test-HasCommitCandidateChanges)) {
         Write-Log "No content change detected. Skipping commit."
         exit 0
     }
