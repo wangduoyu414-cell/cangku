@@ -114,7 +114,7 @@ try {
         $untrackedPaths
     }
 
-    $statusLines = @($trackedStatusLines) + @($filteredUntrackedPaths)
+    $statusLines = @(@($trackedStatusLines) + @($filteredUntrackedPaths) | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
     $status = if ($statusLines.Count -eq 0) { "" } else { ($statusLines | Out-String).Trim() }
     if (-not $status) {
         Write-Log "No content change detected. Skipping commit."
