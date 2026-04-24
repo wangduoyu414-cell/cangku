@@ -1,0 +1,85 @@
+round:
+  id: round-1
+  title: "dual-phase amplification（双阶段放大）"
+  amplification:
+    versus_design_target:
+      coverage_multiplier: 2.2
+      functional_strength_multiplier: 2.1
+  goals:
+    - "同一轮同时覆盖 generate（生成） 与 iterate（迭代） 两个阶段。"
+    - "要求模式相关产物，而不是只有通用模板。"
+    - "要求记录基线、失败归因与发布建议。"
+
+cases:
+  - id: dual-phase-generate
+    generator: end_to_end
+    input_file: ../case-inputs/round-1-generate.yaml
+    mode: generate
+    skill_name: release-review-orchestrator
+    request_summary: "Turn repeated release review findings into a reusable orchestration skill with baseline comparisons and iteration hooks."
+    score_input: ../score-inputs/round-1-generate.yaml
+    expected_files:
+      - request.md
+      - skill-brief.md
+      - skill-scorecard.md
+      - skill-score-summary.yaml
+      - iteration-backlog.md
+      - experience-ledger.yaml
+      - baseline-comparison.md
+      - run-manifest.yaml
+    semantic_required_files:
+      - request.md
+      - skill-brief.md
+      - iteration-backlog.md
+      - experience-ledger.yaml
+      - baseline-comparison.md
+      - run-manifest.yaml
+      - skill-score-summary.yaml
+
+  - id: dual-phase-iterate
+    generator: end_to_end
+    input_file: ../case-inputs/round-1-iterate.yaml
+    mode: iterate
+    skill_name: release-review-orchestrator
+    request_summary: "Upgrade an existing release review skill from clustered failures, missing dependencies, and manual rework."
+    score_input: ../score-inputs/round-1-iterate.yaml
+    expected_files:
+      - request.md
+      - skill-brief.md
+      - skill-scorecard.md
+      - skill-score-summary.yaml
+      - iteration-backlog.md
+      - experience-ledger.yaml
+      - baseline-comparison.md
+      - failure-attribution.md
+      - run-manifest.yaml
+    semantic_required_files:
+      - request.md
+      - skill-brief.md
+      - iteration-backlog.md
+      - experience-ledger.yaml
+      - baseline-comparison.md
+      - failure-attribution.md
+      - run-manifest.yaml
+      - skill-score-summary.yaml
+
+trigger_eval:
+  file: ../trigger-evals.yaml
+  thresholds:
+    precision: 0.9
+    recall: 0.85
+
+openai_yaml_check:
+  interface:
+    - "display_name=Skill Generator"
+    - "short_description=Generate and upgrade reusable skills"
+    - "default_prompt=Use $skill-generator to turn repeated work, failures, and model changes into a reusable skill package."
+
+telemetry_eval:
+  thresholds:
+    min_case_telemetry_count: 4
+    min_total_wall_clock_ms: 1
+    min_total_created_bytes: 1
+
+skill_validations:
+  - "@skill_root"

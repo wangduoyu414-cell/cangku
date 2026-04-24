@@ -1,0 +1,310 @@
+# Structured Pre-Generation Contract Schema
+#
+# This schema defines the machine-readable structure for Pre-Generation Contracts.
+# The Markdown template uses anchored sections (##-) that can be parsed by
+# scripts/eval_contract_output.py to automatically verify field completeness.
+#
+# Format version: 1.1
+# Compatible with: SKILL.md v0.3.x
+
+format_version: "1.1"
+schema_name: "pre-generation-contract"
+schema_description: >
+  Structured schema for Pre-Generation Contract output from codegen-governance.
+  Both Markdown (with anchors) and YAML forms are valid.
+
+# ---------------------------------------------------------------------------
+# MUST fields - Fatal if missing
+# ---------------------------------------------------------------------------
+
+target_language:
+  description: "The primary target language for this implementation"
+  type: string
+  enum: ["python", "go", "typescript", "javascript", "vue"]
+  required: true
+  anchor: "##-Target-Language"
+
+scope:
+  description: "Implementation boundaries and change scope"
+  type: object
+  required: true
+  properties:
+    target:
+      description: "Target file, function, or module"
+      type: string
+      required: true
+    requested_change:
+      description: "What the user explicitly asked for"
+      type: string
+      required: true
+    blast_radius:
+      description: "What may change as a side effect of this implementation"
+      type: string
+      required: true
+    non_goals:
+      description: "What this implementation does NOT do"
+      type: list[string]
+      required: true
+    change_mode:
+      description: "Whether this task edits existing code or creates a new local implementation"
+      type: string
+      enum: ["edit_existing", "new_implementation"]
+      required: true
+    existing_contract_snapshot:
+      description: "Current public interface/default/result semantics when editing existing code"
+      type: string
+      required: true
+    expected_contract_drift:
+      description: "Explicitly authorized interface or behavior drift, or 'None'"
+      type: string
+      required: true
+    repo_constraints:
+      description: "Repo-local constraints that overrode generic guidance"
+      type: string
+      required: false
+  anchor: "##-Scope"
+
+selected_scenario_packs:
+  description: "Which scenario packs were selected and why"
+  type: list[object]
+  required: true
+  min_items: 1
+  max_items: 4
+  each_item_properties:
+    pack:
+      description: "Pack identifier"
+      type: string
+      enum: ["A", "B", "C", "D"]
+      required: true
+    why_applies:
+      description: "Justification for selecting this pack"
+      type: string
+      required: true
+    specific_risks:
+      description: "Which risks from this pack are relevant"
+      type: list[string]
+      required: true
+  anchor: "##-Selected-Scenario-Packs"
+
+input_contract:
+  description: "Input acceptance criteria and handling strategy"
+  type: object
+  required: true
+  properties:
+    accepted_inputs:
+      description: "What input shapes or values are accepted"
+      type: string
+      required: true
+    missing_or_empty_handling:
+      description: "Strategy for missing, null, empty, zero, false values"
+      type: string
+      required: true
+    unknown_or_invalid_strategy:
+      description: "How unknown types or invalid values are handled"
+      type: string
+      required: true
+    normalization_rules:
+      description: "Input transformation or normalization rules"
+      type: string
+      required: false
+  anchor: "##-Input-Contract"
+
+return_and_failure_contract:
+  description: "Success, failure, and empty result semantics"
+  type: object
+  required: true
+  properties:
+    success_shape:
+      description: "What the return value looks like on success"
+      type: string
+      required: true
+    empty_or_miss_shape:
+      description: "What the return value looks like when data is absent or empty"
+      type: string
+      required: true
+    failure_signaling:
+      description: "How failure is communicated (throw/return error/optional)"
+      type: string
+      required: true
+    partial_success:
+      description: "Semantics when some operations succeed and some fail"
+      type: string
+      required: false
+  anchor: "##-Return-And-Failure-Contract"
+
+# ---------------------------------------------------------------------------
+# SHOULD fields - Warning if missing
+# ---------------------------------------------------------------------------
+
+branching_and_ordering:
+  description: "Decision points and priority rules"
+  type: object
+  required: false
+  properties:
+    decision_points:
+      description: "List of branch conditions and their logic"
+      type: list[string]
+      required: true
+    priority_rules:
+      description: "Order in which branches are evaluated"
+      type: string
+      required: false
+    unknown_enum_policy:
+      description: "How unknown enum values or future types are handled"
+      type: string
+      required: false
+  anchor: "##-Branching-And-Ordering"
+
+defaults_and_fallback:
+  description: "Default value sources and fallback behavior"
+  type: object
+  required: false
+  properties:
+    default_sources:
+      description: "Where default values come from"
+      type: string
+      required: true
+    fallback_triggers:
+      description: "Conditions that activate fallback behavior"
+      type: string
+      required: true
+    caller_visibility:
+      description: "Whether the caller can detect when fallback was used"
+      type: string
+      required: true
+  anchor: "##-Defaults-And-Fallback"
+
+side_effects_and_runtime:
+  description: "Runtime behavior, state mutations, and resource lifecycle"
+  type: object
+  required: false
+  properties:
+    state_writes:
+      description: "What state is mutated and where"
+      type: list[string]
+      required: true
+    resource_lifecycle:
+      description: "Resources acquired and how they are released"
+      type: string
+      required: true
+    async_concurrency:
+      description: "Async, timeout, cancellation, retry, idempotency notes"
+      type: string
+      required: false
+  anchor: "##-Side-Effects-And-Runtime"
+
+validation_plan:
+  description: "How to verify the implementation"
+  type: object
+  required: false
+  properties:
+    executable:
+      description: "Tests or commands that can be run now"
+      type: list[object]
+      required: true
+      each_item_properties:
+        command:
+          type: string
+        expected_result:
+          type: string
+    manual_checks:
+      description: "Manual verification steps"
+      type: list[string]
+      required: false
+    cannot_run:
+      description: "Validation that cannot be performed now and why"
+      type: list[object]
+      required: false
+      each_item_properties:
+        validation:
+          type: string
+        reason:
+          type: string
+  anchor: "##-Validation-Plan"
+
+# ---------------------------------------------------------------------------
+# MAY fields - Advisory, no penalty if missing
+# ---------------------------------------------------------------------------
+
+boundary_and_observability:
+  description: "Cross-boundary concerns and observability"
+  type: object
+  required: false
+  properties:
+    external_protocols:
+      description: "External API, serialization, or protocol assumptions"
+      type: string
+      required: false
+    time_precision:
+      description: "Timezone, unit, precision, or encoding assumptions"
+      type: string
+      required: false
+    logging_telemetry:
+      description: "Logging, metrics, tracing, or audit requirements"
+      type: string
+      required: false
+  anchor: "##-Boundary-And-Observability"
+
+open_risks:
+  description: "Known unknowns and reasons to stop or continue under assumptions"
+  type: object
+  required: false
+  properties:
+    unknowns:
+      description: "Factors that could change behavior"
+      type: list[string]
+      required: true
+    assumptions_for_continuation:
+      description: "Assumptions that justify continue_with_explicit_assumptions"
+      type: list[string]
+      required: false
+    source_priority_decisions:
+      description: "Cases where repo reality overrode generic guidance"
+      type: list[string]
+      required: false
+    stop_reasons:
+      description: "Ambiguities that require user clarification"
+      type: list[string]
+      required: true
+  anchor: "##-Open-Risks"
+
+# ---------------------------------------------------------------------------
+# Metadata - always required
+# ---------------------------------------------------------------------------
+
+metadata:
+  description: "Contract lifecycle metadata"
+  type: object
+  required: true
+  properties:
+    generated_by:
+      description: "Skill identifier"
+      type: string
+      constant: "codegen-execution-constraint"
+    version:
+      description: "Skill version"
+      type: string
+      required: true
+    generated_at:
+      description: "ISO 8601 timestamp"
+      type: string
+      format: datetime
+      required: true
+    task_mode:
+      description: "How strongly the skill should prefer repo preservation over greenfield defaults"
+      type: string
+      enum: ["patch-safe", "repo-conformant", "greenfield-strict"]
+      required: true
+    continuation_mode:
+      description: "Whether implementation proceeds, proceeds with assumptions, or stops for clarification"
+      type: string
+      enum: ["continue", "continue_with_explicit_assumptions", "stop_and_ask"]
+      required: true
+    stop_before_code:
+      description: "Whether code generation was blocked due to missing info"
+      type: boolean
+      required: true
+    stop_reason:
+      description: "If stopped, the reason for stopping"
+      type: string
+      required: false

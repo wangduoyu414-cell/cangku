@@ -1,0 +1,31 @@
+suite_id: "language-scope-dataset-designer-task-core"
+cases:
+  - id: "standard-generate-language-scope-plan"
+    goal: "标准路径应生成语言窄口方案"
+    input:
+      baseline: "D:\\diypc\\核心模块重写总任务书.md"
+      task: "task 10"
+    expected:
+      output_sections:
+        - "allowed_scope"
+        - "forbidden_scope"
+        - "grounding_rules"
+    type: "standard"
+    notes: "标准输出形态来自现有脚本和样例。"
+  - id: "boundary-missing-baseline"
+    goal: "缺少总任务书时不能伪造完整方案"
+    input:
+      baseline: ""
+      task: "task 10"
+    expected:
+      must_stop_for_missing_inputs: true
+    type: "boundary"
+    notes: "边界条件是缺少总任务书。"
+  - id: "error-prone-decision-overreach"
+    goal: "不得越界设计排序、推送、证据事实或状态真相样本"
+    input:
+      forbidden_decision_scope: true
+    expected:
+      forbid_decision_scope_dataset: true
+    type: "error-prone"
+    notes: "这是当前稳定红线。"

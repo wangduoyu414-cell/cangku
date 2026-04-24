@@ -1,0 +1,33 @@
+decision:
+  strategy: split
+  target_area: "src/app/services/legacy_refunds"
+  repo_shape: layer-first
+  artifact_type: data-pipeline-step
+  stack: python
+  files:
+    - path: "src/app/application/refunds/sync_refunds_use_case.py"
+      role: "应用层同步编排"
+      responsibility: "负责退款同步主流程，组织外部退款抓取、同步规则、去重或幂等判断，以及对持久化适配器的调用。"
+      reason: "这是当前切片的共同变更点，放在应用层可承接清晰架构分层，同时避免继续把真实实现留在 legacy 目录。"
+    - path: "src/app/infrastructure/external/refunds/legacy_refund_client.py"
+      role: "外部来源适配器"
+      responsibility: "隔离遗留退款来源的网络访问、分页或重试细节、响应解码与来源契约变更。"
+      reason: "外部来源契约和网络故障模式独立，应与应用层编排和数据库写入分开。"
+    - path: "src/app/infrastructure/persistence/refunds/refund_sql_repository.py"
+      role: "持久化落库适配器"
+      responsibility: "负责退款同步所需的 SQL 读写、存在性查询、幂等落库与事务边界。"
+      reason: "数据库模式、查询优化和事务失败模式有独立测试面，不应和同步编排或外部来源代码混在一起。"
+  keep_inline:
+    - "将一次性的分页游标处理、局部 TypedDict 和小型映射逻辑留在各自主文件中，先不要拆成单独模块。"
+    - "将仅服务于本次同步的规范化或去重辅助函数保留在 src/app/application/refunds/sync_refunds_use_case.py 内，直到出现第二个真实调用者。"
+  avoid:
+    - "不要把真实实现继续放在 src/app/services/legacy_refunds/refund_sync.py；该路径按请求应视为旧布局证据，而不是推荐最终归属。"
+    - "不要新增只做转发的 refund_partner_gateway.py、refund_store.py 或同类 service 包装层。"
+    - "不要为了命名而拆出单独的 utils.py、types.py、mappers.py。"
+  why_not_fewer: "如果缩成更少文件，要么会把外部抓取、同步编排和 SQL 持久化塞进同一处，要么会继续依赖 legacy 服务目录做总入口；这会模糊来源侧与落库侧的独立失败边界，也与请求要求优先遵循文档化层模型相冲突。"
+  why_not_more: "再往下拆主要只会产生薄包装文件，把局部映射、校验和小辅助函数拆散到更多文件里，形成不必要的来回跳转；当前切片用 3 个真实职责文件已能把常见排查路径控制在可读范围内。"
+  risks:
+    - "请求说明仓库文档采用 Clean Architecture 分层，但当前工作区只暴露了占位文件；如果基线文档还要求单独的接口层或作业入口文件，该文件应放在本切片之外处理。"
+    - "src/app/services/legacy_refunds 是现存旧目录，按此方案迁移后，仍引用 refund_sync.py 的调用点需要同步改线；若短期必须兼容，兼容壳属于迁移成本，不属于推荐 files。"
+    - "邻近存在 src/app/infrastructure/refunds/refund_repository.py 占位文件；如果它代表既定仓储抽象命名，实施前需要统一与 refund_sql_repository.py 的职责边界，避免名称和所有权重叠。"
+  confidence: medium

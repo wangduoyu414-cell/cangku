@@ -1,0 +1,23 @@
+decision:
+  strategy: merge
+  target_area: "skill-evals/plan-code-file-layout-lab/layer-first/refund-ops-pipeline/src/jobs"
+  repo_shape: layer-first
+  artifact_type: data-pipeline-step
+  stack: typescript-javascript
+  files:
+    - path: "skill-evals/plan-code-file-layout-lab/layer-first/refund-ops-pipeline/src/jobs/publishRefundLagReport.ts"
+      role: "job"
+      responsibility: "Own row fetch orchestration, local lag bucketing, and report shaping for the refund lag job."
+      reason: "This job remains a single readable flow, and the current transform file is only a tiny same job helper."
+  keep_inline:
+    - "The lag bucket helper."
+    - "The job-local RefundLagRow type."
+  avoid:
+    - "normalizeRefundLagRows.ts"
+    - "refundLag.types.ts"
+    - "index.ts"
+  why_not_fewer: "One job file is already the smallest useful boundary for this report flow."
+  why_not_more: "Keeping a separate transform-only split for one tiny same job mapping adds ceremony without a real stage or retry boundary."
+  risks:
+    - "If the normalized lag rows later feed a second sink or dashboard, the transform may become worth extracting again."
+  confidence: high

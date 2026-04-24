@@ -1,0 +1,8 @@
+case_id: adversarial-model-upgrade
+command_count: 2
+total_wall_clock_ms: 123
+max_command_wall_clock_ms: 71
+stdout_bytes: 735
+stderr_bytes: 0
+created_file_count: 9
+created_total_bytes: 6447

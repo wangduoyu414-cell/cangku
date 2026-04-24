@@ -1,0 +1,134 @@
+round:
+  id: round-3
+  title: "full-lifecycle overload（全生命周期超载）"
+  amplification:
+    versus_design_target:
+      coverage_multiplier: 3.4
+      functional_strength_multiplier: 3.1
+  goals:
+    - "一轮同时覆盖 generate（生成）、iterate（迭代）、model-upgrade（升模） 三阶段，并要求汇总报告。"
+    - "验证 UTF-8（统一编码） 中文内容链路，包括 openai.yaml（界面元数据） 生成。"
+    - "输出跨轮 aggregate report（聚合报告），说明失败修复和剩余风险。"
+
+cases:
+  - id: lifecycle-generate
+    generator: end_to_end
+    input_file: ../case-inputs/round-3-generate.yaml
+    mode: generate
+    skill_name: multilingual-risk-triage
+    request_summary: "Generate a reusable multilingual risk triage skill from repeated incidents, failure clusters, and stricter audit constraints."
+    score_input: ../score-inputs/round-3-generate.yaml
+    expected_files:
+      - request.md
+      - skill-brief.md
+      - skill-scorecard.md
+      - skill-score-summary.yaml
+      - iteration-backlog.md
+      - experience-ledger.yaml
+      - baseline-comparison.md
+      - run-manifest.yaml
+    semantic_required_files:
+      - request.md
+      - skill-brief.md
+      - iteration-backlog.md
+      - experience-ledger.yaml
+      - baseline-comparison.md
+      - run-manifest.yaml
+      - skill-score-summary.yaml
+
+  - id: lifecycle-iterate
+    generator: end_to_end
+    input_file: ../case-inputs/round-3-iterate.yaml
+    mode: iterate
+    skill_name: multilingual-risk-triage
+    request_summary: "Upgrade the multilingual risk triage skill from cross-file misses, inconsistent baselines, and human rollback fixes."
+    score_input: ../score-inputs/round-3-iterate.yaml
+    expected_files:
+      - request.md
+      - skill-brief.md
+      - skill-scorecard.md
+      - skill-score-summary.yaml
+      - iteration-backlog.md
+      - experience-ledger.yaml
+      - baseline-comparison.md
+      - failure-attribution.md
+      - run-manifest.yaml
+    semantic_required_files:
+      - request.md
+      - skill-brief.md
+      - iteration-backlog.md
+      - experience-ledger.yaml
+      - baseline-comparison.md
+      - failure-attribution.md
+      - run-manifest.yaml
+      - skill-score-summary.yaml
+
+  - id: lifecycle-model-upgrade
+    generator: end_to_end
+    input_file: ../case-inputs/round-3-model-upgrade.yaml
+    mode: model-upgrade
+    skill_name: multilingual-risk-triage
+    request_summary: "After a stronger model upgrade, simplify the multilingual risk triage skill without weakening audit, rollback, or baseline rules."
+    score_input: ../score-inputs/round-3-model-upgrade.yaml
+    expected_files:
+      - request.md
+      - skill-brief.md
+      - skill-scorecard.md
+      - skill-score-summary.yaml
+      - iteration-backlog.md
+      - experience-ledger.yaml
+      - baseline-comparison.md
+      - model-upgrade-note.md
+      - run-manifest.yaml
+    semantic_required_files:
+      - request.md
+      - skill-brief.md
+      - iteration-backlog.md
+      - experience-ledger.yaml
+      - baseline-comparison.md
+      - model-upgrade-note.md
+      - run-manifest.yaml
+      - skill-score-summary.yaml
+
+trigger_eval:
+  file: ../trigger-evals.yaml
+  thresholds:
+    precision: 0.9
+    recall: 0.85
+
+openai_yaml_check:
+  interface:
+    - "display_name=Skill Generator"
+    - "short_description=Generate and upgrade reusable skills"
+    - "default_prompt=Use $skill-generator to turn repeated work, failures, and model changes into a reusable skill package."
+
+telemetry_eval:
+  thresholds:
+    min_case_telemetry_count: 6
+    min_total_wall_clock_ms: 1
+    min_total_created_bytes: 1
+
+skill_validations:
+  - "@skill_root"
+
+previous_round_summary: ../../test-runs/round-2/summary.yaml
+
+round_level_expectations:
+  required_report:
+    - aggregate-report.md
+    - regression-report.md
+  required_snippets:
+    aggregate-report.md:
+      - "Round Summary（轮次汇总）"
+      - "pass_rate（通过率）"
+      - "Cases Passed（通过用例）"
+      - "Validation Status（校验状态）"
+      - "total_command_count（总命令数）"
+      - "total_wall_clock_ms（总耗时毫秒）"
+      - "total_created_bytes（总产物字节数）"
+      - "Failures Fixed（已修复失败）"
+      - "Residual Risks（剩余风险）"
+    regression-report.md:
+      - "Fixed Failures（已修复失败）"
+      - "New Failures（新增失败）"
+      - "Persistent Failures（持续失败）"

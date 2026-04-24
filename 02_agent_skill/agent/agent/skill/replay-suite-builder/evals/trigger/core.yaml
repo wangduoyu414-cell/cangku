@@ -1,0 +1,26 @@
+suite_id: "replay-suite-builder-trigger-core"
+cases:
+  - id: "positive-replay-plan"
+    goal: "回放方案请求应触发"
+    input: "请输出新核心回放样例扩充建议、差异维度和质量阈值绑定。"
+    expected: true
+    type: "positive"
+    notes: "典型回放集构建请求。"
+  - id: "positive-diff-dimensions"
+    goal: "差异维度和质量阈值请求应触发"
+    input: "把 replay suite 的 diff dimensions 和质量阈值整理成正式方案。"
+    expected: true
+    type: "positive"
+    notes: "明确指向回放集目标、差异维度和阈值。"
+  - id: "negative-run-replay"
+    goal: "直接执行回放请求不应触发"
+    input: "请直接跑一遍 corereplay。"
+    expected: false
+    type: "negative"
+    notes: "这是回放执行请求，不是构建请求。"
+  - id: "negative-old-replay-compat"
+    goal: "旧回放兼容性复用请求不应触发"
+    input: "继续沿用 replayd 的旧样例就行。"
+    expected: false
+    type: "negative"
+    notes: "这是旧回放兼容请求，不是新核心回放集构建。"

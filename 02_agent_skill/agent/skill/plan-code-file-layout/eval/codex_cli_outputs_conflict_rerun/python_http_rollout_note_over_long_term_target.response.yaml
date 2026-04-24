@@ -1,0 +1,30 @@
+decision:
+  strategy: merge
+  target_area: "src/app/interfaces/refund_exports"
+  repo_shape: layer-first
+  artifact_type: service-endpoint
+  stack: python
+  files:
+    - path: "src/app/interfaces/refund_exports/refund_export_controller.py"
+      role: "active ingress controller"
+      responsibility: "Own payload translation, invoke the refund export use case, and shape the HTTP-facing response during the current migration phase."
+      reason: "docs/architecture/HTTP_TRANSPORT_MIGRATION.md and docs/architecture/HTTP_TRANSPORT_SEAMS.md explicitly keep this file as the active ingress seam until downstream cutover is complete."
+    - path: "src/app/application/refund_exports/export_refund_use_case.py"
+      role: "application use case"
+      responsibility: "Own refund export orchestration and return the normalized result contract consumed by the ingress seam."
+      reason: "It preserves the Interfaces -> Application boundary while keeping transport-specific shaping out of application logic."
+  keep_inline:
+    - "Payload key extraction and trivial request normalization in refund_export_controller.py"
+    - "Response dict shaping for status and export_id in refund_export_controller.py"
+    - "One-off string cleanup and local result shaping in export_refund_use_case.py"
+  avoid:
+    - "src/app/entrypoints/http/refund_export_routes.py as a pure forwarding wrapper during the current rollout"
+    - "A feature-local pass-through service file between refund_export_controller.py and export_refund_use_case.py"
+    - "Standalone mapper or DTO files for this trivial request and response pair before validation or reuse needs become real"
+  why_not_fewer: "Collapsing the slice into one file would mix HTTP transport translation with application orchestration, which conflicts with the documented layer split and the current rollout seam guidance."
+  why_not_more: "Adding extra route, service, mapper, or schema files would mostly add ceremony to a one-step flow whose common bug path should stay readable through the controller and use case."
+  risks:
+    - "The long-term target remains src/app/entrypoints/http/refund_export_routes.py; when docs/architecture/HTTP_TRANSPORT_MIGRATION.md retires this exception, ingress ownership should move there."
+    - "If unseen framework wiring still imports refund_export_routes.py, keep only real framework glue there and do not let it become a second orchestration file."
+    - "docs/architecture/MODULE_RESPONSIBILITIES.md does not yet define refund_exports explicitly, so broader slice growth may require a later module-responsibility update."
+  confidence: medium

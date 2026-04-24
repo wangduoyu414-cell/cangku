@@ -1,0 +1,26 @@
+decision:
+  strategy: keep
+  target_area: services/python-order-api/features/refund-note
+  repo_shape: feature-first
+  artifact_type: service-endpoint
+  stack: python
+  files:
+    - path: services/python-order-api/features/refund-note/note_endpoint.py
+      role: endpoint module
+      responsibility: Own payload parsing, request validation, note normalization, preview-label derivation, and response shaping for the refund note preview slice.
+      reason: The slice is a small, pure endpoint with one shared change reason and no database or network seam. Unlike the nearby refunds flow, there is no real IO boundary to peel out, and splitting now would mostly recreate the thin extra hop seen in refund-audit.
+  keep_inline:
+    - RefundNoteRequest and RefundNoteResponse dataclasses
+    - _validate_request
+    - payload-to-request mapping, note normalization, and preview-label derivation
+  avoid:
+    - services/python-order-api/features/refund-note/note_service.py
+    - services/python-order-api/features/refund-note/validators.py
+    - services/python-order-api/features/refund-note/utils.py
+  why_not_fewer: Fewer than one feature-local module would mean merging refund-note into a broader refund endpoint file or shared helper area, which would blur ownership and weaken the feature-first seam around services/python-order-api/features.
+  why_not_more: Separate DTO, validator, or service files would be naming-only splits. They would not isolate a distinct side-effect boundary, failure mode, or reuse surface, and Python guidance favors keeping one-off dataclasses and validators inline.
+  risks:
+    - If refund-note starts persisting notes, calling moderation or user services, or adding independent failure modes, revisit the plan and split around real adapters rather than helper-only files.
+    - Baseline architecture docs describe a long-term layered target under src/app, but they do not explicitly define the current migration state for services/python-order-api/features/refund-note; a later transport migration could relocate this slice.
+    - The comparison narrative in the request is stronger than the literal nearby Python file layout, so the decision leans primarily on the target slice and the documented split-vs-thin-hop rules.
+  confidence: medium

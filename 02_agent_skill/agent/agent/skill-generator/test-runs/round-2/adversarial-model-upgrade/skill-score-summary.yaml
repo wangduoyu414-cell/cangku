@@ -1,0 +1,37 @@
+skill_name: compliance-rollback-planner-simplified
+total_score: 80
+hard_gate_pass: true
+release_recommendation: beta（测试版）
+dimensions:
+  scope_and_signal:
+    label: Scope & Signal（边界与信号）
+    weight: 25
+    score: 4
+    reason: 边界仍稳。
+  knowledge_packaging:
+    label: Knowledge Packaging（知识封装）
+    weight: 15
+    score: 4
+    reason: 冗余内容被削减。
+  instruction_to_action:
+    label: Instruction-to-Action（指令到行动）
+    weight: 20
+    score: 4
+    reason: 升模说明清晰。
+  limits_and_interfaces:
+    label: Limits & Interfaces（限制与接口）
+    weight: 20
+    score: 4
+    reason: 合规边界仍保留。
+  learning_and_lift:
+    label: Learning & Lift（学习闭环与增益）
+    weight: 20
+    score: 4
+    reason: 能解释简化后的成本收益。
+hard_checks:
+  has_non_scope: true
+  has_output_contract: true
+  has_trigger_eval: true
+  has_quality_eval: true
+  has_baseline_plan: true
+  has_simplification_pass: true

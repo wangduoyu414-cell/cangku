@@ -1,0 +1,40 @@
+邮箱
+wangduoyu414@qq.com
+
+
+
+
+腾讯云服务器
+https://console.cloud.tencent.com
+81.70.170.24
+
+公钥
+qimi
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/ZtYnGt/PUHeome1GVBDsJocOEE4F+Wi8gPa9ZEGAR9Ord4NrJiC2+08n0lIKmnuLoEksev7B2kUE1zp78zonZAr7VEXm22ZUvH+kD4MkY3WyvK1IGIKgCF7X1p2JBV4UAMib4/uah7xiPHPUaa2VcgWfx1KleJ66ir9omoQlxXkDwuqACibNEEntvqikfgwr1kiif6cnyGCu9ONKUJPSY+br11X/ymulBcvHQRkpT42yW8N1buv1hrOpptzmXAbDT6hBXwRSRqlthV+dhTV3isvJItLt3PRWW5ikeb6rQ5USzXxy1Hichbr3VNw3CXYUkiMCQxGiDPkXLxY76RvX skey-lnw1wqvx
+
+梯子服务器
+https://my.zorocloud.com
+wangduoyu414@qq.com
+tangjinbao414
+
+IP地址：216.167.22.199
+端口：53111
+用户名: root
+密码:ZORO306661qfw
+面板密码:T8bGRko7
+
+梯子链接
+https://v1.mk/0EXcJMk
+
+vless://508c7a42-31ef-4961-abfd-bf2e9f26af4a@216.167.22.199:49490?encryption=none&flow=xtls-rprx-vision&security=reality&sni=www.amazon.com&fp=chrome&pbk=54DZ6Sne17Qf9et6STtfv98RdXlYlE2Tx99Tz-gvkkA&type=tcp&headerType=none#233boy-reality-216.167.22.199
+
+公钥
+codex-haochi-admin
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/ZtYnGt/PUHeome1GVBDsJocOEE4F+Wi8gPa9ZEGAR9Ord4NrJiC2+08n0lIKmnuLoEksev7B2kUE1zp78zonZAr7VEXm22ZUvH+kD4MkY3WyvK1IGIKgCF7X1p2JBV4UAMib4/uah7xiPHPUaa2VcgWfx1KleJ66ir9omoQlxXkDwuqACibNEEntvqikfgwr1kiif6cnyGCu9ONKUJPSY+br11X/ymulBcvHQRkpT42yW8N1buv1hrOpptzmXAbDT6hBXwRSRqlthV+dhTV3isvJItLt3PRWW5ikeb6rQ5USzXxy1Hichbr3VNw3CXYUkiMCQxGiDPkXLxY76RvX
+
+
+号池登录管理
+https://81.70.170.24:8444/accounts/
+qimipc
+tangjinbao414
+12402390b778aae45f0afe3c03845baabebc088709fafdfb9424c19de1b169a1

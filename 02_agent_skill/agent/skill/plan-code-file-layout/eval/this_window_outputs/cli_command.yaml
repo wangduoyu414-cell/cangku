@@ -1,0 +1,28 @@
+decision:
+  strategy: split
+  target_area: "scripts/ops"
+  repo_shape: mixed
+  artifact_type: cli-command
+  stack: python
+  files:
+    - path: "scripts/ops/sync_partner_catalog.py"
+      role: "command-entrypoint"
+      responsibility: "Own argument parsing, CSV iteration, row normalization, and operator-facing sync summary flow."
+      reason: "The main command path should stay visible in one file so operators can trace the job quickly."
+    - path: "scripts/ops/partner_catalog_client.py"
+      role: "external-adapter"
+      responsibility: "Send normalized partner payloads to the remote API and isolate transport or status-code handling."
+      reason: "The outbound HTTP call is the main external failure boundary and deserves its own testable adapter."
+  keep_inline:
+    - "Argparse options should stay in the command entrypoint."
+    - "Row normalization from CSV fields should stay inline while this script is the only caller."
+    - "Report summary formatting should stay with the command flow."
+  avoid:
+    - "utils.py"
+    - "models.py"
+    - "command_base.py"
+  why_not_fewer: "Keeping HTTP transport details inside the command would mix operator flow with remote failure handling and make the main command harder to debug."
+  why_not_more: "Breaking CSV parsing or tiny normalization helpers into more files would hide the command flow behind extra ceremony."
+  risks:
+    - "If more partner providers are added later, the single client file may need to become a small adapter package."
+  confidence: high

@@ -1,0 +1,11 @@
+{
+  "stack_family": "python",
+  "stack_id": "python-stack",
+  "confidence": "medium",
+  "reasons": [
+    "file extension suggests python"
+  ],
+  "reference_file": "references/py-edge-rules.md",
+  "repo_root": "F:/奇米Studio/analyze-current-file-dependencies-workflow/scripts",
+  "file_path": "F:/奇米Studio/analyze-current-file-dependencies-workflow/scripts/resolve_anchor.py"
+}

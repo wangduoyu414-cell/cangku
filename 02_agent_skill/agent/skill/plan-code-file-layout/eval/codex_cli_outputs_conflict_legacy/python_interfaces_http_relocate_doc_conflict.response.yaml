@@ -1,0 +1,26 @@
+decision:
+  strategy: merge
+  target_area: "src/app/interfaces/refunds"
+  repo_shape: layer-first
+  artifact_type: service-endpoint
+  stack: python
+  files:
+    - path: "src/app/entrypoints/http/refund_routes.py"
+      role: "http-route"
+      responsibility: "Own the refund HTTP ingress seam: receive the refund request payload, keep only transport-level validation and translation plus response shaping, and invoke the application use case."
+      reason: "The refund-specific migration notes in docs/architecture/MODULE_RESPONSIBILITIES.md and the EntryPoints rules in .cursor/rules/LAYERING.md are more specific than README.md's broad Interfaces summary, so the duplicate controller boundary should collapse into this single target file."
+  keep_inline:
+    - "Route-local extraction of refund_id, order_id, amount, and reason from the incoming payload"
+    - "One-off mapping from HTTP payload fields to create_refund arguments"
+    - "Simple response shaping for status and refund_id until the HTTP contract gains multiple routes or richer error handling"
+  avoid:
+    - "Keeping src/app/interfaces/refunds/create_refund_controller.py as a second production owner of the same refund POST transport"
+    - "Adding a pass-through refund transport service file between refund_routes.py and create_refund"
+    - "Extracting standalone DTO, mapper, or presenter files before HTTP validation or response formatting has its own independent test surface"
+  why_not_fewer: "Using fewer files would either erase the documented entrypoint transport seam by pushing HTTP translation into the application use case or leave the legacy interface controller as the real ingress owner, both of which conflict with the target-state docs."
+  why_not_more: "Using more files would mostly add ceremony because this slice has one shared change reason, no separate persistence or external-client boundary, and the common debug path is already readable through refund_routes.py plus the existing use case."
+  risks:
+    - "Migration cost: framework wiring, imports, and tests that still target src/app/interfaces/refunds/create_refund_controller.py will need cutover work or a temporary shim while callers move to src/app/entrypoints/http/refund_routes.py."
+    - "README.md still broadly frames src/app/interfaces as the HTTP/CLI adapter layer, so contributors may keep proposing transport files under interfaces until the broader repo docs are reconciled with the refund-specific target state."
+    - "docs/architecture/HTTP_TRANSPORT_MIGRATION.md, docs/architecture/HTTP_TRANSPORT_TARGETS.md, and docs/architecture/HTTP_TRANSPORT_SEAMS.md currently document refund_exports rather than refunds, so refund transport rollout details are less explicit outside the refund module docs."
+  confidence: high

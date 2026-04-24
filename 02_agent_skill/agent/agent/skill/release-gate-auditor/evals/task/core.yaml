@@ -1,0 +1,31 @@
+suite_id: "release-gate-auditor-task-core"
+cases:
+  - id: "standard-generate-release-gate-impact"
+    goal: "标准路径应生成发布门禁影响说明"
+    input:
+      rules_doc: "D:\\diypc\\docs\\RULES.md"
+      task13_doc: "D:\\diypc\\docs\\核心重写任务13_回放评测发布门禁.md"
+    expected:
+      output_sections:
+        - "gate_dimensions"
+        - "required_reports"
+        - "blocking_risks"
+    type: "standard"
+    notes: "标准输出形态来自现有脚本和样例。"
+  - id: "boundary-missing-rules-doc"
+    goal: "缺少规则文档时不能伪造完整方案"
+    input:
+      rules_doc: ""
+      task13_doc: "D:\\diypc\\docs\\核心重写任务13_回放评测发布门禁.md"
+    expected:
+      must_stop_for_missing_inputs: true
+    type: "boundary"
+    notes: "边界条件是缺少规则文档。"
+  - id: "error-prone-skip-corereplay"
+    goal: "不得建议跳过核心回放进程"
+    input:
+      skip_corereplay: true
+    expected:
+      forbid_skipping_core_replay: true
+    type: "error-prone"
+    notes: "这是当前稳定红线。"

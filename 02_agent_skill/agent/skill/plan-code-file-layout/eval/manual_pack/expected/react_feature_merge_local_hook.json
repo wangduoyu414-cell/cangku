@@ -1,0 +1,22 @@
+{
+  "id": "react_feature_merge_local_hook",
+  "prompt": "Decide whether this React refund insights feature should keep its current panel and hook split or merge them. Target packages/web-dashboard/src/features/refund-insights and compare it with the nearby refund triage feature, where state is shared across more than one component.",
+  "target_area": "packages/web-dashboard/src/features/refund-insights",
+  "source_paths": [
+    "packages/web-dashboard/src/features/refund-insights/RefundInsightsPanel.tsx",
+    "packages/web-dashboard/src/features/refund-insights/useRefundInsightFilters.ts",
+    "packages/web-dashboard/src/features/refund-triage/RefundTriagePanel.tsx",
+    "packages/web-dashboard/src/features/refund-triage/RefundDecisionDrawer.tsx"
+  ],
+  "expected_summary": {
+    "strategy": "merge",
+    "repo_shape": "feature-first",
+    "artifact_type": "ui-component",
+    "stack": "typescript-javascript",
+    "confidence": "high",
+    "files": [
+      "packages/web-dashboard/src/features/refund-insights/RefundInsightsPanel.tsx"
+    ]
+  },
+  "validation_command": "python eval/validate_saved_output.py --case react_feature_merge_local_hook --output outputs/react_feature_merge_local_hook.yaml"
+}

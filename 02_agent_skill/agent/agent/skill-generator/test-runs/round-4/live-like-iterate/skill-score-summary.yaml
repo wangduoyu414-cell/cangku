@@ -1,0 +1,37 @@
+skill_name: federated-incident-governor-v2
+total_score: 84
+hard_gate_pass: true
+release_recommendation: beta（测试版）
+dimensions:
+  scope_and_signal:
+    label: Scope & Signal（边界与信号）
+    weight: 25
+    score: 4
+    reason: 失败修复后仍保持边界。
+  knowledge_packaging:
+    label: Knowledge Packaging（知识封装）
+    weight: 15
+    score: 4
+    reason: 回归与陈旧产物信息被结构化。
+  instruction_to_action:
+    label: Instruction-to-Action（指令到行动）
+    weight: 20
+    score: 4
+    reason: 修复方向与待办清晰。
+  limits_and_interfaces:
+    label: Limits & Interfaces（限制与接口）
+    weight: 20
+    score: 5
+    reason: 治理与回归接口都很清晰。
+  learning_and_lift:
+    label: Learning & Lift（学习闭环与增益）
+    weight: 20
+    score: 4
+    reason: 回归报告支持持续改进。
+hard_checks:
+  has_non_scope: true
+  has_output_contract: true
+  has_trigger_eval: true
+  has_quality_eval: true
+  has_baseline_plan: true
+  has_simplification_pass: true

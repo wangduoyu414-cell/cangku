@@ -1,0 +1,24 @@
+decision:
+  strategy: keep
+  target_area: "scripts/ops"
+  repo_shape: mixed
+  artifact_type: cli-command
+  stack: python
+  files:
+    - path: "scripts/ops/summarize_refund_queue.py"
+      role: "command"
+      responsibility: "Own argument parsing, local queue summarization, and report writing for the refund queue summary command."
+      reason: "This command is a single local flow without a separate network or persistence adapter boundary."
+  keep_inline:
+    - "The argparse options."
+    - "The local queue summary helper."
+    - "The report formatting."
+  avoid:
+    - "utils.py"
+    - "models.py"
+    - "formatter.py"
+  why_not_fewer: "One command file is already the smallest useful boundary for this queue summary script."
+  why_not_more: "Breaking out summary or formatting helpers would mostly add ceremony because the command still reads as one local file-in, summary, file-out flow."
+  risks:
+    - "If other ops commands start sharing the same queue summarization rules, a shared helper may later become justified."
+  confidence: high

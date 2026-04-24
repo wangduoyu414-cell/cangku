@@ -1,0 +1,21 @@
+{
+  "id": "merge_ui_feature",
+  "prompt": "Decide whether this refactor should merge two files or keep them separate. Target packages/web-dashboard/src/features/invoice-alerts, where a tiny component currently jumps to a tiny API helper.",
+  "target_area": "packages/web-dashboard/src/features/invoice-alerts",
+  "source_paths": [
+    "packages/web-dashboard/src/features/invoice-alerts/InvoiceAlertsPanel.tsx",
+    "packages/web-dashboard/src/features/invoice-alerts/invoiceAlertsApi.ts",
+    "packages/web-dashboard/src/features/invoice-alerts/index.ts"
+  ],
+  "expected_summary": {
+    "strategy": "merge",
+    "repo_shape": "feature-first",
+    "artifact_type": "ui-component",
+    "stack": "typescript-javascript",
+    "confidence": "high",
+    "files": [
+      "packages/web-dashboard/src/features/invoice-alerts/InvoiceAlertsPanel.tsx"
+    ]
+  },
+  "validation_command": "python eval/validate_saved_output.py --case merge_ui_feature --output outputs/merge_ui_feature.yaml"
+}

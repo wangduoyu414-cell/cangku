@@ -1,0 +1,14 @@
+id: "generated-plan-example"
+user_request: |
+  请基于 D:\diypc 的证据相关资产，生成 task 09 和 task 10 的证据模板映射与反事实绑定方案。
+notes: "这是现有脚本生成后的目标输出形态示例，用于校准 evidence_alignment_plan 的完整结构。"
+sample_output:
+  evidence_alignment_plan:
+    evidence_sources:
+      - "EVIDENCE_RULE_MATCH（证据码）: rule matched the current features"
+      - "EVIDENCE_PUSH_READY（证据码）: push route is eligible for delivery"
+    counterfactual_bindings:
+      - "反事实结果必须回接证据包与渲染载荷"
+    style_tier_bindings:
+      - "balanced（风格档位）: rank（排序）=1"
+      - "creator（风格档位）: rank（排序）=2"

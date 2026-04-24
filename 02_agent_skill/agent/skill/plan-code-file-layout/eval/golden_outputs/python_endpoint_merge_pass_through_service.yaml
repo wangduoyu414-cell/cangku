@@ -1,0 +1,23 @@
+decision:
+  strategy: merge
+  target_area: "services/python-order-api/features/refund-audit"
+  repo_shape: feature-first
+  artifact_type: service-endpoint
+  stack: python
+  files:
+    - path: "services/python-order-api/features/refund-audit/audit_handler.py"
+      role: "handler"
+      responsibility: "Own request validation, the tiny audit row mapper, and response shaping in one endpoint file."
+      reason: "The current endpoint-local service hop only adds a thin same endpoint jump without a real external adapter boundary."
+  keep_inline:
+    - "The input validation."
+    - "The tiny audit row mapper."
+  avoid:
+    - "audit_service.py"
+    - "service.py"
+    - "schemas.py"
+  why_not_fewer: "One handler file is already the smallest useful boundary for this refund audit endpoint."
+  why_not_more: "Keeping a separate service for the same endpoint mostly adds ceremony without the remote IO or broader orchestration boundary seen in other refund features."
+  risks:
+    - "If refund audit loading later grows into shared orchestration or remote lookups, the split may become justified again."
+  confidence: high

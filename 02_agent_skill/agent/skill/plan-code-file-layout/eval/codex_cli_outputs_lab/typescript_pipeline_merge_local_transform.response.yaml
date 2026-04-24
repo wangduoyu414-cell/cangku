@@ -1,0 +1,28 @@
+decision:
+  strategy: merge
+  target_area: "skill-evals/plan-code-file-layout-lab/layer-first/refund-ops-pipeline/src/jobs"
+  repo_shape: layer-first
+  artifact_type: data-pipeline-step
+  stack: typescript-javascript
+  files:
+    - path: "skill-evals/plan-code-file-layout-lab/layer-first/refund-ops-pipeline/src/jobs/publishRefundLagReport.ts"
+      role: "job entrypoint and local report transform"
+      responsibility: "Own the fetch, refund-lag normalization, lag bucketing, and CSV report assembly in one readable job flow."
+      reason: "The current split isolates only a tiny local map and helper, while the nearby payout exposure flow separates a real transform stage from a real sink stage with distinct side effects."
+  keep_inline:
+    - "RefundLagRow and any normalized row shape used only by this job"
+    - "owner trimming and unassigned fallback logic"
+    - "bucketLag(lagHours) classification helper"
+    - "CSV row formatting for the returned report payload"
+  avoid:
+    - "A separate normalizeRefundLagRows.ts file for this job"
+    - "A pass-through service or orchestration layer between the job and its local mapping logic"
+    - "A shared utils/common module for lag bucketing or owner cleanup before a second real consumer exists"
+    - "Mirroring the payout exposure transform/sink split when no sink boundary exists here"
+  why_not_fewer: "One file is already the smallest useful boundary that preserves this report as a named pipeline job; collapsing further would push job-specific logic into callers and blur ownership."
+  why_not_more: "Further splitting would mostly add ceremony. Unlike publishPayoutExposure, this refund lag job has no separate sink, no independent external IO boundary after fetchRows, and no transform with its own reuse or failure mode."
+  risks:
+    - "The local repository area uses layer directories like jobs, transforms, and sinks, so merging this slice relies on the stronger signal from the concrete file behavior rather than the directory pattern alone."
+    - "If refund lag normalization is later reused by another report or acquires its own dedicated tests, re-extracting it could become justified."
+    - "If the job later gains a write stage or external publish step, the boundary should be revisited to split entrypoint, transform, and sink along real pipeline stages."
+  confidence: medium

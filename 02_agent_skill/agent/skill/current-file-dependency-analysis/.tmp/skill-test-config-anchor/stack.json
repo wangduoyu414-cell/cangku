@@ -1,0 +1,9 @@
+{
+  "stack_family": "typescript",
+  "stack_id": "typescript-stack",
+  "confidence": "low",
+  "reasons": [],
+  "reference_file": "references/ts-edge-rules.md",
+  "repo_root": "C:/Users/admin/.codex",
+  "file_path": "C:/Users/admin/.codex/config.toml"
+}

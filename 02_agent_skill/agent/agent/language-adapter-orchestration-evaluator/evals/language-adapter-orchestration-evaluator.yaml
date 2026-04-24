@@ -1,0 +1,8 @@
+id: language-adapter-orchestration-evaluator
+goal: 验证上层 agent（代理） 是否能稳定编排真实业务候选批次，并对生成结果做结构化测评与阻断
+pass_conditions:
+  - run_manifest（运行清单） 必须引用真实 replay（回放） 目录，而不是 demo（演示） 来源
+  - run_manifest（运行清单） 必须输出总批次数、每批配额和真实业务场景族覆盖要求
+  - evaluation_report（测评报告） 必须显式报告 demo_source_detected（检测到演示来源） 与 ungrounded_trace_detected（检测到未落地追踪）
+  - evaluation_report（测评报告） 必须把 label_rule（标注规则） 自检误标识别为阻断项
+  - evaluation_report（测评报告） 必须调用下层 validate_candidate_pack（候选包校验） 结果，而不是只做表面格式检查

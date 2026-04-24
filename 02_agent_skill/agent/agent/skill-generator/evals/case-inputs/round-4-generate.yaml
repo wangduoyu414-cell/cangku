@@ -1,0 +1,67 @@
+skill_name: federated-incident-governor
+mode: generate
+request_summary: "Generate a reusable federated incident-governor skill from long, messy, multilingual, policy-heavy inputs with contradictory constraints."
+constraints:
+  - "Must keep UTF-8（统一编码） safe content across Chinese（中文）, English（英文）, and mixed glossary evidence."
+  - "Must preserve contradictory constraints instead of flattening them."
+  - "Must keep governance boundaries explicit."
+quality_goals:
+  - "Higher semantic completeness under messy real-like inputs."
+  - "Higher trigger precision against policy-summary near misses."
+  - "Generate a complete bundle without empty placeholders."
+scope:
+  - "Convert federated incident-governor requests into a reusable, bounded skill."
+  - "Preserve governance rules, escalation boundaries, multilingual evidence, and baseline expectations."
+  - "Bind every major action to evidence and follow-up validation."
+non_scope:
+  - "Do not execute incident remediation."
+  - "Do not replace legal, security, or executive approval."
+  - "Do not broaden into organization-wide architecture design."
+inputs:
+  - "messy incident narratives（杂乱事件叙述）"
+  - "contradictory policy notes（矛盾策略注记）"
+  - "cross-team failure clusters（跨团队失败簇）"
+outputs:
+  - "governor skill draft（治理技能草案）"
+  - "baseline comparison（基线对比）"
+  - "iteration backlog（迭代待办）"
+  - "experience ledger（经验账本）"
+risks:
+  - "Flatten contradictory constraints into a false single rule."
+  - "Lose escalation nuance under multilingual compression."
+  - "Over-trigger on plain policy summaries."
+success_bar:
+  - "Must keep contradictory constraints visible."
+  - "Must produce semantically filled artifacts with no template residue."
+  - "Must retain governance non-scope clearly."
+repeated_signals:
+  - "Long, multilingual incident-governor requests recur during major outages."
+  - "Policy-heavy incident planning keeps requiring human cleanup."
+success_patterns:
+  - "Separate governance boundaries from execution actions."
+  - "Write baseline notes that explain quality gains, not just pass/fail."
+failure_feedback:
+  - "Earlier drafts erased contradiction between security and legal instructions."
+  - "Manual cleanup keeps re-adding escalation boundaries."
+baseline:
+  candidate: "federated-incident-governor（联邦事件治理器）"
+  baseline: "manual federation worksheet（手工联邦工作表）"
+  quality_delta:
+    correctness: "higher"
+    actionability: "higher"
+    scope_clarity: "higher"
+    contract_completeness: "higher"
+  cost_delta:
+    token_estimate: "higher_but_explained"
+    wall_clock_estimate: "similar"
+    tool_call_estimate: "similar"
+  notes:
+    - "Extra cost is acceptable only if contradictory constraints stay visible."
+iteration_backlog:
+  next_fixes:
+    - "Add more near-miss prompts around pure policy summaries."
+    - "Replay one even longer cross-team incident narrative."
+  deferred_work:
+    - "Integrate real telemetry once governance access is available."
+  why_now:
+    - "The messy, contradictory input shape is now a repeated operational pattern."

@@ -1,0 +1,16 @@
+suite_id: "fact-sheet-mapper-upgrade-core"
+baseline:
+  previous_version: "pre-unified-2026-04-23"
+  baseline_artifact: "evals/upgrade/frozen-baseline.md"
+cases:
+  - id: "keep-version-binding-and-boundary"
+    goal: "升级统一结构后仍保留事实版本绑定与非运行时边界"
+    before:
+      - "旧版只有目标、输入、输出、脚本、红线"
+    after:
+      - "新版补齐设计目标、边界、不变量和正式评测资产"
+    expected:
+      - "仍要求显式 fact_version_binding"
+      - "仍不允许 Excel 直接作为 runtime 真值"
+      - "仍不扩展成运行时决策逻辑"
+    notes: "验证结构迁移不破坏原有语义。"

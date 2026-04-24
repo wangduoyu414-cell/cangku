@@ -1,0 +1,25 @@
+decision:
+  strategy: keep
+  target_area: "src/app/infrastructure/refunds"
+  repo_shape: layer-first
+  artifact_type: library-module
+  stack: python
+  files:
+    - path: "src/app/infrastructure/persistence/refunds/refund_sql_repository.py"
+      role: "persistence-adapter"
+      responsibility: "Own batch refund inserts, sqlite write details, and conflict-handling behavior under the documented persistence boundary."
+      reason: "The documented target for new refund persistence work is infrastructure/persistence/refunds, while src/app/infrastructure/refunds/refund_repository.py is a pre-migration path."
+  keep_inline:
+    - "save_batch loop"
+    - "small sqlite row tuple handling"
+  avoid:
+    - "src/app/infrastructure/refunds/refund_repository.py"
+    - "refund_mapper.py"
+    - "persistence_helpers.py"
+  why_not_fewer: "One persistence adapter file in the documented target location is already the smallest useful boundary for this refund repository slice."
+  why_not_more: "Splitting mapper or helper files would add ceremony before the persistence surface grows beyond one save loop and one database boundary."
+  risks:
+    - "This plan requires relocation away from the older infrastructure root path, so existing imports may need a short compatibility window."
+    - "The documented target is clear, but broader repository naming for persistence adapters may still influence the final class or file name."
+    - "If multiple storage backends or a larger public repository surface appear later, revisit whether a second adapter or codec file is justified."
+  confidence: medium

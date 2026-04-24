@@ -1,0 +1,31 @@
+decision:
+  strategy: split
+  target_area: "packages/go/partnerrefunds"
+  repo_shape: package-first
+  artifact_type: library-module
+  stack: go
+  files:
+    - path: "packages/go/partnerrefunds/sync.go"
+      role: "orchestration"
+      responsibility: "Own the visible sync flow and package entrypoint for pending refund synchronization."
+      reason: "The main package flow should remain easy to scan without burying partner access or storage details."
+    - path: "packages/go/partnerrefunds/partner_client.go"
+      role: "partner-client"
+      responsibility: "Fetch pending refunds from the partner API and translate remote transport failures."
+      reason: "Remote partner access is a distinct IO boundary with its own retry and error behavior."
+    - path: "packages/go/partnerrefunds/refund_store.go"
+      role: "store"
+      responsibility: "Persist normalized refund rows and own SQL details for the package."
+      reason: "Database writes are a separate persistence boundary from the package entry flow."
+  keep_inline:
+    - "The RefundRow struct."
+    - "The small normalization helper."
+  avoid:
+    - "helpers.go"
+    - "interfaces.go"
+    - "A new subpackage."
+  why_not_fewer: "Keeping HTTP fetches, orchestration, and SQL writes in one file would make the package harder to scan and blur separate failure boundaries."
+  why_not_more: "This should still stay in the same package because package cohesion matters more here than chasing extra files or a new subpackage."
+  risks:
+    - "If this package later exposes multiple public entrypoints, the package API surface may need another pass."
+  confidence: high

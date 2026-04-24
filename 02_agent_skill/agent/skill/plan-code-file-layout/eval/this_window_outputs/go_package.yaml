@@ -1,0 +1,23 @@
+decision:
+  strategy: keep
+  target_area: "packages/go/amountcodec"
+  repo_shape: package-first
+  artifact_type: library-module
+  stack: go
+  files:
+    - path: "packages/go/amountcodec/format.go"
+      role: "public-entry-module"
+      responsibility: "Expose parse and format behavior for the amountcodec package while keeping tightly related helpers nearby."
+      reason: "This package slice is small, cohesive, and easier to scan when the core helpers stay together."
+  keep_inline:
+    - "The trimZeros helper should stay local to this package file."
+    - "The small parse and format helpers should stay together until a larger package surface appears."
+  avoid:
+    - "helpers.go"
+    - "types.go"
+    - "codec_interface.go"
+  why_not_fewer: "One file already holds the full useful package slice, so there is no smaller meaningful boundary to collapse further."
+  why_not_more: "Breaking helpers or interfaces into extra files would mostly create naming-only ceremony inside the same small package."
+  risks:
+    - "If more codecs or serialization formats are added, a second adapter-oriented file may become reasonable."
+  confidence: high

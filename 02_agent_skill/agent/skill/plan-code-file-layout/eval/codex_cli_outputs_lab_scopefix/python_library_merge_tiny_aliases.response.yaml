@@ -1,0 +1,26 @@
+decision:
+  strategy: merge
+  target_area: "skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds"
+  repo_shape: mixed
+  artifact_type: library-module
+  stack: python
+  files:
+    - path: "skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds/hold_reason_labels.py"
+      role: "public shared refund hold-reason helper"
+      responsibility: "Own raw hold-reason normalization, alias lookup, and display-label generation in one cohesive module, with label building as the visible surface and canonicalization kept local."
+      reason: "The current two files are one tiny, side-effect-free helper with the same change reason and test surface. No separate consumer currently justifies a standalone alias module."
+  keep_inline:
+    - "The alias mapping dictionary for canonical hold reasons."
+    - "The display label mapping dictionary for canonical reasons."
+    - "The canonicalization helper as a private local function in the merged module."
+    - "The fallback title-casing logic used when a canonical reason has no explicit label."
+  avoid:
+    - "A standalone hold_reason_aliases.py module."
+    - "A constants-only split such as hold_reason_constants.py for these two small dictionaries."
+    - "A generic refunds/utils.py or shared/utils.py extraction for one local helper."
+  why_not_fewer: "This slice still needs one dedicated shared module so refund callers do not duplicate normalization and label formatting rules or hide them in unrelated constant files."
+  why_not_more: "Further splitting mostly adds ceremony and cross-file ping-pong. Unlike the nearby partner export helper, this slice does not expose a second stable surface like CSV encoding/decoding with its own failure modes and tests."
+  risks:
+    - "If another caller later needs canonicalization as a public API independent of label rendering, the alias helper may deserve its own module again."
+    - "If code outside the target slice imports hold_reason_aliases.py directly, merging will require import updates or a temporary compatibility re-export."
+  confidence: high

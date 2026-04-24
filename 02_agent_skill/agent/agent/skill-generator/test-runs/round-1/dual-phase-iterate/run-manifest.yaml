@@ -1,0 +1,12 @@
+skill_name: release-review-orchestrator
+mode: iterate
+request_summary: Upgrade an existing release review skill from clustered failures,
+  missing dependencies, and manual rework.
+created_at: '2026-03-27'
+created_files:
+- request.md
+- skill-brief.md
+- iteration-backlog.md
+- baseline-comparison.md
+- experience-ledger.yaml
+- failure-attribution.md

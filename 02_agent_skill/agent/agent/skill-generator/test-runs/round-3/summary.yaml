@@ -1,0 +1,259 @@
+round_id: round-3
+passed: true
+telemetry: &id001
+  case_telemetry_count: 6
+  total_command_count: 9
+  total_wall_clock_ms: 590
+  total_stdout_bytes: 2034
+  total_stderr_bytes: 0
+  total_created_file_count: 28
+  total_created_bytes: 21919
+results:
+- case_id: lifecycle-generate
+  passed: true
+  failures: []
+  command_log:
+  - command:
+    - C:\Users\admin\AppData\Local\Programs\Python\Python312\python.exe
+    - D:\agent\agent\skills\new\skill-generator\scripts\generate_skill_bundle.py
+    - D:\agent\agent\skills\new\skill-generator\evals\case-inputs\round-3-generate.yaml
+    - D:\agent\agent\skills\new\skill-generator\test-runs\round-3\lifecycle-generate
+    - --force
+    returncode: 0
+    stdout: 'D:\agent\agent\skills\new\skill-generator\test-runs\round-3\lifecycle-generate\request.md
+
+      D:\agent\agent\skills\new\skill-generator\test-runs\round-3\lifecycle-generate\skill-brief.md
+
+      D:\agent\agent\skills\new\skill-generator\test-runs\round-3\lifecycle-generate\iteration-backlog.md
+
+      D:\agent\agent\skills\new\skill-generator\test-runs\round-3\lifecycle-generate\baseline-comparison.md
+
+      D:\agent\agent\skills\new\skill-generator\test-runs\round-3\lifecycle-generate\experience-ledger.yaml
+
+      D:\agent\agent\skills\new\skill-generator\test-runs\round-3\lifecycle-generate\run-manifest.yaml
+
+      '
+    stderr: ''
+    duration_ms: 66
+    stdout_bytes: 585
+    stderr_bytes: 0
+  - command:
+    - C:\Users\admin\AppData\Local\Programs\Python\Python312\python.exe
+    - D:\agent\agent\skills\new\skill-generator\scripts\score_skill_qi.py
+    - D:\agent\agent\skills\new\skill-generator\evals\score-inputs\round-3-generate.yaml
+    - --output
+    - D:\agent\agent\skills\new\skill-generator\test-runs\round-3\lifecycle-generate\skill-scorecard.md
+    - --summary-output
+    - D:\agent\agent\skills\new\skill-generator\test-runs\round-3\lifecycle-generate\skill-score-summary.yaml
+    returncode: 0
+    stdout: ''
+    stderr: ''
+    duration_ms: 61
+    stdout_bytes: 0
+    stderr_bytes: 0
+  telemetry:
+    case_id: lifecycle-generate
+    command_count: 2
+    total_wall_clock_ms: 127
+    max_command_wall_clock_ms: 66
+    stdout_bytes: 585
+    stderr_bytes: 0
+    created_file_count: 8
+    created_total_bytes: 6143
+- case_id: lifecycle-iterate
+  passed: true
+  failures: []
+  command_log:
+  - command:
+    - C:\Users\admin\AppData\Local\Programs\Python\Python312\python.exe
+    - D:\agent\agent\skills\new\skill-generator\scripts\generate_skill_bundle.py
+    - D:\agent\agent\skills\new\skill-generator\evals\case-inputs\round-3-iterate.yaml
+    - D:\agent\agent\skills\new\skill-generator\test-runs\round-3\lifecycle-iterate
+    - --force
+    returncode: 0
+    stdout: 'D:\agent\agent\skills\new\skill-generator\test-runs\round-3\lifecycle-iterate\request.md
+
+      D:\agent\agent\skills\new\skill-generator\test-runs\round-3\lifecycle-iterate\skill-brief.md
+
+      D:\agent\agent\skills\new\skill-generator\test-runs\round-3\lifecycle-iterate\iteration-backlog.md
+
+      D:\agent\agent\skills\new\skill-generator\test-runs\round-3\lifecycle-iterate\baseline-comparison.md
+
+      D:\agent\agent\skills\new\skill-generator\test-runs\round-3\lifecycle-iterate\experience-ledger.yaml
+
+      D:\agent\agent\skills\new\skill-generator\test-runs\round-3\lifecycle-iterate\failure-attribution.md
+
+      D:\agent\agent\skills\new\skill-generator\test-runs\round-3\lifecycle-iterate\run-manifest.yaml
+
+      '
+    stderr: ''
+    duration_ms: 65
+    stdout_bytes: 680
+    stderr_bytes: 0
+  - command:
+    - C:\Users\admin\AppData\Local\Programs\Python\Python312\python.exe
+    - D:\agent\agent\skills\new\skill-generator\scripts\score_skill_qi.py
+    - D:\agent\agent\skills\new\skill-generator\evals\score-inputs\round-3-iterate.yaml
+    - --output
+    - D:\agent\agent\skills\new\skill-generator\test-runs\round-3\lifecycle-iterate\skill-scorecard.md
+    - --summary-output
+    - D:\agent\agent\skills\new\skill-generator\test-runs\round-3\lifecycle-iterate\skill-score-summary.yaml
+    returncode: 0
+    stdout: ''
+    stderr: ''
+    duration_ms: 57
+    stdout_bytes: 0
+    stderr_bytes: 0
+  telemetry:
+    case_id: lifecycle-iterate
+    command_count: 2
+    total_wall_clock_ms: 122
+    max_command_wall_clock_ms: 65
+    stdout_bytes: 680
+    stderr_bytes: 0
+    created_file_count: 9
+    created_total_bytes: 6549
+- case_id: lifecycle-model-upgrade
+  passed: true
+  failures: []
+  command_log:
+  - command:
+    - C:\Users\admin\AppData\Local\Programs\Python\Python312\python.exe
+    - D:\agent\agent\skills\new\skill-generator\scripts\generate_skill_bundle.py
+    - D:\agent\agent\skills\new\skill-generator\evals\case-inputs\round-3-model-upgrade.yaml
+    - D:\agent\agent\skills\new\skill-generator\test-runs\round-3\lifecycle-model-upgrade
+    - --force
+    returncode: 0
+    stdout: 'D:\agent\agent\skills\new\skill-generator\test-runs\round-3\lifecycle-model-upgrade\request.md
+
+      D:\agent\agent\skills\new\skill-generator\test-runs\round-3\lifecycle-model-upgrade\skill-brief.md
+
+      D:\agent\agent\skills\new\skill-generator\test-runs\round-3\lifecycle-model-upgrade\iteration-backlog.md
+
+      D:\agent\agent\skills\new\skill-generator\test-runs\round-3\lifecycle-model-upgrade\baseline-comparison.md
+
+      D:\agent\agent\skills\new\skill-generator\test-runs\round-3\lifecycle-model-upgrade\experience-ledger.yaml
+
+      D:\agent\agent\skills\new\skill-generator\test-runs\round-3\lifecycle-model-upgrade\model-upgrade-note.md
+
+      D:\agent\agent\skills\new\skill-generator\test-runs\round-3\lifecycle-model-upgrade\run-manifest.yaml
+
+      '
+    stderr: ''
+    duration_ms: 59
+    stdout_bytes: 721
+    stderr_bytes: 0
+  - command:
+    - C:\Users\admin\AppData\Local\Programs\Python\Python312\python.exe
+    - D:\agent\agent\skills\new\skill-generator\scripts\score_skill_qi.py
+    - D:\agent\agent\skills\new\skill-generator\evals\score-inputs\round-3-model-upgrade.yaml
+    - --output
+    - D:\agent\agent\skills\new\skill-generator\test-runs\round-3\lifecycle-model-upgrade\skill-scorecard.md
+    - --summary-output
+    - D:\agent\agent\skills\new\skill-generator\test-runs\round-3\lifecycle-model-upgrade\skill-score-summary.yaml
+    returncode: 0
+    stdout: ''
+    stderr: ''
+    duration_ms: 52
+    stdout_bytes: 0
+    stderr_bytes: 0
+  telemetry:
+    case_id: lifecycle-model-upgrade
+    command_count: 2
+    total_wall_clock_ms: 111
+    max_command_wall_clock_ms: 59
+    stdout_bytes: 721
+    stderr_bytes: 0
+    created_file_count: 9
+    created_total_bytes: 6372
+- case_id: trigger-eval
+  passed: true
+  failures: []
+  telemetry:
+    command_count: 1
+    total_wall_clock_ms: 55
+    stdout_bytes: 0
+    stderr_bytes: 0
+    created_file_count: 1
+    created_total_bytes: 2623
+  command_log:
+  - command:
+    - C:\Users\admin\AppData\Local\Programs\Python\Python312\python.exe
+    - D:\agent\agent\skills\new\skill-generator\scripts\run_trigger_evals.py
+    - D:\agent\agent\skills\new\skill-generator\evals\trigger-evals.yaml
+    - --skill-dir
+    - D:\agent\agent\skills\new\skill-generator
+    - --output
+    - D:\agent\agent\skills\new\skill-generator\test-runs\round-3\trigger-report.yaml
+    returncode: 0
+    stdout: ''
+    stderr: ''
+    duration_ms: 55
+    stdout_bytes: 0
+    stderr_bytes: 0
+- case_id: validate:@skill_root
+  passed: true
+  failures: []
+  telemetry:
+    command_count: 1
+    total_wall_clock_ms: 80
+    stdout_bytes: 16
+    stderr_bytes: 0
+    created_file_count: 0
+    created_total_bytes: 0
+  command_log:
+  - command:
+    - C:\Users\admin\AppData\Local\Programs\Python\Python312\python.exe
+    - D:\agent\agent\skills\new\skill-generator\scripts\validate_skill_utf8.py
+    - D:\agent\agent\skills\new\skill-generator
+    returncode: 0
+    stdout: 'Skill is valid!
+
+      '
+    stderr: ''
+    duration_ms: 80
+    stdout_bytes: 16
+    stderr_bytes: 0
+- case_id: openai-yaml-check
+  passed: true
+  failures: []
+  telemetry:
+    command_count: 1
+    total_wall_clock_ms: 95
+    stdout_bytes: 32
+    stderr_bytes: 0
+    created_file_count: 1
+    created_total_bytes: 232
+  command_log:
+  - command:
+    - C:\Users\admin\AppData\Local\Programs\Python\Python312\python.exe
+    - D:\agent\agent\skills\new\skill-generator\scripts\generate_openai_yaml_utf8.py
+    - D:\agent\agent\skills\new\skill-generator
+    - --interface
+    - display_name=Skill Generator
+    - --interface
+    - short_description=Generate and upgrade reusable skills
+    - --interface
+    - default_prompt=Use $skill-generator to turn repeated work, failures, and model
+      changes into a reusable skill package.
+    returncode: 0
+    stdout: '[OK] Created agents/openai.yaml
+
+      '
+    stderr: ''
+    duration_ms: 95
+    stdout_bytes: 32
+    stderr_bytes: 0
+- case_id: telemetry-eval
+  passed: true
+  failures: []
+  telemetry: *id001
+  command_log: []
+- case_id: regression-report
+  passed: true
+  failures: []
+  command_log: []
+- case_id: round-level-report
+  passed: true
+  failures: []
+  command_log: []

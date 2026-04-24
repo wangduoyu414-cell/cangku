@@ -1,0 +1,16 @@
+suite_id: "release-gate-auditor-upgrade-core"
+baseline:
+  previous_version: "pre-unified-2026-04-23"
+  baseline_artifact: "evals/upgrade/frozen-baseline.md"
+cases:
+  - id: "keep-release-redlines-and-reports"
+    goal: "升级统一结构后仍保留门禁报告与阻断红线"
+    before:
+      - "旧版只有目标、输入、输出、脚本、红线"
+    after:
+      - "新版补齐设计目标、边界、不变量和正式评测资产"
+    expected:
+      - "仍要求 replay_report 与 release_gate 报告"
+      - "仍不允许跳过 corereplay 或 rulepublish"
+      - "仍不把 replayd 当作新核心正式门禁"
+    notes: "验证结构迁移不破坏原有语义。"

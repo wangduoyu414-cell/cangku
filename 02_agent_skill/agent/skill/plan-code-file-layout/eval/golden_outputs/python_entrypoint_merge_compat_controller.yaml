@@ -1,0 +1,25 @@
+decision:
+  strategy: merge
+  target_area: "src/app/entrypoints/http"
+  repo_shape: layer-first
+  artifact_type: service-endpoint
+  stack: python
+  files:
+    - path: "src/app/entrypoints/http/refund_routes.py"
+      role: "http-route"
+      responsibility: "Own payload-to-use-case invocation and response shaping for the refund creation HTTP slice under the documented entrypoint layer."
+      reason: "The repository docs mark entrypoints/http as the migration target, while the compatibility shim in interfaces/refunds/create_refund_controller.py is the same HTTP slice with no separate adapter value."
+  keep_inline:
+    - "payload-to-use-case call"
+    - "response shaping"
+  avoid:
+    - "src/app/interfaces/refunds/create_refund_controller.py"
+    - "refund_service.py"
+    - "schemas.py"
+  why_not_fewer: "One route file is already the smallest useful boundary for this same HTTP slice."
+  why_not_more: "Keeping a separate compatibility shim would preserve a short controller hop for the same HTTP slice and add ceremony after the migration target has already moved to entrypoints/http."
+  risks:
+    - "The migration target is documented, but any external callers that still import the compatibility shim may need a staged rollout before removal."
+    - "If refund creation later needs a real presenter or protocol adapter boundary beyond the route itself, revisit the split."
+    - "This merge assumes create_refund_controller.py remains only a compatibility shim and does not accumulate different transport concerns."
+  confidence: medium

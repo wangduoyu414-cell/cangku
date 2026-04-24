@@ -1,0 +1,127 @@
+{
+  "anchor": {
+    "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+    "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/scripts/build_slice.py",
+    "repo_relative_path": "scripts/build_slice.py",
+    "symbol": "",
+    "selection_range": "",
+    "language": "python",
+    "role_hint": "source"
+  },
+  "stack": {
+    "stack_family": "python",
+    "stack_id": "python-stack",
+    "confidence": "medium",
+    "reasons": [
+      "file extension suggests python"
+    ],
+    "reference_file": "references/py-edge-rules.md",
+    "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+    "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/scripts/build_slice.py"
+  },
+  "edges": [
+    {
+      "from": "scripts/build_slice.py",
+      "to": "external:__future__",
+      "direction": "outbound",
+      "edge_kind": "import",
+      "symbol": "",
+      "evidence_ref": "scripts/build_slice.py:1",
+      "confidence": "medium",
+      "resolution": "resolved"
+    },
+    {
+      "from": "scripts/build_slice.py",
+      "to": "external:argparse",
+      "direction": "outbound",
+      "edge_kind": "import",
+      "symbol": "",
+      "evidence_ref": "scripts/build_slice.py:3",
+      "confidence": "medium",
+      "resolution": "resolved"
+    },
+    {
+      "from": "scripts/build_slice.py",
+      "to": "external:json",
+      "direction": "outbound",
+      "edge_kind": "import",
+      "symbol": "",
+      "evidence_ref": "scripts/build_slice.py:4",
+      "confidence": "medium",
+      "resolution": "resolved"
+    },
+    {
+      "from": "scripts/build_slice.py",
+      "to": "external:sys",
+      "direction": "outbound",
+      "edge_kind": "import",
+      "symbol": "",
+      "evidence_ref": "scripts/build_slice.py:5",
+      "confidence": "medium",
+      "resolution": "resolved"
+    },
+    {
+      "from": "scripts/build_slice.py",
+      "to": "external:pathlib",
+      "direction": "outbound",
+      "edge_kind": "import",
+      "symbol": "",
+      "evidence_ref": "scripts/build_slice.py:6",
+      "confidence": "medium",
+      "resolution": "resolved"
+    },
+    {
+      "from": "scripts/build_slice.py",
+      "to": "scripts/common.py",
+      "direction": "outbound",
+      "edge_kind": "import",
+      "symbol": "",
+      "evidence_ref": "scripts/build_slice.py:13",
+      "confidence": "high",
+      "resolution": "resolved"
+    },
+    {
+      "from": "scripts/build_slice.py",
+      "to": "scripts/cycle_detection.py",
+      "direction": "outbound",
+      "edge_kind": "import",
+      "symbol": "",
+      "evidence_ref": "scripts/build_slice.py:14",
+      "confidence": "high",
+      "resolution": "resolved"
+    },
+    {
+      "from": "scripts/build_slice.py",
+      "to": "scripts/impact_estimation.py",
+      "direction": "outbound",
+      "edge_kind": "import",
+      "symbol": "",
+      "evidence_ref": "scripts/build_slice.py:15",
+      "confidence": "high",
+      "resolution": "resolved"
+    },
+    {
+      "from": "scripts/build_slice.py",
+      "to": "scripts/build_integration.py",
+      "direction": "outbound",
+      "edge_kind": "import",
+      "symbol": "",
+      "evidence_ref": "scripts/build_slice.py:16",
+      "confidence": "high",
+      "resolution": "resolved"
+    },
+    {
+      "from": "scripts/build_slice.py",
+      "to": "scripts/resilient_runner.py",
+      "direction": "outbound",
+      "edge_kind": "import",
+      "symbol": "",
+      "evidence_ref": "scripts/build_slice.py:17",
+      "confidence": "high",
+      "resolution": "resolved"
+    }
+  ],
+  "blind_spots": [
+    "Runtime imports through importlib are not statically resolved."
+  ]
+}

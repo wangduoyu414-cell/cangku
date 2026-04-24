@@ -1,0 +1,22 @@
+{
+  "id": "go_package_merge_tiny_files",
+  "prompt": "Decide whether packages/go/refundlabels should stay split across several tiny files or collapse into fewer files. Compare it with amountcodec when planning the package layout.",
+  "target_area": "packages/go/refundlabels",
+  "source_paths": [
+    "packages/go/refundlabels/parse.go",
+    "packages/go/refundlabels/format.go",
+    "packages/go/refundlabels/errors.go",
+    "packages/go/amountcodec/format.go"
+  ],
+  "expected_summary": {
+    "strategy": "merge",
+    "repo_shape": "package-first",
+    "artifact_type": "library-module",
+    "stack": "go",
+    "confidence": "high",
+    "files": [
+      "packages/go/refundlabels/labels.go"
+    ]
+  },
+  "validation_command": "python eval/validate_saved_output.py --case go_package_merge_tiny_files --output outputs/go_package_merge_tiny_files.yaml"
+}

@@ -1,0 +1,26 @@
+suite_id: "language-scope-dataset-designer-trigger-core"
+cases:
+  - id: "positive-language-scope-plan"
+    goal: "语言窄口方案请求应触发"
+    input: "请输出低置信补解析、复杂解释润色和安全拒答的允许/禁止样本范围。"
+    expected: true
+    type: "positive"
+    notes: "典型语言窄口样本设计请求。"
+  - id: "positive-forbidden-scope"
+    goal: "禁止范围和绑定要求请求应触发"
+    input: "把排序、推送、证据事实和状态真相排除在语言窄口外，并补充绑定规则。"
+    expected: true
+    type: "positive"
+    notes: "明确指向禁止范围和绑定规则。"
+  - id: "negative-ranking-dataset"
+    goal: "排序样本设计请求不应触发"
+    input: "请设计排序决策训练样本。"
+    expected: false
+    type: "negative"
+    notes: "这是排序能力请求，不是语言窄口请求。"
+  - id: "negative-push-timing"
+    goal: "推送时机样本请求不应触发"
+    input: "请设计推送时机判断样本。"
+    expected: false
+    type: "negative"
+    notes: "这是推送能力请求，不是语言窄口请求。"

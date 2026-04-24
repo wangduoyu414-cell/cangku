@@ -1,0 +1,21 @@
+{
+  "id": "go_package",
+  "prompt": "Should I extract helpers from this Go package or keep the change in one file? Target packages/go/amountcodec.",
+  "target_area": "packages/go/amountcodec",
+  "source_paths": [
+    "packages/go/amountcodec/format.go",
+    "packages/go/amountcodec/format_test.go",
+    "packages/go/taxcalc/calc.go"
+  ],
+  "expected_summary": {
+    "strategy": "keep",
+    "repo_shape": "package-first",
+    "artifact_type": "library-module",
+    "stack": "go",
+    "confidence": "high",
+    "files": [
+      "packages/go/amountcodec/format.go"
+    ]
+  },
+  "validation_command": "python eval/validate_saved_output.py --case go_package --output outputs/go_package.yaml"
+}

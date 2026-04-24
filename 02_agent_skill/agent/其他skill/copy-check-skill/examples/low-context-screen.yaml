@@ -1,0 +1,12 @@
+id: "low-context-screen"
+task_type: "first-pass"
+user_request: |
+  这段文案帮我挑问题：
+  “做内容不是努力就行，努力只是门票。”
+content_slot: ""
+primary_goal: ""
+expected_route: "low-context-screen"
+expected_focus:
+  - "指出当前属于低语境判断"
+  - "要求补齐文案位置和单一主目标"
+notes: "有文本，但语境和目标不足，只能进入低语境初筛。"

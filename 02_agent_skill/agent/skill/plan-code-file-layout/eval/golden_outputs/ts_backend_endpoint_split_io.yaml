@@ -1,0 +1,31 @@
+decision:
+  strategy: split
+  target_area: "services/node-refund-api/src/features/refund-webhooks"
+  repo_shape: feature-first
+  artifact_type: service-endpoint
+  stack: typescript-javascript
+  files:
+    - path: "services/node-refund-api/src/features/refund-webhooks/refundWebhookRoute.ts"
+      role: "route"
+      responsibility: "Own request acceptance, signature failure handling, and orchestration for refund webhook processing."
+      reason: "The entry route should stay readable without burying remote lookups and persistence details."
+    - path: "services/node-refund-api/src/features/refund-webhooks/refundPartnerClient.ts"
+      role: "partner-client"
+      responsibility: "Fetch refund details from the partner API and translate transport failures for the webhook flow."
+      reason: "Partner lookups are a distinct external IO boundary with separate tests and retries."
+    - path: "services/node-refund-api/src/features/refund-webhooks/refundEventStore.ts"
+      role: "event-store"
+      responsibility: "Persist webhook events and own SQL or conflict-handling details."
+      reason: "Database writes are a separate persistence boundary from route glue and partner access."
+  keep_inline:
+    - "RefundWebhookPayload type."
+    - "The header parsing helper."
+  avoid:
+    - "refundWebhookService.ts"
+    - "index.ts"
+    - "types.ts"
+  why_not_fewer: "Keeping signature handling, partner fetches, and event persistence in one route file would blur independent failure modes and make webhook debugging harder."
+  why_not_more: "Additional schema or mapper files would over-split a feature whose real boundaries are route glue, partner IO, and persistence."
+  risks:
+    - "If signature verification becomes reused across multiple webhooks, a shared verifier may later deserve extraction."
+  confidence: high

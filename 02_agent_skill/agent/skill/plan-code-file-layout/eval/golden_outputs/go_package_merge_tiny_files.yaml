@@ -1,0 +1,23 @@
+decision:
+  strategy: merge
+  target_area: "packages/go/refundlabels"
+  repo_shape: package-first
+  artifact_type: library-module
+  stack: go
+  files:
+    - path: "packages/go/refundlabels/labels.go"
+      role: "package-file"
+      responsibility: "Own label parsing, formatting, and the small package-local error type in one cohesive refundlabels file."
+      reason: "The current split across tiny files adds little ownership value inside one small package."
+  keep_inline:
+    - "The parseCode helper."
+    - "The unknown label fallback."
+  avoid:
+    - "parse.go"
+    - "format.go"
+    - "errors.go"
+  why_not_fewer: "One package file is already the smallest useful boundary for this tiny refund label package."
+  why_not_more: "Keeping several tiny files here hurts package cohesion more than it helps because parsing, formatting, and the small error type belong to the same short public surface."
+  risks:
+    - "If the package later adds multiple independent label families or adapters, another split may become justified."
+  confidence: high

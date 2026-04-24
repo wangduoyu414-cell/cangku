@@ -1,0 +1,22 @@
+{
+  "id": "ts_ui_feature",
+  "prompt": "Help me decide the file layout for a new TypeScript UI feature in this repo. Target packages/web-dashboard/src/features/subscription-optimizer before implementation starts.",
+  "target_area": "packages/web-dashboard/src/features/subscription-optimizer",
+  "source_paths": [
+    "packages/web-dashboard/src/features/subscription-optimizer/SubscriptionOptimizerPanel.tsx",
+    "packages/web-dashboard/src/features/invoice-alerts/InvoiceAlertsPanel.tsx",
+    "packages/web-dashboard/src/features/invoice-alerts/invoiceAlertsApi.ts"
+  ],
+  "expected_summary": {
+    "strategy": "split",
+    "repo_shape": "feature-first",
+    "artifact_type": "ui-component",
+    "stack": "typescript-javascript",
+    "confidence": "high",
+    "files": [
+      "packages/web-dashboard/src/features/subscription-optimizer/SubscriptionOptimizerPanel.tsx",
+      "packages/web-dashboard/src/features/subscription-optimizer/subscriptionOptimizerApi.ts"
+    ]
+  },
+  "validation_command": "python eval/validate_saved_output.py --case ts_ui_feature --output outputs/ts_ui_feature.yaml"
+}

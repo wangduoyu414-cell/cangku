@@ -1,0 +1,18 @@
+suite_id: "intake-anchor-curator-regression-core"
+cases:
+  - id: "preserve-zero-llm-default"
+    goal: "持续保持高频标准表达默认零 LLM 调用"
+    input:
+      output_shape: "intake_anchor_plan"
+    expected:
+      keeps_zero_llm_default: true
+    type: "regression"
+    notes: "保护核心红线不退化。"
+  - id: "preserve-single-supplemental-parse"
+    goal: "持续保持每轮最多一次补解析"
+    input:
+      supplemental_parse_limit: 1
+    expected:
+      keeps_single_parse_limit: true
+    type: "regression"
+    notes: "保护补解析边界。"

@@ -1,0 +1,11 @@
+{
+  "stack_family": "python",
+  "stack_id": "python-stack",
+  "confidence": "medium",
+  "reasons": [
+    "file extension suggests python"
+  ],
+  "reference_file": "references/py-edge-rules.md",
+  "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+  "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/application/use_cases.py"
+}

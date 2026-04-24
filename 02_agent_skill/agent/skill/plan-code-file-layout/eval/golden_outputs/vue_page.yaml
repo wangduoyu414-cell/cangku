@@ -1,0 +1,24 @@
+decision:
+  strategy: keep
+  target_area: "packages/admin-portal/src/pages/audit"
+  repo_shape: mixed
+  artifact_type: ui-component
+  stack: vue
+  files:
+    - path: "packages/admin-portal/src/pages/audit/AuditReplayPage.vue"
+      role: "page-component"
+      responsibility: "Own the replay form, submit action, local async state, and result presentation for the audit replay flow."
+      reason: "The single-file component is already a cohesive boundary for this page-level behavior."
+  keep_inline:
+    - "Form state for eventId and dryRun."
+    - "Loading and error handling for the replay action."
+    - "The small request-to-view mapping for the replay result."
+  avoid:
+    - "useAuditReplay.ts"
+    - "AuditReplayForm.vue"
+    - "auditReplay.types.ts"
+  why_not_fewer: "Splitting below one page SFC would scatter template, submit logic, and local state across files without introducing a real ownership boundary."
+  why_not_more: "The page has one async action and one child result card, so more files would add ceremony faster than clarity."
+  risks:
+    - "If replay state or polling becomes reusable across pages, a composable could become justified later."
+  confidence: high

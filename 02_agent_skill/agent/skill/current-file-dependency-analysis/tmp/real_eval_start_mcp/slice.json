@@ -1,0 +1,442 @@
+{
+  "schema_version": "4.3",
+  "target": {
+    "file": "start_mcp.py",
+    "repo_root": "D:/LangChain",
+    "stack_family": "python",
+    "analysis_mode": "strict",
+    "payload_level": "L1.5",
+    "graph_scope": "anchor_local_confirmed_file_edges"
+  },
+  "hard_facts": {
+    "file_edges": {
+      "outbound": [
+        {
+          "from": "start_mcp.py",
+          "to": "config/settings.py",
+          "direction": "outbound",
+          "edge_kind": "import",
+          "evidence_ref": "start_mcp.py:13",
+          "confidence": "high",
+          "resolution": "resolved"
+        },
+        {
+          "from": "start_mcp.py",
+          "to": "mcp_servers/runtime_config.py",
+          "direction": "outbound",
+          "edge_kind": "import",
+          "evidence_ref": "start_mcp.py:14",
+          "confidence": "high",
+          "resolution": "resolved"
+        }
+      ],
+      "inbound": [
+        {
+          "from": "tests/test_start_mcp.py",
+          "to": "start_mcp.py",
+          "direction": "inbound",
+          "edge_kind": "import",
+          "evidence_ref": "tests/test_start_mcp.py:9",
+          "confidence": "high",
+          "resolution": "resolved"
+        }
+      ]
+    }
+  },
+  "supporting_signals": {
+    "candidate_file_edges": [
+      {
+        "from": "start_mcp.py",
+        "to": "external:__future__",
+        "direction": "outbound",
+        "edge_kind": "import",
+        "evidence_ref": "start_mcp.py:3",
+        "confidence": "medium",
+        "resolution": "resolved",
+        "unconfirmed_reason": "lower_confidence_edge"
+      },
+      {
+        "from": "start_mcp.py",
+        "to": "external:argparse",
+        "direction": "outbound",
+        "edge_kind": "import",
+        "evidence_ref": "start_mcp.py:5",
+        "confidence": "medium",
+        "resolution": "resolved",
+        "unconfirmed_reason": "lower_confidence_edge"
+      },
+      {
+        "from": "start_mcp.py",
+        "to": "external:json",
+        "direction": "outbound",
+        "edge_kind": "import",
+        "evidence_ref": "start_mcp.py:6",
+        "confidence": "medium",
+        "resolution": "resolved",
+        "unconfirmed_reason": "lower_confidence_edge"
+      },
+      {
+        "from": "start_mcp.py",
+        "to": "external:os",
+        "direction": "outbound",
+        "edge_kind": "import",
+        "evidence_ref": "start_mcp.py:7",
+        "confidence": "medium",
+        "resolution": "resolved",
+        "unconfirmed_reason": "lower_confidence_edge"
+      },
+      {
+        "from": "start_mcp.py",
+        "to": "external:pathlib",
+        "direction": "outbound",
+        "edge_kind": "import",
+        "evidence_ref": "start_mcp.py:10",
+        "confidence": "medium",
+        "resolution": "resolved",
+        "unconfirmed_reason": "lower_confidence_edge"
+      },
+      {
+        "from": "start_mcp.py",
+        "to": "external:subprocess",
+        "direction": "outbound",
+        "edge_kind": "import",
+        "evidence_ref": "start_mcp.py:8",
+        "confidence": "medium",
+        "resolution": "resolved",
+        "unconfirmed_reason": "lower_confidence_edge"
+      },
+      {
+        "from": "start_mcp.py",
+        "to": "external:sys",
+        "direction": "outbound",
+        "edge_kind": "import",
+        "evidence_ref": "start_mcp.py:9",
+        "confidence": "medium",
+        "resolution": "resolved",
+        "unconfirmed_reason": "lower_confidence_edge"
+      },
+      {
+        "from": "start_mcp.py",
+        "to": "external:typing",
+        "direction": "outbound",
+        "edge_kind": "import",
+        "evidence_ref": "start_mcp.py:11",
+        "confidence": "medium",
+        "resolution": "resolved",
+        "unconfirmed_reason": "lower_confidence_edge"
+      }
+    ],
+    "symbol_relations": [
+      {
+        "from": "start_mcp.py",
+        "to": "start_mcp.py",
+        "direction": "outbound",
+        "edge_kind": "symbol",
+        "relation_type": "call",
+        "symbol_from": "build_status_report",
+        "symbol_to": "from_env",
+        "evidence_ref": "start_mcp.py:103",
+        "confidence": "low",
+        "resolution": "resolved"
+      },
+      {
+        "from": "start_mcp.py",
+        "to": "start_mcp.py",
+        "direction": "outbound",
+        "edge_kind": "symbol",
+        "relation_type": "call",
+        "symbol_from": "build_status_report",
+        "symbol_to": "from_env",
+        "evidence_ref": "start_mcp.py:104",
+        "confidence": "low",
+        "resolution": "resolved"
+      },
+      {
+        "from": "start_mcp.py",
+        "to": "start_mcp.py",
+        "direction": "outbound",
+        "edge_kind": "symbol",
+        "relation_type": "call",
+        "symbol_from": "build_status_report",
+        "symbol_to": "from_env",
+        "evidence_ref": "start_mcp.py:105",
+        "confidence": "low",
+        "resolution": "resolved"
+      },
+      {
+        "from": "start_mcp.py",
+        "to": "start_mcp.py",
+        "direction": "outbound",
+        "edge_kind": "symbol",
+        "relation_type": "call",
+        "symbol_from": "build_status_report",
+        "symbol_to": "check_docker_running",
+        "evidence_ref": "start_mcp.py:107",
+        "confidence": "medium",
+        "resolution": "resolved"
+      },
+      {
+        "from": "start_mcp.py",
+        "to": "start_mcp.py",
+        "direction": "outbound",
+        "edge_kind": "symbol",
+        "relation_type": "call",
+        "symbol_from": "build_status_report",
+        "symbol_to": "read_dify_container_status",
+        "evidence_ref": "start_mcp.py:109",
+        "confidence": "medium",
+        "resolution": "resolved"
+      },
+      {
+        "from": "start_mcp.py",
+        "to": "start_mcp.py",
+        "direction": "outbound",
+        "edge_kind": "symbol",
+        "relation_type": "call",
+        "symbol_from": "build_status_report",
+        "symbol_to": "build_mcp_server_status",
+        "evidence_ref": "start_mcp.py:113",
+        "confidence": "medium",
+        "resolution": "resolved"
+      },
+      {
+        "from": "start_mcp.py",
+        "to": "start_mcp.py",
+        "direction": "outbound",
+        "edge_kind": "symbol",
+        "relation_type": "call",
+        "symbol_from": "build_status_report",
+        "symbol_to": "exists",
+        "evidence_ref": "start_mcp.py:120",
+        "confidence": "low",
+        "resolution": "resolved"
+      },
+      {
+        "from": "start_mcp.py",
+        "to": "start_mcp.py",
+        "direction": "outbound",
+        "edge_kind": "symbol",
+        "relation_type": "call",
+        "symbol_from": "build_status_report",
+        "symbol_to": "exists",
+        "evidence_ref": "start_mcp.py:125",
+        "confidence": "low",
+        "resolution": "resolved"
+      },
+      {
+        "from": "start_mcp.py",
+        "to": "start_mcp.py",
+        "direction": "outbound",
+        "edge_kind": "symbol",
+        "relation_type": "call",
+        "symbol_from": "build_status_report",
+        "symbol_to": "exists",
+        "evidence_ref": "start_mcp.py:127",
+        "confidence": "low",
+        "resolution": "resolved"
+      },
+      {
+        "from": "start_mcp.py",
+        "to": "start_mcp.py",
+        "direction": "outbound",
+        "edge_kind": "symbol",
+        "relation_type": "call",
+        "symbol_from": "build_status_report",
+        "symbol_to": "exists",
+        "evidence_ref": "start_mcp.py:129",
+        "confidence": "low",
+        "resolution": "resolved"
+      }
+    ],
+    "context_mentions": [
+      {
+        "from": "tests/test_report_claims.py",
+        "to": "start_mcp.py",
+        "direction": "inbound",
+        "edge_kind": "test",
+        "evidence_ref": "tests/test_report_claims.py:57",
+        "confidence": "medium",
+        "resolution": "resolved",
+        "match_reason": "relative_path",
+        "matched_value": "start_mcp.py",
+        "evidence_strength": "high"
+      },
+      {
+        "from": "tests/test_start_mcp.py",
+        "to": "start_mcp.py",
+        "direction": "inbound",
+        "edge_kind": "test",
+        "evidence_ref": "tests/test_start_mcp.py:18",
+        "confidence": "low",
+        "resolution": "resolved",
+        "match_reason": "dotted_path",
+        "matched_value": "start_mcp",
+        "evidence_strength": "medium"
+      },
+      {
+        "from": "tests/test_start_mcp.py",
+        "to": "start_mcp.py",
+        "direction": "inbound",
+        "edge_kind": "test",
+        "evidence_ref": "tests/test_start_mcp.py:22",
+        "confidence": "low",
+        "resolution": "resolved",
+        "match_reason": "dotted_path",
+        "matched_value": "start_mcp",
+        "evidence_strength": "medium"
+      },
+      {
+        "from": "tests/test_start_mcp.py",
+        "to": "start_mcp.py",
+        "direction": "inbound",
+        "edge_kind": "test",
+        "evidence_ref": "tests/test_start_mcp.py:26",
+        "confidence": "low",
+        "resolution": "resolved",
+        "match_reason": "dotted_path",
+        "matched_value": "start_mcp",
+        "evidence_strength": "medium"
+      },
+      {
+        "from": "tests/test_start_mcp.py",
+        "to": "start_mcp.py",
+        "direction": "inbound",
+        "edge_kind": "test",
+        "evidence_ref": "tests/test_start_mcp.py:33",
+        "confidence": "low",
+        "resolution": "resolved",
+        "match_reason": "dotted_path",
+        "matched_value": "start_mcp",
+        "evidence_strength": "medium"
+      },
+      {
+        "from": "tests/test_start_mcp.py",
+        "to": "start_mcp.py",
+        "direction": "inbound",
+        "edge_kind": "test",
+        "evidence_ref": "tests/test_start_mcp.py:37",
+        "confidence": "low",
+        "resolution": "resolved",
+        "match_reason": "dotted_path",
+        "matched_value": "start_mcp",
+        "evidence_strength": "medium"
+      },
+      {
+        "from": "tests/test_start_mcp.py",
+        "to": "start_mcp.py",
+        "direction": "inbound",
+        "edge_kind": "test",
+        "evidence_ref": "tests/test_start_mcp.py:39",
+        "confidence": "low",
+        "resolution": "resolved",
+        "match_reason": "dotted_path",
+        "matched_value": "start_mcp",
+        "evidence_strength": "medium"
+      },
+      {
+        "from": "tests/test_start_mcp.py",
+        "to": "start_mcp.py",
+        "direction": "inbound",
+        "edge_kind": "test",
+        "evidence_ref": "tests/test_start_mcp.py:56",
+        "confidence": "low",
+        "resolution": "resolved",
+        "match_reason": "dotted_path",
+        "matched_value": "start_mcp",
+        "evidence_strength": "medium"
+      },
+      {
+        "from": "tests/test_start_mcp.py",
+        "to": "start_mcp.py",
+        "direction": "inbound",
+        "edge_kind": "test",
+        "evidence_ref": "tests/test_start_mcp.py:57",
+        "confidence": "low",
+        "resolution": "resolved",
+        "match_reason": "dotted_path",
+        "matched_value": "start_mcp",
+        "evidence_strength": "medium"
+      },
+      {
+        "from": "tests/test_start_mcp.py",
+        "to": "start_mcp.py",
+        "direction": "inbound",
+        "edge_kind": "test",
+        "evidence_ref": "tests/test_start_mcp.py:60",
+        "confidence": "low",
+        "resolution": "resolved",
+        "match_reason": "dotted_path",
+        "matched_value": "start_mcp",
+        "evidence_strength": "medium"
+      },
+      {
+        "from": "tests/test_start_mcp.py",
+        "to": "start_mcp.py",
+        "direction": "inbound",
+        "edge_kind": "test",
+        "evidence_ref": "tests/test_start_mcp.py:63",
+        "confidence": "low",
+        "resolution": "resolved",
+        "match_reason": "dotted_path",
+        "matched_value": "start_mcp",
+        "evidence_strength": "medium"
+      },
+      {
+        "from": "tests/test_start_mcp.py",
+        "to": "start_mcp.py",
+        "direction": "inbound",
+        "edge_kind": "test",
+        "evidence_ref": "tests/test_start_mcp.py:9",
+        "confidence": "low",
+        "resolution": "resolved",
+        "match_reason": "dotted_path",
+        "matched_value": "start_mcp",
+        "evidence_strength": "medium"
+      }
+    ],
+    "blind_spots": [
+      "Runtime imports through importlib are not statically resolved.",
+      "Context links are search-based and may miss framework-specific runtime wiring.",
+      "Python dynamic dispatch (monkey patching) is not fully resolved.",
+      "Framework magic via decorators that auto-wire dependencies is not covered."
+    ]
+  },
+  "estimated_impact": {
+    "graph_scope": "repo_code_graph_plus_confirmed_context",
+    "expansion_status": "repo_scan_success",
+    "summary": {
+      "total_impacted": 1,
+      "direct_consumers": 1,
+      "indirect_consumers": 0,
+      "max_depth_reached": 1,
+      "depth_limit": 3,
+      "depth_limited": false
+    },
+    "direct_impact": [
+      {
+        "file": "tests/test_start_mcp.py",
+        "impact_depth": 1,
+        "impact_type": "test",
+        "impact_score": 4.5,
+        "is_direct_consumer": true
+      }
+    ],
+    "high_risk_consumers": [
+      {
+        "file": "tests/test_start_mcp.py",
+        "impact_depth": 1,
+        "impact_type": "test",
+        "impact_score": 4.5,
+        "is_direct_consumer": true
+      }
+    ],
+    "impact_confidence": "high",
+    "limitations": [
+      "Direct impact uses confirmed file-level edges and any confirmed config/build links already present in the slice.",
+      "Transitive impact uses repository-wide confirmed code edges to extend beyond the anchor-local slice when the stack-specific scanner is available."
+    ]
+  },
+  "pipeline_status": {
+    "overall": "success"
+  }
+}

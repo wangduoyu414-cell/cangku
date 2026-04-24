@@ -1,0 +1,58 @@
+{
+  "anchor": {
+    "repo_root": "F:/奇米Studio/analyze-current-file-dependencies-workflow/scripts",
+    "file_path": "F:/奇米Studio/analyze-current-file-dependencies-workflow/scripts/resolve_anchor.py",
+    "repo_relative_path": "resolve_anchor.py",
+    "symbol": "",
+    "selection_range": "",
+    "language": "python",
+    "role_hint": "source"
+  },
+  "direct_outbound": [
+    {
+      "from": "resolve_anchor.py",
+      "to": "external:__future__",
+      "direction": "outbound",
+      "edge_kind": "import",
+      "symbol": "",
+      "evidence_ref": "resolve_anchor.py:1",
+      "confidence": "medium",
+      "resolution": "resolved"
+    },
+    {
+      "from": "resolve_anchor.py",
+      "to": "external:argparse",
+      "direction": "outbound",
+      "edge_kind": "import",
+      "symbol": "",
+      "evidence_ref": "resolve_anchor.py:3",
+      "confidence": "medium",
+      "resolution": "resolved"
+    },
+    {
+      "from": "resolve_anchor.py",
+      "to": "common.py",
+      "direction": "outbound",
+      "edge_kind": "import",
+      "symbol": "",
+      "evidence_ref": "resolve_anchor.py:5",
+      "confidence": "high",
+      "resolution": "resolved"
+    }
+  ],
+  "direct_inbound": [],
+  "transitive_outbound": [],
+  "transitive_inbound": [],
+  "context_links": [],
+  "hotspots": [
+    {
+      "node": "resolve_anchor.py",
+      "count": 3
+    }
+  ],
+  "unresolved_edges": [],
+  "blind_spots": [
+    "Runtime imports through importlib are not statically resolved.",
+    "Context links are search-based and may miss framework-specific runtime wiring."
+  ]
+}

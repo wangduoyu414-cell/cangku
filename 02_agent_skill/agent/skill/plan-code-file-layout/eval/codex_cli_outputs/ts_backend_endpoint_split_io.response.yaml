@@ -1,0 +1,37 @@
+decision:
+  strategy: split
+  target_area: services/node-refund-api/src/features/refund-webhooks
+  repo_shape: feature-first
+  artifact_type: service-endpoint
+  stack: typescript-javascript
+  files:
+    - path: services/node-refund-api/src/features/refund-webhooks/refundWebhookRoute.ts
+      role: "路由入口"
+      responsibility: "处理 webhook 框架接入、读取原始请求与头信息、按顺序编排签名校验、合作方查询与事件落库，并返回最终响应。"
+      reason: "入口文件应保留可读的主流程，但不再承载具体安全校验或外部 IO 细节。"
+    - path: services/node-refund-api/src/features/refund-webhooks/refundWebhookSignatureVerifier.ts
+      role: "签名校验"
+      responsibility: "封装 webhook 签名规则、原始载荷参与的校验过程，以及校验失败时暴露给路由的明确结果。"
+      reason: "签名验证是独立的安全与测试边界，留在路由内会把框架胶水和安全规则混在一起。"
+    - path: services/node-refund-api/src/features/refund-webhooks/refundWebhookPartnerClient.ts
+      role: "合作方客户端"
+      responsibility: "负责按 webhook 标识查询合作方配置、密钥或映射信息，并隔离远程调用或数据读取细节。"
+      reason: "合作方查询属于独立外部 IO 失败面，和路由编排、事件持久化分开后更容易调试与替换。"
+    - path: services/node-refund-api/src/features/refund-webhooks/refundWebhookEventRepository.ts
+      role: "事件持久化"
+      responsibility: "负责 webhook 事件的幂等写入、状态记录与持久化模型映射。"
+      reason: "事件落库是单独的持久化边界，拆出后可以独立测试重复事件、写入失败和审计记录。"
+  keep_inline:
+    - "路由专用的响应映射与少量参数解包逻辑留在 refundWebhookRoute.ts 内，不单独抽文件。"
+    - "仅供持久化使用的事件到记录映射和本地类型留在 refundWebhookEventRepository.ts 内，暂不拆 contract 文件。"
+  avoid:
+    - "不要新增 refundWebhookService.ts 这类只转发参数的薄服务层。"
+    - "不要为单个特性目录增加 index.ts barrel 或 shared/common 工具文件。"
+    - "不要把兼容性桥接、过渡 shim 或 rollout 专用路径放进该目录的正式 files 计划。"
+  why_not_fewer: "将签名校验、合作方查询和事件落库继续塞回 refundWebhookRoute.ts，会把框架入口、安全校验、外部读取和持久化四类变更原因混在一起，削弱测试与故障定位边界。"
+  why_not_more: "再继续拆成额外的 orchestration/service、schema、mapper 或 barrel 文件，大多只会增加跳转层级；按当前局部约定，保留一个可读路由加三个真实边界文件已经足够。"
+  risks:
+    - "当前可见实现文件都是占位内容，本地证据主要来自目录命名而不是实际逻辑，命名细节后续可能需要按真实依赖微调。"
+    - "如果仓库中另有未展示的基线文档明确规定持久化文件应使用不同后缀或共享适配器目录，应保留这次 split 的边界判断，但按文档调整文件名与落点。"
+    - "如果合作方查询最终只是一次极轻量的本地查表而非独立 IO，refundWebhookPartnerClient.ts 可能可以回收到路由；当前建议仍按请求描述中的 partner lookups 作为独立失败面处理。"
+  confidence: medium

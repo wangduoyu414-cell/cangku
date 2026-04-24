@@ -1,0 +1,423 @@
+﻿SYSTEM:
+You are executing a repository skill evaluation. Follow the skill workflow and references exactly, and return only YAML.
+
+# Skill
+
+---
+name: plan-code-file-layout
+description: Plan repository-aligned file boundaries for one concrete implementation slice. Use when the user asks whether a change should stay in one file or be split, how many files to create, what each file should own, or how to organize Python, TypeScript/JavaScript, Vue, or Go code for maintainability and debugging inside that slice. Also use for near-miss requests like component/composable split, endpoint file layout, feature-folder planning, or deciding whether to extract helpers. Do not use for dependency analysis, generic module-context explanation, style-only questions, post-hoc code review, or whole-system architecture redesign.
+---
+
+# Plan Code File Layout
+
+## Overview
+
+Plan file boundaries for one concrete change before implementation starts.
+Stay aligned with nearby repository conventions, artifact role, and stack-specific constraints instead of applying generic style advice.
+
+## Quick Reference
+
+- If the target area is unclear, stop and ask for the intended directory, module, or feature anchor.
+- Treat `target_area` as an exact anchor string, not a paraphrase; reuse the concrete path or file anchor from the request instead of rewriting it into a sentence.
+- Preserve anchor granularity: if the request anchor is an exact file path, keep that exact file path in `target_area`; if the request anchor is a directory, feature, or module anchor, keep that higher-level anchor instead of shrinking it to one file.
+- If nearby code already shows a stable organization pattern, align with it unless it is clearly causing maintenance or debug pain.
+- If baseline docs explicitly define the target layer, module boundary, or migration direction, follow the baseline docs even when nearby code is off-pattern.
+- If baseline docs conflict with each other, prefer the one that most directly defines the target area's current migration state or rollout rule; treat broader architecture summaries as secondary evidence and lower confidence if ambiguity remains.
+- If target-area baseline docs agree on the current migration phase but differ on file-boundary granularity, prefer the doc that gives the more concrete file-role guidance for that phase.
+- If the repository shape is unclear, read [repo-shape.md](./references/repo-shape.md) and classify it before planning files.
+- If the code role is unclear, choose one artifact path from the `artifact-*` references before reading stack deltas.
+- If the repository is mixed, make the decision around the target area and treat other stacks as surrounding constraints rather than primary drivers.
+- When signals conflict, prefer them in this order: explicit baseline docs for the target area, target file reality, nearby sibling examples, target directory convention, broader repository docs, global architecture docs.
+- Within explicit baseline docs, prefer target-area migration notes over broader architecture summaries when they disagree about the current slice.
+- Within target-area baseline docs for the same phase, prefer concrete seam guidance over abstract location guidance when choosing whether to keep, split, or merge files.
+- Treat file naming as a local clarity choice, not a unique global template; prefer names that express the role clearly inside the target area.
+- Treat nearby examples and comparison files as evidence, not as files to include in the plan unless the user explicitly expands the implementation slice to cover them too.
+- Mention comparison or legacy files only in explanatory fields like `why_not_more` or `risks`; do not return them in `files` unless the user explicitly expands scope to include them.
+
+## Upstream Result Consumption
+
+- This skill can run on its own; upstream skill results are preferred inputs when already available, not hard prerequisites.
+- If a valid `describe-module-context` result already exists, consume it first for target-layer assignment, module responsibility, and coding constraints that clarify the current slice.
+- Map semantic layer and responsibility signals from `describe-module-context` into `artifact_type` and `files[].role` before inventing new role labels from scratch.
+- If a valid `analyze-current-file-dependencies-workflow` result already exists, consume its `hard_facts` and `estimated_impact` to pressure-test the boundary plan.
+- Map dependency facts and impact estimates from `analyze-current-file-dependencies-workflow` into `strategy`, `risks`, and `confidence`.
+- Treat upstream results as bounded evidence for the current slice; do not widen `target_area`, do not broaden `files`, and do not pull adjacent evidence files into the returned plan just because an upstream result mentioned them.
+- If upstream results are missing, partial, or stale, continue with local reading and mark uncertainty normally instead of blocking on a prerequisite.
+
+## Workflow
+
+1. Anchor the request to one concrete implementation slice: feature, endpoint, component, command, pipeline step, or module.
+2. Prefer consuming any already-available upstream results that clarify the current slice before re-deriving the same context locally.
+3. Read nearby files and infer repository shape with [repo-shape.md](./references/repo-shape.md).
+4. Read [core-principles.md](./references/core-principles.md) and pick the closest artifact guide.
+5. Read one stack guide that matches the dominant local stack, or treat the area as mixed if multiple stacks materially shape the boundary.
+6. Decide `keep`, `split`, or `merge`.
+7. Produce a file plan using [output-shape.md](./references/output-shape.md).
+8. Explain `why_not_fewer` and `why_not_more`, then list risks or confidence limits.
+
+## Resource Routing
+
+- [core-principles.md](./references/core-principles.md): Read for every task.
+- [repo-shape.md](./references/repo-shape.md): Read before planning files in an unfamiliar repository or directory.
+- [output-shape.md](./references/output-shape.md): Use to format the final decision.
+- [anti-patterns.md](./references/anti-patterns.md): Read when the local codebase already shows fragmentation, giant files, or `shared/utils/common` sprawl.
+- [artifact-ui-component.md](./references/artifact-ui-component.md): Use for UI pages, components, composables, or view-focused work.
+- [artifact-service-endpoint.md](./references/artifact-service-endpoint.md): Use for request/response handlers, services, and persistence edges.
+- [artifact-cli-command.md](./references/artifact-cli-command.md): Use for commands, scripts, and operator tools.
+- [artifact-data-pipeline-step.md](./references/artifact-data-pipeline-step.md): Use for ETL, jobs, stream stages, or batch steps.
+- [artifact-library-module.md](./references/artifact-library-module.md): Use for reusable modules and library-facing code.
+- [stack-python.md](./references/stack-python.md): Read when Python materially shapes module boundaries.
+- [stack-typescript-javascript.md](./references/stack-typescript-javascript.md): Read when TypeScript or JavaScript materially shapes module boundaries.
+- [stack-vue.md](./references/stack-vue.md): Read when Vue single-file components or composables are involved.
+- [stack-go.md](./references/stack-go.md): Read when Go package cohesion or public API shape is involved.
+
+## Critical Rules
+
+- Default to a small number of high-cohesion files rather than the smallest possible files.
+- Split files only when change reasons, side-effect boundaries, test boundaries, or real reuse needs are materially separate.
+- Keep private helpers, local types, and one-off mappers inline until they clearly interfere with reading or gain a second real consumer.
+- Avoid thin pass-through wrappers whose only job is forwarding calls or re-exporting local logic.
+- Keep a common bug or common change readable through roughly one to three files, not a long ping-pong chain.
+- Let repository reality win over generic advice only when baseline docs do not explicitly define a different target state.
+- If one baseline doc states the long-term target and another gives temporary rollout guidance for the same slice, follow the temporary rollout guidance for the current plan and note the long-term target in `risks`.
+- If multiple target-area docs all describe the current phase, follow the one that most concretely assigns file roles, framework glue, or seam ownership for the slice under discussion.
+- Hold the core boundary decision stable even when role labels, confidence wording, or local file names could reasonably vary.
+- Keep `target_area` exact; do not add explanatory prefixes, suffixes, or migration notes to the anchor field.
+- Do not widen an exact file-path anchor into its parent directory, and do not collapse a directory or feature anchor down to one file unless the request itself anchors on that file.
+- Use upstream results to clarify semantic role and impact, not to rewrite the request anchor or enlarge the implementation slice.
+- Keep the recommendation scoped to the concrete target slice; do not widen the `files` list to sibling helpers, comparison examples, or the whole directory just because those files were shown as context.
+- Never include comparison files, support docs, or nearby evidence files in `files` unless the user explicitly expands the implementation scope to include them.
+- If baseline docs and local code conflict, plan toward the documented target state and treat the local layout as legacy evidence to migrate away from.
+
+## Validation
+
+- Confirm the plan is anchored to one target area rather than drifting into repository redesign.
+- Confirm `target_area` is copied from the concrete request anchor rather than rewritten into a prose label.
+- Confirm exact file-path anchors stay exact file-path anchors, and directory or feature anchors stay directory or feature anchors.
+- Confirm the `files` list covers only the target implementation slice and not nearby comparison files.
+- Confirm any upstream results were consumed as optional evidence and did not widen `target_area` or `files`.
+- Confirm each proposed file has a distinct role and is not a naming-only split.
+- Confirm the plan respects nearby directory conventions, package layout, and import style.
+- Confirm explicit baseline docs are honored when they conflict with the local slice layout.
+- Confirm conflicting baseline docs are resolved in favor of the one that most directly names the current target slice or migration phase.
+- Confirm same-phase target-area docs with different boundary granularity are resolved in favor of the more concrete seam guidance.
+- Confirm the plan explains why the boundary is not smaller and not larger.
+- Confirm mixed repositories are treated locally rather than forcing one global stack model onto everything.
+
+## Pre-Return Check
+
+- Recheck that `target_area` exactly matches the request anchor.
+- Recheck that anchor granularity stayed intact: file-path anchors remain file-path anchors, and directory or feature anchors were not narrowed.
+- Recheck that every entry in `files` is a production file for the target slice itself.
+- Recheck that no comparison file, support doc, or sibling example leaked into `files`.
+- Recheck that any upstream-result consumption only informed role, impact, or confidence and did not expand the plan scope.
+- Recheck whether conflicting signals, partial visibility, or anchor recovery uncertainty should lower `confidence`.
+
+## Output Contract
+
+Done means:
+
+- The final answer uses the structure in [output-shape.md](./references/output-shape.md).
+- The answer returns `keep`, `split`, or `merge`.
+- The answer lists the recommended files and each file's responsibility.
+- The answer includes the core decision fields `strategy`, `target_area`, `files`, `why_not_fewer`, and `why_not_more`.
+- The answer includes the explanatory fields `repo_shape`, `artifact_type`, `stack`, and `confidence`, and it uses `keep_inline`, `avoid`, and `risks` when those lists have content.
+- `keep_inline`, `avoid`, and `risks` may be omitted when they would otherwise be empty; when present, keep their existing meanings and list shape.
+- `target_area` stays equal to the concrete path or file anchor from the request.
+- `target_area` also preserves the request's anchor granularity instead of widening a file anchor or narrowing a directory anchor.
+- `files` excludes comparison files, support docs, and repository context files that were shown only as evidence.
+- The answer is narrow enough that an implementation workflow can consume it directly.
+
+## Failure Handling
+
+- If the target area is missing, stop and recover the directory, file, or feature anchor.
+- Recover missing anchors in this order: explicit path in the request, explicit current file, uniquely named file or directory from the request, one unambiguous nearby candidate from local context. If more than one candidate remains, stop and ask for the anchor.
+- If upstream results disagree with the explicit request anchor, keep the explicit request anchor and treat the upstream mismatch as a confidence-lowering signal rather than a reason to rewrite `target_area`.
+- If nearby code conflicts with explicit baseline docs, follow the baseline docs and call out relocation or migration cost in `risks`.
+- If baseline docs conflict with each other, follow the one that most directly names the target slice's current migration phase, mention the competing long-term target in `risks`, and lower confidence if the cutover state is still uncertain.
+- If baseline docs agree on the current phase but disagree on boundary granularity, follow the more concrete seam rule and mention the broader or looser alternative in `risks` when it materially changes the plan.
+- If nearby code gives conflicting local signals without an explicit baseline-doc override, follow the strongest signal according to the precedence above and lower confidence.
+- If the task expands into repository-wide restructuring or architecture redesign, hand off to a broader workflow instead of stretching this skill.
+- If the stack is unknown, return a repository-aligned generic plan and explicitly mark the stack uncertainty.
+
+
+# Reference: core-principles.md
+
+# Core Principles
+
+Use these rules before reading any artifact or stack guide.
+
+## Decision Order
+
+1. Read the target area and nearby files.
+2. Classify the local repository shape.
+3. Classify the artifact role.
+4. Apply stack deltas.
+5. Decide `keep`, `split`, or `merge`.
+
+## Conflict Precedence
+
+When local signals disagree, prefer them in this order:
+
+1. Explicit baseline docs or migration rules that define the target area
+2. The target file and the concrete implementation slice itself
+3. Nearby sibling examples in the same local area
+4. The target directory's existing convention
+5. Broader repository documentation
+6. Global architecture guidance
+
+If explicit baseline docs conflict with local structure, follow the documented target state and treat the local layout as legacy evidence. If the winning signal is still ambiguous, lower confidence and call out migration cost or uncertainty explicitly.
+
+When explicit baseline docs conflict with each other, prefer the one that most directly defines the target slice's current migration phase or rollout status. Use broader architecture summaries as secondary evidence, and call out the unresolved long-term target in `risks` when the docs describe different phases of the same migration.
+
+When target-area baseline docs agree on the current phase but differ on file-boundary granularity, prefer the one that gives the more concrete seam guidance for the slice itself. A doc that names which file should own framework glue, response shaping, or adapter behavior should beat a doc that only names the broader destination directory.
+
+## Default Bias
+
+- Prefer a small number of high-cohesion files.
+- Prefer boundaries that make common debugging and common edits local.
+- Prefer local helpers over premature extraction.
+- Prefer the shortest file chain that still exposes real side-effect boundaries.
+- Do not insert an extra orchestration layer when the entry file plus the real IO edges already keeps the common path readable.
+- Keep the recommendation scoped to the concrete slice under discussion; nearby examples are there to calibrate the decision, not to be copied into the returned file plan.
+- When baseline docs explicitly define a different layer or module boundary, prefer the documented target state over preserving an off-pattern local layout.
+
+## Split Signals
+
+Split when one or more of these become materially separate:
+
+- Change reason
+- Side-effect boundary
+- Test surface
+- Reuse need
+- Public API surface
+
+Treat stronger signals as:
+
+- External IO or framework glue mixed with business rules
+- One file mixing entrypoint, orchestration, and persistence
+- One file hiding multiple independent failure modes
+- One file where the real split is "entry + external adapter + persistence adapter", not "entry + service + adapter"
+
+## Keep Signals
+
+Keep code in one file when most of these are true:
+
+- The change reason is shared.
+- The code is only used locally.
+- The same tests cover the whole slice.
+- Splitting would add wrapper files or longer jumps without clearer ownership.
+- The main flow is still readable in the entry file once real adapter boundaries are extracted.
+
+## Merge Signals
+
+Merge when the current boundary causes more movement than clarity:
+
+- Frequent bug tracing crosses four or more files.
+- A file exists only to forward calls or re-export local code.
+- Two files almost always change together and do not have separate test or side-effect value.
+
+## Heuristic Thresholds
+
+Treat these as warning signs, not hard limits:
+
+- A common change should usually stay readable through one to three files.
+- Very large files are suspicious when they mix multiple abstraction layers.
+- Very small files are suspicious when they exist only for naming or ceremony.
+
+
+# Reference: repo-shape.md
+
+# Repository Shape
+
+Classify the target area before proposing new files.
+
+## Feature-First
+
+Typical signs:
+
+- Directories grouped by domain or feature
+- UI, service, and tests for one feature live near each other
+
+Planning rule:
+
+- Keep new files near the feature.
+- Prefer local file splits inside the feature instead of creating global shared folders.
+
+## Layer-First
+
+Typical signs:
+
+- Global folders like `controllers/`, `services/`, `repositories/`, `components/`
+- Files for one feature are spread across layer directories
+
+Planning rule:
+
+- Respect the existing layout unless it is clearly being replaced.
+- Avoid introducing a one-off feature island inside a strong layer-first codebase.
+
+## Package-First
+
+Typical signs:
+
+- Package boundaries carry most of the meaning
+- Common in Go and some Python monorepos
+
+Planning rule:
+
+- First choose the right package.
+- Then keep file count modest inside the package unless multiple roles need separation.
+
+## Mixed
+
+Typical signs:
+
+- Different areas follow different patterns
+- Frontend, backend, scripts, and infra each organize differently
+
+Planning rule:
+
+- Make the decision locally around the target area.
+- Do not force one repository-wide shape onto the entire codebase.
+- Let the target artifact type and dominant local stack drive the plan.
+
+
+# Reference: output-shape.md
+
+# Output Shape
+
+Return the final plan in this structure.
+
+```yaml
+decision:
+  strategy: keep | split | merge
+  target_area: ""
+  repo_shape: feature-first | layer-first | package-first | mixed
+  artifact_type: ui-component | service-endpoint | cli-command | data-pipeline-step | library-module
+  stack: python | typescript-javascript | vue | go | mixed | unknown
+  files:
+    - path: ""
+      role: ""
+      responsibility: ""
+      reason: ""
+  keep_inline: [] # optional when empty
+  avoid: [] # optional when empty
+  why_not_fewer: ""
+  why_not_more: ""
+  risks: [] # optional when empty
+  confidence: high | medium | low
+```
+
+## Field Notes
+
+### Core Decision Fields
+
+- `strategy`: Main boundary decision for this implementation slice.
+- `target_area`: Directory, feature, file, or module anchor used for the decision.
+- `target_area` should copy the concrete anchor from the request exactly rather than turning it into a prose label or migration summary.
+- `target_area` should also preserve the same anchor granularity as the request: keep exact file-path anchors as file paths, and keep directory, feature, or module anchors at that higher level.
+- `files`: Recommended production files only.
+- `files` should list only the production files for the target slice itself, not sibling examples or comparison files that were shown as context.
+- `files` should also exclude support docs, baseline docs, and repository context files that were injected only to guide the decision.
+- Comparison files, legacy shims, and other evidence files may still be mentioned in `why_not_more` or `risks`, but they should not appear under `files` unless the request explicitly expands scope to include them.
+- Upstream results from other skills may inform role, impact, or confidence, but they should not widen `target_area` or pull additional evidence files into `files`.
+- When baseline docs conflict with the local layout, `files` should follow the documented target state and `risks` should note migration or relocation impact.
+- `why_not_fewer`: Explain why a smaller layout would blur a real boundary.
+- `why_not_more`: Explain why further splitting would mostly add ceremony.
+
+These fields carry the main implementation decision and should remain stable across reasonable model variations.
+
+### Explanatory Fields
+
+- `repo_shape`: Local repository organization around the target area.
+- `artifact_type`: Primary code role that drives the boundary.
+- `stack`: Dominant local stack, not the entire repository.
+- `keep_inline`: Helpers, types, validators, or mappers that should stay local for now. Omit this field when it would otherwise be empty.
+- `avoid`: Unhelpful files or abstractions that should not be created. Omit this field when it would otherwise be empty.
+- `risks`: List uncertainty, convention conflicts, or likely follow-up questions. Omit this field when it would otherwise be empty.
+- `confidence`: Record how stable the recommendation looks after weighing local signals and conflicts.
+
+These fields explain or classify the decision. They should still be present, but some wording, naming, or classification differences can remain acceptable when the core boundary decision is unchanged.
+
+
+# Reference: artifact-service-endpoint.md
+
+# Artifact: Service Endpoint
+
+Use for HTTP handlers, RPC handlers, controller actions, and service-facing request flows.
+
+## Default Boundary
+
+Small endpoints may keep handler logic and light orchestration together when persistence and external IO are trivial.
+
+## Split When
+
+- Framework entry glue, business orchestration, and external IO are all present.
+- Persistence, network clients, or serialization logic create separate failure modes.
+- Contract validation or schema handling has independent test value.
+- The route can stay as the visible orchestration file while external adapters take the real IO boundaries.
+
+## Common Roles
+
+- Handler or controller
+- Use-case or service orchestration
+- Repository or gateway
+- Contract or schema definition
+
+## Avoid
+
+- One-off repositories that only wrap a single local query with no ownership benefit.
+- Global service layers that just pass through controller parameters unchanged.
+- Feature-local service files whose only extra value is moving a short route orchestration out of the handler while client and store files already hold the real boundaries.
+- Route -> service -> client -> repository chains when the common endpoint path is still readable through route plus the real adapters.
+
+
+# Reference: stack-python.md
+
+# Stack: Python
+
+Use this guide as a delta on top of the core and artifact rules.
+
+## Bias
+
+- Allow thicker modules than Java-style codebases.
+- Prefer package clarity over aggressive file splitting.
+
+## Keep Inline
+
+- Local helpers
+- Local data classes or typed dicts
+- One-off validators and mappers
+
+## Split When
+
+- Pure logic and external side effects are getting tangled.
+- A client, adapter, or persistence edge has clear independent tests.
+- The package now exposes a stable API surface used from multiple places.
+
+## Avoid
+
+- One class per file by default
+- Catch-all `utils.py` growth
+- Over-abstracting small scripts into too many modules
+
+
+USER:
+User request:
+Help me decide the file layout for this refund HTTP transport slice currently rooted at src/app/interfaces/refunds. README.md still broadly describes interfaces as the HTTP/CLI adapter layer, but the layering rules and refund module docs name src/app/entrypoints/http/refund_routes.py as the target home for refund HTTP transport. Prefer the target-area docs over the broader repo docs and call out migration cost.
+Repository root: D:\yongyongmoban
+Target area: src/app/interfaces/refunds
+Anchor lock: copy target_area exactly as `src/app/interfaces/refunds`. This request uses a directory, feature, or module anchor. Do not rewrite it into prose, and do not narrow it down to a single file unless the request itself anchors on that file.
+Important scope rule: recommend only the production files for the concrete target slice named in the request. Nearby comparison files are reference only and must not be copied into the returned file plan unless the request explicitly expands scope.
+Important precedence rule: if baseline repository docs explicitly define a target layer, module boundary, or migration direction that conflicts with the local layout, follow the baseline docs and treat the local layout as legacy evidence.
+Important compatibility rule: files shown as legacy compatibility shims, transitional bridges, or rollout-only paths are evidence or migration risks by default and must not be included in `files` unless the request explicitly asks to preserve transitional files.
+Forbidden returned files (evidence only; never place these under `decision.files` unless the user explicitly expands scope):
+- src/app/interfaces/refunds/create_refund_controller.py
+- src/app/application/refunds/create_refund_use_case.py
+Primary implementation files:
+
+Repository context:
+
+Return only YAML that follows the skill output contract. `target_area` must equal `src/app/interfaces/refunds` exactly.
+Return-scope reminder: forbidden returned files may be cited in explanation, but they must not appear under `decision.files`.
+

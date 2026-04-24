@@ -1,0 +1,229 @@
+suite_id: "gpt-image-2-prompt-structurer-regression-core"
+cases:
+  - id: "do-not-collapse-constraints"
+    goal: "技能升级后仍然保持硬约束和软偏好分层"
+    input:
+      task_mode: "new-generate"
+      scene_card: "product-hero"
+      platform_surface: "ecommerce-hero"
+      delivery_goal: "电商商品主图"
+      subject: "玻璃瓶装护肤油"
+      must_keep:
+        - "瓶身轮廓"
+        - "标签文字"
+      soft_preferences:
+        - "柔和高端"
+        - "自然反光"
+    expected:
+      required_sections:
+        - "Web Prompt"
+        - "Image Input Fields"
+      must_include:
+        - "must_keep"
+        - "soft_preferences"
+      golden_output: "examples/golden/core-example-golden.md"
+    type: "regression"
+    notes: "防止默认输出退化成只剩一句风格词提示词。"
+  - id: "sequence-output-does-not-collapse-to-single-prompt"
+    goal: "技能升级后，序列任务仍然输出显式的序列字段，而不是单图字段"
+    input:
+      task_mode: "sequence-asset-generate"
+      scene_card: "instagram-carousel-set"
+      platform_surface: "instagram-carousel"
+      delivery_goal: "Instagram 轮播组图"
+      subject: "5 页产品卖点轮播"
+      modifiers:
+        - "swipe-sequence-consistency"
+        - "feed-grid-crop-safe"
+      sequence:
+        frame_count: 5
+        frame_roles:
+          - "frame 1: cover"
+          - "frame 2: benefit A"
+          - "frame 3: benefit B"
+          - "frame 4: proof"
+          - "frame 5: close"
+    expected:
+      required_sections:
+        - "Web Prompt"
+        - "Image Input Fields"
+      must_include:
+        - "frame_count"
+        - "frame_roles"
+        - "cover_prompt"
+        - "inner_frame_prompts"
+      must_not_include:
+        - "Task Summary"
+      golden_output: "examples/golden/platform-sequence-example-golden.md"
+    type: "regression"
+    notes: "防止序列任务被错误压扁回普通单图输出。"
+  - id: "platform-cover-does-not-force-sequence-output"
+    goal: "平台化封面 scene_card 不应单独升级为序列输出"
+    input:
+      task_mode: "new-generate"
+      scene_card: "instagram-reel-cover"
+      platform_surface: "instagram-reel-cover"
+      delivery_goal: "Instagram reel 封面"
+      subject: "收纳改造前后对比"
+      modifiers:
+        - "cover-title-safe-zone"
+        - "vertical-safe-zone"
+        - "thumbnail-recognizability"
+    expected:
+      required_sections:
+        - "Web Prompt"
+        - "Image Input Fields"
+      must_not_include:
+        - "Sequence Brief"
+        - "Frame Plan"
+        - "Inner-Frame Prompts"
+      golden_output: "examples/golden/video-cover-example-golden.md"
+    type: "regression"
+    notes: "防止平台化封面场景被错误升级成序列输出。"
+  - id: "single-image-headings-stay-literal-and-unlocalized"
+    goal: "默认单图输出的可见区块标题必须保持契约字面值"
+    input:
+      task_mode: "new-generate"
+      scene_card: "social-creative"
+      platform_surface: "general"
+      delivery_goal: "社媒宣传图"
+      subject: "夏季冷饮主视觉"
+      must_keep:
+        - "主体清晰"
+      must_avoid:
+        - "额外文字"
+    expected:
+      required_sections:
+        - "Web Prompt"
+        - "Image Input Fields"
+      must_not_include:
+        - "Web Prompt（"
+        - "Image Input Fields（"
+        - "### 1. 网页提示词"
+        - "### 2. 结构化字段"
+      golden_output: "examples/golden/core-example-golden.md"
+    type: "regression"
+    notes: "防止默认输出标题被本地化或编号化。"
+  - id: "sequence-headings-stay-literal-and-unlocalized"
+    goal: "默认序列输出的可见区块标题必须保持契约字面值"
+    input:
+      task_mode: "sequence-asset-generate"
+      scene_card: "instagram-carousel-set"
+      platform_surface: "instagram-carousel"
+      delivery_goal: "Instagram 轮播组图"
+      subject: "4 页收纳技巧轮播"
+      sequence:
+        frame_count: 4
+        frame_roles:
+          - "frame 1: cover"
+          - "frame 2: tip 1"
+          - "frame 3: tip 2"
+          - "frame 4: close"
+    expected:
+      required_sections:
+        - "Web Prompt"
+        - "Image Input Fields"
+      must_not_include:
+        - "# 序列提示词包"
+        - "Web Prompt（"
+        - "Image Input Fields（"
+        - "### 1. 网页提示词"
+        - "### 2. 结构化字段"
+      golden_output: "examples/golden/platform-sequence-example-golden.md"
+    type: "regression"
+    notes: "防止默认序列输出标题被本地化或编号化。"
+  - id: "scenario-validation-does-not-collapse-to-single-package"
+    goal: "设计目标跨场景验证输出不能退化成普通单图或普通序列结果"
+    input:
+      design_goal: "验证同一设计目标在不同场景下的稳定起点"
+      scenario_briefs:
+        - scenario_id: "scenario-a"
+          task_mode: "new-generate"
+          scene_card: "product-hero"
+          platform_surface: "ecommerce-hero"
+          delivery_goal: "电商商品主图"
+          subject: "护肤油产品"
+        - scenario_id: "scenario-b"
+          task_mode: "new-generate"
+          scene_card: "instagram-reel-cover"
+          platform_surface: "instagram-reel-cover"
+          delivery_goal: "Instagram reel 封面"
+          subject: "同款产品封面"
+        - scenario_id: "scenario-c"
+          task_mode: "localized-edit"
+          scene_card: "campaign-key-visual"
+          platform_surface: "general"
+          delivery_goal: "已有海报年份修改"
+          subject: "年份文本"
+          edit_scope:
+            change_only:
+              - "将 2025 改为 2026"
+            preserve:
+              - "其余元素保持不变"
+    expected:
+      required_sections:
+        - "Recommended Route"
+        - "Why This Route"
+        - "Web Prompt"
+        - "Image Input Fields"
+      must_include:
+        - "Ranked Order"
+        - "Decision Evidence"
+        - "thumbnail"
+        - "safe zone"
+        - "Change Only"
+        - "source image"
+      ranking_expectation:
+        winner: "product-hero-baseline"
+      evidence_expectation:
+        required_sections:
+          - "Ranked Order"
+          - "Decision Evidence"
+      must_not_include:
+        - "Task Summary"
+        - "Main Prompt"
+        - "Sequence Brief"
+        - "Cover Prompt"
+      golden_output: "examples/golden/design-goal-scenario-validation-golden.md"
+    type: "regression"
+    notes: "防止模型在跨场景比较请求下错误回退成普通输出结构。"
+  - id: "scenario-validation-derivation-is-not-skipped"
+    goal: "当输入是 design_goal_brief 时，输出必须体现排序和证据引用"
+    input:
+      request_type: "design_goal_brief"
+      design_goal: "为同一款护肤精华找到默认视觉起点"
+      shared_subject: "护肤精华玻璃瓶"
+      shared_must_keep:
+        - "瓶身轮廓"
+        - "标签文字"
+      shared_must_avoid:
+        - "包装改形"
+      candidate_scene_cards:
+        - "product-hero"
+        - "instagram-reel-cover"
+        - "campaign-key-visual"
+      candidate_platform_surfaces:
+        - "ecommerce-hero"
+        - "instagram-reel-cover"
+        - "general"
+      comparison_focus:
+        - "transferability"
+        - "execution_risk"
+        - "evidence_fidelity"
+      required_scenarios: 3
+    expected:
+      required_sections:
+        - "Recommended Route"
+        - "Why This Route"
+        - "Web Prompt"
+        - "Image Input Fields"
+      must_include:
+        - "Ranked Order"
+        - "Decision Evidence"
+        - "product-hero-baseline"
+      must_not_include:
+        - "Task Summary"
+        - "Sequence Brief"
+      golden_output: "examples/golden/design-goal-brief-example-golden.md"
+    type: "regression"
+    notes: "防止 design_goal_brief 输入被跳过派生步骤，直接给出无证据结论。"

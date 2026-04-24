@@ -1,0 +1,31 @@
+decision:
+  strategy: split
+  target_area: "skill-evals/plan-code-file-layout-lab/feature-first/python-payments-api/features/dispute-review"
+  repo_shape: feature-first
+  artifact_type: service-endpoint
+  stack: python
+  files:
+    - path: "skill-evals/plan-code-file-layout-lab/feature-first/python-payments-api/features/dispute-review/review_handler.py"
+      role: "handler"
+      responsibility: "Own payload validation, top-level review orchestration, and response shaping for the dispute review flow."
+      reason: "The handler should stay readable without burying partner lookups and database writes."
+    - path: "skill-evals/plan-code-file-layout-lab/feature-first/python-payments-api/features/dispute-review/dispute_partner_gateway.py"
+      role: "partner-gateway"
+      responsibility: "Fetch dispute details from the partner system and translate remote failures for dispute review."
+      reason: "Partner access is a distinct external IO boundary with its own retry and failure behavior."
+    - path: "skill-evals/plan-code-file-layout-lab/feature-first/python-payments-api/features/dispute-review/dispute_decision_store.py"
+      role: "decision-store"
+      responsibility: "Persist review decisions and own SQL or transaction details for the dispute review slice."
+      reason: "Database writes are a separate persistence boundary from handler glue and partner lookups."
+  keep_inline:
+    - "ReviewDecisionRequest dataclass."
+    - "The hold-code validator."
+  avoid:
+    - "review_service.py"
+    - "schemas.py"
+    - "service.py"
+  why_not_fewer: "Keeping payload validation, partner fetches, and decision persistence in one handler would blur independent failure modes and make the review path harder to debug."
+  why_not_more: "Extra schema or orchestration files would over-split a feature whose real boundaries are the handler, the partner gateway, and the decision store."
+  risks:
+    - "If the same hold-code rules start serving multiple dispute features, a shared validator may later deserve extraction."
+  confidence: high

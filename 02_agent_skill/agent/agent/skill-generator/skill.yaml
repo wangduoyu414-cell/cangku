@@ -1,0 +1,19 @@
+id: skill-generator
+version: "3.0.0"
+owner: runtime-substrate
+mode: executable
+side_effect: local_write
+requires_tools: []
+preferred_over: []
+conflicts_with: []
+eval_suite:
+  - evals/tasks.yaml
+  - evals/trigger-evals.yaml
+  - evals/quality-evals.yaml
+  - evals/baseline-evals.yaml
+  - evals/model-upgrade-evals.yaml
+  - evals/telemetry-evals.yaml
+  - evals/rounds/round-1.yaml
+  - evals/rounds/round-2.yaml
+  - evals/rounds/round-3.yaml
+  - evals/rounds/round-4.yaml

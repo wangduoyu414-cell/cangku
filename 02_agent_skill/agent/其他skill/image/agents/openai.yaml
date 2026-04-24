@@ -1,0 +1,7 @@
+interface:
+  display_name: "GPT Image 2 Prompt Structurer"
+  short_description: "将图像需求或设计目标整理成默认模型可用的网页提示词与结构化字段，必要时再展开完整报告"
+  default_prompt: "Use $gpt-image-2-prompt-structurer to turn my image, cover, sequence asset, or design-goal comparison request into a model-ready output for gpt-image-2 by default. Return a direct Chinese web prompt plus structured image input fields. If the request starts as a fuzzy design goal, derive complete scenario briefs first, choose the recommended route, and output the model-ready prompt and fields for that route. Only switch to the expanded report or package when I explicitly ask for it."
+
+policy:
+  allow_implicit_invocation: true

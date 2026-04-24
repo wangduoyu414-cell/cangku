@@ -1,0 +1,57 @@
+skill_name: compliance-rollback-planner
+mode: generate
+request_summary: "Generate a reusable skill for compliance-sensitive rollback planning with multilingual evidence and baseline measurement."
+constraints:
+  - "Preserve audit language（审计语言） and rollback boundaries（回滚边界） across English（英文） and Chinese（中文） evidence."
+  - "Do not treat policy reminders as implementation steps."
+quality_goals:
+  - "Keep multilingual evidence linked to each rollback action."
+  - "Produce machine-readable score summary（机器可读评分摘要）."
+scope:
+  - "Turn repeated compliance rollback requests into a reusable planning skill."
+  - "Track audit evidence, rollback decisions, and follow-up validation."
+non_scope:
+  - "Do not execute rollback actions."
+  - "Do not replace legal approval."
+inputs:
+  - "rollback requests（回滚请求）"
+  - "policy findings（策略发现）"
+  - "multilingual evidence（多语言证据）"
+outputs:
+  - "rollback planning skill draft（回滚规划技能草案）"
+  - "score summary（评分摘要）"
+  - "baseline comparison（基线对比）"
+risks:
+  - "Lose audit nuance when compressing multilingual inputs."
+  - "Promote policy wording into overbroad guardrails."
+success_bar:
+  - "Must preserve audit references and rollback boundaries."
+  - "Must emit both markdown scorecard（文档评分卡） and YAML score summary（YAML 评分摘要）."
+repeated_signals:
+  - "Compliance rollback requests recur after high-risk configuration changes."
+success_patterns:
+  - "Separate audit evidence from rollback action items."
+failure_feedback:
+  - "Previous plans mixed policy reminders with execution steps."
+baseline:
+  candidate: "compliance-rollback-planner（合规回滚规划器）"
+  baseline: "manual compliance worksheet（手工合规工作表）"
+  quality_delta:
+    correctness: "higher"
+    actionability: "same_or_higher"
+    scope_clarity: "higher"
+    contract_completeness: "higher"
+  cost_delta:
+    token_estimate: "higher_but_explained"
+    wall_clock_estimate: "similar"
+    tool_call_estimate: "similar"
+  notes:
+    - "The draft is acceptable even if cost rises, provided audit traceability improves."
+iteration_backlog:
+  next_fixes:
+    - "Add more multilingual conflict samples."
+    - "Add harder should-not-trigger cases around policy summarization."
+  deferred_work:
+    - "Live policy source synchronization."
+  why_now:
+    - "Current pain is traceability, not formatting."

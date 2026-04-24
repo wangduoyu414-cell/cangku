@@ -1,0 +1,35 @@
+decision:
+  strategy: split
+  target_area: "src/app/services/legacy_refunds"
+  repo_shape: layer-first
+  artifact_type: data-pipeline-step
+  stack: python
+  files:
+    - path: "src/app/application/refunds/sync_refunds_use_case.py"
+      role: "application use case"
+      responsibility: "Own the refund sync workflow: call the partner client, normalize and validate raw items, count skipped records, assemble persistence rows, and return the sync summary."
+      reason: "The documented Application layer is the right seam for batch orchestration, and moving this logic out of the legacy services folder keeps the main change path readable without mixing transport and storage concerns."
+    - path: "src/app/infrastructure/external/refunds/legacy_refund_client.py"
+      role: "external adapter"
+      responsibility: "Contain partner HTTP details such as endpoint construction, timeout and retry behavior, and raw pending-refund payload retrieval."
+      reason: "Partner transport is a distinct side-effect boundary with its own failure modes and integration-test needs."
+    - path: "src/app/infrastructure/persistence/refunds/refund_sql_repository.py"
+      role: "persistence adapter"
+      responsibility: "Persist normalized refund rows with batch insert and conflict-handling behavior for the local refunds store."
+      reason: "Database writes are the other real side-effect boundary and should stay separate from orchestration and partner transport."
+  keep_inline:
+    - "Keep the RefundRecord shape local to src/app/application/refunds/sync_refunds_use_case.py until another slice needs the same model."
+    - "Keep one-off payload normalization, refund_id and amount screening, and skipped-count rules inside the use case."
+    - "Keep row tuple assembly inline in the use case instead of adding a separate mapper file."
+  avoid:
+    - "Adding new production orchestration under src/app/services/legacy_refunds/."
+    - "Creating src/app/services/legacy_refunds/refund_partner_gateway.py or src/app/services/legacy_refunds/refund_store.py as new seams."
+    - "Splitting validators, mappers, DTOs, or wrapper modules into separate files before they gain another real consumer."
+  why_not_fewer: "A smaller layout would keep partner HTTP calls, normalization and skip logic, and SQL persistence coupled in the legacy services directory, which conflicts with the documented layer model and makes transport-versus-persistence failures harder to trace."
+  why_not_more: "Three files already cover the only material seams in this batch slice: orchestration, partner IO, and database IO. More files would mostly add ceremony around local-only helpers and make a common refund-sync bug bounce across unnecessary modules."
+  risks:
+    - "Migrating away from src/app/services/legacy_refunds/refund_sync.py will require updating any callers and tests that still import the legacy path."
+    - "The repository docs clearly prefer Application and Infrastructure targets, but they do not define a refund-sync-specific rollout shim, so any temporary compatibility bridge would need separate migration tracking and should stay outside this plan."
+    - "refund_sql_repository.py currently commits internally; implementation should reconcile that with the layering guidance that places transaction control in the Application layer."
+    - "If refund normalization rules become shared with other refund flows, the inline RefundRecord should move into a domain-level type later."
+  confidence: medium

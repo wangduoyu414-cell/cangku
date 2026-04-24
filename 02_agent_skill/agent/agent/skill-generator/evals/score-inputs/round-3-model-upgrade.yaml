@@ -1,0 +1,14 @@
+skill_name: multilingual-risk-triage-simplified
+scores:
+  scope_and_signal: {score: 5, reason: "简化后边界仍稳。"}
+  knowledge_packaging: {score: 4, reason: "模型敏感层缩减有效。"}
+  instruction_to_action: {score: 4, reason: "说明仍可执行。"}
+  limits_and_interfaces: {score: 4, reason: "约束未丢。"}
+  learning_and_lift: {score: 5, reason: "简化与增益关系清楚。"}
+hard_checks:
+  has_non_scope: true
+  has_output_contract: true
+  has_trigger_eval: true
+  has_quality_eval: true
+  has_baseline_plan: true
+  has_simplification_pass: true

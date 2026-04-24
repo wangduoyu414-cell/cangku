@@ -1,0 +1,27 @@
+decision:
+  strategy: split
+  target_area: "services/python-order-api/features/refunds"
+  repo_shape: feature-first
+  artifact_type: service-endpoint
+  stack: python
+  files:
+    - path: "services/python-order-api/features/refunds/quote_handler.py"
+      role: "handler"
+      responsibility: "Own request parsing, endpoint validation, response shaping, and orchestration for refund quotes."
+      reason: "Keeps the request flow visible without mixing it with external transport code."
+    - path: "services/python-order-api/features/refunds/pricing_gateway.py"
+      role: "gateway"
+      responsibility: "Call the carrier pricing API and translate transport failures into feature-local data."
+      reason: "Network IO is a separate failure boundary with its own retry and test needs."
+  keep_inline:
+    - "Request and response dataclasses for this endpoint."
+    - "One-off input validation for shipmentId, orderId, and restockFee."
+  avoid:
+    - "schemas.py"
+    - "service.py"
+    - "utils.py"
+  why_not_fewer: "Keeping handler flow, database mutation, and remote pricing calls in one file would blur separate side effects and make failures harder to trace."
+  why_not_more: "Adding a dedicated service or repository file now would mostly add pass-through hops inside one small feature without a second consumer."
+  risks:
+    - "If refund persistence logic grows beyond one insert, a feature-local store file may become justified."
+  confidence: high

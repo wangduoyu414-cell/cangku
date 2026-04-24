@@ -1,0 +1,15 @@
+{
+  "name": "@creator-os/monitor",
+  "version": "0.1.0",
+  "description": "CreatorOS monitoring - metrics, auto-recovery, alerting",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@creator-os/core": "*"
+  }
+}

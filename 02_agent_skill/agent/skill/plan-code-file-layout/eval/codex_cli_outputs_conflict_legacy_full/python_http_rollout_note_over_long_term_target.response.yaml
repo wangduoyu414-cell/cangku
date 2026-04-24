@@ -1,0 +1,26 @@
+decision:
+  strategy: merge
+  target_area: "src/app/interfaces/refund_exports"
+  repo_shape: "layer-first"
+  artifact_type: "service-endpoint"
+  stack: "python"
+  files:
+    - path: "src/app/interfaces/refund_exports/refund_export_controller.py"
+      role: "controller"
+      responsibility: "Own the active refund export HTTP ingress seam, including payload translation, use-case invocation, and response shaping for this rollout phase."
+      reason: "docs/architecture/HTTP_TRANSPORT_MIGRATION.md keeps this file as the current ingress seam, and docs/architecture/HTTP_TRANSPORT_SEAMS.md says a forwarding-only route wrapper should be merged away rather than kept as a second planning file."
+  keep_inline:
+    - "Payload key extraction for export_id and requested_by."
+    - "Light request normalization or validation that is only used by this endpoint."
+    - "Response dict shaping for status and export_id until a second consumer or independent contract surface appears."
+  avoid:
+    - "src/app/entrypoints/http/refund_export_routes.py as a forwarding-only wrapper during the current rollout."
+    - "A feature-local service file between the controller and export_refund_use_case.py when the application use case already owns orchestration."
+    - "Separate mapper, schema, or utils files for one-off request and response dict handling in this slice."
+  why_not_fewer: "One production file is the minimum viable boundary for the current slice because the active ingress seam still needs a concrete home for transport translation and use-case handoff without pushing HTTP-facing concerns into the application layer."
+  why_not_more: "Further splitting would mostly add ceremony. The only extra file shown today is a pure pass-through route, and the current docs explicitly say that wrapper should be merged away until real framework glue or a distinct contract boundary exists."
+  risks:
+    - "The long-term target still points to src/app/entrypoints/http/refund_export_routes.py in docs/architecture/HTTP_TRANSPORT_TARGETS.md, so this plan is intentionally temporary and should be revisited when the cutover note is retired."
+    - "If real framework glue arrives before downstream cutover completes, src/app/entrypoints/http/refund_export_routes.py may need to return as a true entrypoint file, but only for protocol wiring rather than duplicate transport orchestration."
+    - "The current dict-based request and response shape is acceptable for this small slice, but growing validation or contract-test requirements could justify a later DTO extraction."
+  confidence: "high"

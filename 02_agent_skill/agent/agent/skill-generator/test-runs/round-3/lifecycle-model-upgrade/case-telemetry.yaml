@@ -1,0 +1,8 @@
+case_id: lifecycle-model-upgrade
+command_count: 2
+total_wall_clock_ms: 111
+max_command_wall_clock_ms: 59
+stdout_bytes: 721
+stderr_bytes: 0
+created_file_count: 9
+created_total_bytes: 6372

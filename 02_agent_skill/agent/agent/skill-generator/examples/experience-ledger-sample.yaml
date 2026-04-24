@@ -1,0 +1,21 @@
+entries:
+  - id: review-fix-planner-generate-001
+    timestamp: "2026-03-27"
+    scenario: "generate"
+    signal: "最近总在把代码评审意见整理成修复计划。"
+    context: "高频任务，缺少稳定输出模板。"
+    action: "生成 review-fix-planner（评审修复规划器） 的首版技能包。"
+    outcome: "success"
+    baseline: "without_skill"
+    quality_delta: "higher"
+    cost_delta:
+      token_estimate: "slightly_higher"
+      wall_clock_estimate: "similar"
+      tool_call_estimate: "similar"
+    rule_candidate: "先写 non-scope（非边界），再生成 eval pack（评测包）。"
+    confidence: "repeated-observation"
+    freshness: "stable"
+    affected_dimension: "scope_and_signal"
+    evidence_refs:
+      - "examples/new-skill-from-recurring-requests.md"
+    follow_up: "promote-to-default-path"

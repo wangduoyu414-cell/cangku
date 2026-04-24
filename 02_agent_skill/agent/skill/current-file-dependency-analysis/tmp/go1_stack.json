@@ -1,0 +1,11 @@
+{
+  "stack_family": "go",
+  "stack_id": "go-stack",
+  "confidence": "medium",
+  "reasons": [
+    "file extension suggests go"
+  ],
+  "reference_file": "references/go-edge-rules.md",
+  "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+  "file_path": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis/src/app/entrypoints/main.go"
+}

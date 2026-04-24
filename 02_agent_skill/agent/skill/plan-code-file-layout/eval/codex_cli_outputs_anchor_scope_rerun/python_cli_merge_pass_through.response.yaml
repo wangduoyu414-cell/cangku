@@ -1,0 +1,25 @@
+decision:
+  strategy: merge
+  target_area: "scripts/ops"
+  repo_shape: mixed
+  artifact_type: cli-command
+  stack: python
+  files:
+    - path: "scripts/ops/reconcile_refund_backlog.py"
+      role: "command entrypoint with local HTTP edge"
+      responsibility: "Parse the CLI arguments, issue the single backlog request, map the response fields into typed counts, compute the summary, and print the JSON result for refund backlog reconciliation."
+      reason: "This slice has one caller, one request shape, one timeout policy, and one small response mapper, so keeping the network edge in the command keeps the common read-debug-change path in one file."
+  keep_inline:
+    - "fetch_backlog_counts"
+    - "summarize_backlog"
+    - "The pendingReview and approvedToday response field mapping"
+  avoid:
+    - "Keeping scripts/ops/refund_backlog_client.py as a standalone file while it only wraps one GET for one command"
+    - "Creating a generic scripts/ops common HTTP or utils module for this single command"
+    - "Adding an extra service layer between main() and the requests.get call"
+  why_not_fewer: "This slice still needs its own dedicated command file because the operator-facing CLI contract and JSON output are the real boundary; folding it into a broader shared script would blur command ownership."
+  why_not_more: "A second file would mostly be thin ceremony. Compared with sync_partner_catalog.py, which keeps a heavier network loop inline, this command's single GET and small JSON cast do not create a separate enough side-effect or test boundary to justify a client file."
+  risks:
+    - "If the backlog fetch gains auth/session setup, retries, pagination, alternate endpoints, or a second real consumer, the HTTP edge becomes a real adapter seam and should be extracted again."
+    - "The recommendation is based on the provided scripts/ops examples; if the wider directory already has a documented shared transport pattern not shown here, revisit the merge."
+  confidence: high

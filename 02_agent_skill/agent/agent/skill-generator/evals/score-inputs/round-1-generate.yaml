@@ -1,0 +1,14 @@
+skill_name: release-review-orchestrator
+scores:
+  scope_and_signal: {score: 4, reason: "触发与非触发边界已明确。"}
+  knowledge_packaging: {score: 3, reason: "知识封装有效，但样例还不够多。"}
+  instruction_to_action: {score: 4, reason: "默认路径与基线说明清晰。"}
+  limits_and_interfaces: {score: 4, reason: "输入输出和风险边界较清楚。"}
+  learning_and_lift: {score: 3, reason: "迭代闭环存在，但真实数据仍少。"}
+hard_checks:
+  has_non_scope: true
+  has_output_contract: true
+  has_trigger_eval: true
+  has_quality_eval: true
+  has_baseline_plan: true
+  has_simplification_pass: true

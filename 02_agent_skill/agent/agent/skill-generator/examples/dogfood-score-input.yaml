@@ -1,0 +1,24 @@
+skill_name: review-fix-planner
+scores:
+  scope_and_signal:
+    score: 4
+    reason: "边界、非边界与触发集都已明确。"
+  knowledge_packaging:
+    score: 4
+    reason: "核心正文精简，长内容下沉到 references（参考资料） 与 templates（模板）。"
+  instruction_to_action:
+    score: 4
+    reason: "默认路径、评测、评分和模板输出都已就位。"
+  limits_and_interfaces:
+    score: 4
+    reason: "输入输出、停止条件、基线对比和升级点都已定义。"
+  learning_and_lift:
+    score: 4
+    reason: "有失败归因、基线计划和升模瘦身路径，但真实样本还不够多。"
+hard_checks:
+  has_non_scope: true
+  has_output_contract: true
+  has_trigger_eval: true
+  has_quality_eval: true
+  has_baseline_plan: true
+  has_simplification_pass: true

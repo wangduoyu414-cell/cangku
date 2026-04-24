@@ -1,0 +1,4 @@
+﻿interface:
+  display_name: "自媒体文案诊断"
+  short_description: "基于现有自媒体文案做结构诊断、问题归因与修改优先级判断"
+  default_prompt: "Use $copy-check-skill to diagnose this draft for low-barrier entry, high-value delivery, issue layers, and revision priorities without rewriting it."

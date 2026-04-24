@@ -1,0 +1,35 @@
+decision:
+  strategy: split
+  target_area: packages/go/partnerrefunds
+  repo_shape: package-first
+  artifact_type: data-pipeline-step
+  stack: go
+  files:
+    - path: packages/go/partnerrefunds/sync.go
+      role: step entrypoint
+      responsibility: Keep the exported SyncPendingRefunds flow readable; coordinate fetch and persist steps and hold the package-local RefundRow handoff type.
+      reason: The common debug path should still start in one visible file even after the real IO boundaries are extracted.
+    - path: packages/go/partnerrefunds/partner_client.go
+      role: source adapter
+      responsibility: Build the partner request, execute the HTTP call, validate the status code, decode the partner JSON payload, and map it into RefundRow values.
+      reason: Partner API contract and network failures are a separate change and test boundary from orchestration and SQL writes.
+    - path: packages/go/partnerrefunds/store.go
+      role: sink adapter
+      responsibility: Own the refund_sync insert statement and persist normalized RefundRow values with database/sql.
+      reason: SQL shape and database failure handling are a distinct side-effect boundary that should not stay mixed with HTTP fetch code.
+  keep_inline:
+    - Keep RefundRow in sync.go as the package-local handoff type between fetch and store.
+    - Keep the raw partner response struct inside partner_client.go because it is a one-off contract for this source.
+    - Keep normalizeReason next to the fetch-to-row mapping unless a second package-level consumer appears.
+  avoid:
+    - Do not add a service.go file that only forwards from SyncPendingRefunds to helper functions.
+    - Do not add types.go or model.go just to hold RefundRow by itself.
+    - Do not extract normalizeReason into shared utils or a new package.
+    - Do not create repository.go unless the package grows beyond this one SQL sink.
+  why_not_fewer: "One file would keep exported orchestration, partner HTTP contract handling, and SQL persistence in the same place. Unlike amountcodec, which is a pure local transform package, partnerrefunds already has separate source and sink failure boundaries."
+  why_not_more: "A fourth file for models, mappers, or errors would mostly add ceremony. The row type, normalizer, and one-off JSON contract are still local to a single sync path, so extra files would create ping-pong inside one Go package without clearer ownership."
+  risks:
+    - No downstream consumers were found in the repository, so the long-term public surface of this package is still inferred from the current file.
+    - Baseline docs define refund business flow under layered src/app refunds modules; if this package starts owning approval policy or broader workflow logic, it should move toward that documented structure instead of growing further here.
+    - If retries, batching, or partial-failure recovery are added soon, sync.go may need an options type, but that still does not justify another production file yet.
+  confidence: high

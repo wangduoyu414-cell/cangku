@@ -1,0 +1,20 @@
+id: "generated-plan-example"
+user_request: |
+  请基于 D:\diypc 的总任务书和语言相关资产，输出 task 10 的允许样本范围、禁止范围和证据绑定要求。
+notes: "这是现有脚本生成后的目标输出形态示例，用于校准 language_scope_plan 的完整结构。"
+sample_output:
+  language_scope_plan:
+    baseline_ref: 'D:\diypc\核心模块重写总任务书.md'
+    allowed_scope:
+      - "低置信补解析"
+      - "复杂解释润色"
+      - "安全拒答"
+    forbidden_scope:
+      - "方案排序"
+      - "推送时机判断"
+      - "证据事实生成"
+      - "规则命中裁决"
+      - "状态真相维护"
+    grounding_rules:
+      - "任何自然语言输出都必须可追溯到模板或证据包"
+      - "标准推荐结果优先模板，不走 LLM（大语言模型）"

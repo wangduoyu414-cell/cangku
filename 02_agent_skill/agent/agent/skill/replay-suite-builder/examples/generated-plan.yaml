@@ -1,0 +1,36 @@
+id: "generated-plan-example"
+user_request: |
+  请基于 D:\diypc 的 replay_suite_default，为 task 13 输出新核心回放样例、差异维度和质量阈值绑定方案。
+notes: "这是现有脚本生成后的目标输出形态示例，用于校准 replay_eval_plan 的完整结构。"
+sample_output:
+  replay_eval_plan:
+    suite_root: 'D:\diypc\assets\replay_suite_default'
+    suite_id: "replay_suite_default"
+    suite_targets:
+      - "01_mainline_gaming_stable.json"
+      - "02_primary_push_guard.json"
+      - "03_no_extra_llm_calls.json"
+      - "04_explanation_fidelity_guard.json"
+      - "05_unsat_degrade_guard.json"
+      - "06_top3_coverage_guard.json"
+    diff_dimensions:
+      - "action_diff（动作差异）"
+      - "primary_recommendation_diff（主推差异）"
+      - "push_type_diff（推送类型差异）"
+      - "should_push_diff（是否推送差异）"
+      - "evidence_strength_diff（证据等级差异）"
+    quality_thresholds:
+      - "max_action_drift_rate（阈值键）: 0.1"
+      - "max_primary_drift_rate（阈值键）: 0.1"
+      - "max_push_false_positive_rate（阈值键）: 0.05"
+      - "max_push_miss_rate（阈值键）: 0.05"
+      - "max_llm_call_rate（阈值键）: 0.2"
+      - "max_runtime_llm_call_rate（阈值键）: 0.05"
+      - "max_p95_latency_ms（阈值键）: 320"
+      - "max_runtime_avg_latency_ms（阈值键）: 300"
+      - "max_runtime_p95_latency_ms（阈值键）: 800"
+      - "max_latency_regression_ratio（阈值键）: 1.3"
+      - "min_primary_hit_rate（阈值键）: 0.95"
+      - "min_top3_coverage（阈值键）: 1.0"
+      - "min_unsat_correctness（阈值键）: 1.0"
+      - "min_explanation_fidelity（阈值键）: 0.9"

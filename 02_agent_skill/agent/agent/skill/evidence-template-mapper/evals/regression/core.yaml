@@ -1,0 +1,20 @@
+suite_id: "evidence-template-mapper-regression-core"
+cases:
+  - id: "preserve-evidence-source-binding"
+    goal: "持续要求证据来源显式绑定"
+    input:
+      output_shape: "evidence_alignment_plan"
+    expected:
+      requires_evidence_sources: true
+    type: "regression"
+    notes: "保护核心红线不退化。"
+  - id: "preserve-task-scope"
+    goal: "持续限定在 task 09 / 10 服务范围"
+    input:
+      service_scope:
+        - "task 09"
+        - "task 10"
+    expected:
+      remains_mapper_not_executor: true
+    type: "regression"
+    notes: "防止职责漂移。"

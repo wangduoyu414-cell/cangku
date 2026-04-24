@@ -1,0 +1,4 @@
+id: "instagram-reel-cover-control"
+user_request: |
+  我要给一个收纳改造短视频做 Instagram reel 封面，画面要能在手机缩略图里一眼看出“改造前后差异”，标题区要安全，不要被裁切，整体更像创作者内容，不要像投流广告。请整理成适合 gpt-image-2 的提示词包。
+notes: "代表 instagram-reel-cover（Instagram 短视频封面） 场景下的 new-generate（新生成） 需求。重点验证 cover-title-safe-zone（封面标题安全区）、vertical-safe-zone（竖版安全区）、thumbnail-recognizability（缩略图可识别性）、mobile-first-legibility（手机端可读性） 和 ugc-authenticity（原生用户内容感）。"

@@ -1,0 +1,8 @@
+case_id: lifecycle-iterate
+command_count: 2
+total_wall_clock_ms: 122
+max_command_wall_clock_ms: 65
+stdout_bytes: 680
+stderr_bytes: 0
+created_file_count: 9
+created_total_bytes: 6549

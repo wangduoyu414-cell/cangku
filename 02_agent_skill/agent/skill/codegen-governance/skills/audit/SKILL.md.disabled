@@ -1,0 +1,204 @@
+---
+name: audit
+description: >-
+  Audit Pre-Generation Contracts and Implementation Reports from
+  codegen-governance for semantic consistency, whitelist fit, and
+  validation honesty. Use after the parent skill produces output. This skill
+  does not generate code or write contracts. Do not use when no
+  codegen-governance output exists.
+---
+
+# Audit
+
+## Overview
+
+Audit Pre-Generation Contracts and Implementation Reports produced by
+`codegen-governance`. This skill does not generate code or write
+contracts. It validates whether the output is structurally complete,
+semantically consistent with its own claims, honest about validation, and
+still within the declared whitelist depth.
+
+Target languages: **Python**, **Go**, **TypeScript**, **JavaScript**, **Vue 3**
+
+## Quick Reference
+
+1. Identify the output type: Pre-Generation Contract or Implementation Report.
+2. Read the relevant schema: [schema-contract.yaml](./references/schema-contract.yaml).
+3. Read the validation protocol: [check-protocol.md](./references/check-protocol.md).
+4. Run the validation checklist for the output type.
+5. Audit semantic consistency across scope, selected depth, scenario packs, contract claims, implementation claims, and validation evidence.
+6. Treat `minimal` as the whitelist-qualified half-exemption path, not a skip path.
+7. For Implementation Reports, pay special attention to Validation Distinction and whether executed evidence actually matches the claimed contract coverage.
+8. Report findings with severity: FATAL / MUST / SHOULD / MAY / WARN.
+
+## Output Types
+
+### Pre-Generation Contract
+
+Validate that the contract:
+
+- Contains all MUST anchor sections
+- Sets `task_mode`, `continuation_mode`, and `stop_before_code`
+- Has no placeholder filler content
+- Documents explicit scope, scenario packs, and contract semantics
+- Keeps `contract_depth`, scope, and selected scenario packs semantically aligned
+- Keeps `minimal` inside the closed whitelist and minimum closure loop
+- Uses source-priority or exception language when repo reality overrides generic guidance
+
+### Implementation Report
+
+Validate that the report:
+
+- Contains all required anchor sections
+- Sets `task_mode` and `continuation_mode`
+- Explicitly distinguishes executed from unexecuted validation
+- Does not claim un-run validation as executed
+- Documents deviations from the original contract
+- Keeps covered edge cases, residual risks, deviations, and validation evidence consistent with the contract and implementation claims
+- Provides specific commands and evidence for validation
+
+## Validation Checklist
+
+## Depth-Aware Checking
+
+When `contract_depth` is `minimal`, treat it as the parent skill's whitelist-qualified half-exemption path.
+It is still a real contract/report and must preserve the minimum audit loop.
+Do not fail a minimal output only because it omits non-essential SHOULD / MAY detail,
+but do fail or warn when the whitelist path skips required closure.
+
+For whitelist-qualified `minimal`, still verify all of the following:
+
+- Scope stays explicit and local
+- Edit tasks include an existing contract snapshot
+- Expected contract drift is explicitly `None` / no caller-visible drift
+- Selected Scenario Packs use a compact quick-select form instead of omission
+- Validation still distinguishes executed versus not-run work
+- No section quietly introduces caller-visible semantic drift, widened side effects, or cross-file behavior
+
+If `minimal` content shows boundary expansion, caller-visible contract drift, side-effect growth,
+or other high-risk signals that exceed the whitelist, report a depth-mismatch warning and
+recommend upgrading to `standard`.
+
+If a `minimal` output also skips the required minimum closure loop, claims `None`
+for drift while describing caller-visible change, or uses executed validation to
+cover work that was not run, escalate beyond a warning. That is no longer a
+whitelist-fit issue alone; it is a semantic or honesty failure.
+
+### For Pre-Generation Contracts
+
+- [ ] `minimal`: required anchors present: Contract-Metadata, Target-Language, Scope, Selected-Scenario-Packs, Input-Contract, Return-And-Failure-Contract, Validation-Plan
+- [ ] `standard` / `expanded`: all MUST anchors present: Contract-Metadata, Target-Language, Scope, Selected-Scenario-Packs, Input-Contract, Return-And-Failure-Contract
+- [ ] Contract Metadata includes generated_at, task_mode, continuation_mode, and stop_before_code
+- [ ] Target Language is filled with a concrete language
+- [ ] Scope includes target, requested change, blast radius, non-goals, and change_mode
+- [ ] For edit tasks, Scope includes an explicit existing contract snapshot; for new implementations it explicitly says `none`
+- [ ] For whitelist-qualified `minimal`, expected contract drift is explicitly `None` / no caller-visible drift
+- [ ] At least one Scenario Pack is selected; `minimal` may use a compact quick-select justification, but omission is not allowed
+- [ ] Input Contract specifies accepted inputs and invalid or missing handling
+- [ ] Return And Failure Contract specifies success, empty, and failure shapes
+- [ ] Scope, Input Contract, Return And Failure Contract, and Selected Scenario Packs do not contradict each other about what can change
+- [ ] Validation Plan requirement by depth: `minimal` still includes a compact executed-now versus not-run-now distinction with a reason for anything skipped; `standard` / `expanded` should make executable versus cannot-run checks explicit
+- [ ] No placeholder text such as `[todo]`, `[varies]`, `TBD`, or bare `- :`
+- [ ] No vague filler such as "handle errors appropriately"
+
+### For Implementation Reports
+
+- [ ] `minimal`: required anchors present: Report-Metadata, Language-Specific-Rules-Applied, Covered-Edge-Cases, Residual-Risks, Executed-Validation, Validation-Not-Run, Validation-Distinction, Contract-Deviations
+- [ ] `standard` / `expanded`: all MUST anchors present: Report-Metadata, Language-Specific-Rules-Applied, Covered-Edge-Cases, Residual-Risks, Executed-Validation, Validation-Not-Run, Validation-Distinction, Contract-Deviations
+- [ ] Report Metadata includes generated_at, task_mode, continuation_mode, contract_generated, implementation_completed, and stopped_before_implementation
+- [ ] Validation Distinction explicitly lists what was not run
+- [ ] No overlap between Executed Validation and Validation Not Run
+- [ ] Commands in Executed Validation are specific
+- [ ] Results in Executed Validation contain evidence, not just "passed"
+- [ ] claimed_verified_count equals actually_verified_count
+- [ ] Language rules and prohibited patterns status are both specified
+- [ ] Covered Edge Cases has at least one entry; `minimal` may keep it concise but not omit it
+- [ ] Residual Risks has at least one entry; `minimal` may keep it concise but not omit it
+- [ ] Contract Deviations explicitly states `None` or describes deviations
+- [ ] Covered Edge Cases, Residual Risks, Executed Validation, and Contract Deviations do not contradict the earlier contract about what behavior changed or stayed stable
+
+## Severity Levels
+
+| Level | Mark | Meaning | Consequence |
+|-------|------|---------|-------------|
+| **FATAL** | `[FATAL]` | Absolute honesty or protocol violation | Output is invalid and must be rejected |
+| **MUST** | `[MUST]` | Required | Output is incomplete until fixed |
+| **SHOULD** | `[SHOULD]` | Recommended | Output is degraded until fixed |
+| **MAY** | `[MAY]` | Optional | Output is acceptable but can improve |
+| **WARN** | `[WARN]` | Attention | Potential issue that should be investigated |
+
+## Common Violations
+
+### FATAL Violations
+
+1. Missing MUST anchor sections
+2. Validation Distinction missing or falsified
+3. `claimed_verified_count > actually_verified_count`
+4. Same validation appears in both Executed and Not-Run
+5. `stop_before_code` missing when the contract clearly stops
+6. A `minimal` output claims no caller-visible drift or no skipped validation while the content proves otherwise
+
+### MUST Violations
+
+1. Placeholder content such as `[todo]`, `[varies]`, `TBD`, or bare `- :`
+2. Missing `task_mode` or `continuation_mode`
+3. No specific command in Executed Validation
+4. Language rules or prohibited patterns status not specified
+5. Contract Deviations not explicitly stated
+6. Semantic conflict between scope, selected depth, scenario packs, and the claimed behavior or validation coverage
+
+### SHOULD Violations
+
+1. Vague filler content such as "handle errors appropriately"
+2. Missing SHOULD anchors that materially improve auditability
+3. Validation Plan lists unverifiable items without labeling them as such
+
+### WARN Conclusions
+
+1. `[WARN] DEPTH_MISMATCH_MINIMAL_TOO_BROAD` when `contract_depth` is `minimal` but the content clearly expands into high-risk boundary, auth, retry, idempotency, precision, or audit concerns that should be upgraded to `standard`
+2. `[WARN] WHITELIST_MISUSE_UPGRADE_TO_STANDARD` when `contract_depth` is `minimal` but the content shows whitelist-misuse signals such as caller-visible default or fallback changes, `null` / empty / `0` / `false` / invalid / unknown semantic shifts, logging or audit expansion, new persistence or network behavior, config-priority changes, or any cross-file / cross-service / trust-boundary content that no longer fits the local whitelist path
+3. Escalate either warning to `MUST` or `FATAL` when the mismatch is paired with dishonest drift claims, missing minimum closure, or false executed-validation reporting
+
+## Validation Output Format
+
+When reporting findings, use this structure:
+
+```text
+## Validation Report
+
+Output type: [Pre-Generation Contract / Implementation Report]
+File: [path or identifier]
+Checked at: [ISO 8601 timestamp]
+
+### FATAL Violations
+- [ ] No FATAL violations found
+- OR list each violation with:
+  - Violation: [description]
+  - Location: [anchor / line number]
+  - Evidence: [what was found]
+
+### MUST Violations
+- [ ] No MUST violations found
+- OR list each violation
+
+### SHOULD Violations
+- [ ] No SHOULD violations found
+- OR list each violation
+
+### Summary
+- Total FATAL: [N]
+- Total MUST: [N]
+- Total SHOULD: [N]
+- Score: [0-100]
+- Grade: [A/B/C/D/F]
+- Status: [PASS / FAIL / NEEDS_REVISION]
+```
+
+## Schema Reference
+
+The machine-readable schema for Pre-Generation Contracts is at:
+[schema-contract.yaml](./references/schema-contract.yaml)
+
+The structured output protocol with anchor definitions is documented in:
+[check-protocol.md](./references/check-protocol.md)
+

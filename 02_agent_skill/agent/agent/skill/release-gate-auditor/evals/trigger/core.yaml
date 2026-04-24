@@ -1,0 +1,26 @@
+suite_id: "release-gate-auditor-trigger-core"
+cases:
+  - id: "positive-release-gate-impact"
+    goal: "发布门禁影响请求应触发"
+    input: "请输出规则包、回放报告和正式门禁阻断点的影响说明。"
+    expected: true
+    type: "positive"
+    notes: "典型发布门禁审计请求。"
+  - id: "positive-required-reports"
+    goal: "必需报告与阻断项请求应触发"
+    input: "把 replay_report、release_gate 和阻断项列表整理成正式审计方案。"
+    expected: true
+    type: "positive"
+    notes: "明确指向必需报告和阻断项。"
+  - id: "negative-release-execution"
+    goal: "完整发布执行请求不应触发"
+    input: "请直接执行正式规则包发布。"
+    expected: false
+    type: "negative"
+    notes: "这是发布执行请求，不是审计请求。"
+  - id: "negative-generic-summary"
+    goal: "泛化总结请求不应触发"
+    input: "帮我总结一下 RULES.md。"
+    expected: false
+    type: "negative"
+    notes: "只有总结，不是门禁审计。"

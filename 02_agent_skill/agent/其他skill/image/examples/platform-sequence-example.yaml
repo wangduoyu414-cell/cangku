@@ -1,0 +1,4 @@
+id: "xhs-carousel-sequence"
+user_request: |
+  帮我把这条小红书图文笔记需求整理成适合 gpt-image-2 的多页提示词包。主题是“租房书桌改造前后对比”，一共 6 页：封面、痛点、步骤 1、步骤 2、前后对比、结尾引导收藏。封面要有拦停感，整组要统一，但别做得像硬广。
+notes: "代表 sequence-asset-generate（序列资产生成） 在 xhs-carousel-note-set（小红书多页图文） 场景下的请求。重点验证 sequence_brief（序列摘要）、frame_plan（页序计划）、cover_prompt（封面提示词）、inner_frame_prompts（内页提示词）、cross_frame_invariants（跨页不变量） 和 platform_behavior_notes（平台表现说明）。"

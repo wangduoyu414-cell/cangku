@@ -1,0 +1,33 @@
+metrics:
+  quality:
+    - correctness
+    - actionability
+    - scope_clarity
+    - contract_completeness
+  cost:
+    - token_estimate
+    - wall_clock_estimate
+    - tool_call_estimate
+
+cases:
+  - id: with-skill-vs-no-skill
+    compare:
+      candidate: with_skill
+      baseline: without_skill
+    expected_delta:
+      quality: "higher_or_equal"
+      cost: "acceptable_increase_or_lower"
+    required_notes:
+      - "说明产出质量提升来自哪里。"
+      - "若成本更高，必须解释为何值得。"
+
+  - id: with-skill-vs-previous-skill
+    compare:
+      candidate: current_skill
+      baseline: previous_skill
+    expected_delta:
+      quality: "higher_or_equal"
+      cost: "lower_or_explained"
+    required_notes:
+      - "说明是否减少了误触发或输出漂移。"
+      - "说明是否删除了过时的模型敏感提示。"

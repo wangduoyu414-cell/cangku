@@ -1,0 +1,7 @@
+interface:
+  display_name: "plan-code-file-layout"
+  short_description: "文件边界不明确"
+  default_prompt: "Use $plan-code-file-layout when file boundaries are unclear and you need to decide whether to keep, split, merge, or create files for one implementation slice."
+
+policy:
+  allow_implicit_invocation: true

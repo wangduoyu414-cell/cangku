@@ -1,0 +1,8 @@
+case_id: live-like-generate
+command_count: 2
+total_wall_clock_ms: 99
+max_command_wall_clock_ms: 50
+stdout_bytes: 585
+stderr_bytes: 0
+created_file_count: 8
+created_total_bytes: 6840

@@ -1,0 +1,25 @@
+decision:
+  strategy: merge
+  target_area: "src/app/interfaces/refunds"
+  repo_shape: layer-first
+  artifact_type: service-endpoint
+  stack: python
+  files:
+    - path: "src/app/entrypoints/http/refund_routes.py"
+      role: "http-route"
+      responsibility: "Own payload-to-use-case invocation and response shaping for the refund creation HTTP transport under the documented entrypoint layer."
+      reason: "The target-area baseline docs win over broader repo guidance here: README describes interfaces broadly, but the layering rules and refund module docs put refund HTTP transport in entrypoints/http while create_refund_controller.py remains a compatibility shim."
+  keep_inline:
+    - "payload-to-use-case call"
+    - "response shaping"
+  avoid:
+    - "src/app/interfaces/refunds/create_refund_controller.py"
+    - "refund_service.py"
+    - "schemas.py"
+  why_not_fewer: "One route file in the documented entrypoint target is already the smallest useful boundary for this refund HTTP transport slice."
+  why_not_more: "Keeping the interfaces file as a separate compatibility shim would preserve a short same-flow hop without adding a real adapter boundary, and further splitting would add ceremony around one route-local transport flow."
+  risks:
+    - "This relocation depends on target-area docs overriding broader repo guidance, so callers that still import the interfaces file may need a staged migration."
+    - "The compatibility shim may need to stay temporarily while downstream imports move from src/app/interfaces/refunds to src/app/entrypoints/http."
+    - "If a broader presenter or DTO boundary becomes real later, revisit whether the route should stay this compact."
+  confidence: medium

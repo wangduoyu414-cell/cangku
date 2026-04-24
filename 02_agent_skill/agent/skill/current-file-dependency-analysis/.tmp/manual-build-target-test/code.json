@@ -1,0 +1,27 @@
+{
+  "anchor": {
+    "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow/.tmp/codex-skill-targeted-20260323/build_repo",
+    "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/.tmp/codex-skill-targeted-20260323/build_repo/src/helper.ts",
+    "repo_relative_path": "src/helper.ts",
+    "symbol": "",
+    "selection_range": "",
+    "language": "typescript",
+    "role_hint": "source"
+  },
+  "stack": {
+    "stack_family": "typescript",
+    "stack_id": "typescript-stack",
+    "confidence": "high",
+    "reasons": [
+      "file extension suggests typescript",
+      "found package.json"
+    ],
+    "reference_file": "references/ts-edge-rules.md",
+    "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow/.tmp/codex-skill-targeted-20260323/build_repo",
+    "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/.tmp/codex-skill-targeted-20260323/build_repo/src/helper.ts"
+  },
+  "edges": [],
+  "blind_spots": [
+    "Dynamic imports only resolve when the specifier is a string literal."
+  ]
+}

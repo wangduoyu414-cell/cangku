@@ -1,0 +1,65 @@
+skill_name: release-review-orchestrator
+mode: iterate
+request_summary: "Upgrade an existing release review skill from clustered failures, missing dependencies, and manual rework."
+constraints:
+  - "Keep stable core（稳定内核） intact while promoting repeated failures into guardrails（护栏）."
+quality_goals:
+  - "Reduce missed dependency cases."
+  - "Improve failure attribution（失败归因） clarity."
+scope:
+  - "Upgrade dependency awareness for release planning."
+  - "Refresh evals（评测） and backlog（待办） after failure clustering."
+non_scope:
+  - "Do not broaden into deployment automation."
+  - "Do not rewrite unrelated release docs."
+inputs:
+  - "failure clusters（失败簇）"
+  - "manual rollback notes（人工回滚记录）"
+outputs:
+  - "updated planning skill draft（更新后的规划技能草案）"
+  - "failure attribution（失败归因）"
+risks:
+  - "Fixing one failure may widen trigger scope too much."
+success_bar:
+  - "Must explain which SKILL-QI（技能质量指数） dimensions were affected."
+  - "Must map failures to concrete repair directions."
+failure_feedback:
+  - "Cross-file dependencies were skipped in three consecutive planning tasks."
+  - "Regression checks were inconsistent between teams."
+failure_attribution:
+  failure_cluster:
+    - "Repeated dependency omission across rollback planning."
+    - "Inconsistent regression checklist wording."
+  symptoms:
+    - "Tasks ship without post-release validation."
+    - "Humans keep patching missing dependency notes."
+  affected_dimensions:
+    - "Instruction-to-Action（指令到行动）"
+    - "Learning & Lift（学习闭环与增益）"
+  suspected_root_cause:
+    - "Failure examples were observed but not promoted into guardrails."
+  repair_direction:
+    - "Promote dependency scan into a mandatory planning step."
+    - "Bind regression checklist wording to a reusable template."
+baseline:
+  candidate: "release-review-orchestrator v2（发布评审编排器 v2）"
+  baseline: "previous_skill（旧版技能）"
+  quality_delta:
+    correctness: "higher"
+    actionability: "higher"
+    scope_clarity: "same_or_higher"
+    contract_completeness: "higher"
+  cost_delta:
+    token_estimate: "similar"
+    wall_clock_estimate: "similar"
+    tool_call_estimate: "similar"
+  notes:
+    - "Higher quality is justified only if dependency misses decline."
+iteration_backlog:
+  next_fixes:
+    - "Add failure replay for rollback dependency omissions."
+    - "Strengthen non-scope wording against deployment automation."
+  deferred_work:
+    - "Team-specific regression vocabulary normalization."
+  why_now:
+    - "Human rework remains concentrated on the same missing details."

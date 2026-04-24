@@ -1,0 +1,4 @@
+interface:
+  display_name: "Language Adapter Orchestration Evaluator（语言适配器编排测评代理）"
+  short_description: "编排真实业务候选批次，并对生成结果做结构化测评"
+  default_prompt: "Use language-adapter-orchestration-evaluator（语言适配器编排测评代理） to turn real replay assets（真实回放资产） into controlled candidate generation runs（受控候选生成批次） and evaluation reports（测评报告） for language-adapter-dataset-builder（语言适配器数据集构建器）."

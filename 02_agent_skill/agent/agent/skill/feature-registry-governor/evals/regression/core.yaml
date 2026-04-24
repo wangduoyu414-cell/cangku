@@ -1,0 +1,18 @@
+suite_id: "feature-registry-governor-regression-core"
+cases:
+  - id: "preserve-version-constraint"
+    goal: "持续要求规则包声明兼容的注册表版本"
+    input:
+      output_shape: "feature_registry_plan"
+    expected:
+      requires_version_constraints: true
+    type: "regression"
+    notes: "保护版本约束不退化。"
+  - id: "preserve-unregistered-block"
+    goal: "持续阻断未登记特征进入正式规则包"
+    input:
+      registered_feature_boundary: true
+    expected:
+      blocks_unregistered_features: true
+    type: "regression"
+    notes: "保护稳定红线。"

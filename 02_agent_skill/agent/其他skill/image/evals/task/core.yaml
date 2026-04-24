@@ -1,0 +1,467 @@
+suite_id: "gpt-image-2-prompt-structurer-task-core"
+cases:
+  - id: "standard-text-heavy-poster"
+    goal: "在标准文本密集型海报任务中默认输出模型可用的网页提示词和结构化字段"
+    input:
+      task_mode: "text-language-edit"
+      scene_card: "campaign-key-visual"
+      platform_surface: "ecommerce-hero"
+      delivery_goal: "电商活动页头图海报"
+      subject: "咖啡豆促销海报"
+      success_criteria:
+        - "只允许给定文案"
+        - "整体高级且克制"
+      exact_text:
+        - "晨烘限定"
+        - "单一产地 / 浅烘 / 柑橘调"
+      must_keep:
+        - "只允许上述两段文字"
+      must_avoid:
+        - "额外文字"
+        - "水印"
+      soft_preferences:
+        - "高级、克制"
+    expected:
+      required_sections:
+        - "Web Prompt"
+        - "Image Input Fields"
+      must_include:
+        - "晨烘限定"
+        - "exact_text"
+        - "电商活动页头图"
+      golden_output: "examples/golden/core-example-golden.md"
+    type: "standard"
+    notes: "验证标准路径会默认输出短格式模型可用结果。"
+  - id: "boundary-multi-image-role-separation"
+    goal: "在多图合成边界场景中要求明确参考图角色"
+    input:
+      task_mode: "multi-image-composite"
+      scene_card: "campaign-key-visual"
+      platform_surface: "general"
+      delivery_goal: "品牌广告图"
+      subject: "将图1产品放入图2厨房场景，并参考图3的暖色氛围"
+      references:
+        - role: "product_subject"
+          description: "图1：产品主体"
+        - role: "background_scene"
+          description: "图2：背景场景"
+        - role: "style_reference"
+          description: "图3：光线与色调参考"
+      must_keep:
+        - "产品包装不变"
+      must_avoid:
+        - "新增品牌元素"
+    expected:
+      required_sections:
+        - "Web Prompt"
+        - "Image Input Fields"
+      must_include:
+        - "references"
+        - "image 1: product_subject"
+        - "image 2: background_scene"
+        - "image 3: style_reference"
+      golden_output: "examples/golden/composite-example-golden.md"
+    type: "boundary"
+    notes: "验证技能不会把多个参考图混成同一用途。"
+  - id: "error-prone-localized-edit"
+    goal: "在高漂移风险的局部编辑中保留 change_only 与 preserve 边界"
+    input:
+      task_mode: "localized-edit"
+      scene_card: "campaign-key-visual"
+      platform_surface: "general"
+      delivery_goal: "修改活动海报年份"
+      subject: "现有海报上的年份文本"
+      must_avoid:
+        - "重新设计版式"
+        - "改变背景"
+      edit_scope:
+        change_only:
+          - "将 2025 改为 2026"
+        preserve:
+          - "构图"
+          - "配色"
+          - "产品图"
+          - "品牌标志"
+          - "其余文字"
+        source_role: "source image is the fidelity anchor"
+        surgical_or_flexible: "surgical"
+    expected:
+      required_sections:
+        - "Web Prompt"
+        - "Image Input Fields"
+      must_include:
+        - "change_only"
+        - "source image"
+        - "preserve"
+      golden_output: "examples/golden/edit-example-golden.md"
+    type: "error-prone"
+    notes: "验证默认输出仍然显式保留局部编辑边界。"
+  - id: "sequence-xhs-carousel-package"
+    goal: "在小红书多页图文场景中输出序列型模型可用结果"
+    input:
+      task_mode: "sequence-asset-generate"
+      scene_card: "xhs-carousel-note-set"
+      platform_surface: "xiaohongshu-carousel"
+      delivery_goal: "小红书 6 页图文笔记"
+      subject: "租房书桌改造前后对比"
+      must_avoid:
+        - "硬广感"
+        - "每页风格漂移"
+      soft_preferences:
+        - "warm neutral palette"
+        - "creator-like realism"
+      modifiers:
+        - "swipe-sequence-consistency"
+        - "native-platform-aesthetic"
+        - "ugc-authenticity"
+        - "text-overlay-negative-space"
+      sequence:
+        frame_count: 6
+        frame_roles:
+          - "第 1 页：封面"
+          - "第 2 页：痛点"
+          - "第 3 页：步骤 1"
+          - "第 4 页：步骤 2"
+          - "第 5 页：前后对比"
+          - "第 6 页：结尾引导收藏"
+        cover_goal: "feed stop and immediate topic clarity"
+        ending_role: "soft save CTA"
+        cross_frame_invariants:
+          - "same rental desk space"
+          - "same warm neutral palette"
+          - "same creator-like realism"
+        narrative_progression: "problem -> process -> proof -> save"
+    expected:
+      required_sections:
+        - "Web Prompt"
+        - "Image Input Fields"
+      must_include:
+        - "frame_count"
+        - "feed stop"
+        - "same rental desk space"
+        - "native-platform-aesthetic"
+      golden_output: "examples/golden/platform-sequence-example-golden.md"
+    type: "standard"
+    notes: "验证序列型请求默认输出模型可用格式。"
+  - id: "platform-safe-instagram-reel-cover"
+    goal: "在 Instagram reel 封面场景中输出带安全区与缩略图约束的默认模型可用结果"
+    input:
+      task_mode: "new-generate"
+      scene_card: "instagram-reel-cover"
+      platform_surface: "instagram-reel-cover"
+      delivery_goal: "Instagram reel 封面"
+      subject: "收纳改造前后对比"
+      must_keep:
+        - "改造前后差异一眼可见"
+      must_avoid:
+        - "投流广告感"
+        - "标题区被裁切"
+      soft_preferences:
+        - "creator-like realism"
+      modifiers:
+        - "cover-title-safe-zone"
+        - "vertical-safe-zone"
+        - "thumbnail-recognizability"
+        - "mobile-first-legibility"
+        - "ugc-authenticity"
+    expected:
+      required_sections:
+        - "Web Prompt"
+        - "Image Input Fields"
+      must_include:
+        - "safe_zone"
+        - "thumbnail"
+        - "vertical-safe-zone"
+      golden_output: "examples/golden/video-cover-example-golden.md"
+    type: "standard"
+    notes: "验证平台化封面场景默认输出短格式模型可用结果。"
+  - id: "derive-scenarios-from-design-goal-brief"
+    goal: "在只有设计目标简报时，默认输出推荐路线与该路线的模型可用结果"
+    input:
+      request_type: "design_goal_brief"
+      design_goal: "建立可从电商商品主图延展到社媒封面与局部编辑的稳定视觉基线"
+      shared_subject: "护肤精华玻璃瓶"
+      success_criteria:
+        - "产品跨场景保持可识别"
+        - "默认起点执行风险低"
+      shared_must_keep:
+        - "瓶身轮廓"
+        - "标签文字"
+      shared_must_avoid:
+        - "包装改形"
+        - "硬广感"
+      shared_soft_preferences:
+        - "clean premium polish"
+      candidate_scene_cards:
+        - "product-hero"
+        - "instagram-reel-cover"
+        - "campaign-key-visual"
+      candidate_platform_surfaces:
+        - "ecommerce-hero"
+        - "instagram-reel-cover"
+        - "general"
+      comparison_focus:
+        - "transferability"
+        - "execution_risk"
+        - "evidence_fidelity"
+      required_scenarios: 3
+      baseline_bias: "prefer the most reusable upstream route"
+    expected:
+      required_sections:
+        - "Recommended Route"
+        - "Why This Route"
+        - "Web Prompt"
+        - "Image Input Fields"
+      must_include:
+        - "Ranked Order"
+        - "Decision Evidence"
+        - "product-hero-baseline"
+        - "瓶身轮廓"
+        - "标签文字"
+        - "thumbnail"
+        - "Change Only"
+      ranking_expectation:
+        winner: "product-hero-baseline"
+        ordered_candidates:
+          - "product-hero-baseline"
+          - "reel-cover-extension"
+          - "localized-edit-anchor"
+      evidence_expectation:
+        required_winner_evidence:
+          - "transferability"
+          - "execution risk"
+          - "瓶身轮廓"
+          - "标签文字"
+      golden_output: "examples/golden/design-goal-brief-example-golden.md"
+    type: "standard"
+    notes: "验证设计目标简报会先派生场景，再返回推荐路线的模型可用结果。"
+  - id: "design-goal-scenario-validation-report"
+    goal: "在字段齐全且用户要求跨场景交叉检验时默认输出推荐路线与该路线的模型可用结果"
+    input:
+      design_goal: "建立可从电商商品主图延展到社媒封面与局部编辑的稳定视觉基线"
+      scenario_briefs:
+        - scenario_id: "product-hero-baseline"
+          task_mode: "new-generate"
+          scene_card: "product-hero"
+          platform_surface: "ecommerce-hero"
+          delivery_goal: "电商商品主图"
+          subject: "护肤精华玻璃瓶"
+          success_criteria:
+            - "瓶身轮廓稳定"
+            - "标签文字清晰"
+          must_keep:
+            - "瓶身轮廓"
+            - "标签文字"
+          must_avoid:
+            - "新增道具"
+            - "包装改形"
+        - scenario_id: "reel-cover-extension"
+          task_mode: "new-generate"
+          scene_card: "instagram-reel-cover"
+          platform_surface: "instagram-reel-cover"
+          delivery_goal: "Instagram reel 封面"
+          subject: "同款护肤精华的前后对比封面"
+          success_criteria:
+            - "缩略图里主体可识别"
+            - "标题区安全"
+          must_keep:
+            - "同款瓶身识别度"
+          must_avoid:
+            - "标题被裁切"
+            - "投流广告感"
+          modifiers:
+            - "cover-title-safe-zone"
+            - "vertical-safe-zone"
+            - "thumbnail-recognizability"
+            - "mobile-first-legibility"
+        - scenario_id: "localized-edit-anchor"
+          task_mode: "localized-edit"
+          scene_card: "campaign-key-visual"
+          platform_surface: "general"
+          delivery_goal: "已有活动海报局部年份修改"
+          subject: "活动年份文本"
+          success_criteria:
+            - "只改年份"
+            - "其余内容不漂移"
+          must_avoid:
+            - "重做版式"
+            - "改变产品图"
+          edit_scope:
+            change_only:
+              - "将 2025 改为 2026"
+            preserve:
+              - "构图"
+              - "配色"
+              - "产品主体"
+              - "品牌标志"
+              - "其余文字"
+            source_role: "source image is the fidelity anchor"
+            surgical_or_flexible: "surgical"
+    expected:
+      required_sections:
+        - "Recommended Route"
+        - "Why This Route"
+        - "Web Prompt"
+        - "Image Input Fields"
+      must_include:
+        - "Ranked Order"
+        - "Decision Evidence"
+        - "product-hero-baseline"
+        - "瓶身轮廓"
+        - "标签文字"
+        - "safe zone"
+        - "thumbnail"
+        - "Change Only"
+        - "source image"
+      ranking_expectation:
+        winner: "product-hero-baseline"
+        ordered_candidates:
+          - "product-hero-baseline"
+          - "reel-cover-extension"
+          - "localized-edit-anchor"
+      evidence_expectation:
+        required_winner_evidence:
+          - "lowest execution risk"
+          - "瓶身轮廓"
+          - "标签文字"
+      golden_output: "examples/golden/design-goal-scenario-validation-golden.md"
+    type: "standard"
+    notes: "验证完整场景输入默认返回推荐路线的模型可用结果，而不是长报告。"
+  - id: "missing-fields-text-heavy-poster"
+    goal: "在缺少精确文案时输出缺失字段结果，而不是半成品提示词"
+    input:
+      task_mode: "text-language-edit"
+      scene_card: "campaign-key-visual"
+      platform_surface: "ecommerce-hero"
+      delivery_goal: "电商活动页头图海报"
+      subject: "新品咖啡豆促销海报"
+      success_criteria:
+        - "整体高级且克制"
+    expected:
+      required_sections:
+        - "Missing Fields"
+        - "Why They Matter"
+        - "Next Input Template"
+      must_include:
+        - "exact_text"
+        - "text hierarchy"
+        - "rewrite allowance"
+      must_not_include:
+        - "Web Prompt"
+        - "Image Input Fields"
+      golden_output: "examples/golden/missing-exact-text-golden.md"
+    type: "boundary"
+    notes: "验证文本密集型请求缺少 exact_text 时进入缺失字段输出。"
+  - id: "missing-fields-edit-boundary"
+    goal: "在局部编辑缺少 change_only 与 preserve 边界时输出缺失字段结果"
+    input:
+      task_mode: "localized-edit"
+      scene_card: "campaign-key-visual"
+      platform_surface: "general"
+      delivery_goal: "修改活动海报年份"
+      subject: "现有海报上的年份文本"
+    expected:
+      required_sections:
+        - "Missing Fields"
+        - "Why They Matter"
+        - "Next Input Template"
+      must_include:
+        - "edit_scope.change_only"
+        - "edit_scope.preserve"
+        - "source image"
+      must_not_include:
+        - "Web Prompt"
+        - "Image Input Fields"
+      golden_output: "examples/golden/missing-edit-boundary-golden.md"
+    type: "boundary"
+    notes: "验证局部编辑边界不足时先索取关键信息。"
+  - id: "expanded-single-image-package"
+    goal: "在用户显式要求完整包时输出 expanded 单图提示词包"
+    input:
+      output_mode: "expanded"
+      task_mode: "new-generate"
+      scene_card: "instagram-reel-cover"
+      platform_surface: "instagram-reel-cover"
+      delivery_goal: "Instagram reel 封面"
+      subject: "收纳改造前后对比"
+      must_keep:
+        - "改造前后差异一眼可见"
+      must_avoid:
+        - "投流广告感"
+        - "标题区被裁切"
+      modifiers:
+        - "cover-title-safe-zone"
+        - "vertical-safe-zone"
+        - "thumbnail-recognizability"
+        - "mobile-first-legibility"
+        - "ugc-authenticity"
+    expected:
+      required_sections:
+        - "Task Summary"
+        - "Main Prompt"
+        - "Hard Constraint Block"
+        - "Soft Preference Block"
+        - "Parameter Suggestions"
+        - "Risk Notes"
+        - "Iteration Patches"
+        - "Acceptance Checklist"
+      must_include:
+        - "Safe Zone"
+        - "thumbnail"
+        - "mobile"
+      must_not_include:
+        - "Web Prompt"
+        - "Image Input Fields"
+      golden_output: "examples/golden/expanded-single-image-example-golden.md"
+    type: "standard"
+    notes: "验证用户显式要求完整包时不会继续输出默认短版。"
+  - id: "expanded-design-goal-report"
+    goal: "在用户显式要求完整报告时输出 expanded 场景验证报告"
+    input:
+      request_type: "design_goal_brief"
+      output_mode: "expanded"
+      design_goal: "建立可从电商商品主图延展到社媒封面的稳定视觉基线"
+      shared_subject: "护肤精华玻璃瓶"
+      success_criteria:
+        - "产品跨场景保持可识别"
+        - "默认起点执行风险低"
+      shared_must_keep:
+        - "瓶身轮廓"
+        - "标签文字"
+      shared_must_avoid:
+        - "包装改形"
+      candidate_scene_cards:
+        - "product-hero"
+        - "instagram-reel-cover"
+        - "campaign-key-visual"
+      candidate_platform_surfaces:
+        - "ecommerce-hero"
+        - "instagram-reel-cover"
+        - "general"
+      comparison_focus:
+        - "transferability"
+        - "execution_risk"
+        - "evidence_fidelity"
+      required_scenarios: 3
+    expected:
+      required_sections:
+        - "Design Goal"
+        - "Scenario Matrix"
+        - "Scenario Samples"
+        - "Cross-Check Findings"
+        - "Recommended Baseline"
+        - "Failure Risks"
+        - "Next Patches"
+        - "Acceptance Checklist"
+      must_include:
+        - "Scenario Source"
+        - "Ranked Order"
+        - "Decision Evidence"
+        - "product-hero-baseline"
+      must_not_include:
+        - "Recommended Route"
+        - "Web Prompt"
+        - "Image Input Fields"
+      golden_output: "examples/golden/expanded-design-goal-example-golden.md"
+    type: "standard"
+    notes: "验证显式 expanded 设计目标请求会回到完整长报告。"

@@ -1,0 +1,135 @@
+round:
+  id: round-4
+  title: "live-like overload（类真实超载）"
+  amplification:
+    versus_design_target:
+      coverage_multiplier: 4.2
+      functional_strength_multiplier: 4.0
+  goals:
+    - "验证端到端生成器在长而脏、冲突多、治理重的输入上仍能产出完整技能包。"
+    - "把 trigger（触发）、openai.yaml（界面元数据）、regression（回归） 和 aggregate（聚合） 一起纳入主链路。"
+    - "确保所有主要产物通过语义检查，而不是只过文件存在检查。"
+
+cases:
+  - id: live-like-generate
+    generator: end_to_end
+    input_file: ../case-inputs/round-4-generate.yaml
+    mode: generate
+    skill_name: federated-incident-governor
+    request_summary: "Generate a reusable federated incident-governor skill from long, messy, multilingual, policy-heavy inputs with contradictory constraints."
+    score_input: ../score-inputs/round-4-generate.yaml
+    expected_files:
+      - request.md
+      - skill-brief.md
+      - skill-scorecard.md
+      - skill-score-summary.yaml
+      - iteration-backlog.md
+      - experience-ledger.yaml
+      - baseline-comparison.md
+      - run-manifest.yaml
+    semantic_required_files:
+      - request.md
+      - skill-brief.md
+      - iteration-backlog.md
+      - experience-ledger.yaml
+      - baseline-comparison.md
+      - run-manifest.yaml
+      - skill-score-summary.yaml
+
+  - id: live-like-iterate
+    generator: end_to_end
+    input_file: ../case-inputs/round-4-iterate.yaml
+    mode: iterate
+    skill_name: federated-incident-governor
+    request_summary: "Upgrade the federated incident-governor skill after long-form failures, stale outputs, and cross-round regression drift."
+    score_input: ../score-inputs/round-4-iterate.yaml
+    expected_files:
+      - request.md
+      - skill-brief.md
+      - skill-scorecard.md
+      - skill-score-summary.yaml
+      - iteration-backlog.md
+      - experience-ledger.yaml
+      - baseline-comparison.md
+      - failure-attribution.md
+      - run-manifest.yaml
+    semantic_required_files:
+      - request.md
+      - skill-brief.md
+      - iteration-backlog.md
+      - experience-ledger.yaml
+      - baseline-comparison.md
+      - failure-attribution.md
+      - run-manifest.yaml
+      - skill-score-summary.yaml
+
+  - id: live-like-model-upgrade
+    generator: end_to_end
+    input_file: ../case-inputs/round-4-model-upgrade.yaml
+    mode: model-upgrade
+    skill_name: federated-incident-governor
+    request_summary: "After another model upgrade, simplify the federated incident-governor skill while preserving contradictory constraints, governance boundaries, and UTF-8 safety."
+    score_input: ../score-inputs/round-4-model-upgrade.yaml
+    expected_files:
+      - request.md
+      - skill-brief.md
+      - skill-scorecard.md
+      - skill-score-summary.yaml
+      - iteration-backlog.md
+      - experience-ledger.yaml
+      - baseline-comparison.md
+      - model-upgrade-note.md
+      - run-manifest.yaml
+    semantic_required_files:
+      - request.md
+      - skill-brief.md
+      - iteration-backlog.md
+      - experience-ledger.yaml
+      - baseline-comparison.md
+      - model-upgrade-note.md
+      - run-manifest.yaml
+      - skill-score-summary.yaml
+
+trigger_eval:
+  file: ../trigger-evals.yaml
+  thresholds:
+    precision: 0.9
+    recall: 0.85
+
+openai_yaml_check:
+  interface:
+    - "display_name=Skill Generator"
+    - "short_description=Generate and upgrade reusable skills"
+    - "default_prompt=Use $skill-generator to turn repeated work, failures, and model changes into a reusable skill package."
+
+telemetry_eval:
+  thresholds:
+    min_case_telemetry_count: 6
+    min_total_wall_clock_ms: 1
+    min_total_created_bytes: 1
+
+skill_validations:
+  - "@skill_root"
+
+previous_round_summary: ../../test-runs/round-3/summary.yaml
+
+round_level_expectations:
+  required_report:
+    - aggregate-report.md
+    - regression-report.md
+    - round-telemetry.yaml
+  required_snippets:
+    aggregate-report.md:
+      - "Round Summary（轮次汇总）"
+      - "pass_rate（通过率）"
+      - "Cases Passed（通过用例）"
+      - "Validation Status（校验状态）"
+      - "total_command_count（总命令数）"
+      - "total_wall_clock_ms（总耗时毫秒）"
+      - "total_created_bytes（总产物字节数）"
+      - "Failures Fixed（已修复失败）"
+      - "Residual Risks（剩余风险）"
+    regression-report.md:
+      - "Fixed Failures（已修复失败）"
+      - "New Failures（新增失败）"
+      - "Persistent Failures（持续失败）"

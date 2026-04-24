@@ -1,0 +1,21 @@
+{
+  "id": "vue_page_merge_local_composable",
+  "prompt": "Decide whether this Vue refund review page should keep its local filter composable or merge it back into the page. Target packages/admin-portal/src/pages/refunds/RefundReviewPage.vue. The composable is only used by this page and only manages local filter refs and computed labels.",
+  "target_area": "packages/admin-portal/src/pages/refunds",
+  "source_paths": [
+    "packages/admin-portal/src/pages/refunds/RefundReviewPage.vue",
+    "packages/admin-portal/src/composables/useRefundReviewFilters.ts",
+    "packages/admin-portal/src/pages/audit/AuditReplayPage.vue"
+  ],
+  "expected_summary": {
+    "strategy": "merge",
+    "repo_shape": "mixed",
+    "artifact_type": "ui-component",
+    "stack": "vue",
+    "confidence": "high",
+    "files": [
+      "packages/admin-portal/src/pages/refunds/RefundReviewPage.vue"
+    ]
+  },
+  "validation_command": "python eval/validate_saved_output.py --case vue_page_merge_local_composable --output outputs/vue_page_merge_local_composable.yaml"
+}

@@ -1,0 +1,40 @@
+{
+  "anchor": {
+    "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+    "file_path": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis/src/app/services/orderApi.ts",
+    "repo_relative_path": "src/app/services/orderApi.ts",
+    "symbol": "",
+    "selection_range": "",
+    "language": "typescript",
+    "role_hint": "source"
+  },
+  "stack": {
+    "stack_family": "typescript",
+    "stack_id": "typescript-stack",
+    "confidence": "medium",
+    "reasons": [
+      "file extension suggests typescript"
+    ],
+    "reference_file": "references/ts-edge-rules.md",
+    "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+    "file_path": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis/src/app/services/orderApi.ts"
+  },
+  "edges": [
+    {
+      "from": "src/app/services/orderApi.ts",
+      "to": "src/app/services/orderApi.ts",
+      "direction": "outbound",
+      "edge_kind": "symbol",
+      "relation_type": "call",
+      "symbol_from": "module",
+      "symbol_to": "buildOrderKey",
+      "evidence_ref": "src/app/services/orderApi.ts:4",
+      "confidence": "low",
+      "resolution": "resolved"
+    }
+  ],
+  "blind_spots": [
+    "TypeScript/Vue runtime reactivity side effects are not fully resolved.",
+    "Framework-specific dependency injection containers are not tracked."
+  ]
+}

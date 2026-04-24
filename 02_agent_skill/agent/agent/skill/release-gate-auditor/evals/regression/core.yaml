@@ -1,0 +1,18 @@
+suite_id: "release-gate-auditor-regression-core"
+cases:
+  - id: "preserve-required-reports"
+    goal: "持续要求 replay_report 与 release_gate 报告存在"
+    input:
+      output_shape: "release_gate_impact"
+    expected:
+      requires_release_reports: true
+    type: "regression"
+    notes: "保护必需报告不退化。"
+  - id: "preserve-no-skip-redline"
+    goal: "持续保持不跳过 corereplay 与 rulepublish 的红线"
+    input:
+      release_process_boundary: true
+    expected:
+      blocks_skip_on_core_processes: true
+    type: "regression"
+    notes: "保护核心发布红线。"

@@ -1,0 +1,43 @@
+cases:
+  - id: generate-new-skill-bundle
+    phase: generate
+    input_summary: "从重复请求与失败样本生成新 skill。"
+    required_artifacts:
+      - skill-brief
+      - skill-bundle
+      - skill-scorecard
+      - baseline-comparison
+      - iteration-backlog
+    assertions:
+      - "必须写出 scope（边界） 与 non-scope（非边界）。"
+      - "必须给出 trigger eval（触发评测） 与 quality eval（质量评测） 计划。"
+      - "必须说明哪些规则来自成功样本，哪些来自失败样本。"
+      - "不得把一次性技巧升级成默认规则。"
+
+  - id: upgrade-existing-skill
+    phase: iterate
+    input_summary: "根据失败簇升级现有 skill。"
+    required_artifacts:
+      - failure-attribution
+      - updated-guardrails
+      - refreshed-evals
+      - skill-scorecard
+      - iteration-backlog
+    assertions:
+      - "必须先做 failure attribution（失败归因），再写修订。"
+      - "必须说明改动落在 description（描述）、正文、references（参考资料） 还是 evals（评测）。"
+      - "必须保留 stable core（稳定内核），不能为修一个样例破坏整体边界。"
+
+  - id: model-upgrade-simplification
+    phase: model-upgrade
+    input_summary: "在模型升级后做技能瘦身。"
+    required_artifacts:
+      - simplification-pass
+      - stable-core
+      - model-sensitive-layer
+      - refreshed-baseline
+      - model-upgrade-note
+    assertions:
+      - "必须删除冗余脚手架，而不是只追加新规则。"
+      - "必须保留安全、契约、验证相关约束。"
+      - "必须记录删减后的 delta（增益） 或成本变化。"

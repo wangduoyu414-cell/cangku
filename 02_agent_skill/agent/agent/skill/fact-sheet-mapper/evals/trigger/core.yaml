@@ -1,0 +1,26 @@
+suite_id: "fact-sheet-mapper-trigger-core"
+cases:
+  - id: "positive-fact-asset-plan"
+    goal: "事实资产映射请求应触发"
+    input: "请基于字段字典和工作簿输出 fact assets 的字段映射与版本绑定方案。"
+    expected: true
+    type: "positive"
+    notes: "典型事实表映射请求。"
+  - id: "positive-version-binding"
+    goal: "事实版本绑定请求应触发"
+    input: "把 D:\\diypc 的 fact workbook、field dictionary 和事实版本绑定要求整理成正式方案。"
+    expected: true
+    type: "positive"
+    notes: "明确指向工作簿、字段字典和版本绑定。"
+  - id: "negative-runtime-decision"
+    goal: "运行时决策请求不应触发"
+    input: "请直接设计运行时事实决策逻辑。"
+    expected: false
+    type: "negative"
+    notes: "这是运行时逻辑请求，不是事实表映射请求。"
+  - id: "negative-generic-summary"
+    goal: "泛化总结请求不应触发"
+    input: "帮我总结一下这份 Excel 表。"
+    expected: false
+    type: "negative"
+    notes: "只有总结，不是正式 fact assets 方案。"

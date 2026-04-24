@@ -1,0 +1,34 @@
+suite_id: "intake-anchor-curator-task-core"
+cases:
+  - id: "standard-generate-intake-plan"
+    goal: "标准路径应生成输入锚点方案"
+    input:
+      baseline: "D:\\diypc\\docs\\核心重写任务04_输入归纳与原话锚点基线.md"
+      task: "task 04"
+    expected:
+      output_sections:
+        - "high_frequency_patterns"
+        - "soft_preference_rules"
+        - "conflict_candidate_rules"
+        - "anchor_binding_rules"
+        - "supplemental_parser_rules"
+    type: "standard"
+    notes: "标准输出形态来自现有脚本和样例。"
+  - id: "boundary-missing-baseline"
+    goal: "缺少输入基线时不能伪造完整方案"
+    input:
+      baseline: ""
+      task: "task 04"
+    expected:
+      must_stop_for_missing_inputs: true
+    type: "boundary"
+    notes: "边界条件是缺少输入基线。"
+  - id: "error-prone-standard-expression-to-llm"
+    goal: "高频标准表达不得默认走 LLM"
+    input:
+      baseline: "D:\\diypc\\docs\\核心重写任务04_输入归纳与原话锚点基线.md"
+      default_llm_route_for_standard_expression: true
+    expected:
+      forbid_standard_expression_default_llm: true
+    type: "error-prone"
+    notes: "这是当前稳定红线。"

@@ -1,0 +1,31 @@
+id: "audit"
+version: "0.3.0"
+owner: "skill-group"
+description: >-
+  Audit Pre-Generation Contracts and Implementation Reports produced by
+  codegen-governance for semantic consistency, whitelist fit, and
+  validation honesty. Does not generate code. Intended as the post-generation
+  sibling skill for the execution-constraint workflow.
+mode: "instruction"
+complexity: "audit"
+delivery_form: "checklist"
+side_effect: "read_only"
+skill_execution_requires:
+  - Read
+  - Glob
+downstream_allowed_tools:
+  - Read
+preferred_over: []
+conflicts_with:
+  - "codegen-governance"
+  # Note: this skill is meant to run AFTER codegen-governance,
+  # not alongside it. They are siblings, not alternatives.
+eval_suite:
+  - "evals/report-quality.json"
+target_languages:
+  - python
+  - go
+  - typescript
+  - javascript
+  - vue
+

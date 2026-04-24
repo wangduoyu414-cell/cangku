@@ -1,0 +1,17 @@
+id: "sample-output-example"
+user_request: |
+  输出一个最小回放方案，至少包含回放集目标、差异维度和质量阈值。
+notes: "这是最小输出骨架示例，用于校准必须存在的核心字段。"
+sample_output:
+  replay_eval_plan:
+    suite_targets:
+      - 'D:\diypc\assets\replay_suite_default'
+    diff_dimensions:
+      - "action_diff"
+      - "primary_recommendation_diff"
+      - "push_type_diff"
+      - "evidence_strength_diff"
+    quality_thresholds:
+      - "主推命中率"
+      - "前三覆盖率"
+      - "解释忠实率"

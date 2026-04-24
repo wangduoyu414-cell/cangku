@@ -1,0 +1,28 @@
+decision:
+  strategy: split
+  target_area: "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-detail/RefundDetailPanel.tsx"
+  repo_shape: feature-first
+  artifact_type: ui-component
+  stack: typescript-javascript
+  files:
+    - path: "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-detail/RefundDetailPanel.tsx"
+      role: "panel-component"
+      responsibility: "Own tab state, loading flow, and refund detail rendering for the feature-local panel."
+      reason: "The panel should stay readable without hiding remote fetch behavior inside the view file."
+    - path: "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-detail/refundDetailApi.ts"
+      role: "feature-api"
+      responsibility: "Own the remote fetch, response decoding, and HTTP failure mapping for refund detail loading."
+      reason: "This is a real API boundary with distinct failure behavior from panel state and rendering."
+  keep_inline:
+    - "RefundDetailTab type"
+    - "currency badge formatter"
+  avoid:
+    - "useRefundDetail.ts"
+    - "refundDetail.types.ts"
+    - "index.ts"
+  why_not_fewer: "Keeping panel state, rendering, and remote fetch behavior in one file would blur a real API boundary and make the detail flow harder to debug."
+  why_not_more: "Beyond the panel and API file, extra hook or types files would mostly add ceremony. The refund-timeline feature is comparison context only and should not leak into the returned plan."
+  risks:
+    - "Keep the exact file anchor literal in target_area instead of broadening it to the parent feature directory."
+    - "If refund detail later adds a second remote boundary or a reusable cache policy, revisit whether the API seam needs a richer adapter split."
+  confidence: high

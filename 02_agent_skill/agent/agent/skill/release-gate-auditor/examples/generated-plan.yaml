@@ -1,0 +1,22 @@
+id: "generated-plan-example"
+user_request: |
+  请基于 D:\diypc 的规则文档和任务 13 基线，输出发布门禁影响、必需报告和阻断项说明。
+notes: "这是现有脚本生成后的目标输出形态示例，用于校准 release_gate_impact 的完整结构。"
+sample_output:
+  release_gate_impact:
+    rules_ref: 'D:\diypc\docs\RULES.md'
+    task13_ref: 'D:\diypc\docs\核心重写任务13_回放评测发布门禁.md'
+    gate_dimensions:
+      - "回放案例失败"
+      - "质量阈值越界"
+      - "静态依赖方向违规"
+      - "降级策略缺失"
+      - "真实运行时指标"
+      - "过渡期旧回放对照结果"
+    required_reports:
+      - "replay_report（回放报告）"
+      - "release_gate（发布门禁报告）"
+    blocking_risks:
+      - "不得跳过 corereplay（核心回放进程）"
+      - "不得跳过 rulepublish（规则发布进程）"
+      - "不得把 replayd（旧回放进程） 当作新核心正式门禁"

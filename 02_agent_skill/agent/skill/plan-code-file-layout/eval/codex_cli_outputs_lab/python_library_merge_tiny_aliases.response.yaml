@@ -1,0 +1,34 @@
+decision:
+  strategy: merge
+  target_area: "skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds"
+  repo_shape: mixed
+  artifact_type: library-module
+  stack: python
+  files:
+    - path: "skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds/hold_reason_labels.py"
+      role: "shared hold reason helper"
+      responsibility: "Own hold reason canonicalization, display label lookup, and the fallback humanization path for unknown values."
+      reason: "The alias map and label builder are one pure in-memory rule set with the same change reason, same tests, and no separate side-effect or reuse boundary."
+    - path: "skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds/partner_export_format.py"
+      role: "partner export row contract"
+      responsibility: "Define the normalized PartnerExportRow shape and the constructor that cleans raw row inputs."
+      reason: "The row contract is the stable surface that the serializer works against, so it is worth keeping visible as its own module."
+    - path: "skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds/partner_export_csv.py"
+      role: "partner CSV adapter"
+      responsibility: "Encode and decode PartnerExportRow values to the partner-facing CSV line format."
+      reason: "CSV parsing and formatting are a real external compatibility boundary with their own failure modes, so this surface deserves its own file."
+  keep_inline:
+    - "Keep the ALIASES and DISPLAY_LABELS mappings in hold_reason_labels.py."
+    - "Keep canonicalize_hold_reason in the same hold reason file unless a second independent consumer appears."
+    - "Keep CSV field ordering and split/join logic inside partner_export_csv.py rather than extracting parser or formatter helpers."
+  avoid:
+    - "Do not keep a standalone hold_reason_aliases.py after the merge."
+    - "Do not add hold_reason_constants.py, hold_reason_mappers.py, or similar naming-only splits."
+    - "Do not add a pass-through partner_export_service.py or shared utils module around the existing export helpers."
+  why_not_fewer: "Do not also collapse the partner export helper into one file. The nearby partner export code already has a stable CSV surface, and keeping the CSV adapter separate from the row contract preserves a real serialization boundary that is useful for debugging and compatibility testing."
+  why_not_more: "Do not keep aliases and labels in separate hold reason modules, and do not split the merged helper further. Those rules change together, are locally scoped, and extra files would only create thin wrappers and cross-file ping-pong."
+  risks:
+    - "If other code imports canonicalize_hold_reason directly from hold_reason_aliases.py, the merge will require import updates or a short compatibility shim."
+    - "If hold reason canonicalization soon gains a second consumer with different output needs, a dedicated normalizer module could become justified later."
+    - "The wider evaluation repository is mixed, so this recommendation follows the stronger local signal from the shared Python subtree and the nearby partner export example."
+  confidence: high

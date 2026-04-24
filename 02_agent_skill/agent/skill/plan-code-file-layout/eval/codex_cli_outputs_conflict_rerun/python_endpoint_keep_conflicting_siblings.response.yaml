@@ -1,0 +1,27 @@
+decision:
+  strategy: keep
+  target_area: services/python-order-api/features/refund-note
+  repo_shape: feature-first
+  artifact_type: service-endpoint
+  stack: python
+  files:
+    - path: services/python-order-api/features/refund-note/note_endpoint.py
+      role: feature endpoint
+      responsibility: "Own payload parsing, request validation, note normalization, preview-label derivation, and response shaping for the refund note preview flow."
+      reason: "This slice has one cohesive change reason and no separate database, network, or framework adapter seam. Keeping the full preview path in one module preserves the common debug path in a single read."
+  keep_inline:
+    - "RefundNoteRequest and RefundNoteResponse dataclasses"
+    - "_validate_request"
+    - "note normalization and preview_label formatting"
+  avoid:
+    - "note_service.py as a thin pass-through wrapper"
+    - "note_repository.py or gateway modules before a real IO boundary exists"
+    - "note_utils.py or common.py for helpers that are only used here"
+    - "a separate DTO/contracts file for request and response shapes that have no second consumer"
+  why_not_fewer: "One production file is already the smallest coherent layout for this slice. Moving the dataclasses or validator into shared helpers would not reduce the boundary; it would only spread local behavior across extra imports."
+  why_not_more: "Splitting now would recreate the thin-hop problem illustrated by nearby refund-audit: there is no independent IO failure mode, reuse seam, or separate test surface yet. If refund-note later grows real persistence or external calls, split at that concrete adapter boundary instead of inserting a local service layer first."
+  risks:
+    - "Broader architecture docs point long-term HTTP transport work toward layered src/app homes, but there is no refund-note-specific migration rule overriding the current local feature layout. A future migration could relocate this slice without changing the keep decision today."
+    - "The requested refunds comparison is only partial in the visible local files: services/python-order-api/features/refunds/quote_endpoint.py still keeps orchestration and real IO inline, so the recommendation relies more on the real-IO heuristic than on a confirmed local split example."
+    - "Reevaluate if refund-note starts persisting notes, calling moderation or policy services, or adding independently testable contract logic; those would be real reasons to split beyond one module."
+  confidence: medium

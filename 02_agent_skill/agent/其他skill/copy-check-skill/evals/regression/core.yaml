@@ -1,0 +1,37 @@
+suite_id: "copy-check-regression-core"
+cases:
+  - id: "regression-no-text-hard-stop"
+    goal: "无文本输入时硬中断"
+    input:
+      copy_text: ""
+      content_slot: "short-video-opening"
+      primary_goal: "增强关注转化"
+    expected:
+      route: "missing-copy-text"
+      forbid_sections:
+        - "主问题层级"
+        - "关键缺陷"
+        - "修正优先级"
+    type: "regression"
+    notes: "确保缺文本时不假诊断。"
+  - id: "regression-no-full-rewrite"
+    goal: "完整首轮输出仍保持诊断器边界"
+    input:
+      copy_text: "自媒体做不起来，是因为你还不够努力。"
+      content_slot: "short-video-opening"
+      primary_goal: "增强关注转化"
+    expected:
+      route: "complete-first-pass"
+      forbid_full_rewrite: true
+    type: "regression"
+    notes: "确保输出不滑向完整代写。"
+  - id: "regression-upward-layer-priority"
+    goal: "优先暴露上层失效"
+    input:
+      copy_text: "努力一点就会有结果。"
+      content_slot: "short-video-opening"
+      primary_goal: "增强信任感"
+    expected:
+      prioritize_higher_layer_over_expression: true
+    type: "regression"
+    notes: "避免把目标或结构问题降级成措辞问题。"

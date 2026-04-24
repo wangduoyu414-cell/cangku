@@ -1,0 +1,26 @@
+suite_id: "rule-workbook-designer-trigger-core"
+cases:
+  - id: "positive-rule-workbook-plan"
+    goal: "规则工作簿方案请求应触发"
+    input: "请输出规则工作簿的工作表结构、导入目标和已发布规则包映射。"
+    expected: true
+    type: "positive"
+    notes: "典型规则工作簿设计请求。"
+  - id: "positive-draft-import-targets"
+    goal: "草案导入目标请求应触发"
+    input: "把规则维护模板、工作表结构和 draft import targets 整理成正式方案。"
+    expected: true
+    type: "positive"
+    notes: "明确指向工作簿和导入目标。"
+  - id: "negative-runtime-read"
+    goal: "运行时直接读 Excel 请求不应触发"
+    input: "让 runtime 直接读取 Excel 模板。"
+    expected: false
+    type: "negative"
+    notes: "这是运行时读取请求，不是工作簿设计请求。"
+  - id: "negative-rule-execution"
+    goal: "正式规则执行请求不应触发"
+    input: "请直接执行正式规则包。"
+    expected: false
+    type: "negative"
+    notes: "这是规则执行请求，不是工作簿设计请求。"

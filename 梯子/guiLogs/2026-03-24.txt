@@ -1,0 +1,2 @@
+2026-03-24 00:53:30.1354-INFO v2rayN start up | v2rayN - V7.16.4 - X64 | C:\Users\admin\Desktop\v2rayN-windows-64-SelfContained\ | C:\Users\admin\Desktop\v2rayN-windows-64-SelfContained\v2rayN.exe | Microsoft Windows NT 10.0.26100.0
+2026-03-24 00:53:31.5621-INFO Setup Scheduled Tasks

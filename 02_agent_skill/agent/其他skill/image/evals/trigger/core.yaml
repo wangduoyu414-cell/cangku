@@ -1,0 +1,56 @@
+suite_id: "gpt-image-2-prompt-structurer-trigger-core"
+cases:
+  - id: "positive-vague-image-request"
+    goal: "当请求是图像生成提示词整理时应触发技能"
+    input: "帮我把这个商品图需求整理成适合 gpt-image-2 的提示词，要求标签文字不能错。"
+    expected: true
+    type: "positive"
+    notes: "明确提到 gpt-image-2、提示词、商品图、精确文字。"
+  - id: "positive-xhs-carousel-sequence-request"
+    goal: "当请求是小红书多页图文的序列提示词整理时应触发技能"
+    input: "帮我把这条小红书图文笔记拆成 6 页的 gpt-image-2 提示词包，封面要有拦停感，内页要统一。"
+    expected: true
+    type: "positive"
+    notes: "明确提到小红书图文、多页、gpt-image-2、封面与内页一致性。"
+  - id: "positive-short-video-cover-request"
+    goal: "当请求是短视频封面或开场帧提示词整理时应触发技能"
+    input: "给我的竖屏短视频做一个 opening hook frame 和 reel cover 的 gpt-image-2 提示词包，要注意标题安全区。"
+    expected: true
+    type: "positive"
+    notes: "明确提到短视频封面、开场钩子帧、标题安全区和 gpt-image-2。"
+  - id: "positive-design-goal-scenario-validation"
+    goal: "当请求要求围绕同一设计目标建立多个场景测试样例并交叉校验时应触发技能"
+    input: "我已经把字段补齐了，帮我围绕同一个设计目标拉 3 个 gpt-image-2 场景测试样例并交叉检验，告诉我哪个场景最稳。"
+    expected: true
+    type: "positive"
+    notes: "明确提到字段齐全、gpt-image-2、多个场景测试样例和交叉检验。"
+  - id: "positive-design-goal-brief-derivation"
+    goal: "当请求只有设计目标但需要先拆成可比较场景时应触发技能"
+    input: "我现在只有一个设计目标，先帮我拆成 3 个可比较场景，再整理成适合 gpt-image-2 的比较报告。"
+    expected: true
+    type: "positive"
+    notes: "明确提到设计目标拆解、gpt-image-2、可比较场景和比较报告。"
+  - id: "negative-api-integration"
+    goal: "当请求是接口接入而非提示词结构化时不应触发技能"
+    input: "帮我写一个调用 OpenAI 图像接口的 Python 脚本，并把返回的图片保存到本地。"
+    expected: false
+    type: "negative"
+    notes: "这是代码与 API 接入任务，不是提示词结构化任务。"
+  - id: "negative-output-review"
+    goal: "当请求只是复盘已生成图片时不应触发技能"
+    input: "帮我看看这批已经生成好的海报哪里不够高级，给点评就行。"
+    expected: false
+    type: "negative"
+    notes: "这是结果复盘，不是提示词结构化。"
+  - id: "negative-style-brainstorm"
+    goal: "当请求只是脑暴美术方向时不应触发技能"
+    input: "给我想 10 个适合护肤品牌的视觉风格方向，不用整理成 gpt-image-2 提示词包。"
+    expected: false
+    type: "negative"
+    notes: "这是风格脑暴，不是可控提示词打包。"
+  - id: "negative-generic-copywriting"
+    goal: "当请求只是普通文案时不应触发技能"
+    input: "帮我写一段新品咖啡豆的电商活动页文案，重点突出柑橘调和浅烘焙。"
+    expected: false
+    type: "negative"
+    notes: "这是普通文案任务，不是图像提示词结构化。"

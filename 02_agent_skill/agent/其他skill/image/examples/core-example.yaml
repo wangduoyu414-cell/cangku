@@ -1,0 +1,4 @@
+id: "text-heavy-poster-control"
+user_request: |
+  我要给 gpt-image-2 写一个海报提示词。画面是新品咖啡豆促销海报，主标题必须是“晨烘限定”，副标题是“单一产地 / 浅烘 / 柑橘调”，不能出现别的文字。整体要高级、克制、适合电商活动页头图。
+notes: "代表 campaign-key-visual（营销主视觉） 场景下的 text-language-edit（文字/语言编辑）需求。重点验证该技能是否会把交付目标、精确文字、禁止项和风格偏好分层输出，而不是只堆风格词。"

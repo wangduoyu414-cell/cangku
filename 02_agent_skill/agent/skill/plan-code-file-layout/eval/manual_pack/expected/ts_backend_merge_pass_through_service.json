@@ -1,0 +1,22 @@
+{
+  "id": "ts_backend_merge_pass_through_service",
+  "prompt": "Decide whether this TypeScript refund audit endpoint should keep its current route and service split or merge them. Target services/node-refund-api/src/features/refund-audit and compare it with the nearby refund-batch feature, where the adapter split is heavier.",
+  "target_area": "services/node-refund-api/src/features/refund-audit",
+  "source_paths": [
+    "services/node-refund-api/src/features/refund-audit/refundAuditRoute.ts",
+    "services/node-refund-api/src/features/refund-audit/refundAuditService.ts",
+    "services/node-refund-api/src/features/refund-batch/refundBatchRoute.ts",
+    "services/node-refund-api/src/features/refund-batch/refundBatchClient.ts"
+  ],
+  "expected_summary": {
+    "strategy": "merge",
+    "repo_shape": "feature-first",
+    "artifact_type": "service-endpoint",
+    "stack": "typescript-javascript",
+    "confidence": "high",
+    "files": [
+      "services/node-refund-api/src/features/refund-audit/refundAuditRoute.ts"
+    ]
+  },
+  "validation_command": "python eval/validate_saved_output.py --case ts_backend_merge_pass_through_service --output outputs/ts_backend_merge_pass_through_service.yaml"
+}

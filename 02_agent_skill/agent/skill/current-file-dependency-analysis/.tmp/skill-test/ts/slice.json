@@ -1,0 +1,105 @@
+{
+  "schema_version": "4.0",
+  "meta": {
+    "target_file": "src/app/application/use-cases.ts",
+    "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+    "stack_family": "typescript",
+    "analysis_mode": "strict",
+    "payload_level": "L1.5",
+    "scope_note": "仅表示可证据回溯的依赖关系，不包含改动建议。"
+  },
+  "reading_guide": {
+    "how_to_read": "先看 confirmed_dependencies，再看 candidate_dependencies，最后看 blind_spots。",
+    "confidence_rule": "confirmed 可作为事实；candidate 仅作线索。",
+    "evidence_rule": "每条关系应提供 evidence_ref 以便回溯。"
+  },
+  "interpretation_note": "本结果是面向当前目标文件的依赖事实说明。confirmed_dependencies 为高置信且有证据的关系；candidate_dependencies 为未完全确认线索，不应作为确定事实。若候选或盲区影响当前任务，请请求更高层级明细（L2/L3）。",
+  "anchor": {
+    "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+    "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/application/use-cases.ts",
+    "repo_relative_path": "src/app/application/use-cases.ts",
+    "symbol": "",
+    "selection_range": "",
+    "language": "typescript",
+    "role_hint": "source"
+  },
+  "confirmed_dependencies": {
+    "direct_outbound": [
+      {
+        "from": "src/app/application/use-cases.ts",
+        "to": "src/app/domain/order-service.ts",
+        "direction": "outbound",
+        "edge_kind": "import",
+        "symbol": "",
+        "evidence_ref": "src/app/application/use-cases.ts:1",
+        "confidence": "high",
+        "resolution": "resolved"
+      }
+    ],
+    "direct_inbound": [
+      {
+        "from": "src/app/entrypoints/main.ts",
+        "to": "src/app/application/use-cases.ts",
+        "direction": "inbound",
+        "edge_kind": "import",
+        "symbol": "",
+        "evidence_ref": "src/app/entrypoints/main.ts:1",
+        "confidence": "high",
+        "resolution": "resolved"
+      }
+    ],
+    "config_links": []
+  },
+  "candidate_dependencies": [],
+  "unresolved_edges": [],
+  "blind_spots": [
+    "Dynamic imports only resolve when the specifier is a string literal.",
+    "Context links are search-based and may miss framework-specific runtime wiring.",
+    "TypeScript/Vue runtime reactivity side effects are not fully resolved.",
+    "Framework-specific dependency injection containers are not tracked."
+  ],
+  "relation_summary": {
+    "confirmed_count": 2,
+    "candidate_count": 4,
+    "outbound_count": 1,
+    "inbound_count": 1,
+    "config_link_count": 0,
+    "unresolved_count": 0
+  },
+  "budget_meta": {
+    "token_estimate": 671,
+    "max_token_estimate": 3000,
+    "truncated": false,
+    "next_level_available": true,
+    "budget_note": "如需更多细节，请拉取 L2/L3 或 deep index，不在当前窗口展开。"
+  },
+  "pipeline_status": {
+    "cycle_detection": "success",
+    "impact_estimation": "success",
+    "build_integration": "success",
+    "overall": "success"
+  },
+  "dependency_cycles": [],
+  "change_impact": {
+    "anchor": "src/app/application/use-cases.ts",
+    "impact_summary": {
+      "total_impacted": 1,
+      "direct_consumers": 1,
+      "indirect_consumers": 0,
+      "max_depth_reached": 1,
+      "depth_limit": 3,
+      "depth_limited": false
+    },
+    "high_risk_consumers": [],
+    "all_impacted": [
+      {
+        "file": "src/app/entrypoints/main.ts",
+        "impact_depth": 1,
+        "impact_type": "internal",
+        "impact_score": 3.5,
+        "is_direct_consumer": true
+      }
+    ]
+  },
+  "build_targets": []
+}

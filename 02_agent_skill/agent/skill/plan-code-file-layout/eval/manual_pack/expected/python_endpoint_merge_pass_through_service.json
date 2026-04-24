@@ -1,0 +1,22 @@
+{
+  "id": "python_endpoint_merge_pass_through_service",
+  "prompt": "Decide whether this Python refund audit endpoint should keep its current handler and service split or merge them. Target services/python-order-api/features/refund-audit and compare it with the nearby refunds and refund-status features.",
+  "target_area": "services/python-order-api/features/refund-audit",
+  "source_paths": [
+    "services/python-order-api/features/refund-audit/audit_handler.py",
+    "services/python-order-api/features/refund-audit/audit_service.py",
+    "services/python-order-api/features/refunds/quote_endpoint.py",
+    "services/python-order-api/features/refund-status/status_endpoint.py"
+  ],
+  "expected_summary": {
+    "strategy": "merge",
+    "repo_shape": "feature-first",
+    "artifact_type": "service-endpoint",
+    "stack": "python",
+    "confidence": "high",
+    "files": [
+      "services/python-order-api/features/refund-audit/audit_handler.py"
+    ]
+  },
+  "validation_command": "python eval/validate_saved_output.py --case python_endpoint_merge_pass_through_service --output outputs/python_endpoint_merge_pass_through_service.yaml"
+}

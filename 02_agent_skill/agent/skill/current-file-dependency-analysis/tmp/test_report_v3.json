@@ -1,0 +1,996 @@
+{
+  "log": [
+    "=== py1: src/app/interfaces/order_controller.py ===",
+    "[py1] anchor: running resolve_anchor.py",
+    "[py1] anchor: rc=0",
+    "[py1] anchor: output_exists=True",
+    "[py1] stack: running detect_stack.py",
+    "[py1] stack: rc=0",
+    "[py1] stack: output_exists=True",
+    "[py1] code: running collect_code_edges.py",
+    "[py1] code: rc=0",
+    "[py1] code: output_exists=True",
+    "[py1] symbol: running collect_symbol_edges.py",
+    "[py1] symbol: rc=0",
+    "[py1] symbol: output_exists=True",
+    "[py1] context: running collect_context_edges.py",
+    "[py1] context: rc=0",
+    "[py1] context: output_exists=True",
+    "[py1] slice: running build_slice.py",
+    "[py1] slice: rc=0",
+    "[py1] slice: output_exists=True",
+    "[py1] verify: running verify_claims.py",
+    "[py1] verify: rc=0",
+    "[py1] verify: output_exists=True",
+    "[py1] SUMMARY: target=src/app/interfaces/order_controller.py",
+    "[py1] SUMMARY: confirmed out=2, in=0, config=0",
+    "[py1] SUMMARY: cycles=0, impact=0, targets=0, pipeline=success",
+    "[py1] SUMMARY: schema=4.3, verify=pass",
+    "=== ts1: src/app/services/orderApi.ts ===",
+    "[ts1] anchor: running resolve_anchor.py",
+    "[ts1] anchor: rc=0",
+    "[ts1] anchor: output_exists=True",
+    "[ts1] stack: running detect_stack.py",
+    "[ts1] stack: rc=0",
+    "[ts1] stack: output_exists=True",
+    "[ts1] code: running collect_code_edges.py",
+    "[ts1] code: rc=0",
+    "[ts1] code: output_exists=True",
+    "[ts1] symbol: running collect_symbol_edges.py",
+    "[ts1] symbol: rc=0",
+    "[ts1] symbol: output_exists=True",
+    "[ts1] context: running collect_context_edges.py",
+    "[ts1] context: rc=0",
+    "[ts1] context: output_exists=True",
+    "[ts1] slice: running build_slice.py",
+    "[ts1] slice: rc=0",
+    "[ts1] slice: output_exists=True",
+    "[ts1] verify: running verify_claims.py",
+    "[ts1] verify: rc=0",
+    "[ts1] verify: output_exists=True",
+    "[ts1] SUMMARY: target=src/app/services/orderApi.ts",
+    "[ts1] SUMMARY: confirmed out=1, in=0, config=0",
+    "[ts1] SUMMARY: cycles=0, impact=0, targets=0, pipeline=success",
+    "[ts1] SUMMARY: schema=4.3, verify=pass",
+    "=== go1: src/app/entrypoints/main.go ===",
+    "[go1] anchor: running resolve_anchor.py",
+    "[go1] anchor: rc=0",
+    "[go1] anchor: output_exists=True",
+    "[go1] stack: running detect_stack.py",
+    "[go1] stack: rc=0",
+    "[go1] stack: output_exists=True",
+    "[go1] code: running collect_code_edges.py",
+    "[go1] code: rc=0",
+    "[go1] code: output_exists=True",
+    "[go1] symbol: running collect_symbol_edges.py",
+    "[go1] symbol: rc=0",
+    "[go1] symbol: output_exists=True",
+    "[go1] context: running collect_context_edges.py",
+    "[go1] context: rc=0",
+    "[go1] context: output_exists=True",
+    "[go1] slice: running build_slice.py",
+    "[go1] slice: rc=0",
+    "[go1] slice: output_exists=True",
+    "[go1] verify: running verify_claims.py",
+    "[go1] verify: rc=0",
+    "[go1] verify: output_exists=True",
+    "[go1] SUMMARY: target=src/app/entrypoints/main.go",
+    "[go1] SUMMARY: confirmed out=0, in=0, config=0",
+    "[go1] SUMMARY: cycles=0, impact=0, targets=0, pipeline=success",
+    "[go1] SUMMARY: schema=4.3, verify=pass"
+  ],
+  "tests": {
+    "py1": {
+      "file": "src/app/interfaces/order_controller.py",
+      "language": "python",
+      "stages": {
+        "anchor": {
+          "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+          "file_path": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis/src/app/interfaces/order_controller.py",
+          "repo_relative_path": "src/app/interfaces/order_controller.py",
+          "symbol": "",
+          "selection_range": "",
+          "language": "python",
+          "role_hint": "source"
+        },
+        "stack": {
+          "stack_family": "python",
+          "stack_id": "python-stack",
+          "confidence": "medium",
+          "reasons": [
+            "file extension suggests python"
+          ],
+          "reference_file": "references/py-edge-rules.md",
+          "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+          "file_path": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis/src/app/interfaces/order_controller.py"
+        },
+        "code": {
+          "anchor": {
+            "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+            "file_path": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis/src/app/interfaces/order_controller.py",
+            "repo_relative_path": "src/app/interfaces/order_controller.py",
+            "symbol": "",
+            "selection_range": "",
+            "language": "python",
+            "role_hint": "source"
+          },
+          "stack": {
+            "stack_family": "python",
+            "stack_id": "python-stack",
+            "confidence": "medium",
+            "reasons": [
+              "file extension suggests python"
+            ],
+            "reference_file": "references/py-edge-rules.md",
+            "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+            "file_path": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis/src/app/interfaces/order_controller.py"
+          },
+          "edges": [
+            {
+              "from": "src/app/interfaces/order_controller.py",
+              "to": "external:__future__",
+              "direction": "outbound",
+              "edge_kind": "import",
+              "symbol": "",
+              "evidence_ref": "src/app/interfaces/order_controller.py:1",
+              "confidence": "medium",
+              "resolution": "resolved"
+            },
+            {
+              "from": "src/app/interfaces/order_controller.py",
+              "to": "src/app/application/use_cases.py",
+              "direction": "outbound",
+              "edge_kind": "import",
+              "symbol": "",
+              "evidence_ref": "src/app/interfaces/order_controller.py:3",
+              "confidence": "high",
+              "resolution": "resolved"
+            },
+            {
+              "from": "src/app/interfaces/order_controller.py",
+              "to": "src/app/interfaces/base_controller.py",
+              "direction": "outbound",
+              "edge_kind": "import",
+              "symbol": "",
+              "evidence_ref": "src/app/interfaces/order_controller.py:4",
+              "confidence": "high",
+              "resolution": "resolved"
+            }
+          ],
+          "blind_spots": [
+            "Runtime imports through importlib are not statically resolved."
+          ]
+        },
+        "symbol": {
+          "anchor": {
+            "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+            "file_path": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis/src/app/interfaces/order_controller.py",
+            "repo_relative_path": "src/app/interfaces/order_controller.py",
+            "symbol": "",
+            "selection_range": "",
+            "language": "python",
+            "role_hint": "source"
+          },
+          "stack": {
+            "stack_family": "python",
+            "stack_id": "python-stack",
+            "confidence": "medium",
+            "reasons": [
+              "file extension suggests python"
+            ],
+            "reference_file": "references/py-edge-rules.md",
+            "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+            "file_path": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis/src/app/interfaces/order_controller.py"
+          },
+          "edges": [
+            {
+              "from": "src/app/interfaces/order_controller.py",
+              "to": "src/app/interfaces/order_controller.py",
+              "direction": "outbound",
+              "edge_kind": "symbol",
+              "relation_type": "inherits",
+              "symbol_from": "OrderController",
+              "symbol_to": "BaseController",
+              "evidence_ref": "src/app/interfaces/order_controller.py:7",
+              "confidence": "high",
+              "resolution": "resolved"
+            },
+            {
+              "from": "src/app/interfaces/order_controller.py",
+              "to": "src/app/interfaces/order_controller.py",
+              "direction": "outbound",
+              "edge_kind": "symbol",
+              "relation_type": "call",
+              "symbol_from": "create",
+              "symbol_to": "create_order",
+              "evidence_ref": "src/app/interfaces/order_controller.py:9",
+              "confidence": "low",
+              "resolution": "resolved"
+            },
+            {
+              "from": "src/app/interfaces/order_controller.py",
+              "to": "src/app/interfaces/order_controller.py",
+              "direction": "outbound",
+              "edge_kind": "symbol",
+              "relation_type": "call",
+              "symbol_from": "create",
+              "symbol_to": "ok",
+              "evidence_ref": "src/app/interfaces/order_controller.py:10",
+              "confidence": "low",
+              "resolution": "resolved"
+            }
+          ],
+          "blind_spots": [
+            "Python dynamic dispatch (monkey patching) is not fully resolved.",
+            "Framework magic via decorators that auto-wire dependencies is not covered."
+          ]
+        },
+        "context": {
+          "anchor": {
+            "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+            "file_path": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis/src/app/interfaces/order_controller.py",
+            "repo_relative_path": "src/app/interfaces/order_controller.py",
+            "symbol": "",
+            "selection_range": "",
+            "language": "python",
+            "role_hint": "source"
+          },
+          "stack": {
+            "stack_family": "python",
+            "stack_id": "python-stack",
+            "confidence": "medium",
+            "reasons": [
+              "file extension suggests python"
+            ],
+            "reference_file": "references/py-edge-rules.md",
+            "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+            "file_path": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis/src/app/interfaces/order_controller.py"
+          },
+          "edges": [],
+          "blind_spots": [
+            "Context links are search-based and may miss framework-specific runtime wiring."
+          ]
+        },
+        "slice": {
+          "schema_version": "4.3",
+          "target": {
+            "file": "src/app/interfaces/order_controller.py",
+            "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+            "stack_family": "python",
+            "analysis_mode": "strict",
+            "payload_level": "L1.5",
+            "graph_scope": "anchor_local_confirmed_file_edges"
+          },
+          "hard_facts": {
+            "file_edges": {
+              "outbound": [
+                {
+                  "from": "src/app/interfaces/order_controller.py",
+                  "to": "src/app/application/use_cases.py",
+                  "direction": "outbound",
+                  "edge_kind": "import",
+                  "evidence_ref": "src/app/interfaces/order_controller.py:3",
+                  "confidence": "high",
+                  "resolution": "resolved"
+                },
+                {
+                  "from": "src/app/interfaces/order_controller.py",
+                  "to": "src/app/interfaces/base_controller.py",
+                  "direction": "outbound",
+                  "edge_kind": "import",
+                  "evidence_ref": "src/app/interfaces/order_controller.py:4",
+                  "confidence": "high",
+                  "resolution": "resolved"
+                }
+              ]
+            }
+          },
+          "supporting_signals": {
+            "candidate_file_edges": [
+              {
+                "from": "src/app/interfaces/order_controller.py",
+                "to": "external:__future__",
+                "direction": "outbound",
+                "edge_kind": "import",
+                "evidence_ref": "src/app/interfaces/order_controller.py:1",
+                "confidence": "medium",
+                "resolution": "resolved",
+                "unconfirmed_reason": "lower_confidence_edge"
+              }
+            ],
+            "symbol_relations": [
+              {
+                "from": "src/app/interfaces/order_controller.py",
+                "to": "src/app/interfaces/order_controller.py",
+                "direction": "outbound",
+                "edge_kind": "symbol",
+                "relation_type": "call",
+                "symbol_from": "create",
+                "symbol_to": "ok",
+                "evidence_ref": "src/app/interfaces/order_controller.py:10",
+                "confidence": "low",
+                "resolution": "resolved"
+              },
+              {
+                "from": "src/app/interfaces/order_controller.py",
+                "to": "src/app/interfaces/order_controller.py",
+                "direction": "outbound",
+                "edge_kind": "symbol",
+                "relation_type": "inherits",
+                "symbol_from": "OrderController",
+                "symbol_to": "BaseController",
+                "evidence_ref": "src/app/interfaces/order_controller.py:7",
+                "confidence": "high",
+                "resolution": "resolved"
+              },
+              {
+                "from": "src/app/interfaces/order_controller.py",
+                "to": "src/app/interfaces/order_controller.py",
+                "direction": "outbound",
+                "edge_kind": "symbol",
+                "relation_type": "call",
+                "symbol_from": "create",
+                "symbol_to": "create_order",
+                "evidence_ref": "src/app/interfaces/order_controller.py:9",
+                "confidence": "low",
+                "resolution": "resolved"
+              }
+            ],
+            "blind_spots": [
+              "Runtime imports through importlib are not statically resolved.",
+              "Context links are search-based and may miss framework-specific runtime wiring.",
+              "Python dynamic dispatch (monkey patching) is not fully resolved.",
+              "Framework magic via decorators that auto-wire dependencies is not covered."
+            ]
+          },
+          "estimated_impact": {
+            "graph_scope": "repo_code_graph_plus_confirmed_context",
+            "expansion_status": "repo_scan_success",
+            "summary": {
+              "total_impacted": 0,
+              "direct_consumers": 0,
+              "indirect_consumers": 0,
+              "max_depth_reached": 0,
+              "depth_limit": 3,
+              "depth_limited": false
+            },
+            "impact_confidence": "high",
+            "limitations": [
+              "Direct impact uses confirmed file-level edges and any confirmed config/build links already present in the slice.",
+              "Transitive impact uses repository-wide confirmed code edges to extend beyond the anchor-local slice when the stack-specific scanner is available."
+            ]
+          },
+          "pipeline_status": {
+            "overall": "success"
+          }
+        },
+        "verify": {
+          "status": "pass",
+          "shape_status": "pass",
+          "verification_scope": "minimized_schema_and_evidence_coverage_only",
+          "capability_status": "unknown",
+          "capability_notes": [
+            "This verifier checks the minimized schema shape and evidence coverage only.",
+            "Use dedicated evals to measure recall, symbol retention, build/config promotion, and impact quality."
+          ],
+          "missing_sections": [],
+          "deprecated_fields_present": [],
+          "missing_evidence": [],
+          "low_confidence_claims": [
+            {
+              "from": "src/app/interfaces/order_controller.py",
+              "to": "src/app/interfaces/order_controller.py",
+              "direction": "outbound",
+              "edge_kind": "symbol",
+              "relation_type": "call",
+              "symbol_from": "create",
+              "symbol_to": "ok",
+              "evidence_ref": "src/app/interfaces/order_controller.py:10",
+              "confidence": "low",
+              "resolution": "resolved"
+            },
+            {
+              "from": "src/app/interfaces/order_controller.py",
+              "to": "src/app/interfaces/order_controller.py",
+              "direction": "outbound",
+              "edge_kind": "symbol",
+              "relation_type": "call",
+              "symbol_from": "create",
+              "symbol_to": "create_order",
+              "evidence_ref": "src/app/interfaces/order_controller.py:9",
+              "confidence": "low",
+              "resolution": "resolved"
+            }
+          ]
+        }
+      },
+      "summary": {
+        "schema_version": "4.3",
+        "target_file": "src/app/interfaces/order_controller.py",
+        "confirmed_outbound_count": 2,
+        "confirmed_inbound_count": 0,
+        "config_link_count": 0,
+        "build_target_count": 0,
+        "cycle_count": 0,
+        "total_impacted": 0,
+        "pipeline_overall": "success",
+        "verify_status": "pass"
+      }
+    },
+    "ts1": {
+      "file": "src/app/services/orderApi.ts",
+      "language": "typescript",
+      "stages": {
+        "anchor": {
+          "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+          "file_path": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis/src/app/services/orderApi.ts",
+          "repo_relative_path": "src/app/services/orderApi.ts",
+          "symbol": "",
+          "selection_range": "",
+          "language": "typescript",
+          "role_hint": "source"
+        },
+        "stack": {
+          "stack_family": "typescript",
+          "stack_id": "typescript-stack",
+          "confidence": "medium",
+          "reasons": [
+            "file extension suggests typescript"
+          ],
+          "reference_file": "references/ts-edge-rules.md",
+          "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+          "file_path": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis/src/app/services/orderApi.ts"
+        },
+        "code": {
+          "anchor": {
+            "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+            "file_path": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis/src/app/services/orderApi.ts",
+            "repo_relative_path": "src/app/services/orderApi.ts",
+            "symbol": "",
+            "selection_range": "",
+            "language": "typescript",
+            "role_hint": "source"
+          },
+          "stack": {
+            "stack_family": "typescript",
+            "stack_id": "typescript-stack",
+            "confidence": "medium",
+            "reasons": [
+              "file extension suggests typescript"
+            ],
+            "reference_file": "references/ts-edge-rules.md",
+            "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+            "file_path": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis/src/app/services/orderApi.ts"
+          },
+          "edges": [
+            {
+              "from": "src/app/services/orderApi.ts",
+              "to": "src/app/domain/order-service.ts",
+              "direction": "outbound",
+              "edge_kind": "import",
+              "symbol": "",
+              "evidence_ref": "src/app/services/orderApi.ts:1",
+              "confidence": "high",
+              "resolution": "resolved"
+            }
+          ],
+          "blind_spots": [
+            "Dynamic imports only resolve when the specifier is a string literal."
+          ]
+        },
+        "symbol": {
+          "anchor": {
+            "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+            "file_path": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis/src/app/services/orderApi.ts",
+            "repo_relative_path": "src/app/services/orderApi.ts",
+            "symbol": "",
+            "selection_range": "",
+            "language": "typescript",
+            "role_hint": "source"
+          },
+          "stack": {
+            "stack_family": "typescript",
+            "stack_id": "typescript-stack",
+            "confidence": "medium",
+            "reasons": [
+              "file extension suggests typescript"
+            ],
+            "reference_file": "references/ts-edge-rules.md",
+            "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+            "file_path": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis/src/app/services/orderApi.ts"
+          },
+          "edges": [
+            {
+              "from": "src/app/services/orderApi.ts",
+              "to": "src/app/services/orderApi.ts",
+              "direction": "outbound",
+              "edge_kind": "symbol",
+              "relation_type": "call",
+              "symbol_from": "module",
+              "symbol_to": "buildOrderKey",
+              "evidence_ref": "src/app/services/orderApi.ts:4",
+              "confidence": "low",
+              "resolution": "resolved"
+            }
+          ],
+          "blind_spots": [
+            "TypeScript/Vue runtime reactivity side effects are not fully resolved.",
+            "Framework-specific dependency injection containers are not tracked."
+          ]
+        },
+        "context": {
+          "anchor": {
+            "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+            "file_path": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis/src/app/services/orderApi.ts",
+            "repo_relative_path": "src/app/services/orderApi.ts",
+            "symbol": "",
+            "selection_range": "",
+            "language": "typescript",
+            "role_hint": "source"
+          },
+          "stack": {
+            "stack_family": "typescript",
+            "stack_id": "typescript-stack",
+            "confidence": "medium",
+            "reasons": [
+              "file extension suggests typescript"
+            ],
+            "reference_file": "references/ts-edge-rules.md",
+            "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+            "file_path": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis/src/app/services/orderApi.ts"
+          },
+          "edges": [],
+          "blind_spots": [
+            "Context links are search-based and may miss framework-specific runtime wiring."
+          ]
+        },
+        "slice": {
+          "schema_version": "4.3",
+          "target": {
+            "file": "src/app/services/orderApi.ts",
+            "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+            "stack_family": "typescript",
+            "analysis_mode": "strict",
+            "payload_level": "L1.5",
+            "graph_scope": "anchor_local_confirmed_file_edges"
+          },
+          "hard_facts": {
+            "file_edges": {
+              "outbound": [
+                {
+                  "from": "src/app/services/orderApi.ts",
+                  "to": "src/app/domain/order-service.ts",
+                  "direction": "outbound",
+                  "edge_kind": "import",
+                  "evidence_ref": "src/app/services/orderApi.ts:1",
+                  "confidence": "high",
+                  "resolution": "resolved"
+                }
+              ]
+            }
+          },
+          "supporting_signals": {
+            "symbol_relations": [
+              {
+                "from": "src/app/services/orderApi.ts",
+                "to": "src/app/services/orderApi.ts",
+                "direction": "outbound",
+                "edge_kind": "symbol",
+                "relation_type": "call",
+                "symbol_from": "module",
+                "symbol_to": "buildOrderKey",
+                "evidence_ref": "src/app/services/orderApi.ts:4",
+                "confidence": "low",
+                "resolution": "resolved"
+              }
+            ],
+            "blind_spots": [
+              "Dynamic imports only resolve when the specifier is a string literal.",
+              "Context links are search-based and may miss framework-specific runtime wiring.",
+              "TypeScript/Vue runtime reactivity side effects are not fully resolved.",
+              "Framework-specific dependency injection containers are not tracked."
+            ]
+          },
+          "estimated_impact": {
+            "graph_scope": "repo_code_graph_plus_confirmed_context",
+            "expansion_status": "repo_scan_success",
+            "summary": {
+              "total_impacted": 0,
+              "direct_consumers": 0,
+              "indirect_consumers": 0,
+              "max_depth_reached": 0,
+              "depth_limit": 3,
+              "depth_limited": false
+            },
+            "impact_confidence": "high",
+            "limitations": [
+              "Direct impact uses confirmed file-level edges and any confirmed config/build links already present in the slice.",
+              "Transitive impact uses repository-wide confirmed code edges to extend beyond the anchor-local slice when the stack-specific scanner is available."
+            ]
+          },
+          "pipeline_status": {
+            "overall": "success"
+          }
+        },
+        "verify": {
+          "status": "pass",
+          "shape_status": "pass",
+          "verification_scope": "minimized_schema_and_evidence_coverage_only",
+          "capability_status": "unknown",
+          "capability_notes": [
+            "This verifier checks the minimized schema shape and evidence coverage only.",
+            "Use dedicated evals to measure recall, symbol retention, build/config promotion, and impact quality."
+          ],
+          "missing_sections": [],
+          "deprecated_fields_present": [],
+          "missing_evidence": [],
+          "low_confidence_claims": [
+            {
+              "from": "src/app/services/orderApi.ts",
+              "to": "src/app/services/orderApi.ts",
+              "direction": "outbound",
+              "edge_kind": "symbol",
+              "relation_type": "call",
+              "symbol_from": "module",
+              "symbol_to": "buildOrderKey",
+              "evidence_ref": "src/app/services/orderApi.ts:4",
+              "confidence": "low",
+              "resolution": "resolved"
+            }
+          ]
+        }
+      },
+      "summary": {
+        "schema_version": "4.3",
+        "target_file": "src/app/services/orderApi.ts",
+        "confirmed_outbound_count": 1,
+        "confirmed_inbound_count": 0,
+        "config_link_count": 0,
+        "build_target_count": 0,
+        "cycle_count": 0,
+        "total_impacted": 0,
+        "pipeline_overall": "success",
+        "verify_status": "pass"
+      }
+    },
+    "go1": {
+      "file": "src/app/entrypoints/main.go",
+      "language": "go",
+      "stages": {
+        "anchor": {
+          "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+          "file_path": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis/src/app/entrypoints/main.go",
+          "repo_relative_path": "src/app/entrypoints/main.go",
+          "symbol": "",
+          "selection_range": "",
+          "language": "go",
+          "role_hint": "source"
+        },
+        "stack": {
+          "stack_family": "go",
+          "stack_id": "go-stack",
+          "confidence": "medium",
+          "reasons": [
+            "file extension suggests go"
+          ],
+          "reference_file": "references/go-edge-rules.md",
+          "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+          "file_path": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis/src/app/entrypoints/main.go"
+        },
+        "code": {
+          "anchor": {
+            "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+            "file_path": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis/src/app/entrypoints/main.go",
+            "repo_relative_path": "src/app/entrypoints/main.go",
+            "symbol": "",
+            "selection_range": "",
+            "language": "go",
+            "role_hint": "source"
+          },
+          "stack": {
+            "stack_family": "go",
+            "stack_id": "go-stack",
+            "confidence": "medium",
+            "reasons": [
+              "file extension suggests go"
+            ],
+            "reference_file": "references/go-edge-rules.md",
+            "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+            "file_path": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis/src/app/entrypoints/main.go"
+          },
+          "edges": [
+            {
+              "from": "src/app/entrypoints/main.go",
+              "to": "external:fmt",
+              "direction": "outbound",
+              "edge_kind": "import",
+              "symbol": "",
+              "evidence_ref": "src/app/entrypoints/main.go:4",
+              "confidence": "medium",
+              "resolution": "resolved"
+            },
+            {
+              "from": "src/app/entrypoints/main.go",
+              "to": "external:example.com/generic-template-repo/src/app/shared/gohelper",
+              "direction": "outbound",
+              "edge_kind": "import",
+              "symbol": "",
+              "evidence_ref": "src/app/entrypoints/main.go:6",
+              "confidence": "medium",
+              "resolution": "resolved"
+            }
+          ],
+          "blind_spots": [
+            "Go imports packages, so edges are package-level rather than file-level."
+          ]
+        },
+        "symbol": {
+          "anchor": {
+            "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+            "file_path": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis/src/app/entrypoints/main.go",
+            "repo_relative_path": "src/app/entrypoints/main.go",
+            "symbol": "",
+            "selection_range": "",
+            "language": "go",
+            "role_hint": "source"
+          },
+          "stack": {
+            "stack_family": "go",
+            "stack_id": "go-stack",
+            "confidence": "medium",
+            "reasons": [
+              "file extension suggests go"
+            ],
+            "reference_file": "references/go-edge-rules.md",
+            "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+            "file_path": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis/src/app/entrypoints/main.go"
+          },
+          "edges": [
+            {
+              "from": "src/app/entrypoints/main.go",
+              "to": "src/app/entrypoints/main.go",
+              "direction": "outbound",
+              "edge_kind": "symbol",
+              "relation_type": "call",
+              "symbol_from": "main",
+              "symbol_to": "Println",
+              "evidence_ref": "src/app/entrypoints/main.go:10",
+              "confidence": "low",
+              "resolution": "resolved"
+            },
+            {
+              "from": "src/app/entrypoints/main.go",
+              "to": "src/app/entrypoints/main.go",
+              "direction": "outbound",
+              "edge_kind": "symbol",
+              "relation_type": "call",
+              "symbol_from": "main",
+              "symbol_to": "NormalizeSKU",
+              "evidence_ref": "src/app/entrypoints/main.go:10",
+              "confidence": "low",
+              "resolution": "resolved"
+            }
+          ],
+          "blind_spots": [
+            "Go interface method set dispatch is approximated at static level.",
+            "Go build tags that change active files are not handled."
+          ]
+        },
+        "context": {
+          "anchor": {
+            "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+            "file_path": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis/src/app/entrypoints/main.go",
+            "repo_relative_path": "src/app/entrypoints/main.go",
+            "symbol": "",
+            "selection_range": "",
+            "language": "go",
+            "role_hint": "source"
+          },
+          "stack": {
+            "stack_family": "go",
+            "stack_id": "go-stack",
+            "confidence": "medium",
+            "reasons": [
+              "file extension suggests go"
+            ],
+            "reference_file": "references/go-edge-rules.md",
+            "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+            "file_path": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis/src/app/entrypoints/main.go"
+          },
+          "edges": [],
+          "blind_spots": [
+            "Context links are search-based and may miss framework-specific runtime wiring."
+          ]
+        },
+        "slice": {
+          "schema_version": "4.3",
+          "target": {
+            "file": "src/app/entrypoints/main.go",
+            "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+            "stack_family": "go",
+            "analysis_mode": "strict",
+            "payload_level": "L1.5",
+            "graph_scope": "anchor_local_confirmed_file_edges"
+          },
+          "supporting_signals": {
+            "candidate_file_edges": [
+              {
+                "from": "src/app/entrypoints/main.go",
+                "to": "external:example.com/generic-template-repo/src/app/shared/gohelper",
+                "direction": "outbound",
+                "edge_kind": "import",
+                "evidence_ref": "src/app/entrypoints/main.go:6",
+                "confidence": "medium",
+                "resolution": "resolved",
+                "unconfirmed_reason": "lower_confidence_edge"
+              },
+              {
+                "from": "src/app/entrypoints/main.go",
+                "to": "external:fmt",
+                "direction": "outbound",
+                "edge_kind": "import",
+                "evidence_ref": "src/app/entrypoints/main.go:4",
+                "confidence": "medium",
+                "resolution": "resolved",
+                "unconfirmed_reason": "lower_confidence_edge"
+              }
+            ],
+            "symbol_relations": [
+              {
+                "from": "src/app/entrypoints/main.go",
+                "to": "src/app/entrypoints/main.go",
+                "direction": "outbound",
+                "edge_kind": "symbol",
+                "relation_type": "call",
+                "symbol_from": "main",
+                "symbol_to": "NormalizeSKU",
+                "evidence_ref": "src/app/entrypoints/main.go:10",
+                "confidence": "low",
+                "resolution": "resolved"
+              }
+            ],
+            "blind_spots": [
+              "Go imports packages, so edges are package-level rather than file-level.",
+              "Context links are search-based and may miss framework-specific runtime wiring.",
+              "Go interface method set dispatch is approximated at static level.",
+              "Go build tags that change active files are not handled."
+            ]
+          },
+          "estimated_impact": {
+            "graph_scope": "repo_code_graph_plus_confirmed_context",
+            "expansion_status": "repo_scan_success",
+            "summary": {
+              "total_impacted": 0,
+              "direct_consumers": 0,
+              "indirect_consumers": 0,
+              "max_depth_reached": 0,
+              "depth_limit": 3,
+              "depth_limited": false
+            },
+            "impact_confidence": "high",
+            "limitations": [
+              "Direct impact uses confirmed file-level edges and any confirmed config/build links already present in the slice.",
+              "Transitive impact is limited to the anchor-local graph because no repository-wide code graph expansion was available."
+            ]
+          },
+          "pipeline_status": {
+            "overall": "success"
+          }
+        },
+        "verify": {
+          "status": "pass",
+          "shape_status": "pass",
+          "verification_scope": "minimized_schema_and_evidence_coverage_only",
+          "capability_status": "unknown",
+          "capability_notes": [
+            "This verifier checks the minimized schema shape and evidence coverage only.",
+            "Use dedicated evals to measure recall, symbol retention, build/config promotion, and impact quality."
+          ],
+          "missing_sections": [],
+          "deprecated_fields_present": [],
+          "missing_evidence": [],
+          "low_confidence_claims": [
+            {
+              "from": "src/app/entrypoints/main.go",
+              "to": "src/app/entrypoints/main.go",
+              "direction": "outbound",
+              "edge_kind": "symbol",
+              "relation_type": "call",
+              "symbol_from": "main",
+              "symbol_to": "NormalizeSKU",
+              "evidence_ref": "src/app/entrypoints/main.go:10",
+              "confidence": "low",
+              "resolution": "resolved"
+            }
+          ]
+        }
+      },
+      "summary": {
+        "schema_version": "4.3",
+        "target_file": "src/app/entrypoints/main.go",
+        "confirmed_outbound_count": 0,
+        "confirmed_inbound_count": 0,
+        "config_link_count": 0,
+        "build_target_count": 0,
+        "cycle_count": 0,
+        "total_impacted": 0,
+        "pipeline_overall": "success",
+        "verify_status": "pass"
+      }
+    }
+  },
+  "summaries": {
+    "py1": {
+      "schema_version": "4.3",
+      "target_file": "src/app/interfaces/order_controller.py",
+      "confirmed_outbound_count": 2,
+      "confirmed_inbound_count": 0,
+      "config_link_count": 0,
+      "build_target_count": 0,
+      "cycle_count": 0,
+      "total_impacted": 0,
+      "pipeline_overall": "success",
+      "verify_status": "pass"
+    },
+    "ts1": {
+      "schema_version": "4.3",
+      "target_file": "src/app/services/orderApi.ts",
+      "confirmed_outbound_count": 1,
+      "confirmed_inbound_count": 0,
+      "config_link_count": 0,
+      "build_target_count": 0,
+      "cycle_count": 0,
+      "total_impacted": 0,
+      "pipeline_overall": "success",
+      "verify_status": "pass"
+    },
+    "go1": {
+      "schema_version": "4.3",
+      "target_file": "src/app/entrypoints/main.go",
+      "confirmed_outbound_count": 0,
+      "confirmed_inbound_count": 0,
+      "config_link_count": 0,
+      "build_target_count": 0,
+      "cycle_count": 0,
+      "total_impacted": 0,
+      "pipeline_overall": "success",
+      "verify_status": "pass"
+    }
+  },
+  "tmp_files": [
+    "continue_integration_smoke_report.json",
+    "evidence_continue_smoke_current_env.txt",
+    "evidence_external_paths_check.txt",
+    "go1_anchor.json",
+    "go1_code.json",
+    "go1_context.json",
+    "go1_slice.json",
+    "go1_stack.json",
+    "go1_symbol.json",
+    "go1_verify.json",
+    "py1_anchor.json",
+    "py1_code.json",
+    "py1_context.json",
+    "py1_slice.json",
+    "py1_stack.json",
+    "py1_symbol.json",
+    "py1_verify.json",
+    "py1_verify_debug.json",
+    "py1_verify_new.json",
+    "real_eval_start_mcp",
+    "run_tests.py",
+    "run_tests_v2.py",
+    "run_tests_v3.py",
+    "test_report.json",
+    "test_report_v2.json",
+    "test_report_v3.json",
+    "ts1_anchor.json",
+    "ts1_code.json",
+    "ts1_context.json",
+    "ts1_slice.json",
+    "ts1_stack.json",
+    "ts1_symbol.json",
+    "ts1_verify.json",
+    "__pycache__"
+  ]
+}

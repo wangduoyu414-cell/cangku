@@ -1,0 +1,22 @@
+{
+  "id": "typescript_pipeline_keep_small",
+  "prompt": "Before implementation, tell me what files this TypeScript refund watchlist job should have. Anchor the decision on services/etl-pipeline/src/jobs/publishRefundWatchlist.ts and compare it with the nearby publishInvoiceAging job, transform, and sink files.",
+  "target_area": "services/etl-pipeline/src/jobs",
+  "source_paths": [
+    "services/etl-pipeline/src/jobs/publishRefundWatchlist.ts",
+    "services/etl-pipeline/src/jobs/publishInvoiceAging.ts",
+    "services/etl-pipeline/src/transforms/buildInvoiceAgingSnapshot.ts",
+    "services/etl-pipeline/src/sinks/writeInvoiceAgingSnapshot.ts"
+  ],
+  "expected_summary": {
+    "strategy": "keep",
+    "repo_shape": "layer-first",
+    "artifact_type": "data-pipeline-step",
+    "stack": "typescript-javascript",
+    "confidence": "high",
+    "files": [
+      "services/etl-pipeline/src/jobs/publishRefundWatchlist.ts"
+    ]
+  },
+  "validation_command": "python eval/validate_saved_output.py --case typescript_pipeline_keep_small --output outputs/typescript_pipeline_keep_small.yaml"
+}

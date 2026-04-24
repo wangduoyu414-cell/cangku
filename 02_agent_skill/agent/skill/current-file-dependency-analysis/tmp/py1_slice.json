@@ -1,0 +1,113 @@
+{
+  "schema_version": "4.3",
+  "target": {
+    "file": "src/app/interfaces/order_controller.py",
+    "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+    "stack_family": "python",
+    "analysis_mode": "strict",
+    "payload_level": "L1.5",
+    "graph_scope": "anchor_local_confirmed_file_edges"
+  },
+  "hard_facts": {
+    "file_edges": {
+      "outbound": [
+        {
+          "from": "src/app/interfaces/order_controller.py",
+          "to": "src/app/application/use_cases.py",
+          "direction": "outbound",
+          "edge_kind": "import",
+          "evidence_ref": "src/app/interfaces/order_controller.py:3",
+          "confidence": "high",
+          "resolution": "resolved"
+        },
+        {
+          "from": "src/app/interfaces/order_controller.py",
+          "to": "src/app/interfaces/base_controller.py",
+          "direction": "outbound",
+          "edge_kind": "import",
+          "evidence_ref": "src/app/interfaces/order_controller.py:4",
+          "confidence": "high",
+          "resolution": "resolved"
+        }
+      ]
+    }
+  },
+  "supporting_signals": {
+    "candidate_file_edges": [
+      {
+        "from": "src/app/interfaces/order_controller.py",
+        "to": "external:__future__",
+        "direction": "outbound",
+        "edge_kind": "import",
+        "evidence_ref": "src/app/interfaces/order_controller.py:1",
+        "confidence": "medium",
+        "resolution": "resolved",
+        "unconfirmed_reason": "lower_confidence_edge"
+      }
+    ],
+    "symbol_relations": [
+      {
+        "from": "src/app/interfaces/order_controller.py",
+        "to": "src/app/interfaces/order_controller.py",
+        "direction": "outbound",
+        "edge_kind": "symbol",
+        "relation_type": "call",
+        "symbol_from": "create",
+        "symbol_to": "ok",
+        "evidence_ref": "src/app/interfaces/order_controller.py:10",
+        "confidence": "low",
+        "resolution": "resolved"
+      },
+      {
+        "from": "src/app/interfaces/order_controller.py",
+        "to": "src/app/interfaces/order_controller.py",
+        "direction": "outbound",
+        "edge_kind": "symbol",
+        "relation_type": "inherits",
+        "symbol_from": "OrderController",
+        "symbol_to": "BaseController",
+        "evidence_ref": "src/app/interfaces/order_controller.py:7",
+        "confidence": "high",
+        "resolution": "resolved"
+      },
+      {
+        "from": "src/app/interfaces/order_controller.py",
+        "to": "src/app/interfaces/order_controller.py",
+        "direction": "outbound",
+        "edge_kind": "symbol",
+        "relation_type": "call",
+        "symbol_from": "create",
+        "symbol_to": "create_order",
+        "evidence_ref": "src/app/interfaces/order_controller.py:9",
+        "confidence": "low",
+        "resolution": "resolved"
+      }
+    ],
+    "blind_spots": [
+      "Runtime imports through importlib are not statically resolved.",
+      "Context links are search-based and may miss framework-specific runtime wiring.",
+      "Python dynamic dispatch (monkey patching) is not fully resolved.",
+      "Framework magic via decorators that auto-wire dependencies is not covered."
+    ]
+  },
+  "estimated_impact": {
+    "graph_scope": "repo_code_graph_plus_confirmed_context",
+    "expansion_status": "repo_scan_success",
+    "summary": {
+      "total_impacted": 0,
+      "direct_consumers": 0,
+      "indirect_consumers": 0,
+      "max_depth_reached": 0,
+      "depth_limit": 3,
+      "depth_limited": false
+    },
+    "impact_confidence": "high",
+    "limitations": [
+      "Direct impact uses confirmed file-level edges and any confirmed config/build links already present in the slice.",
+      "Transitive impact uses repository-wide confirmed code edges to extend beyond the anchor-local slice when the stack-specific scanner is available."
+    ]
+  },
+  "pipeline_status": {
+    "overall": "success"
+  }
+}

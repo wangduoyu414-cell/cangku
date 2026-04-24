@@ -1,0 +1,47 @@
+{
+  "anchor": {
+    "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+    "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/application/use_cases.py",
+    "repo_relative_path": "src/app/application/use_cases.py",
+    "symbol": "",
+    "selection_range": "",
+    "language": "python",
+    "role_hint": "source"
+  },
+  "stack": {
+    "stack_family": "python",
+    "stack_id": "python-stack",
+    "confidence": "medium",
+    "reasons": [
+      "file extension suggests python"
+    ],
+    "reference_file": "references/py-edge-rules.md",
+    "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+    "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/application/use_cases.py"
+  },
+  "edges": [
+    {
+      "from": "tmp/test_report_v3.json",
+      "to": "src/app/application/use_cases.py",
+      "direction": "inbound",
+      "edge_kind": "test",
+      "symbol": "",
+      "evidence_ref": "tmp/test_report_v3.json:136",
+      "confidence": "low",
+      "resolution": "resolved"
+    },
+    {
+      "from": "tmp/test_report_v3.json",
+      "to": "src/app/application/use_cases.py",
+      "direction": "inbound",
+      "edge_kind": "test",
+      "symbol": "",
+      "evidence_ref": "tmp/test_report_v3.json:559",
+      "confidence": "low",
+      "resolution": "resolved"
+    }
+  ],
+  "blind_spots": [
+    "Context links are search-based and may miss framework-specific runtime wiring."
+  ]
+}

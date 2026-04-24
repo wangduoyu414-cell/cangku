@@ -1,0 +1,9 @@
+{
+  "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+  "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/shared/gohelper/gohelper.go",
+  "repo_relative_path": "src/app/shared/gohelper/gohelper.go",
+  "symbol": "",
+  "selection_range": "",
+  "language": "go",
+  "role_hint": "source"
+}

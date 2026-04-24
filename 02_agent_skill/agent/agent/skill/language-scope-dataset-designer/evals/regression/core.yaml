@@ -1,0 +1,18 @@
+suite_id: "language-scope-dataset-designer-regression-core"
+cases:
+  - id: "preserve-forbidden-scope"
+    goal: "持续保持禁止范围边界"
+    input:
+      output_shape: "language_scope_plan"
+    expected:
+      keeps_forbidden_scope: true
+    type: "regression"
+    notes: "保护语言窄口边界不退化。"
+  - id: "preserve-template-first-grounding"
+    goal: "持续保持标准推荐结果优先模板"
+    input:
+      grounding_rule: "template-first"
+    expected:
+      keeps_template_first_rule: true
+    type: "regression"
+    notes: "保护绑定规则不退化。"

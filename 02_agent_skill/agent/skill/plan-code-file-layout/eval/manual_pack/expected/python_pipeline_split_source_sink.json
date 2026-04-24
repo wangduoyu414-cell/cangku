@@ -1,0 +1,22 @@
+{
+  "id": "python_pipeline_split_source_sink",
+  "prompt": "Plan the file layout for this Python refund sync job before implementation continues. Anchor the decision on services/python-refund-jobs/jobs/sync_partner_refunds.py and compare it with the simpler refund health job in the same jobs area.",
+  "target_area": "services/python-refund-jobs/jobs",
+  "source_paths": [
+    "services/python-refund-jobs/jobs/sync_partner_refunds.py",
+    "services/python-refund-jobs/jobs/publish_refund_health.py"
+  ],
+  "expected_summary": {
+    "strategy": "split",
+    "repo_shape": "layer-first",
+    "artifact_type": "data-pipeline-step",
+    "stack": "python",
+    "confidence": "high",
+    "files": [
+      "services/python-refund-jobs/jobs/sync_partner_refunds.py",
+      "services/python-refund-jobs/jobs/partner_refund_source.py",
+      "services/python-refund-jobs/jobs/refund_sync_store.py"
+    ]
+  },
+  "validation_command": "python eval/validate_saved_output.py --case python_pipeline_split_source_sink --output outputs/python_pipeline_split_source_sink.yaml"
+}

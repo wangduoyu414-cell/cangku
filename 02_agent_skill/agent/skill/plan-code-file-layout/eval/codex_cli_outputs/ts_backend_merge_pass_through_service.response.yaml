@@ -1,0 +1,26 @@
+decision:
+  strategy: merge
+  target_area: "services/node-refund-api/src/features/refund-audit"
+  repo_shape: feature-first
+  artifact_type: service-endpoint
+  stack: typescript-javascript
+  files:
+    - path: "services/node-refund-api/src/features/refund-audit/refundAuditRoute.ts"
+      role: "feature endpoint entrypoint"
+      responsibility: "Own the refund audit read flow end to end for this feature: perform the internal audit fetch, handle the immediate HTTP failure check, and return the route response shape."
+      reason: "The current route and service are a thin two-file chain with one caller and one side effect. Unlike `refund-batch`, there is no separate validation, contract, or reusable adapter boundary that earns its own file."
+  keep_inline:
+    - "The `loadRefundAudit` fetch logic and `response.ok` guard."
+    - "The local audit response type for `refundId`, `reviewedBy`, and `status`."
+    - "The `{ status: 200, body }` response mapping."
+  avoid:
+    - "Keeping `refundAuditService.ts` as a one-caller pass-through file."
+    - "Adding a `refundAuditClient.ts` before a second real consumer or richer transport boundary exists."
+    - "Creating barrel, shared utils, or naming-only helper files for this feature."
+  why_not_fewer: "This slice still needs one dedicated feature route file so `refund-audit` remains a visible local endpoint boundary. Folding it into another feature or a shared route module would blur ownership."
+  why_not_more: "Further splitting would add ceremony without clearer ownership: the same change reason covers the route and fetch, the same tests would cover both, and common debugging already fits in one file."
+  risks:
+    - "If `refund-audit` later adds request validation, auth/header assembly, retries, or multiple consumers, the fetch logic may deserve a dedicated client file."
+    - "The repository is globally mixed, while this recommendation is driven by the strongest local pattern under `services/node-refund-api/src/features`."
+    - "No nearby service-specific tests or build wiring were found for this feature, so confidence comes from direct code shape and sibling comparisons rather than execution evidence."
+  confidence: medium

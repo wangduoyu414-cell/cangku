@@ -1,0 +1,177 @@
+# Structured Pre-Generation Contract Schema
+#
+# This schema mirrors the current output contract expected from
+# codegen-governance. The audit skill reads it as a machine-readable
+# reference for contract audits.
+#
+# Format version: 1.1
+# Compatible with: SKILL.md v0.3.x
+
+format_version: "1.1"
+schema_name: "pre-generation-contract"
+schema_description: >
+  Structured schema for Pre-Generation Contract output from codegen-governance.
+  Both Markdown (with anchors) and YAML forms are valid.
+
+target_language:
+  type: string
+  enum: ["python", "go", "typescript", "javascript", "vue"]
+  required: true
+  anchor: "##-Target-Language"
+
+scope:
+  type: object
+  required: true
+  anchor: "##-Scope"
+  properties:
+    target:
+      type: string
+      required: true
+    requested_change:
+      type: string
+      required: true
+    blast_radius:
+      type: string
+      required: true
+    non_goals:
+      type: list[string]
+      required: true
+    change_mode:
+      type: string
+      enum: ["edit_existing", "new_implementation"]
+      required: true
+    existing_contract_snapshot:
+      type: string
+      required: true
+    expected_contract_drift:
+      type: string
+      required: true
+    repo_constraints:
+      type: string
+      required: false
+
+selected_scenario_packs:
+  type: list[object]
+  required: true
+  min_items: 1
+  max_items: 4
+  anchor: "##-Selected-Scenario-Packs"
+  each_item_properties:
+    pack:
+      type: string
+      enum: ["A", "B", "C", "D"]
+      required: true
+    why_applies:
+      type: string
+      required: true
+    specific_risks:
+      type: list[string]
+      required: true
+
+input_contract:
+  type: object
+  required: true
+  anchor: "##-Input-Contract"
+  properties:
+    accepted_inputs:
+      type: string
+      required: true
+    missing_or_empty_handling:
+      type: string
+      required: true
+    unknown_or_invalid_strategy:
+      type: string
+      required: true
+    normalization_rules:
+      type: string
+      required: false
+
+return_and_failure_contract:
+  type: object
+  required: true
+  anchor: "##-Return-And-Failure-Contract"
+  properties:
+    success_shape:
+      type: string
+      required: true
+    empty_or_miss_shape:
+      type: string
+      required: true
+    failure_signaling:
+      type: string
+      required: true
+    partial_success:
+      type: string
+      required: false
+
+branching_and_ordering:
+  type: object
+  required: false
+  anchor: "##-Branching-And-Ordering"
+
+defaults_and_fallback:
+  type: object
+  required: false
+  anchor: "##-Defaults-And-Fallback"
+
+side_effects_and_runtime:
+  type: object
+  required: false
+  anchor: "##-Side-Effects-And-Runtime"
+
+validation_plan:
+  type: object
+  required: false
+  anchor: "##-Validation-Plan"
+
+boundary_and_observability:
+  type: object
+  required: false
+  anchor: "##-Boundary-And-Observability"
+
+open_risks:
+  type: object
+  required: false
+  anchor: "##-Open-Risks"
+  properties:
+    unknowns:
+      type: list[string]
+      required: true
+    assumptions_for_continuation:
+      type: list[string]
+      required: false
+    source_priority_decisions:
+      type: list[string]
+      required: false
+    stop_reasons:
+      type: list[string]
+      required: true
+
+metadata:
+  type: object
+  required: true
+  properties:
+    generated_by:
+      type: string
+      constant: "codegen-execution-constraint"
+    version:
+      type: string
+      required: true
+    generated_at:
+      type: string
+      format: datetime
+      required: true
+    task_mode:
+      type: string
+      enum: ["patch-safe", "repo-conformant", "greenfield-strict"]
+      required: true
+    continuation_mode:
+      type: string
+      enum: ["continue", "continue_with_explicit_assumptions", "stop_and_ask"]
+      required: true
+    stop_before_code:
+      type: boolean
+      required: true
+    stop_reason:
+      type: string
+      required: false

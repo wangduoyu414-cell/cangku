@@ -1,0 +1,16 @@
+{
+  "should_trigger": [
+    "Explain how the file I am editing connects to the rest of this repo.",
+    "Map the current file's dependencies and reverse dependencies.",
+    "I need the dependency context for the file open in my editor.",
+    "Trace what this file depends on and what would break if I change it.",
+    "Show me the current file's config and build links in this codebase."
+  ],
+  "should_not_trigger": [
+    "Summarize this whole repository for me.",
+    "Refactor these imports across the repo.",
+    "Review the architecture of the backend service.",
+    "Write a README for this project.",
+    "Plan a migration from Python to Go."
+  ]
+}

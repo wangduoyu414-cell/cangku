@@ -1,0 +1,50 @@
+suite_id: "copy-check-task-core"
+cases:
+  - id: "task-standard-complete-first-pass"
+    goal: "完整首轮校验"
+    input:
+      copy_text: "很多人做内容总想一上来就输出观点，却没有把自己为什么得出这个判断讲清楚。"
+      content_slot: "short-video-opening"
+      primary_goal: "增强关注转化"
+    expected:
+      route: "complete-first-pass"
+      output_sections:
+        - "总体结论"
+        - "主问题层级"
+        - "关键缺陷"
+        - "影响解释"
+        - "修正优先级"
+        - "修改方向"
+      forbid_full_rewrite: true
+    type: "standard"
+    notes: "输入完整，应走完整首轮输出。"
+  - id: "task-boundary-low-context"
+    goal: "低语境初筛"
+    input:
+      copy_text: "努力只是门票，结构才是答案。"
+      content_slot: ""
+      primary_goal: ""
+    expected:
+      route: "low-context-screen"
+      output_sections:
+        - "当前判断状态"
+        - "已观察到的结构风险"
+        - "仍缺少的关键信息"
+        - "下一步建议"
+      forbid_grade: true
+    type: "boundary"
+    notes: "有文本但信息不足，不应误进完整评分。"
+  - id: "task-error-prone-pseudo-recheck"
+    goal: "伪复检切回"
+    input:
+      previous_copy_text: "不是你不会表达，是你没有新判断。"
+      revised_copy_text: "做内容最重要的是坚持。"
+      content_slot: "short-video-opening"
+      primary_goal: "增强关注转化"
+      revised_primary_goal: "提升商业化成交"
+    expected:
+      route: "fallback-to-first-pass"
+      must_explain_incomparability: true
+      forbid_recheck_sections: true
+    type: "error-prone"
+    notes: "对象或主目标已变化，必须退出复检。"

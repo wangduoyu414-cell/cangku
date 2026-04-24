@@ -1,0 +1,13 @@
+id: "gpt-image-2-prompt-structurer"
+version: "2026-04-23.8"
+owner: "skill-group"
+mode: "instruction"
+side_effect: "read_only"
+requires_tools: []
+preferred_over: []
+conflicts_with: []
+eval_suite:
+  - "evals/trigger/core.yaml"
+  - "evals/task/core.yaml"
+  - "evals/regression/core.yaml"
+  - "evals/dynamic/core.yaml"

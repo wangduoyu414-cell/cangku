@@ -1,0 +1,21 @@
+{
+  "id": "python_cli_keep_single",
+  "prompt": "Decide how many files this refund queue summary command should have before implementation grows. Target scripts/ops/summarize_refund_queue.py and compare it with the heavier sync_partner_catalog command in the same ops area.",
+  "target_area": "scripts/ops",
+  "source_paths": [
+    "scripts/ops/summarize_refund_queue.py",
+    "scripts/ops/sync_partner_catalog.py",
+    "scripts/ops/rebuild_search_index.py"
+  ],
+  "expected_summary": {
+    "strategy": "keep",
+    "repo_shape": "mixed",
+    "artifact_type": "cli-command",
+    "stack": "python",
+    "confidence": "high",
+    "files": [
+      "scripts/ops/summarize_refund_queue.py"
+    ]
+  },
+  "validation_command": "python eval/validate_saved_output.py --case python_cli_keep_single --output outputs/python_cli_keep_single.yaml"
+}

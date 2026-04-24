@@ -1,0 +1,29 @@
+decision:
+  strategy: split
+  target_area: "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-detail/RefundDetailPanel.tsx"
+  repo_shape: feature-first
+  artifact_type: ui-component
+  stack: typescript-javascript
+  files:
+    - path: "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-detail/RefundDetailPanel.tsx"
+      role: "panel component"
+      responsibility: "Own the refund detail view, local UI state, event handling, and orchestration of one short fetch or mutation flow against the feature-local API adapter."
+      reason: "This is the feature entry file and should keep the render path and panel-local behavior readable without introducing a wrapper hook."
+    - path: "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-detail/refundDetailApi.ts"
+      role: "feature-local API adapter"
+      responsibility: "Own request functions, response shaping tied to the refund detail endpoint, and transport-level error surface for this panel."
+      reason: "Remote IO is the one materially separate boundary from the panel, so a dedicated API file gives a real seam without adding extra indirection."
+  keep_inline:
+    - "Display-only derived state, one-off formatters, and loading or selection state that is only used by RefundDetailPanel.tsx."
+    - "Private request or response mapping helpers that are only consumed inside refundDetailApi.ts."
+  avoid:
+    - "A panel-local hook such as useRefundDetail.ts when it only wraps the panel's single fetch or mutation path."
+    - "A thin refundDetailService.ts layer that only forwards calls to refundDetailApi.ts."
+    - "A barrel file for this two-file slice."
+  why_not_fewer: "Keeping everything in RefundDetailPanel.tsx would blur the real boundary between UI orchestration and external IO. The panel and its API adapter have different failure modes and change reasons, so collapsing them into one file would make the common debug path less clear."
+  why_not_more: "Adding a third file for a panel-local hook or service wrapper would mostly add ceremony. The comparison with refund-timeline points the other direction there: panel-local hook logic should collapse back into the component, while the only boundary worth preserving here is the API edge."
+  risks:
+    - "The current files are placeholders, so confidence is limited by missing concrete logic and endpoint shape."
+    - "No explicit local baseline doc was found in this lab slice; the recommendation relies on the feature-first layout, the UI-component and TypeScript guidance, and the user-provided refund-timeline comparison."
+    - "If refund detail later becomes purely static or uses only a single trivial inline request with no separate contract or error handling, the split could become unnecessary."
+  confidence: medium

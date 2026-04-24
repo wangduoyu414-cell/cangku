@@ -1,0 +1,34 @@
+decision:
+  strategy: merge
+  target_area: src/app/interfaces/refunds
+  repo_shape: layer-first
+  artifact_type: service-endpoint
+  stack: python
+  files:
+    - path: src/app/entrypoints/http/refund_routes.py
+      role: canonical-http-transport
+      responsibility: Own the active refund HTTP ingress, translate request payloads, invoke the refund use case, and shape the HTTP-facing response without embedding business rules.
+      reason: Refund-specific baseline docs name this file as the target home for new refund HTTP transport work, overriding the broader README wording about interfaces.
+    - path: src/app/interfaces/refunds/create_refund_controller.py
+      role: compatibility-shim
+      responsibility: Keep legacy interface-layer callers working during rollout by doing only minimal payload translation and calling the existing use case, without taking on new orchestration or transport ownership.
+      reason: Refund module migration notes allow this file to remain temporarily for compatibility, but not as the long-term transport seam.
+    - path: src/app/application/refunds/create_refund_use_case.py
+      role: use-case
+      responsibility: Normalize refund input, construct the refund request, apply approval policy, and return the transport-agnostic outcome for callers.
+      reason: The application layer already owns refund orchestration and should stay separate from HTTP transport concerns.
+  keep_inline:
+    - Keep the four-field payload extraction and response shaping inline in src/app/entrypoints/http/refund_routes.py.
+    - Keep any one-off legacy payload translation inline in src/app/interfaces/refunds/create_refund_controller.py while the compatibility shim exists.
+    - Keep refund input normalization and status selection inline in src/app/application/refunds/create_refund_use_case.py until a second real caller needs a separate contract.
+  avoid:
+    - Do not add another pass-through transport module under src/app/interfaces/refunds or src/app/entrypoints/http that only forwards parameters.
+    - Do not extract separate mapper, serializer, or DTO files for the current four-field create-refund payload.
+    - Do not keep an active route -> controller -> service chain for the main HTTP path once src/app/entrypoints/http/refund_routes.py is the canonical seam.
+  why_not_fewer: Keeping only one file for both HTTP transport and refund orchestration would blur the documented entrypoint/application boundary, and dropping the interface-layer file immediately would increase rollout risk if existing imports still anchor to src/app/interfaces/refunds.
+  why_not_more: This slice has one real transport seam and one real application seam; adding extra wrapper, mapper, or contract files would mostly add ceremony and lengthen debugging without introducing a new side-effect, reuse, or test boundary.
+  risks:
+    - README.md still broadly describes interfaces as the HTTP/CLI adapter layer, so there is migration cost in steering contributors away from adding new refund transport code under src/app/interfaces/refunds.
+    - Fully retiring src/app/interfaces/refunds/create_refund_controller.py depends on auditing existing imports, tests, and operational entry paths that may still call it.
+    - The refund-specific transport target is explicit in module docs, but the dedicated HTTP transport migration docs currently illustrate the pattern with refund_exports instead of refunds, so future maintainers may miss the refund cutover rule unless docs are kept aligned.
+  confidence: medium

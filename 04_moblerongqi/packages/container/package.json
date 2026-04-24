@@ -1,0 +1,18 @@
+{
+  "name": "@creator-os/container",
+  "version": "0.1.0",
+  "description": "CreatorOS container layer - lifecycle, pool, strategy, coordinator, ADB",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@creator-os/core": "*"
+  },
+  "peerDependencies": {
+    "patchright": ">=1.40.0"
+  }
+}

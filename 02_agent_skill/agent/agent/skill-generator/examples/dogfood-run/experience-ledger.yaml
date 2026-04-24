@@ -1,0 +1,22 @@
+entries:
+  - id: "review-fix-planner-dogfood-001"
+    timestamp: "2026-03-27"
+    scenario: "generate"
+    signal: "把重复出现的评审意见整理任务沉淀为技能。"
+    context: "已有重复请求、失败反馈、模板需求与基线对比要求。"
+    action: "使用 skill-generator（技能生成器） 生成技能简报、基线对比、评分卡与待办。"
+    outcome: "success"
+    baseline: "without_skill"
+    quality_delta: "higher"
+    cost_delta:
+      token_estimate: "slightly_higher"
+      wall_clock_estimate: "similar"
+      tool_call_estimate: "similar"
+    rule_candidate: "先固定 non-scope（非边界） 与 eval pack（评测包），再扩覆盖面。"
+    confidence: "repeated-observation"
+    freshness: "stable"
+    affected_dimension: "scope_and_signal"
+    evidence_refs:
+      - "examples/dogfood-run/request.md"
+      - "examples/dogfood-run/baseline-comparison.md"
+    follow_up: "promote-to-default-path"

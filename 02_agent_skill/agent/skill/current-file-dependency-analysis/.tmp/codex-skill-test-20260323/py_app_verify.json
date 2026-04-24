@@ -1,0 +1,43 @@
+{
+  "status": "partial",
+  "missing_sections": [],
+  "unsupported_claims": [],
+  "low_confidence_claims": [
+    {
+      "from": "tmp/test_report_v3.json",
+      "to": "src/app/application/use_cases.py",
+      "direction": "inbound",
+      "edge_kind": "test",
+      "symbol": "",
+      "evidence_ref": "tmp/test_report_v3.json:136",
+      "confidence": "low",
+      "resolution": "resolved"
+    },
+    {
+      "from": "tmp/test_report_v3.json",
+      "to": "src/app/application/use_cases.py",
+      "direction": "inbound",
+      "edge_kind": "test",
+      "symbol": "",
+      "evidence_ref": "tmp/test_report_v3.json:559",
+      "confidence": "low",
+      "resolution": "resolved"
+    },
+    {
+      "from": "src/app/application/use_cases.py",
+      "to": "src/app/application/use_cases.py",
+      "direction": "outbound",
+      "edge_kind": "symbol",
+      "relation_type": "call",
+      "symbol_from": "create_order",
+      "symbol_to": "build_order_key",
+      "evidence_ref": "src/app/application/use_cases.py:7",
+      "confidence": "low",
+      "resolution": "resolved"
+    }
+  ],
+  "missing_edge_classes": [],
+  "missing_evidence": [],
+  "unresolved_edges": [],
+  "non_high_confirmed_edges": []
+}

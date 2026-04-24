@@ -1,0 +1,4963 @@
+run_manifest:
+  agent_id: language-adapter-orchestration-evaluator
+  goal: 围绕真实 replay（回放） 资产持续生成受控候选批次，并把结果接入下层 skill（技能） 校验主链。
+  generation_guardrails:
+    domain_statement: 所有候选必须首先服务于理解用户如何表达电脑组装与搭配清单需求，而不是替用户生成最终配置结论。
+    scene_layers:
+    - 需求表达场景
+    - 清单理解场景
+    - 约束冲突与歧义场景
+    - 主备差异说明场景
+    - 安全边界场景
+    - 真实语言噪声场景
+    forbidden_goal_swaps:
+    - 最终配置推荐
+    - 配件兼容性裁决
+    - 方案排序
+    - 购买动作建议
+    - 上架/推送时机判断
+    - 证据真值生成
+    scene_coverage_rules:
+      min_scene_layers_per_batch: 6
+      min_persona_axes_per_batch: 4
+      min_need_axes_per_batch: 6
+      min_difficulty_axes_per_batch: 5
+      max_single_scene_family_share: 0.35
+  baseline_refs:
+    replay_root: D:\diypc\assets\replay
+    skill_root: D:\agent\skill\language-adapter-dataset-builder
+    prompt_template_ref: D:\diypc\LLMceshi\llm-candidate-pack-prompt-template.md
+    fill_template_ref: D:\diypc\LLMceshi\candidate-pack-fill-template.xlsx
+    validate_candidate_pack_script: D:\agent\skill\language-adapter-dataset-builder\scripts\validate_candidate_pack.py
+    formalize_script: D:\agent\skill\language-adapter-dataset-builder\scripts\formalize_validated_candidates.py
+    qa_script: D:\agent\skill\language-adapter-dataset-builder\scripts\run_dataset_qa.py
+  budget:
+    total_candidate_goal: 60000
+    batch_size: 1000
+    pack_count: 60
+  global_expected_mix: &id001
+  - task_type: comparison_explanation
+    candidate_type: hard_case
+    count: 350
+  - task_type: comparison_explanation
+    candidate_type: ambiguous_sample
+    count: 250
+  - task_type: safety_refusal
+    candidate_type: hard_case
+    count: 200
+  - task_type: safety_refusal
+    candidate_type: redline_sample
+    count: 150
+  - task_type: supplemental_parse
+    candidate_type: label_rule
+    count: 50
+  global_scene_pool:
+    scene_families:
+    - 01_mainline_gaming
+    - 02_white_quiet_gaming
+    - 03_high_budget_gaming
+    - 04_unsat_socket_conflict
+    - 05_incomplete_case
+    - 16_esports_1080p_ladder
+    - 17_productivity_creator_workstation
+    - 18_mixed_gaming_editing
+    - 19_office_home_low_budget
+    - 20_4k_high_fidelity_gaming
+    - 21_quiet_black_minimal_gaming
+    - 22_compact_balanced_gaming
+    - 23_white_compact_conflict
+    - 24_reuse_old_gpu_balanced
+    - 25_reuse_old_case_upgrade
+    - 26_reuse_old_psu_quality
+    - 27_multi_reuse_parts_planning
+    - 28_reuse_blacklist_conflict
+    - 29_entry_gaming_budget_floor
+    - 30_budget_edge_5999_gaming
+    - 31_high_budget_showcase
+    - 32_budget_plus_500_revision
+    - 33_budget_minus_500_revision
+    - 34_local_model_productivity
+    - 35_watercooling_disabled_quiet
+    - 36_socket_domain_unsat_backup
+    persona_axes:
+    - 电竞/游戏用户
+    - 复用旧件用户
+    - 静音/小体积强偏好用户
+    - 外观强偏好用户
+    - 混合用途用户
+    - 电竞/高刷用户
+    - 新手首次装机用户
+    - 创作/生产力用户
+    - 家庭/办公稳定用户
+    need_axes:
+    - '预算控制: 中预算'
+    - '用途目标: 游戏'
+    - '需求轴: 复用旧件'
+    - '预算控制: 高预算'
+    - '需求轴: 静音偏好'
+    - '用途目标: 混合用途'
+    - '需求轴: 外观偏好:WHITE'
+    - '分辨率目标: 1080P'
+    - '用途目标: 电竞/高刷'
+    - '预算控制: 低预算'
+    - '需求轴: 体积限制'
+    - '需求轴: 禁水冷'
+    - '分辨率目标: 4K'
+    - '用途目标: 创作/生产力'
+    - '用途目标: 家庭/办公'
+    - '需求轴: 外观偏好:BLACK'
+    - '需求轴: 外观展示'
+    - '用途目标: 本地模型/高负载生产力'
+    difficulty_axes:
+    - 表达模糊
+    - 信息缺失
+    - 新装/升级边界不清
+    - 条件冲突
+    - 预算边界不清
+    - 前后矛盾
+    - 偏好过强
+  pack_plan:
+  - pack_index: 1
+    pack_id: language_adapter_pack_001
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_001
+      scene_family: 01_mainline_gaming
+      display_name: 01 mainline gaming
+      replay_ref: D:\diypc\assets\replay\01_mainline_gaming.json
+      personas: &id002
+      - 电竞/游戏用户
+      need_axes: &id003
+      - '用途目标: 游戏'
+      - '预算控制: 中预算'
+      difficulty_axes: &id004
+      - 表达模糊
+    - case_id: case_replay_file_002
+      scene_family: 02_white_quiet_gaming
+      display_name: 02 white quiet gaming
+      replay_ref: D:\diypc\assets\replay\02_white_quiet_gaming.json
+      personas: &id005
+      - 外观强偏好用户
+      - 静音/小体积强偏好用户
+      need_axes: &id006
+      - '需求轴: 外观偏好:WHITE'
+      - '需求轴: 静音偏好'
+      - '预算控制: 中预算'
+      difficulty_axes: &id007
+      - 表达模糊
+    - case_id: case_replay_file_003
+      scene_family: 03_high_budget_gaming
+      display_name: 03 high budget gaming
+      replay_ref: D:\diypc\assets\replay\03_high_budget_gaming.json
+      personas: &id008
+      - 电竞/游戏用户
+      need_axes: &id009
+      - '用途目标: 游戏'
+      - '预算控制: 高预算'
+      difficulty_axes: &id010
+      - 表达模糊
+    - case_id: case_replay_file_004
+      scene_family: 04_unsat_socket_conflict
+      display_name: 04 unsat socket conflict
+      replay_ref: D:\diypc\assets\replay\04_unsat_socket_conflict.json
+      personas: &id011
+      - 电竞/游戏用户
+      need_axes: &id012
+      - '用途目标: 游戏'
+      - '预算控制: 中预算'
+      difficulty_axes: &id013
+      - 信息缺失
+      - 条件冲突
+    - case_id: case_replay_file_005
+      scene_family: 05_incomplete_case
+      display_name: 05 incomplete case
+      replay_ref: D:\diypc\assets\replay\05_incomplete_case.json
+      personas: &id014
+      - 新手首次装机用户
+      need_axes: &id015
+      - '预算控制: 中预算'
+      difficulty_axes: &id016
+      - 信息缺失
+      - 条件冲突
+    - case_id: case_replay_file_016
+      scene_family: 16_esports_1080p_ladder
+      display_name: 16 esports 1080p ladder
+      replay_ref: D:\diypc\assets\replay\16_esports_1080p_ladder.json
+      personas: &id017
+      - 电竞/高刷用户
+      need_axes: &id018
+      - '分辨率目标: 1080P'
+      - '用途目标: 电竞/高刷'
+      - '预算控制: 中预算'
+      difficulty_axes: &id019
+      - 表达模糊
+    - case_id: case_replay_file_017
+      scene_family: 17_productivity_creator_workstation
+      display_name: 17 productivity creator workstation
+      replay_ref: D:\diypc\assets\replay\17_productivity_creator_workstation.json
+      personas: &id020
+      - 创作/生产力用户
+      need_axes: &id021
+      - '分辨率目标: 4K'
+      - '用途目标: 创作/生产力'
+      - '预算控制: 高预算'
+      difficulty_axes: &id022
+      - 表达模糊
+    - case_id: case_replay_file_018
+      scene_family: 18_mixed_gaming_editing
+      display_name: 18 mixed gaming editing
+      replay_ref: D:\diypc\assets\replay\18_mixed_gaming_editing.json
+      personas: &id023
+      - 混合用途用户
+      need_axes: &id024
+      - '用途目标: 混合用途'
+      - '预算控制: 中预算'
+      difficulty_axes: &id025
+      - 表达模糊
+    required_personas:
+    - 电竞/游戏用户
+    - 外观强偏好用户
+    - 静音/小体积强偏好用户
+    - 新手首次装机用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '用途目标: 游戏'
+    - '预算控制: 高预算'
+    - '需求轴: 外观偏好:WHITE'
+    - '需求轴: 静音偏好'
+    - '分辨率目标: 1080P'
+    required_difficulty_axes:
+    - 表达模糊
+    - 信息缺失
+    - 条件冲突
+  - pack_index: 2
+    pack_id: language_adapter_pack_002
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_019
+      scene_family: 19_office_home_low_budget
+      display_name: 19 office home low budget
+      replay_ref: D:\diypc\assets\replay\19_office_home_low_budget.json
+      personas: &id026
+      - 家庭/办公稳定用户
+      need_axes: &id027
+      - '用途目标: 家庭/办公'
+      - '预算控制: 低预算'
+      difficulty_axes: &id028
+      - 预算边界不清
+    - case_id: case_replay_file_020
+      scene_family: 20_4k_high_fidelity_gaming
+      display_name: 20 4k high fidelity gaming
+      replay_ref: D:\diypc\assets\replay\20_4k_high_fidelity_gaming.json
+      personas: &id029
+      - 电竞/游戏用户
+      need_axes: &id030
+      - '用途目标: 游戏'
+      - '预算控制: 高预算'
+      difficulty_axes: &id031
+      - 表达模糊
+    - case_id: case_replay_file_021
+      scene_family: 21_quiet_black_minimal_gaming
+      display_name: 21 quiet black minimal gaming
+      replay_ref: D:\diypc\assets\replay\21_quiet_black_minimal_gaming.json
+      personas: &id032
+      - 外观强偏好用户
+      - 静音/小体积强偏好用户
+      need_axes: &id033
+      - '需求轴: 外观偏好:BLACK'
+      - '需求轴: 静音偏好'
+      - '预算控制: 中预算'
+      difficulty_axes: &id034
+      - 表达模糊
+    - case_id: case_replay_file_022
+      scene_family: 22_compact_balanced_gaming
+      display_name: 22 compact balanced gaming
+      replay_ref: D:\diypc\assets\replay\22_compact_balanced_gaming.json
+      personas: &id035
+      - 静音/小体积强偏好用户
+      need_axes: &id036
+      - '需求轴: 体积限制'
+      - '预算控制: 中预算'
+      difficulty_axes: &id037
+      - 表达模糊
+    - case_id: case_replay_file_023
+      scene_family: 23_white_compact_conflict
+      display_name: 23 white compact conflict
+      replay_ref: D:\diypc\assets\replay\23_white_compact_conflict.json
+      personas: &id038
+      - 外观强偏好用户
+      - 静音/小体积强偏好用户
+      need_axes: &id039
+      - '需求轴: 体积限制'
+      - '需求轴: 外观偏好:WHITE'
+      - '预算控制: 中预算'
+      difficulty_axes: &id040
+      - 信息缺失
+      - 条件冲突
+    - case_id: case_replay_file_024
+      scene_family: 24_reuse_old_gpu_balanced
+      display_name: 24 reuse old gpu balanced
+      replay_ref: D:\diypc\assets\replay\24_reuse_old_gpu_balanced.json
+      personas: &id041
+      - 复用旧件用户
+      - 混合用途用户
+      need_axes: &id042
+      - '用途目标: 混合用途'
+      - '需求轴: 复用旧件'
+      - '预算控制: 中预算'
+      difficulty_axes: &id043
+      - 信息缺失
+      - 新装/升级边界不清
+    - case_id: case_replay_file_025
+      scene_family: 25_reuse_old_case_upgrade
+      display_name: 25 reuse old case upgrade
+      replay_ref: D:\diypc\assets\replay\25_reuse_old_case_upgrade.json
+      personas: &id044
+      - 复用旧件用户
+      - 混合用途用户
+      need_axes: &id045
+      - '用途目标: 混合用途'
+      - '需求轴: 复用旧件'
+      - '需求轴: 禁水冷'
+      - '预算控制: 中预算'
+      difficulty_axes: &id046
+      - 信息缺失
+      - 新装/升级边界不清
+    - case_id: case_replay_file_026
+      scene_family: 26_reuse_old_psu_quality
+      display_name: 26 reuse old psu quality
+      replay_ref: D:\diypc\assets\replay\26_reuse_old_psu_quality.json
+      personas: &id047
+      - 复用旧件用户
+      need_axes: &id048
+      - '需求轴: 复用旧件'
+      - '预算控制: 中预算'
+      difficulty_axes: &id049
+      - 信息缺失
+      - 新装/升级边界不清
+    required_personas:
+    - 静音/小体积强偏好用户
+    - 复用旧件用户
+    - 外观强偏好用户
+    - 混合用途用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '需求轴: 复用旧件'
+    - '需求轴: 体积限制'
+    - '用途目标: 混合用途'
+    - '用途目标: 家庭/办公'
+    - '预算控制: 低预算'
+    required_difficulty_axes:
+    - 信息缺失
+    - 表达模糊
+    - 新装/升级边界不清
+    - 预算边界不清
+    - 条件冲突
+  - pack_index: 3
+    pack_id: language_adapter_pack_003
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_027
+      scene_family: 27_multi_reuse_parts_planning
+      display_name: 27 multi reuse parts planning
+      replay_ref: D:\diypc\assets\replay\27_multi_reuse_parts_planning.json
+      personas: &id050
+      - 复用旧件用户
+      need_axes: &id051
+      - '需求轴: 复用旧件'
+      - '预算控制: 中预算'
+      difficulty_axes: &id052
+      - 新装/升级边界不清
+    - case_id: case_replay_file_028
+      scene_family: 28_reuse_blacklist_conflict
+      display_name: 28 reuse blacklist conflict
+      replay_ref: D:\diypc\assets\replay\28_reuse_blacklist_conflict.json
+      personas: &id053
+      - 复用旧件用户
+      need_axes: &id054
+      - '需求轴: 复用旧件'
+      - '预算控制: 中预算'
+      difficulty_axes: &id055
+      - 信息缺失
+      - 新装/升级边界不清
+      - 条件冲突
+    - case_id: case_replay_file_029
+      scene_family: 29_entry_gaming_budget_floor
+      display_name: 29 entry gaming budget floor
+      replay_ref: D:\diypc\assets\replay\29_entry_gaming_budget_floor.json
+      personas: &id056
+      - 电竞/游戏用户
+      need_axes: &id057
+      - '用途目标: 游戏'
+      - '预算控制: 低预算'
+      difficulty_axes: &id058
+      - 预算边界不清
+    - case_id: case_replay_file_030
+      scene_family: 30_budget_edge_5999_gaming
+      display_name: 30 budget edge 5999 gaming
+      replay_ref: D:\diypc\assets\replay\30_budget_edge_5999_gaming.json
+      personas: &id059
+      - 电竞/高刷用户
+      need_axes: &id060
+      - '分辨率目标: 1080P'
+      - '用途目标: 电竞/高刷'
+      - '预算控制: 中预算'
+      difficulty_axes: &id061
+      - 表达模糊
+    - case_id: case_replay_file_031
+      scene_family: 31_high_budget_showcase
+      display_name: 31 high budget showcase
+      replay_ref: D:\diypc\assets\replay\31_high_budget_showcase.json
+      personas: &id062
+      - 电竞/游戏用户
+      need_axes: &id063
+      - '用途目标: 游戏'
+      - '需求轴: 外观展示'
+      - '预算控制: 高预算'
+      difficulty_axes: &id064
+      - 表达模糊
+    - case_id: case_replay_file_032
+      scene_family: 32_budget_plus_500_revision
+      display_name: 32 budget plus 500 revision
+      replay_ref: D:\diypc\assets\replay\32_budget_plus_500_revision.json
+      personas: &id065
+      - 电竞/游戏用户
+      need_axes: &id066
+      - '用途目标: 游戏'
+      - '预算控制: 中预算'
+      difficulty_axes: &id067
+      - 前后矛盾
+      - 预算边界不清
+    - case_id: case_replay_file_033
+      scene_family: 33_budget_minus_500_revision
+      display_name: 33 budget minus 500 revision
+      replay_ref: D:\diypc\assets\replay\33_budget_minus_500_revision.json
+      personas: &id068
+      - 电竞/游戏用户
+      need_axes: &id069
+      - '用途目标: 游戏'
+      - '预算控制: 中预算'
+      difficulty_axes: &id070
+      - 前后矛盾
+      - 预算边界不清
+    - case_id: case_replay_file_034
+      scene_family: 34_local_model_productivity
+      display_name: 34 local model productivity
+      replay_ref: D:\diypc\assets\replay\34_local_model_productivity.json
+      personas: &id071
+      - 复用旧件用户
+      need_axes: &id072
+      - '用途目标: 本地模型/高负载生产力'
+      - '需求轴: 复用旧件'
+      - '预算控制: 中预算'
+      difficulty_axes: &id073
+      - 新装/升级边界不清
+    required_personas:
+    - 电竞/游戏用户
+    - 复用旧件用户
+    - 电竞/高刷用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '用途目标: 游戏'
+    - '需求轴: 复用旧件'
+    - '预算控制: 低预算'
+    - '分辨率目标: 1080P'
+    - '用途目标: 电竞/高刷'
+    required_difficulty_axes:
+    - 新装/升级边界不清
+    - 预算边界不清
+    - 表达模糊
+    - 前后矛盾
+    - 信息缺失
+  - pack_index: 4
+    pack_id: language_adapter_pack_004
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_035
+      scene_family: 35_watercooling_disabled_quiet
+      display_name: 35 watercooling disabled quiet
+      replay_ref: D:\diypc\assets\replay\35_watercooling_disabled_quiet.json
+      personas: &id074
+      - 静音/小体积强偏好用户
+      need_axes: &id075
+      - '需求轴: 禁水冷'
+      - '需求轴: 静音偏好'
+      - '预算控制: 中预算'
+      difficulty_axes: &id076
+      - 偏好过强
+    - case_id: case_replay_file_036
+      scene_family: 36_socket_domain_unsat_backup
+      display_name: 36 socket domain unsat backup
+      replay_ref: D:\diypc\assets\replay\36_socket_domain_unsat_backup.json
+      personas: &id077
+      - 电竞/游戏用户
+      need_axes: &id078
+      - '用途目标: 游戏'
+      - '预算控制: 中预算'
+      difficulty_axes: &id079
+      - 信息缺失
+      - 条件冲突
+    - case_id: case_replay_file_001
+      scene_family: 01_mainline_gaming
+      display_name: 01 mainline gaming
+      replay_ref: D:\diypc\assets\replay\01_mainline_gaming.json
+      personas: *id002
+      need_axes: *id003
+      difficulty_axes: *id004
+    - case_id: case_replay_file_002
+      scene_family: 02_white_quiet_gaming
+      display_name: 02 white quiet gaming
+      replay_ref: D:\diypc\assets\replay\02_white_quiet_gaming.json
+      personas: *id005
+      need_axes: *id006
+      difficulty_axes: *id007
+    - case_id: case_replay_file_003
+      scene_family: 03_high_budget_gaming
+      display_name: 03 high budget gaming
+      replay_ref: D:\diypc\assets\replay\03_high_budget_gaming.json
+      personas: *id008
+      need_axes: *id009
+      difficulty_axes: *id010
+    - case_id: case_replay_file_004
+      scene_family: 04_unsat_socket_conflict
+      display_name: 04 unsat socket conflict
+      replay_ref: D:\diypc\assets\replay\04_unsat_socket_conflict.json
+      personas: *id011
+      need_axes: *id012
+      difficulty_axes: *id013
+    - case_id: case_replay_file_005
+      scene_family: 05_incomplete_case
+      display_name: 05 incomplete case
+      replay_ref: D:\diypc\assets\replay\05_incomplete_case.json
+      personas: *id014
+      need_axes: *id015
+      difficulty_axes: *id016
+    - case_id: case_replay_file_016
+      scene_family: 16_esports_1080p_ladder
+      display_name: 16 esports 1080p ladder
+      replay_ref: D:\diypc\assets\replay\16_esports_1080p_ladder.json
+      personas: *id017
+      need_axes: *id018
+      difficulty_axes: *id019
+    required_personas:
+    - 电竞/游戏用户
+    - 静音/小体积强偏好用户
+    - 外观强偏好用户
+    - 新手首次装机用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '用途目标: 游戏'
+    - '需求轴: 静音偏好'
+    - '需求轴: 禁水冷'
+    - '需求轴: 外观偏好:WHITE'
+    - '预算控制: 高预算'
+    required_difficulty_axes:
+    - 表达模糊
+    - 信息缺失
+    - 条件冲突
+    - 偏好过强
+  - pack_index: 5
+    pack_id: language_adapter_pack_005
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_017
+      scene_family: 17_productivity_creator_workstation
+      display_name: 17 productivity creator workstation
+      replay_ref: D:\diypc\assets\replay\17_productivity_creator_workstation.json
+      personas: *id020
+      need_axes: *id021
+      difficulty_axes: *id022
+    - case_id: case_replay_file_018
+      scene_family: 18_mixed_gaming_editing
+      display_name: 18 mixed gaming editing
+      replay_ref: D:\diypc\assets\replay\18_mixed_gaming_editing.json
+      personas: *id023
+      need_axes: *id024
+      difficulty_axes: *id025
+    - case_id: case_replay_file_019
+      scene_family: 19_office_home_low_budget
+      display_name: 19 office home low budget
+      replay_ref: D:\diypc\assets\replay\19_office_home_low_budget.json
+      personas: *id026
+      need_axes: *id027
+      difficulty_axes: *id028
+    - case_id: case_replay_file_020
+      scene_family: 20_4k_high_fidelity_gaming
+      display_name: 20 4k high fidelity gaming
+      replay_ref: D:\diypc\assets\replay\20_4k_high_fidelity_gaming.json
+      personas: *id029
+      need_axes: *id030
+      difficulty_axes: *id031
+    - case_id: case_replay_file_021
+      scene_family: 21_quiet_black_minimal_gaming
+      display_name: 21 quiet black minimal gaming
+      replay_ref: D:\diypc\assets\replay\21_quiet_black_minimal_gaming.json
+      personas: *id032
+      need_axes: *id033
+      difficulty_axes: *id034
+    - case_id: case_replay_file_022
+      scene_family: 22_compact_balanced_gaming
+      display_name: 22 compact balanced gaming
+      replay_ref: D:\diypc\assets\replay\22_compact_balanced_gaming.json
+      personas: *id035
+      need_axes: *id036
+      difficulty_axes: *id037
+    - case_id: case_replay_file_023
+      scene_family: 23_white_compact_conflict
+      display_name: 23 white compact conflict
+      replay_ref: D:\diypc\assets\replay\23_white_compact_conflict.json
+      personas: *id038
+      need_axes: *id039
+      difficulty_axes: *id040
+    - case_id: case_replay_file_024
+      scene_family: 24_reuse_old_gpu_balanced
+      display_name: 24 reuse old gpu balanced
+      replay_ref: D:\diypc\assets\replay\24_reuse_old_gpu_balanced.json
+      personas: *id041
+      need_axes: *id042
+      difficulty_axes: *id043
+    required_personas:
+    - 静音/小体积强偏好用户
+    - 混合用途用户
+    - 外观强偏好用户
+    - 创作/生产力用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '预算控制: 高预算'
+    - '用途目标: 混合用途'
+    - '需求轴: 体积限制'
+    - '分辨率目标: 4K'
+    - '用途目标: 创作/生产力'
+    required_difficulty_axes:
+    - 表达模糊
+    - 信息缺失
+    - 预算边界不清
+    - 条件冲突
+    - 新装/升级边界不清
+  - pack_index: 6
+    pack_id: language_adapter_pack_006
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_025
+      scene_family: 25_reuse_old_case_upgrade
+      display_name: 25 reuse old case upgrade
+      replay_ref: D:\diypc\assets\replay\25_reuse_old_case_upgrade.json
+      personas: *id044
+      need_axes: *id045
+      difficulty_axes: *id046
+    - case_id: case_replay_file_026
+      scene_family: 26_reuse_old_psu_quality
+      display_name: 26 reuse old psu quality
+      replay_ref: D:\diypc\assets\replay\26_reuse_old_psu_quality.json
+      personas: *id047
+      need_axes: *id048
+      difficulty_axes: *id049
+    - case_id: case_replay_file_027
+      scene_family: 27_multi_reuse_parts_planning
+      display_name: 27 multi reuse parts planning
+      replay_ref: D:\diypc\assets\replay\27_multi_reuse_parts_planning.json
+      personas: *id050
+      need_axes: *id051
+      difficulty_axes: *id052
+    - case_id: case_replay_file_028
+      scene_family: 28_reuse_blacklist_conflict
+      display_name: 28 reuse blacklist conflict
+      replay_ref: D:\diypc\assets\replay\28_reuse_blacklist_conflict.json
+      personas: *id053
+      need_axes: *id054
+      difficulty_axes: *id055
+    - case_id: case_replay_file_029
+      scene_family: 29_entry_gaming_budget_floor
+      display_name: 29 entry gaming budget floor
+      replay_ref: D:\diypc\assets\replay\29_entry_gaming_budget_floor.json
+      personas: *id056
+      need_axes: *id057
+      difficulty_axes: *id058
+    - case_id: case_replay_file_030
+      scene_family: 30_budget_edge_5999_gaming
+      display_name: 30 budget edge 5999 gaming
+      replay_ref: D:\diypc\assets\replay\30_budget_edge_5999_gaming.json
+      personas: *id059
+      need_axes: *id060
+      difficulty_axes: *id061
+    - case_id: case_replay_file_031
+      scene_family: 31_high_budget_showcase
+      display_name: 31 high budget showcase
+      replay_ref: D:\diypc\assets\replay\31_high_budget_showcase.json
+      personas: *id062
+      need_axes: *id063
+      difficulty_axes: *id064
+    - case_id: case_replay_file_032
+      scene_family: 32_budget_plus_500_revision
+      display_name: 32 budget plus 500 revision
+      replay_ref: D:\diypc\assets\replay\32_budget_plus_500_revision.json
+      personas: *id065
+      need_axes: *id066
+      difficulty_axes: *id067
+    required_personas:
+    - 复用旧件用户
+    - 电竞/游戏用户
+    - 混合用途用户
+    - 电竞/高刷用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '需求轴: 复用旧件'
+    - '用途目标: 游戏'
+    - '用途目标: 混合用途'
+    - '需求轴: 禁水冷'
+    - '预算控制: 低预算'
+    required_difficulty_axes:
+    - 新装/升级边界不清
+    - 信息缺失
+    - 预算边界不清
+    - 表达模糊
+    - 条件冲突
+  - pack_index: 7
+    pack_id: language_adapter_pack_007
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_033
+      scene_family: 33_budget_minus_500_revision
+      display_name: 33 budget minus 500 revision
+      replay_ref: D:\diypc\assets\replay\33_budget_minus_500_revision.json
+      personas: *id068
+      need_axes: *id069
+      difficulty_axes: *id070
+    - case_id: case_replay_file_034
+      scene_family: 34_local_model_productivity
+      display_name: 34 local model productivity
+      replay_ref: D:\diypc\assets\replay\34_local_model_productivity.json
+      personas: *id071
+      need_axes: *id072
+      difficulty_axes: *id073
+    - case_id: case_replay_file_035
+      scene_family: 35_watercooling_disabled_quiet
+      display_name: 35 watercooling disabled quiet
+      replay_ref: D:\diypc\assets\replay\35_watercooling_disabled_quiet.json
+      personas: *id074
+      need_axes: *id075
+      difficulty_axes: *id076
+    - case_id: case_replay_file_036
+      scene_family: 36_socket_domain_unsat_backup
+      display_name: 36 socket domain unsat backup
+      replay_ref: D:\diypc\assets\replay\36_socket_domain_unsat_backup.json
+      personas: *id077
+      need_axes: *id078
+      difficulty_axes: *id079
+    - case_id: case_replay_file_001
+      scene_family: 01_mainline_gaming
+      display_name: 01 mainline gaming
+      replay_ref: D:\diypc\assets\replay\01_mainline_gaming.json
+      personas: *id002
+      need_axes: *id003
+      difficulty_axes: *id004
+    - case_id: case_replay_file_002
+      scene_family: 02_white_quiet_gaming
+      display_name: 02 white quiet gaming
+      replay_ref: D:\diypc\assets\replay\02_white_quiet_gaming.json
+      personas: *id005
+      need_axes: *id006
+      difficulty_axes: *id007
+    - case_id: case_replay_file_003
+      scene_family: 03_high_budget_gaming
+      display_name: 03 high budget gaming
+      replay_ref: D:\diypc\assets\replay\03_high_budget_gaming.json
+      personas: *id008
+      need_axes: *id009
+      difficulty_axes: *id010
+    - case_id: case_replay_file_004
+      scene_family: 04_unsat_socket_conflict
+      display_name: 04 unsat socket conflict
+      replay_ref: D:\diypc\assets\replay\04_unsat_socket_conflict.json
+      personas: *id011
+      need_axes: *id012
+      difficulty_axes: *id013
+    required_personas:
+    - 电竞/游戏用户
+    - 静音/小体积强偏好用户
+    - 复用旧件用户
+    - 外观强偏好用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '用途目标: 游戏'
+    - '需求轴: 静音偏好'
+    - '用途目标: 本地模型/高负载生产力'
+    - '需求轴: 复用旧件'
+    - '需求轴: 禁水冷'
+    required_difficulty_axes:
+    - 表达模糊
+    - 信息缺失
+    - 条件冲突
+    - 前后矛盾
+    - 预算边界不清
+  - pack_index: 8
+    pack_id: language_adapter_pack_008
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_005
+      scene_family: 05_incomplete_case
+      display_name: 05 incomplete case
+      replay_ref: D:\diypc\assets\replay\05_incomplete_case.json
+      personas: *id014
+      need_axes: *id015
+      difficulty_axes: *id016
+    - case_id: case_replay_file_016
+      scene_family: 16_esports_1080p_ladder
+      display_name: 16 esports 1080p ladder
+      replay_ref: D:\diypc\assets\replay\16_esports_1080p_ladder.json
+      personas: *id017
+      need_axes: *id018
+      difficulty_axes: *id019
+    - case_id: case_replay_file_017
+      scene_family: 17_productivity_creator_workstation
+      display_name: 17 productivity creator workstation
+      replay_ref: D:\diypc\assets\replay\17_productivity_creator_workstation.json
+      personas: *id020
+      need_axes: *id021
+      difficulty_axes: *id022
+    - case_id: case_replay_file_018
+      scene_family: 18_mixed_gaming_editing
+      display_name: 18 mixed gaming editing
+      replay_ref: D:\diypc\assets\replay\18_mixed_gaming_editing.json
+      personas: *id023
+      need_axes: *id024
+      difficulty_axes: *id025
+    - case_id: case_replay_file_019
+      scene_family: 19_office_home_low_budget
+      display_name: 19 office home low budget
+      replay_ref: D:\diypc\assets\replay\19_office_home_low_budget.json
+      personas: *id026
+      need_axes: *id027
+      difficulty_axes: *id028
+    - case_id: case_replay_file_020
+      scene_family: 20_4k_high_fidelity_gaming
+      display_name: 20 4k high fidelity gaming
+      replay_ref: D:\diypc\assets\replay\20_4k_high_fidelity_gaming.json
+      personas: *id029
+      need_axes: *id030
+      difficulty_axes: *id031
+    - case_id: case_replay_file_021
+      scene_family: 21_quiet_black_minimal_gaming
+      display_name: 21 quiet black minimal gaming
+      replay_ref: D:\diypc\assets\replay\21_quiet_black_minimal_gaming.json
+      personas: *id032
+      need_axes: *id033
+      difficulty_axes: *id034
+    - case_id: case_replay_file_022
+      scene_family: 22_compact_balanced_gaming
+      display_name: 22 compact balanced gaming
+      replay_ref: D:\diypc\assets\replay\22_compact_balanced_gaming.json
+      personas: *id035
+      need_axes: *id036
+      difficulty_axes: *id037
+    required_personas:
+    - 静音/小体积强偏好用户
+    - 新手首次装机用户
+    - 电竞/高刷用户
+    - 创作/生产力用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '预算控制: 高预算'
+    - '分辨率目标: 1080P'
+    - '用途目标: 电竞/高刷'
+    - '分辨率目标: 4K'
+    - '用途目标: 创作/生产力'
+    required_difficulty_axes:
+    - 表达模糊
+    - 信息缺失
+    - 条件冲突
+    - 预算边界不清
+  - pack_index: 9
+    pack_id: language_adapter_pack_009
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_023
+      scene_family: 23_white_compact_conflict
+      display_name: 23 white compact conflict
+      replay_ref: D:\diypc\assets\replay\23_white_compact_conflict.json
+      personas: *id038
+      need_axes: *id039
+      difficulty_axes: *id040
+    - case_id: case_replay_file_024
+      scene_family: 24_reuse_old_gpu_balanced
+      display_name: 24 reuse old gpu balanced
+      replay_ref: D:\diypc\assets\replay\24_reuse_old_gpu_balanced.json
+      personas: *id041
+      need_axes: *id042
+      difficulty_axes: *id043
+    - case_id: case_replay_file_025
+      scene_family: 25_reuse_old_case_upgrade
+      display_name: 25 reuse old case upgrade
+      replay_ref: D:\diypc\assets\replay\25_reuse_old_case_upgrade.json
+      personas: *id044
+      need_axes: *id045
+      difficulty_axes: *id046
+    - case_id: case_replay_file_026
+      scene_family: 26_reuse_old_psu_quality
+      display_name: 26 reuse old psu quality
+      replay_ref: D:\diypc\assets\replay\26_reuse_old_psu_quality.json
+      personas: *id047
+      need_axes: *id048
+      difficulty_axes: *id049
+    - case_id: case_replay_file_027
+      scene_family: 27_multi_reuse_parts_planning
+      display_name: 27 multi reuse parts planning
+      replay_ref: D:\diypc\assets\replay\27_multi_reuse_parts_planning.json
+      personas: *id050
+      need_axes: *id051
+      difficulty_axes: *id052
+    - case_id: case_replay_file_028
+      scene_family: 28_reuse_blacklist_conflict
+      display_name: 28 reuse blacklist conflict
+      replay_ref: D:\diypc\assets\replay\28_reuse_blacklist_conflict.json
+      personas: *id053
+      need_axes: *id054
+      difficulty_axes: *id055
+    - case_id: case_replay_file_029
+      scene_family: 29_entry_gaming_budget_floor
+      display_name: 29 entry gaming budget floor
+      replay_ref: D:\diypc\assets\replay\29_entry_gaming_budget_floor.json
+      personas: *id056
+      need_axes: *id057
+      difficulty_axes: *id058
+    - case_id: case_replay_file_030
+      scene_family: 30_budget_edge_5999_gaming
+      display_name: 30 budget edge 5999 gaming
+      replay_ref: D:\diypc\assets\replay\30_budget_edge_5999_gaming.json
+      personas: *id059
+      need_axes: *id060
+      difficulty_axes: *id061
+    required_personas:
+    - 复用旧件用户
+    - 混合用途用户
+    - 外观强偏好用户
+    - 静音/小体积强偏好用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '需求轴: 复用旧件'
+    - '用途目标: 混合用途'
+    - '需求轴: 体积限制'
+    - '需求轴: 外观偏好:WHITE'
+    - '需求轴: 禁水冷'
+    required_difficulty_axes:
+    - 信息缺失
+    - 新装/升级边界不清
+    - 条件冲突
+    - 预算边界不清
+    - 表达模糊
+  - pack_index: 10
+    pack_id: language_adapter_pack_010
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_031
+      scene_family: 31_high_budget_showcase
+      display_name: 31 high budget showcase
+      replay_ref: D:\diypc\assets\replay\31_high_budget_showcase.json
+      personas: *id062
+      need_axes: *id063
+      difficulty_axes: *id064
+    - case_id: case_replay_file_032
+      scene_family: 32_budget_plus_500_revision
+      display_name: 32 budget plus 500 revision
+      replay_ref: D:\diypc\assets\replay\32_budget_plus_500_revision.json
+      personas: *id065
+      need_axes: *id066
+      difficulty_axes: *id067
+    - case_id: case_replay_file_033
+      scene_family: 33_budget_minus_500_revision
+      display_name: 33 budget minus 500 revision
+      replay_ref: D:\diypc\assets\replay\33_budget_minus_500_revision.json
+      personas: *id068
+      need_axes: *id069
+      difficulty_axes: *id070
+    - case_id: case_replay_file_034
+      scene_family: 34_local_model_productivity
+      display_name: 34 local model productivity
+      replay_ref: D:\diypc\assets\replay\34_local_model_productivity.json
+      personas: *id071
+      need_axes: *id072
+      difficulty_axes: *id073
+    - case_id: case_replay_file_035
+      scene_family: 35_watercooling_disabled_quiet
+      display_name: 35 watercooling disabled quiet
+      replay_ref: D:\diypc\assets\replay\35_watercooling_disabled_quiet.json
+      personas: *id074
+      need_axes: *id075
+      difficulty_axes: *id076
+    - case_id: case_replay_file_036
+      scene_family: 36_socket_domain_unsat_backup
+      display_name: 36 socket domain unsat backup
+      replay_ref: D:\diypc\assets\replay\36_socket_domain_unsat_backup.json
+      personas: *id077
+      need_axes: *id078
+      difficulty_axes: *id079
+    - case_id: case_replay_file_001
+      scene_family: 01_mainline_gaming
+      display_name: 01 mainline gaming
+      replay_ref: D:\diypc\assets\replay\01_mainline_gaming.json
+      personas: *id002
+      need_axes: *id003
+      difficulty_axes: *id004
+    - case_id: case_replay_file_002
+      scene_family: 02_white_quiet_gaming
+      display_name: 02 white quiet gaming
+      replay_ref: D:\diypc\assets\replay\02_white_quiet_gaming.json
+      personas: *id005
+      need_axes: *id006
+      difficulty_axes: *id007
+    required_personas:
+    - 电竞/游戏用户
+    - 静音/小体积强偏好用户
+    - 复用旧件用户
+    - 外观强偏好用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '用途目标: 游戏'
+    - '需求轴: 静音偏好'
+    - '需求轴: 外观展示'
+    - '预算控制: 高预算'
+    - '用途目标: 本地模型/高负载生产力'
+    required_difficulty_axes:
+    - 表达模糊
+    - 前后矛盾
+    - 预算边界不清
+    - 新装/升级边界不清
+    - 偏好过强
+  - pack_index: 11
+    pack_id: language_adapter_pack_011
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_003
+      scene_family: 03_high_budget_gaming
+      display_name: 03 high budget gaming
+      replay_ref: D:\diypc\assets\replay\03_high_budget_gaming.json
+      personas: *id008
+      need_axes: *id009
+      difficulty_axes: *id010
+    - case_id: case_replay_file_004
+      scene_family: 04_unsat_socket_conflict
+      display_name: 04 unsat socket conflict
+      replay_ref: D:\diypc\assets\replay\04_unsat_socket_conflict.json
+      personas: *id011
+      need_axes: *id012
+      difficulty_axes: *id013
+    - case_id: case_replay_file_005
+      scene_family: 05_incomplete_case
+      display_name: 05 incomplete case
+      replay_ref: D:\diypc\assets\replay\05_incomplete_case.json
+      personas: *id014
+      need_axes: *id015
+      difficulty_axes: *id016
+    - case_id: case_replay_file_016
+      scene_family: 16_esports_1080p_ladder
+      display_name: 16 esports 1080p ladder
+      replay_ref: D:\diypc\assets\replay\16_esports_1080p_ladder.json
+      personas: *id017
+      need_axes: *id018
+      difficulty_axes: *id019
+    - case_id: case_replay_file_017
+      scene_family: 17_productivity_creator_workstation
+      display_name: 17 productivity creator workstation
+      replay_ref: D:\diypc\assets\replay\17_productivity_creator_workstation.json
+      personas: *id020
+      need_axes: *id021
+      difficulty_axes: *id022
+    - case_id: case_replay_file_018
+      scene_family: 18_mixed_gaming_editing
+      display_name: 18 mixed gaming editing
+      replay_ref: D:\diypc\assets\replay\18_mixed_gaming_editing.json
+      personas: *id023
+      need_axes: *id024
+      difficulty_axes: *id025
+    - case_id: case_replay_file_019
+      scene_family: 19_office_home_low_budget
+      display_name: 19 office home low budget
+      replay_ref: D:\diypc\assets\replay\19_office_home_low_budget.json
+      personas: *id026
+      need_axes: *id027
+      difficulty_axes: *id028
+    - case_id: case_replay_file_020
+      scene_family: 20_4k_high_fidelity_gaming
+      display_name: 20 4k high fidelity gaming
+      replay_ref: D:\diypc\assets\replay\20_4k_high_fidelity_gaming.json
+      personas: *id029
+      need_axes: *id030
+      difficulty_axes: *id031
+    required_personas:
+    - 电竞/游戏用户
+    - 新手首次装机用户
+    - 电竞/高刷用户
+    - 创作/生产力用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '用途目标: 游戏'
+    - '预算控制: 高预算'
+    - '分辨率目标: 1080P'
+    - '用途目标: 电竞/高刷'
+    - '分辨率目标: 4K'
+    required_difficulty_axes:
+    - 表达模糊
+    - 信息缺失
+    - 条件冲突
+    - 预算边界不清
+  - pack_index: 12
+    pack_id: language_adapter_pack_012
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_021
+      scene_family: 21_quiet_black_minimal_gaming
+      display_name: 21 quiet black minimal gaming
+      replay_ref: D:\diypc\assets\replay\21_quiet_black_minimal_gaming.json
+      personas: *id032
+      need_axes: *id033
+      difficulty_axes: *id034
+    - case_id: case_replay_file_022
+      scene_family: 22_compact_balanced_gaming
+      display_name: 22 compact balanced gaming
+      replay_ref: D:\diypc\assets\replay\22_compact_balanced_gaming.json
+      personas: *id035
+      need_axes: *id036
+      difficulty_axes: *id037
+    - case_id: case_replay_file_023
+      scene_family: 23_white_compact_conflict
+      display_name: 23 white compact conflict
+      replay_ref: D:\diypc\assets\replay\23_white_compact_conflict.json
+      personas: *id038
+      need_axes: *id039
+      difficulty_axes: *id040
+    - case_id: case_replay_file_024
+      scene_family: 24_reuse_old_gpu_balanced
+      display_name: 24 reuse old gpu balanced
+      replay_ref: D:\diypc\assets\replay\24_reuse_old_gpu_balanced.json
+      personas: *id041
+      need_axes: *id042
+      difficulty_axes: *id043
+    - case_id: case_replay_file_025
+      scene_family: 25_reuse_old_case_upgrade
+      display_name: 25 reuse old case upgrade
+      replay_ref: D:\diypc\assets\replay\25_reuse_old_case_upgrade.json
+      personas: *id044
+      need_axes: *id045
+      difficulty_axes: *id046
+    - case_id: case_replay_file_026
+      scene_family: 26_reuse_old_psu_quality
+      display_name: 26 reuse old psu quality
+      replay_ref: D:\diypc\assets\replay\26_reuse_old_psu_quality.json
+      personas: *id047
+      need_axes: *id048
+      difficulty_axes: *id049
+    - case_id: case_replay_file_027
+      scene_family: 27_multi_reuse_parts_planning
+      display_name: 27 multi reuse parts planning
+      replay_ref: D:\diypc\assets\replay\27_multi_reuse_parts_planning.json
+      personas: *id050
+      need_axes: *id051
+      difficulty_axes: *id052
+    - case_id: case_replay_file_028
+      scene_family: 28_reuse_blacklist_conflict
+      display_name: 28 reuse blacklist conflict
+      replay_ref: D:\diypc\assets\replay\28_reuse_blacklist_conflict.json
+      personas: *id053
+      need_axes: *id054
+      difficulty_axes: *id055
+    required_personas:
+    - 复用旧件用户
+    - 静音/小体积强偏好用户
+    - 外观强偏好用户
+    - 混合用途用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '需求轴: 复用旧件'
+    - '需求轴: 体积限制'
+    - '用途目标: 混合用途'
+    - '需求轴: 外观偏好:BLACK'
+    - '需求轴: 静音偏好'
+    required_difficulty_axes:
+    - 信息缺失
+    - 新装/升级边界不清
+    - 表达模糊
+    - 条件冲突
+  - pack_index: 13
+    pack_id: language_adapter_pack_013
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_029
+      scene_family: 29_entry_gaming_budget_floor
+      display_name: 29 entry gaming budget floor
+      replay_ref: D:\diypc\assets\replay\29_entry_gaming_budget_floor.json
+      personas: *id056
+      need_axes: *id057
+      difficulty_axes: *id058
+    - case_id: case_replay_file_030
+      scene_family: 30_budget_edge_5999_gaming
+      display_name: 30 budget edge 5999 gaming
+      replay_ref: D:\diypc\assets\replay\30_budget_edge_5999_gaming.json
+      personas: *id059
+      need_axes: *id060
+      difficulty_axes: *id061
+    - case_id: case_replay_file_031
+      scene_family: 31_high_budget_showcase
+      display_name: 31 high budget showcase
+      replay_ref: D:\diypc\assets\replay\31_high_budget_showcase.json
+      personas: *id062
+      need_axes: *id063
+      difficulty_axes: *id064
+    - case_id: case_replay_file_032
+      scene_family: 32_budget_plus_500_revision
+      display_name: 32 budget plus 500 revision
+      replay_ref: D:\diypc\assets\replay\32_budget_plus_500_revision.json
+      personas: *id065
+      need_axes: *id066
+      difficulty_axes: *id067
+    - case_id: case_replay_file_033
+      scene_family: 33_budget_minus_500_revision
+      display_name: 33 budget minus 500 revision
+      replay_ref: D:\diypc\assets\replay\33_budget_minus_500_revision.json
+      personas: *id068
+      need_axes: *id069
+      difficulty_axes: *id070
+    - case_id: case_replay_file_034
+      scene_family: 34_local_model_productivity
+      display_name: 34 local model productivity
+      replay_ref: D:\diypc\assets\replay\34_local_model_productivity.json
+      personas: *id071
+      need_axes: *id072
+      difficulty_axes: *id073
+    - case_id: case_replay_file_035
+      scene_family: 35_watercooling_disabled_quiet
+      display_name: 35 watercooling disabled quiet
+      replay_ref: D:\diypc\assets\replay\35_watercooling_disabled_quiet.json
+      personas: *id074
+      need_axes: *id075
+      difficulty_axes: *id076
+    - case_id: case_replay_file_036
+      scene_family: 36_socket_domain_unsat_backup
+      display_name: 36 socket domain unsat backup
+      replay_ref: D:\diypc\assets\replay\36_socket_domain_unsat_backup.json
+      personas: *id077
+      need_axes: *id078
+      difficulty_axes: *id079
+    required_personas:
+    - 电竞/游戏用户
+    - 电竞/高刷用户
+    - 复用旧件用户
+    - 静音/小体积强偏好用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '用途目标: 游戏'
+    - '预算控制: 低预算'
+    - '分辨率目标: 1080P'
+    - '用途目标: 电竞/高刷'
+    - '需求轴: 外观展示'
+    required_difficulty_axes:
+    - 预算边界不清
+    - 表达模糊
+    - 前后矛盾
+    - 新装/升级边界不清
+    - 偏好过强
+  - pack_index: 14
+    pack_id: language_adapter_pack_014
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_001
+      scene_family: 01_mainline_gaming
+      display_name: 01 mainline gaming
+      replay_ref: D:\diypc\assets\replay\01_mainline_gaming.json
+      personas: *id002
+      need_axes: *id003
+      difficulty_axes: *id004
+    - case_id: case_replay_file_002
+      scene_family: 02_white_quiet_gaming
+      display_name: 02 white quiet gaming
+      replay_ref: D:\diypc\assets\replay\02_white_quiet_gaming.json
+      personas: *id005
+      need_axes: *id006
+      difficulty_axes: *id007
+    - case_id: case_replay_file_003
+      scene_family: 03_high_budget_gaming
+      display_name: 03 high budget gaming
+      replay_ref: D:\diypc\assets\replay\03_high_budget_gaming.json
+      personas: *id008
+      need_axes: *id009
+      difficulty_axes: *id010
+    - case_id: case_replay_file_004
+      scene_family: 04_unsat_socket_conflict
+      display_name: 04 unsat socket conflict
+      replay_ref: D:\diypc\assets\replay\04_unsat_socket_conflict.json
+      personas: *id011
+      need_axes: *id012
+      difficulty_axes: *id013
+    - case_id: case_replay_file_005
+      scene_family: 05_incomplete_case
+      display_name: 05 incomplete case
+      replay_ref: D:\diypc\assets\replay\05_incomplete_case.json
+      personas: *id014
+      need_axes: *id015
+      difficulty_axes: *id016
+    - case_id: case_replay_file_016
+      scene_family: 16_esports_1080p_ladder
+      display_name: 16 esports 1080p ladder
+      replay_ref: D:\diypc\assets\replay\16_esports_1080p_ladder.json
+      personas: *id017
+      need_axes: *id018
+      difficulty_axes: *id019
+    - case_id: case_replay_file_017
+      scene_family: 17_productivity_creator_workstation
+      display_name: 17 productivity creator workstation
+      replay_ref: D:\diypc\assets\replay\17_productivity_creator_workstation.json
+      personas: *id020
+      need_axes: *id021
+      difficulty_axes: *id022
+    - case_id: case_replay_file_018
+      scene_family: 18_mixed_gaming_editing
+      display_name: 18 mixed gaming editing
+      replay_ref: D:\diypc\assets\replay\18_mixed_gaming_editing.json
+      personas: *id023
+      need_axes: *id024
+      difficulty_axes: *id025
+    required_personas:
+    - 电竞/游戏用户
+    - 外观强偏好用户
+    - 静音/小体积强偏好用户
+    - 新手首次装机用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '用途目标: 游戏'
+    - '预算控制: 高预算'
+    - '需求轴: 外观偏好:WHITE'
+    - '需求轴: 静音偏好'
+    - '分辨率目标: 1080P'
+    required_difficulty_axes:
+    - 表达模糊
+    - 信息缺失
+    - 条件冲突
+  - pack_index: 15
+    pack_id: language_adapter_pack_015
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_019
+      scene_family: 19_office_home_low_budget
+      display_name: 19 office home low budget
+      replay_ref: D:\diypc\assets\replay\19_office_home_low_budget.json
+      personas: *id026
+      need_axes: *id027
+      difficulty_axes: *id028
+    - case_id: case_replay_file_020
+      scene_family: 20_4k_high_fidelity_gaming
+      display_name: 20 4k high fidelity gaming
+      replay_ref: D:\diypc\assets\replay\20_4k_high_fidelity_gaming.json
+      personas: *id029
+      need_axes: *id030
+      difficulty_axes: *id031
+    - case_id: case_replay_file_021
+      scene_family: 21_quiet_black_minimal_gaming
+      display_name: 21 quiet black minimal gaming
+      replay_ref: D:\diypc\assets\replay\21_quiet_black_minimal_gaming.json
+      personas: *id032
+      need_axes: *id033
+      difficulty_axes: *id034
+    - case_id: case_replay_file_022
+      scene_family: 22_compact_balanced_gaming
+      display_name: 22 compact balanced gaming
+      replay_ref: D:\diypc\assets\replay\22_compact_balanced_gaming.json
+      personas: *id035
+      need_axes: *id036
+      difficulty_axes: *id037
+    - case_id: case_replay_file_023
+      scene_family: 23_white_compact_conflict
+      display_name: 23 white compact conflict
+      replay_ref: D:\diypc\assets\replay\23_white_compact_conflict.json
+      personas: *id038
+      need_axes: *id039
+      difficulty_axes: *id040
+    - case_id: case_replay_file_024
+      scene_family: 24_reuse_old_gpu_balanced
+      display_name: 24 reuse old gpu balanced
+      replay_ref: D:\diypc\assets\replay\24_reuse_old_gpu_balanced.json
+      personas: *id041
+      need_axes: *id042
+      difficulty_axes: *id043
+    - case_id: case_replay_file_025
+      scene_family: 25_reuse_old_case_upgrade
+      display_name: 25 reuse old case upgrade
+      replay_ref: D:\diypc\assets\replay\25_reuse_old_case_upgrade.json
+      personas: *id044
+      need_axes: *id045
+      difficulty_axes: *id046
+    - case_id: case_replay_file_026
+      scene_family: 26_reuse_old_psu_quality
+      display_name: 26 reuse old psu quality
+      replay_ref: D:\diypc\assets\replay\26_reuse_old_psu_quality.json
+      personas: *id047
+      need_axes: *id048
+      difficulty_axes: *id049
+    required_personas:
+    - 静音/小体积强偏好用户
+    - 复用旧件用户
+    - 外观强偏好用户
+    - 混合用途用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '需求轴: 复用旧件'
+    - '需求轴: 体积限制'
+    - '用途目标: 混合用途'
+    - '用途目标: 家庭/办公'
+    - '预算控制: 低预算'
+    required_difficulty_axes:
+    - 信息缺失
+    - 表达模糊
+    - 新装/升级边界不清
+    - 预算边界不清
+    - 条件冲突
+  - pack_index: 16
+    pack_id: language_adapter_pack_016
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_027
+      scene_family: 27_multi_reuse_parts_planning
+      display_name: 27 multi reuse parts planning
+      replay_ref: D:\diypc\assets\replay\27_multi_reuse_parts_planning.json
+      personas: *id050
+      need_axes: *id051
+      difficulty_axes: *id052
+    - case_id: case_replay_file_028
+      scene_family: 28_reuse_blacklist_conflict
+      display_name: 28 reuse blacklist conflict
+      replay_ref: D:\diypc\assets\replay\28_reuse_blacklist_conflict.json
+      personas: *id053
+      need_axes: *id054
+      difficulty_axes: *id055
+    - case_id: case_replay_file_029
+      scene_family: 29_entry_gaming_budget_floor
+      display_name: 29 entry gaming budget floor
+      replay_ref: D:\diypc\assets\replay\29_entry_gaming_budget_floor.json
+      personas: *id056
+      need_axes: *id057
+      difficulty_axes: *id058
+    - case_id: case_replay_file_030
+      scene_family: 30_budget_edge_5999_gaming
+      display_name: 30 budget edge 5999 gaming
+      replay_ref: D:\diypc\assets\replay\30_budget_edge_5999_gaming.json
+      personas: *id059
+      need_axes: *id060
+      difficulty_axes: *id061
+    - case_id: case_replay_file_031
+      scene_family: 31_high_budget_showcase
+      display_name: 31 high budget showcase
+      replay_ref: D:\diypc\assets\replay\31_high_budget_showcase.json
+      personas: *id062
+      need_axes: *id063
+      difficulty_axes: *id064
+    - case_id: case_replay_file_032
+      scene_family: 32_budget_plus_500_revision
+      display_name: 32 budget plus 500 revision
+      replay_ref: D:\diypc\assets\replay\32_budget_plus_500_revision.json
+      personas: *id065
+      need_axes: *id066
+      difficulty_axes: *id067
+    - case_id: case_replay_file_033
+      scene_family: 33_budget_minus_500_revision
+      display_name: 33 budget minus 500 revision
+      replay_ref: D:\diypc\assets\replay\33_budget_minus_500_revision.json
+      personas: *id068
+      need_axes: *id069
+      difficulty_axes: *id070
+    - case_id: case_replay_file_034
+      scene_family: 34_local_model_productivity
+      display_name: 34 local model productivity
+      replay_ref: D:\diypc\assets\replay\34_local_model_productivity.json
+      personas: *id071
+      need_axes: *id072
+      difficulty_axes: *id073
+    required_personas:
+    - 电竞/游戏用户
+    - 复用旧件用户
+    - 电竞/高刷用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '用途目标: 游戏'
+    - '需求轴: 复用旧件'
+    - '预算控制: 低预算'
+    - '分辨率目标: 1080P'
+    - '用途目标: 电竞/高刷'
+    required_difficulty_axes:
+    - 新装/升级边界不清
+    - 预算边界不清
+    - 表达模糊
+    - 前后矛盾
+    - 信息缺失
+  - pack_index: 17
+    pack_id: language_adapter_pack_017
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_035
+      scene_family: 35_watercooling_disabled_quiet
+      display_name: 35 watercooling disabled quiet
+      replay_ref: D:\diypc\assets\replay\35_watercooling_disabled_quiet.json
+      personas: *id074
+      need_axes: *id075
+      difficulty_axes: *id076
+    - case_id: case_replay_file_036
+      scene_family: 36_socket_domain_unsat_backup
+      display_name: 36 socket domain unsat backup
+      replay_ref: D:\diypc\assets\replay\36_socket_domain_unsat_backup.json
+      personas: *id077
+      need_axes: *id078
+      difficulty_axes: *id079
+    - case_id: case_replay_file_001
+      scene_family: 01_mainline_gaming
+      display_name: 01 mainline gaming
+      replay_ref: D:\diypc\assets\replay\01_mainline_gaming.json
+      personas: *id002
+      need_axes: *id003
+      difficulty_axes: *id004
+    - case_id: case_replay_file_002
+      scene_family: 02_white_quiet_gaming
+      display_name: 02 white quiet gaming
+      replay_ref: D:\diypc\assets\replay\02_white_quiet_gaming.json
+      personas: *id005
+      need_axes: *id006
+      difficulty_axes: *id007
+    - case_id: case_replay_file_003
+      scene_family: 03_high_budget_gaming
+      display_name: 03 high budget gaming
+      replay_ref: D:\diypc\assets\replay\03_high_budget_gaming.json
+      personas: *id008
+      need_axes: *id009
+      difficulty_axes: *id010
+    - case_id: case_replay_file_004
+      scene_family: 04_unsat_socket_conflict
+      display_name: 04 unsat socket conflict
+      replay_ref: D:\diypc\assets\replay\04_unsat_socket_conflict.json
+      personas: *id011
+      need_axes: *id012
+      difficulty_axes: *id013
+    - case_id: case_replay_file_005
+      scene_family: 05_incomplete_case
+      display_name: 05 incomplete case
+      replay_ref: D:\diypc\assets\replay\05_incomplete_case.json
+      personas: *id014
+      need_axes: *id015
+      difficulty_axes: *id016
+    - case_id: case_replay_file_016
+      scene_family: 16_esports_1080p_ladder
+      display_name: 16 esports 1080p ladder
+      replay_ref: D:\diypc\assets\replay\16_esports_1080p_ladder.json
+      personas: *id017
+      need_axes: *id018
+      difficulty_axes: *id019
+    required_personas:
+    - 电竞/游戏用户
+    - 静音/小体积强偏好用户
+    - 外观强偏好用户
+    - 新手首次装机用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '用途目标: 游戏'
+    - '需求轴: 静音偏好'
+    - '需求轴: 禁水冷'
+    - '需求轴: 外观偏好:WHITE'
+    - '预算控制: 高预算'
+    required_difficulty_axes:
+    - 表达模糊
+    - 信息缺失
+    - 条件冲突
+    - 偏好过强
+  - pack_index: 18
+    pack_id: language_adapter_pack_018
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_017
+      scene_family: 17_productivity_creator_workstation
+      display_name: 17 productivity creator workstation
+      replay_ref: D:\diypc\assets\replay\17_productivity_creator_workstation.json
+      personas: *id020
+      need_axes: *id021
+      difficulty_axes: *id022
+    - case_id: case_replay_file_018
+      scene_family: 18_mixed_gaming_editing
+      display_name: 18 mixed gaming editing
+      replay_ref: D:\diypc\assets\replay\18_mixed_gaming_editing.json
+      personas: *id023
+      need_axes: *id024
+      difficulty_axes: *id025
+    - case_id: case_replay_file_019
+      scene_family: 19_office_home_low_budget
+      display_name: 19 office home low budget
+      replay_ref: D:\diypc\assets\replay\19_office_home_low_budget.json
+      personas: *id026
+      need_axes: *id027
+      difficulty_axes: *id028
+    - case_id: case_replay_file_020
+      scene_family: 20_4k_high_fidelity_gaming
+      display_name: 20 4k high fidelity gaming
+      replay_ref: D:\diypc\assets\replay\20_4k_high_fidelity_gaming.json
+      personas: *id029
+      need_axes: *id030
+      difficulty_axes: *id031
+    - case_id: case_replay_file_021
+      scene_family: 21_quiet_black_minimal_gaming
+      display_name: 21 quiet black minimal gaming
+      replay_ref: D:\diypc\assets\replay\21_quiet_black_minimal_gaming.json
+      personas: *id032
+      need_axes: *id033
+      difficulty_axes: *id034
+    - case_id: case_replay_file_022
+      scene_family: 22_compact_balanced_gaming
+      display_name: 22 compact balanced gaming
+      replay_ref: D:\diypc\assets\replay\22_compact_balanced_gaming.json
+      personas: *id035
+      need_axes: *id036
+      difficulty_axes: *id037
+    - case_id: case_replay_file_023
+      scene_family: 23_white_compact_conflict
+      display_name: 23 white compact conflict
+      replay_ref: D:\diypc\assets\replay\23_white_compact_conflict.json
+      personas: *id038
+      need_axes: *id039
+      difficulty_axes: *id040
+    - case_id: case_replay_file_024
+      scene_family: 24_reuse_old_gpu_balanced
+      display_name: 24 reuse old gpu balanced
+      replay_ref: D:\diypc\assets\replay\24_reuse_old_gpu_balanced.json
+      personas: *id041
+      need_axes: *id042
+      difficulty_axes: *id043
+    required_personas:
+    - 静音/小体积强偏好用户
+    - 混合用途用户
+    - 外观强偏好用户
+    - 创作/生产力用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '预算控制: 高预算'
+    - '用途目标: 混合用途'
+    - '需求轴: 体积限制'
+    - '分辨率目标: 4K'
+    - '用途目标: 创作/生产力'
+    required_difficulty_axes:
+    - 表达模糊
+    - 信息缺失
+    - 预算边界不清
+    - 条件冲突
+    - 新装/升级边界不清
+  - pack_index: 19
+    pack_id: language_adapter_pack_019
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_025
+      scene_family: 25_reuse_old_case_upgrade
+      display_name: 25 reuse old case upgrade
+      replay_ref: D:\diypc\assets\replay\25_reuse_old_case_upgrade.json
+      personas: *id044
+      need_axes: *id045
+      difficulty_axes: *id046
+    - case_id: case_replay_file_026
+      scene_family: 26_reuse_old_psu_quality
+      display_name: 26 reuse old psu quality
+      replay_ref: D:\diypc\assets\replay\26_reuse_old_psu_quality.json
+      personas: *id047
+      need_axes: *id048
+      difficulty_axes: *id049
+    - case_id: case_replay_file_027
+      scene_family: 27_multi_reuse_parts_planning
+      display_name: 27 multi reuse parts planning
+      replay_ref: D:\diypc\assets\replay\27_multi_reuse_parts_planning.json
+      personas: *id050
+      need_axes: *id051
+      difficulty_axes: *id052
+    - case_id: case_replay_file_028
+      scene_family: 28_reuse_blacklist_conflict
+      display_name: 28 reuse blacklist conflict
+      replay_ref: D:\diypc\assets\replay\28_reuse_blacklist_conflict.json
+      personas: *id053
+      need_axes: *id054
+      difficulty_axes: *id055
+    - case_id: case_replay_file_029
+      scene_family: 29_entry_gaming_budget_floor
+      display_name: 29 entry gaming budget floor
+      replay_ref: D:\diypc\assets\replay\29_entry_gaming_budget_floor.json
+      personas: *id056
+      need_axes: *id057
+      difficulty_axes: *id058
+    - case_id: case_replay_file_030
+      scene_family: 30_budget_edge_5999_gaming
+      display_name: 30 budget edge 5999 gaming
+      replay_ref: D:\diypc\assets\replay\30_budget_edge_5999_gaming.json
+      personas: *id059
+      need_axes: *id060
+      difficulty_axes: *id061
+    - case_id: case_replay_file_031
+      scene_family: 31_high_budget_showcase
+      display_name: 31 high budget showcase
+      replay_ref: D:\diypc\assets\replay\31_high_budget_showcase.json
+      personas: *id062
+      need_axes: *id063
+      difficulty_axes: *id064
+    - case_id: case_replay_file_032
+      scene_family: 32_budget_plus_500_revision
+      display_name: 32 budget plus 500 revision
+      replay_ref: D:\diypc\assets\replay\32_budget_plus_500_revision.json
+      personas: *id065
+      need_axes: *id066
+      difficulty_axes: *id067
+    required_personas:
+    - 复用旧件用户
+    - 电竞/游戏用户
+    - 混合用途用户
+    - 电竞/高刷用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '需求轴: 复用旧件'
+    - '用途目标: 游戏'
+    - '用途目标: 混合用途'
+    - '需求轴: 禁水冷'
+    - '预算控制: 低预算'
+    required_difficulty_axes:
+    - 新装/升级边界不清
+    - 信息缺失
+    - 预算边界不清
+    - 表达模糊
+    - 条件冲突
+  - pack_index: 20
+    pack_id: language_adapter_pack_020
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_033
+      scene_family: 33_budget_minus_500_revision
+      display_name: 33 budget minus 500 revision
+      replay_ref: D:\diypc\assets\replay\33_budget_minus_500_revision.json
+      personas: *id068
+      need_axes: *id069
+      difficulty_axes: *id070
+    - case_id: case_replay_file_034
+      scene_family: 34_local_model_productivity
+      display_name: 34 local model productivity
+      replay_ref: D:\diypc\assets\replay\34_local_model_productivity.json
+      personas: *id071
+      need_axes: *id072
+      difficulty_axes: *id073
+    - case_id: case_replay_file_035
+      scene_family: 35_watercooling_disabled_quiet
+      display_name: 35 watercooling disabled quiet
+      replay_ref: D:\diypc\assets\replay\35_watercooling_disabled_quiet.json
+      personas: *id074
+      need_axes: *id075
+      difficulty_axes: *id076
+    - case_id: case_replay_file_036
+      scene_family: 36_socket_domain_unsat_backup
+      display_name: 36 socket domain unsat backup
+      replay_ref: D:\diypc\assets\replay\36_socket_domain_unsat_backup.json
+      personas: *id077
+      need_axes: *id078
+      difficulty_axes: *id079
+    - case_id: case_replay_file_001
+      scene_family: 01_mainline_gaming
+      display_name: 01 mainline gaming
+      replay_ref: D:\diypc\assets\replay\01_mainline_gaming.json
+      personas: *id002
+      need_axes: *id003
+      difficulty_axes: *id004
+    - case_id: case_replay_file_002
+      scene_family: 02_white_quiet_gaming
+      display_name: 02 white quiet gaming
+      replay_ref: D:\diypc\assets\replay\02_white_quiet_gaming.json
+      personas: *id005
+      need_axes: *id006
+      difficulty_axes: *id007
+    - case_id: case_replay_file_003
+      scene_family: 03_high_budget_gaming
+      display_name: 03 high budget gaming
+      replay_ref: D:\diypc\assets\replay\03_high_budget_gaming.json
+      personas: *id008
+      need_axes: *id009
+      difficulty_axes: *id010
+    - case_id: case_replay_file_004
+      scene_family: 04_unsat_socket_conflict
+      display_name: 04 unsat socket conflict
+      replay_ref: D:\diypc\assets\replay\04_unsat_socket_conflict.json
+      personas: *id011
+      need_axes: *id012
+      difficulty_axes: *id013
+    required_personas:
+    - 电竞/游戏用户
+    - 静音/小体积强偏好用户
+    - 复用旧件用户
+    - 外观强偏好用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '用途目标: 游戏'
+    - '需求轴: 静音偏好'
+    - '用途目标: 本地模型/高负载生产力'
+    - '需求轴: 复用旧件'
+    - '需求轴: 禁水冷'
+    required_difficulty_axes:
+    - 表达模糊
+    - 信息缺失
+    - 条件冲突
+    - 前后矛盾
+    - 预算边界不清
+  - pack_index: 21
+    pack_id: language_adapter_pack_021
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_005
+      scene_family: 05_incomplete_case
+      display_name: 05 incomplete case
+      replay_ref: D:\diypc\assets\replay\05_incomplete_case.json
+      personas: *id014
+      need_axes: *id015
+      difficulty_axes: *id016
+    - case_id: case_replay_file_016
+      scene_family: 16_esports_1080p_ladder
+      display_name: 16 esports 1080p ladder
+      replay_ref: D:\diypc\assets\replay\16_esports_1080p_ladder.json
+      personas: *id017
+      need_axes: *id018
+      difficulty_axes: *id019
+    - case_id: case_replay_file_017
+      scene_family: 17_productivity_creator_workstation
+      display_name: 17 productivity creator workstation
+      replay_ref: D:\diypc\assets\replay\17_productivity_creator_workstation.json
+      personas: *id020
+      need_axes: *id021
+      difficulty_axes: *id022
+    - case_id: case_replay_file_018
+      scene_family: 18_mixed_gaming_editing
+      display_name: 18 mixed gaming editing
+      replay_ref: D:\diypc\assets\replay\18_mixed_gaming_editing.json
+      personas: *id023
+      need_axes: *id024
+      difficulty_axes: *id025
+    - case_id: case_replay_file_019
+      scene_family: 19_office_home_low_budget
+      display_name: 19 office home low budget
+      replay_ref: D:\diypc\assets\replay\19_office_home_low_budget.json
+      personas: *id026
+      need_axes: *id027
+      difficulty_axes: *id028
+    - case_id: case_replay_file_020
+      scene_family: 20_4k_high_fidelity_gaming
+      display_name: 20 4k high fidelity gaming
+      replay_ref: D:\diypc\assets\replay\20_4k_high_fidelity_gaming.json
+      personas: *id029
+      need_axes: *id030
+      difficulty_axes: *id031
+    - case_id: case_replay_file_021
+      scene_family: 21_quiet_black_minimal_gaming
+      display_name: 21 quiet black minimal gaming
+      replay_ref: D:\diypc\assets\replay\21_quiet_black_minimal_gaming.json
+      personas: *id032
+      need_axes: *id033
+      difficulty_axes: *id034
+    - case_id: case_replay_file_022
+      scene_family: 22_compact_balanced_gaming
+      display_name: 22 compact balanced gaming
+      replay_ref: D:\diypc\assets\replay\22_compact_balanced_gaming.json
+      personas: *id035
+      need_axes: *id036
+      difficulty_axes: *id037
+    required_personas:
+    - 静音/小体积强偏好用户
+    - 新手首次装机用户
+    - 电竞/高刷用户
+    - 创作/生产力用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '预算控制: 高预算'
+    - '分辨率目标: 1080P'
+    - '用途目标: 电竞/高刷'
+    - '分辨率目标: 4K'
+    - '用途目标: 创作/生产力'
+    required_difficulty_axes:
+    - 表达模糊
+    - 信息缺失
+    - 条件冲突
+    - 预算边界不清
+  - pack_index: 22
+    pack_id: language_adapter_pack_022
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_023
+      scene_family: 23_white_compact_conflict
+      display_name: 23 white compact conflict
+      replay_ref: D:\diypc\assets\replay\23_white_compact_conflict.json
+      personas: *id038
+      need_axes: *id039
+      difficulty_axes: *id040
+    - case_id: case_replay_file_024
+      scene_family: 24_reuse_old_gpu_balanced
+      display_name: 24 reuse old gpu balanced
+      replay_ref: D:\diypc\assets\replay\24_reuse_old_gpu_balanced.json
+      personas: *id041
+      need_axes: *id042
+      difficulty_axes: *id043
+    - case_id: case_replay_file_025
+      scene_family: 25_reuse_old_case_upgrade
+      display_name: 25 reuse old case upgrade
+      replay_ref: D:\diypc\assets\replay\25_reuse_old_case_upgrade.json
+      personas: *id044
+      need_axes: *id045
+      difficulty_axes: *id046
+    - case_id: case_replay_file_026
+      scene_family: 26_reuse_old_psu_quality
+      display_name: 26 reuse old psu quality
+      replay_ref: D:\diypc\assets\replay\26_reuse_old_psu_quality.json
+      personas: *id047
+      need_axes: *id048
+      difficulty_axes: *id049
+    - case_id: case_replay_file_027
+      scene_family: 27_multi_reuse_parts_planning
+      display_name: 27 multi reuse parts planning
+      replay_ref: D:\diypc\assets\replay\27_multi_reuse_parts_planning.json
+      personas: *id050
+      need_axes: *id051
+      difficulty_axes: *id052
+    - case_id: case_replay_file_028
+      scene_family: 28_reuse_blacklist_conflict
+      display_name: 28 reuse blacklist conflict
+      replay_ref: D:\diypc\assets\replay\28_reuse_blacklist_conflict.json
+      personas: *id053
+      need_axes: *id054
+      difficulty_axes: *id055
+    - case_id: case_replay_file_029
+      scene_family: 29_entry_gaming_budget_floor
+      display_name: 29 entry gaming budget floor
+      replay_ref: D:\diypc\assets\replay\29_entry_gaming_budget_floor.json
+      personas: *id056
+      need_axes: *id057
+      difficulty_axes: *id058
+    - case_id: case_replay_file_030
+      scene_family: 30_budget_edge_5999_gaming
+      display_name: 30 budget edge 5999 gaming
+      replay_ref: D:\diypc\assets\replay\30_budget_edge_5999_gaming.json
+      personas: *id059
+      need_axes: *id060
+      difficulty_axes: *id061
+    required_personas:
+    - 复用旧件用户
+    - 混合用途用户
+    - 外观强偏好用户
+    - 静音/小体积强偏好用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '需求轴: 复用旧件'
+    - '用途目标: 混合用途'
+    - '需求轴: 体积限制'
+    - '需求轴: 外观偏好:WHITE'
+    - '需求轴: 禁水冷'
+    required_difficulty_axes:
+    - 信息缺失
+    - 新装/升级边界不清
+    - 条件冲突
+    - 预算边界不清
+    - 表达模糊
+  - pack_index: 23
+    pack_id: language_adapter_pack_023
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_031
+      scene_family: 31_high_budget_showcase
+      display_name: 31 high budget showcase
+      replay_ref: D:\diypc\assets\replay\31_high_budget_showcase.json
+      personas: *id062
+      need_axes: *id063
+      difficulty_axes: *id064
+    - case_id: case_replay_file_032
+      scene_family: 32_budget_plus_500_revision
+      display_name: 32 budget plus 500 revision
+      replay_ref: D:\diypc\assets\replay\32_budget_plus_500_revision.json
+      personas: *id065
+      need_axes: *id066
+      difficulty_axes: *id067
+    - case_id: case_replay_file_033
+      scene_family: 33_budget_minus_500_revision
+      display_name: 33 budget minus 500 revision
+      replay_ref: D:\diypc\assets\replay\33_budget_minus_500_revision.json
+      personas: *id068
+      need_axes: *id069
+      difficulty_axes: *id070
+    - case_id: case_replay_file_034
+      scene_family: 34_local_model_productivity
+      display_name: 34 local model productivity
+      replay_ref: D:\diypc\assets\replay\34_local_model_productivity.json
+      personas: *id071
+      need_axes: *id072
+      difficulty_axes: *id073
+    - case_id: case_replay_file_035
+      scene_family: 35_watercooling_disabled_quiet
+      display_name: 35 watercooling disabled quiet
+      replay_ref: D:\diypc\assets\replay\35_watercooling_disabled_quiet.json
+      personas: *id074
+      need_axes: *id075
+      difficulty_axes: *id076
+    - case_id: case_replay_file_036
+      scene_family: 36_socket_domain_unsat_backup
+      display_name: 36 socket domain unsat backup
+      replay_ref: D:\diypc\assets\replay\36_socket_domain_unsat_backup.json
+      personas: *id077
+      need_axes: *id078
+      difficulty_axes: *id079
+    - case_id: case_replay_file_001
+      scene_family: 01_mainline_gaming
+      display_name: 01 mainline gaming
+      replay_ref: D:\diypc\assets\replay\01_mainline_gaming.json
+      personas: *id002
+      need_axes: *id003
+      difficulty_axes: *id004
+    - case_id: case_replay_file_002
+      scene_family: 02_white_quiet_gaming
+      display_name: 02 white quiet gaming
+      replay_ref: D:\diypc\assets\replay\02_white_quiet_gaming.json
+      personas: *id005
+      need_axes: *id006
+      difficulty_axes: *id007
+    required_personas:
+    - 电竞/游戏用户
+    - 静音/小体积强偏好用户
+    - 复用旧件用户
+    - 外观强偏好用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '用途目标: 游戏'
+    - '需求轴: 静音偏好'
+    - '需求轴: 外观展示'
+    - '预算控制: 高预算'
+    - '用途目标: 本地模型/高负载生产力'
+    required_difficulty_axes:
+    - 表达模糊
+    - 前后矛盾
+    - 预算边界不清
+    - 新装/升级边界不清
+    - 偏好过强
+  - pack_index: 24
+    pack_id: language_adapter_pack_024
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_003
+      scene_family: 03_high_budget_gaming
+      display_name: 03 high budget gaming
+      replay_ref: D:\diypc\assets\replay\03_high_budget_gaming.json
+      personas: *id008
+      need_axes: *id009
+      difficulty_axes: *id010
+    - case_id: case_replay_file_004
+      scene_family: 04_unsat_socket_conflict
+      display_name: 04 unsat socket conflict
+      replay_ref: D:\diypc\assets\replay\04_unsat_socket_conflict.json
+      personas: *id011
+      need_axes: *id012
+      difficulty_axes: *id013
+    - case_id: case_replay_file_005
+      scene_family: 05_incomplete_case
+      display_name: 05 incomplete case
+      replay_ref: D:\diypc\assets\replay\05_incomplete_case.json
+      personas: *id014
+      need_axes: *id015
+      difficulty_axes: *id016
+    - case_id: case_replay_file_016
+      scene_family: 16_esports_1080p_ladder
+      display_name: 16 esports 1080p ladder
+      replay_ref: D:\diypc\assets\replay\16_esports_1080p_ladder.json
+      personas: *id017
+      need_axes: *id018
+      difficulty_axes: *id019
+    - case_id: case_replay_file_017
+      scene_family: 17_productivity_creator_workstation
+      display_name: 17 productivity creator workstation
+      replay_ref: D:\diypc\assets\replay\17_productivity_creator_workstation.json
+      personas: *id020
+      need_axes: *id021
+      difficulty_axes: *id022
+    - case_id: case_replay_file_018
+      scene_family: 18_mixed_gaming_editing
+      display_name: 18 mixed gaming editing
+      replay_ref: D:\diypc\assets\replay\18_mixed_gaming_editing.json
+      personas: *id023
+      need_axes: *id024
+      difficulty_axes: *id025
+    - case_id: case_replay_file_019
+      scene_family: 19_office_home_low_budget
+      display_name: 19 office home low budget
+      replay_ref: D:\diypc\assets\replay\19_office_home_low_budget.json
+      personas: *id026
+      need_axes: *id027
+      difficulty_axes: *id028
+    - case_id: case_replay_file_020
+      scene_family: 20_4k_high_fidelity_gaming
+      display_name: 20 4k high fidelity gaming
+      replay_ref: D:\diypc\assets\replay\20_4k_high_fidelity_gaming.json
+      personas: *id029
+      need_axes: *id030
+      difficulty_axes: *id031
+    required_personas:
+    - 电竞/游戏用户
+    - 新手首次装机用户
+    - 电竞/高刷用户
+    - 创作/生产力用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '用途目标: 游戏'
+    - '预算控制: 高预算'
+    - '分辨率目标: 1080P'
+    - '用途目标: 电竞/高刷'
+    - '分辨率目标: 4K'
+    required_difficulty_axes:
+    - 表达模糊
+    - 信息缺失
+    - 条件冲突
+    - 预算边界不清
+  - pack_index: 25
+    pack_id: language_adapter_pack_025
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_021
+      scene_family: 21_quiet_black_minimal_gaming
+      display_name: 21 quiet black minimal gaming
+      replay_ref: D:\diypc\assets\replay\21_quiet_black_minimal_gaming.json
+      personas: *id032
+      need_axes: *id033
+      difficulty_axes: *id034
+    - case_id: case_replay_file_022
+      scene_family: 22_compact_balanced_gaming
+      display_name: 22 compact balanced gaming
+      replay_ref: D:\diypc\assets\replay\22_compact_balanced_gaming.json
+      personas: *id035
+      need_axes: *id036
+      difficulty_axes: *id037
+    - case_id: case_replay_file_023
+      scene_family: 23_white_compact_conflict
+      display_name: 23 white compact conflict
+      replay_ref: D:\diypc\assets\replay\23_white_compact_conflict.json
+      personas: *id038
+      need_axes: *id039
+      difficulty_axes: *id040
+    - case_id: case_replay_file_024
+      scene_family: 24_reuse_old_gpu_balanced
+      display_name: 24 reuse old gpu balanced
+      replay_ref: D:\diypc\assets\replay\24_reuse_old_gpu_balanced.json
+      personas: *id041
+      need_axes: *id042
+      difficulty_axes: *id043
+    - case_id: case_replay_file_025
+      scene_family: 25_reuse_old_case_upgrade
+      display_name: 25 reuse old case upgrade
+      replay_ref: D:\diypc\assets\replay\25_reuse_old_case_upgrade.json
+      personas: *id044
+      need_axes: *id045
+      difficulty_axes: *id046
+    - case_id: case_replay_file_026
+      scene_family: 26_reuse_old_psu_quality
+      display_name: 26 reuse old psu quality
+      replay_ref: D:\diypc\assets\replay\26_reuse_old_psu_quality.json
+      personas: *id047
+      need_axes: *id048
+      difficulty_axes: *id049
+    - case_id: case_replay_file_027
+      scene_family: 27_multi_reuse_parts_planning
+      display_name: 27 multi reuse parts planning
+      replay_ref: D:\diypc\assets\replay\27_multi_reuse_parts_planning.json
+      personas: *id050
+      need_axes: *id051
+      difficulty_axes: *id052
+    - case_id: case_replay_file_028
+      scene_family: 28_reuse_blacklist_conflict
+      display_name: 28 reuse blacklist conflict
+      replay_ref: D:\diypc\assets\replay\28_reuse_blacklist_conflict.json
+      personas: *id053
+      need_axes: *id054
+      difficulty_axes: *id055
+    required_personas:
+    - 复用旧件用户
+    - 静音/小体积强偏好用户
+    - 外观强偏好用户
+    - 混合用途用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '需求轴: 复用旧件'
+    - '需求轴: 体积限制'
+    - '用途目标: 混合用途'
+    - '需求轴: 外观偏好:BLACK'
+    - '需求轴: 静音偏好'
+    required_difficulty_axes:
+    - 信息缺失
+    - 新装/升级边界不清
+    - 表达模糊
+    - 条件冲突
+  - pack_index: 26
+    pack_id: language_adapter_pack_026
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_029
+      scene_family: 29_entry_gaming_budget_floor
+      display_name: 29 entry gaming budget floor
+      replay_ref: D:\diypc\assets\replay\29_entry_gaming_budget_floor.json
+      personas: *id056
+      need_axes: *id057
+      difficulty_axes: *id058
+    - case_id: case_replay_file_030
+      scene_family: 30_budget_edge_5999_gaming
+      display_name: 30 budget edge 5999 gaming
+      replay_ref: D:\diypc\assets\replay\30_budget_edge_5999_gaming.json
+      personas: *id059
+      need_axes: *id060
+      difficulty_axes: *id061
+    - case_id: case_replay_file_031
+      scene_family: 31_high_budget_showcase
+      display_name: 31 high budget showcase
+      replay_ref: D:\diypc\assets\replay\31_high_budget_showcase.json
+      personas: *id062
+      need_axes: *id063
+      difficulty_axes: *id064
+    - case_id: case_replay_file_032
+      scene_family: 32_budget_plus_500_revision
+      display_name: 32 budget plus 500 revision
+      replay_ref: D:\diypc\assets\replay\32_budget_plus_500_revision.json
+      personas: *id065
+      need_axes: *id066
+      difficulty_axes: *id067
+    - case_id: case_replay_file_033
+      scene_family: 33_budget_minus_500_revision
+      display_name: 33 budget minus 500 revision
+      replay_ref: D:\diypc\assets\replay\33_budget_minus_500_revision.json
+      personas: *id068
+      need_axes: *id069
+      difficulty_axes: *id070
+    - case_id: case_replay_file_034
+      scene_family: 34_local_model_productivity
+      display_name: 34 local model productivity
+      replay_ref: D:\diypc\assets\replay\34_local_model_productivity.json
+      personas: *id071
+      need_axes: *id072
+      difficulty_axes: *id073
+    - case_id: case_replay_file_035
+      scene_family: 35_watercooling_disabled_quiet
+      display_name: 35 watercooling disabled quiet
+      replay_ref: D:\diypc\assets\replay\35_watercooling_disabled_quiet.json
+      personas: *id074
+      need_axes: *id075
+      difficulty_axes: *id076
+    - case_id: case_replay_file_036
+      scene_family: 36_socket_domain_unsat_backup
+      display_name: 36 socket domain unsat backup
+      replay_ref: D:\diypc\assets\replay\36_socket_domain_unsat_backup.json
+      personas: *id077
+      need_axes: *id078
+      difficulty_axes: *id079
+    required_personas:
+    - 电竞/游戏用户
+    - 电竞/高刷用户
+    - 复用旧件用户
+    - 静音/小体积强偏好用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '用途目标: 游戏'
+    - '预算控制: 低预算'
+    - '分辨率目标: 1080P'
+    - '用途目标: 电竞/高刷'
+    - '需求轴: 外观展示'
+    required_difficulty_axes:
+    - 预算边界不清
+    - 表达模糊
+    - 前后矛盾
+    - 新装/升级边界不清
+    - 偏好过强
+  - pack_index: 27
+    pack_id: language_adapter_pack_027
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_001
+      scene_family: 01_mainline_gaming
+      display_name: 01 mainline gaming
+      replay_ref: D:\diypc\assets\replay\01_mainline_gaming.json
+      personas: *id002
+      need_axes: *id003
+      difficulty_axes: *id004
+    - case_id: case_replay_file_002
+      scene_family: 02_white_quiet_gaming
+      display_name: 02 white quiet gaming
+      replay_ref: D:\diypc\assets\replay\02_white_quiet_gaming.json
+      personas: *id005
+      need_axes: *id006
+      difficulty_axes: *id007
+    - case_id: case_replay_file_003
+      scene_family: 03_high_budget_gaming
+      display_name: 03 high budget gaming
+      replay_ref: D:\diypc\assets\replay\03_high_budget_gaming.json
+      personas: *id008
+      need_axes: *id009
+      difficulty_axes: *id010
+    - case_id: case_replay_file_004
+      scene_family: 04_unsat_socket_conflict
+      display_name: 04 unsat socket conflict
+      replay_ref: D:\diypc\assets\replay\04_unsat_socket_conflict.json
+      personas: *id011
+      need_axes: *id012
+      difficulty_axes: *id013
+    - case_id: case_replay_file_005
+      scene_family: 05_incomplete_case
+      display_name: 05 incomplete case
+      replay_ref: D:\diypc\assets\replay\05_incomplete_case.json
+      personas: *id014
+      need_axes: *id015
+      difficulty_axes: *id016
+    - case_id: case_replay_file_016
+      scene_family: 16_esports_1080p_ladder
+      display_name: 16 esports 1080p ladder
+      replay_ref: D:\diypc\assets\replay\16_esports_1080p_ladder.json
+      personas: *id017
+      need_axes: *id018
+      difficulty_axes: *id019
+    - case_id: case_replay_file_017
+      scene_family: 17_productivity_creator_workstation
+      display_name: 17 productivity creator workstation
+      replay_ref: D:\diypc\assets\replay\17_productivity_creator_workstation.json
+      personas: *id020
+      need_axes: *id021
+      difficulty_axes: *id022
+    - case_id: case_replay_file_018
+      scene_family: 18_mixed_gaming_editing
+      display_name: 18 mixed gaming editing
+      replay_ref: D:\diypc\assets\replay\18_mixed_gaming_editing.json
+      personas: *id023
+      need_axes: *id024
+      difficulty_axes: *id025
+    required_personas:
+    - 电竞/游戏用户
+    - 外观强偏好用户
+    - 静音/小体积强偏好用户
+    - 新手首次装机用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '用途目标: 游戏'
+    - '预算控制: 高预算'
+    - '需求轴: 外观偏好:WHITE'
+    - '需求轴: 静音偏好'
+    - '分辨率目标: 1080P'
+    required_difficulty_axes:
+    - 表达模糊
+    - 信息缺失
+    - 条件冲突
+  - pack_index: 28
+    pack_id: language_adapter_pack_028
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_019
+      scene_family: 19_office_home_low_budget
+      display_name: 19 office home low budget
+      replay_ref: D:\diypc\assets\replay\19_office_home_low_budget.json
+      personas: *id026
+      need_axes: *id027
+      difficulty_axes: *id028
+    - case_id: case_replay_file_020
+      scene_family: 20_4k_high_fidelity_gaming
+      display_name: 20 4k high fidelity gaming
+      replay_ref: D:\diypc\assets\replay\20_4k_high_fidelity_gaming.json
+      personas: *id029
+      need_axes: *id030
+      difficulty_axes: *id031
+    - case_id: case_replay_file_021
+      scene_family: 21_quiet_black_minimal_gaming
+      display_name: 21 quiet black minimal gaming
+      replay_ref: D:\diypc\assets\replay\21_quiet_black_minimal_gaming.json
+      personas: *id032
+      need_axes: *id033
+      difficulty_axes: *id034
+    - case_id: case_replay_file_022
+      scene_family: 22_compact_balanced_gaming
+      display_name: 22 compact balanced gaming
+      replay_ref: D:\diypc\assets\replay\22_compact_balanced_gaming.json
+      personas: *id035
+      need_axes: *id036
+      difficulty_axes: *id037
+    - case_id: case_replay_file_023
+      scene_family: 23_white_compact_conflict
+      display_name: 23 white compact conflict
+      replay_ref: D:\diypc\assets\replay\23_white_compact_conflict.json
+      personas: *id038
+      need_axes: *id039
+      difficulty_axes: *id040
+    - case_id: case_replay_file_024
+      scene_family: 24_reuse_old_gpu_balanced
+      display_name: 24 reuse old gpu balanced
+      replay_ref: D:\diypc\assets\replay\24_reuse_old_gpu_balanced.json
+      personas: *id041
+      need_axes: *id042
+      difficulty_axes: *id043
+    - case_id: case_replay_file_025
+      scene_family: 25_reuse_old_case_upgrade
+      display_name: 25 reuse old case upgrade
+      replay_ref: D:\diypc\assets\replay\25_reuse_old_case_upgrade.json
+      personas: *id044
+      need_axes: *id045
+      difficulty_axes: *id046
+    - case_id: case_replay_file_026
+      scene_family: 26_reuse_old_psu_quality
+      display_name: 26 reuse old psu quality
+      replay_ref: D:\diypc\assets\replay\26_reuse_old_psu_quality.json
+      personas: *id047
+      need_axes: *id048
+      difficulty_axes: *id049
+    required_personas:
+    - 静音/小体积强偏好用户
+    - 复用旧件用户
+    - 外观强偏好用户
+    - 混合用途用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '需求轴: 复用旧件'
+    - '需求轴: 体积限制'
+    - '用途目标: 混合用途'
+    - '用途目标: 家庭/办公'
+    - '预算控制: 低预算'
+    required_difficulty_axes:
+    - 信息缺失
+    - 表达模糊
+    - 新装/升级边界不清
+    - 预算边界不清
+    - 条件冲突
+  - pack_index: 29
+    pack_id: language_adapter_pack_029
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_027
+      scene_family: 27_multi_reuse_parts_planning
+      display_name: 27 multi reuse parts planning
+      replay_ref: D:\diypc\assets\replay\27_multi_reuse_parts_planning.json
+      personas: *id050
+      need_axes: *id051
+      difficulty_axes: *id052
+    - case_id: case_replay_file_028
+      scene_family: 28_reuse_blacklist_conflict
+      display_name: 28 reuse blacklist conflict
+      replay_ref: D:\diypc\assets\replay\28_reuse_blacklist_conflict.json
+      personas: *id053
+      need_axes: *id054
+      difficulty_axes: *id055
+    - case_id: case_replay_file_029
+      scene_family: 29_entry_gaming_budget_floor
+      display_name: 29 entry gaming budget floor
+      replay_ref: D:\diypc\assets\replay\29_entry_gaming_budget_floor.json
+      personas: *id056
+      need_axes: *id057
+      difficulty_axes: *id058
+    - case_id: case_replay_file_030
+      scene_family: 30_budget_edge_5999_gaming
+      display_name: 30 budget edge 5999 gaming
+      replay_ref: D:\diypc\assets\replay\30_budget_edge_5999_gaming.json
+      personas: *id059
+      need_axes: *id060
+      difficulty_axes: *id061
+    - case_id: case_replay_file_031
+      scene_family: 31_high_budget_showcase
+      display_name: 31 high budget showcase
+      replay_ref: D:\diypc\assets\replay\31_high_budget_showcase.json
+      personas: *id062
+      need_axes: *id063
+      difficulty_axes: *id064
+    - case_id: case_replay_file_032
+      scene_family: 32_budget_plus_500_revision
+      display_name: 32 budget plus 500 revision
+      replay_ref: D:\diypc\assets\replay\32_budget_plus_500_revision.json
+      personas: *id065
+      need_axes: *id066
+      difficulty_axes: *id067
+    - case_id: case_replay_file_033
+      scene_family: 33_budget_minus_500_revision
+      display_name: 33 budget minus 500 revision
+      replay_ref: D:\diypc\assets\replay\33_budget_minus_500_revision.json
+      personas: *id068
+      need_axes: *id069
+      difficulty_axes: *id070
+    - case_id: case_replay_file_034
+      scene_family: 34_local_model_productivity
+      display_name: 34 local model productivity
+      replay_ref: D:\diypc\assets\replay\34_local_model_productivity.json
+      personas: *id071
+      need_axes: *id072
+      difficulty_axes: *id073
+    required_personas:
+    - 电竞/游戏用户
+    - 复用旧件用户
+    - 电竞/高刷用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '用途目标: 游戏'
+    - '需求轴: 复用旧件'
+    - '预算控制: 低预算'
+    - '分辨率目标: 1080P'
+    - '用途目标: 电竞/高刷'
+    required_difficulty_axes:
+    - 新装/升级边界不清
+    - 预算边界不清
+    - 表达模糊
+    - 前后矛盾
+    - 信息缺失
+  - pack_index: 30
+    pack_id: language_adapter_pack_030
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_035
+      scene_family: 35_watercooling_disabled_quiet
+      display_name: 35 watercooling disabled quiet
+      replay_ref: D:\diypc\assets\replay\35_watercooling_disabled_quiet.json
+      personas: *id074
+      need_axes: *id075
+      difficulty_axes: *id076
+    - case_id: case_replay_file_036
+      scene_family: 36_socket_domain_unsat_backup
+      display_name: 36 socket domain unsat backup
+      replay_ref: D:\diypc\assets\replay\36_socket_domain_unsat_backup.json
+      personas: *id077
+      need_axes: *id078
+      difficulty_axes: *id079
+    - case_id: case_replay_file_001
+      scene_family: 01_mainline_gaming
+      display_name: 01 mainline gaming
+      replay_ref: D:\diypc\assets\replay\01_mainline_gaming.json
+      personas: *id002
+      need_axes: *id003
+      difficulty_axes: *id004
+    - case_id: case_replay_file_002
+      scene_family: 02_white_quiet_gaming
+      display_name: 02 white quiet gaming
+      replay_ref: D:\diypc\assets\replay\02_white_quiet_gaming.json
+      personas: *id005
+      need_axes: *id006
+      difficulty_axes: *id007
+    - case_id: case_replay_file_003
+      scene_family: 03_high_budget_gaming
+      display_name: 03 high budget gaming
+      replay_ref: D:\diypc\assets\replay\03_high_budget_gaming.json
+      personas: *id008
+      need_axes: *id009
+      difficulty_axes: *id010
+    - case_id: case_replay_file_004
+      scene_family: 04_unsat_socket_conflict
+      display_name: 04 unsat socket conflict
+      replay_ref: D:\diypc\assets\replay\04_unsat_socket_conflict.json
+      personas: *id011
+      need_axes: *id012
+      difficulty_axes: *id013
+    - case_id: case_replay_file_005
+      scene_family: 05_incomplete_case
+      display_name: 05 incomplete case
+      replay_ref: D:\diypc\assets\replay\05_incomplete_case.json
+      personas: *id014
+      need_axes: *id015
+      difficulty_axes: *id016
+    - case_id: case_replay_file_016
+      scene_family: 16_esports_1080p_ladder
+      display_name: 16 esports 1080p ladder
+      replay_ref: D:\diypc\assets\replay\16_esports_1080p_ladder.json
+      personas: *id017
+      need_axes: *id018
+      difficulty_axes: *id019
+    required_personas:
+    - 电竞/游戏用户
+    - 静音/小体积强偏好用户
+    - 外观强偏好用户
+    - 新手首次装机用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '用途目标: 游戏'
+    - '需求轴: 静音偏好'
+    - '需求轴: 禁水冷'
+    - '需求轴: 外观偏好:WHITE'
+    - '预算控制: 高预算'
+    required_difficulty_axes:
+    - 表达模糊
+    - 信息缺失
+    - 条件冲突
+    - 偏好过强
+  - pack_index: 31
+    pack_id: language_adapter_pack_031
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_017
+      scene_family: 17_productivity_creator_workstation
+      display_name: 17 productivity creator workstation
+      replay_ref: D:\diypc\assets\replay\17_productivity_creator_workstation.json
+      personas: *id020
+      need_axes: *id021
+      difficulty_axes: *id022
+    - case_id: case_replay_file_018
+      scene_family: 18_mixed_gaming_editing
+      display_name: 18 mixed gaming editing
+      replay_ref: D:\diypc\assets\replay\18_mixed_gaming_editing.json
+      personas: *id023
+      need_axes: *id024
+      difficulty_axes: *id025
+    - case_id: case_replay_file_019
+      scene_family: 19_office_home_low_budget
+      display_name: 19 office home low budget
+      replay_ref: D:\diypc\assets\replay\19_office_home_low_budget.json
+      personas: *id026
+      need_axes: *id027
+      difficulty_axes: *id028
+    - case_id: case_replay_file_020
+      scene_family: 20_4k_high_fidelity_gaming
+      display_name: 20 4k high fidelity gaming
+      replay_ref: D:\diypc\assets\replay\20_4k_high_fidelity_gaming.json
+      personas: *id029
+      need_axes: *id030
+      difficulty_axes: *id031
+    - case_id: case_replay_file_021
+      scene_family: 21_quiet_black_minimal_gaming
+      display_name: 21 quiet black minimal gaming
+      replay_ref: D:\diypc\assets\replay\21_quiet_black_minimal_gaming.json
+      personas: *id032
+      need_axes: *id033
+      difficulty_axes: *id034
+    - case_id: case_replay_file_022
+      scene_family: 22_compact_balanced_gaming
+      display_name: 22 compact balanced gaming
+      replay_ref: D:\diypc\assets\replay\22_compact_balanced_gaming.json
+      personas: *id035
+      need_axes: *id036
+      difficulty_axes: *id037
+    - case_id: case_replay_file_023
+      scene_family: 23_white_compact_conflict
+      display_name: 23 white compact conflict
+      replay_ref: D:\diypc\assets\replay\23_white_compact_conflict.json
+      personas: *id038
+      need_axes: *id039
+      difficulty_axes: *id040
+    - case_id: case_replay_file_024
+      scene_family: 24_reuse_old_gpu_balanced
+      display_name: 24 reuse old gpu balanced
+      replay_ref: D:\diypc\assets\replay\24_reuse_old_gpu_balanced.json
+      personas: *id041
+      need_axes: *id042
+      difficulty_axes: *id043
+    required_personas:
+    - 静音/小体积强偏好用户
+    - 混合用途用户
+    - 外观强偏好用户
+    - 创作/生产力用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '预算控制: 高预算'
+    - '用途目标: 混合用途'
+    - '需求轴: 体积限制'
+    - '分辨率目标: 4K'
+    - '用途目标: 创作/生产力'
+    required_difficulty_axes:
+    - 表达模糊
+    - 信息缺失
+    - 预算边界不清
+    - 条件冲突
+    - 新装/升级边界不清
+  - pack_index: 32
+    pack_id: language_adapter_pack_032
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_025
+      scene_family: 25_reuse_old_case_upgrade
+      display_name: 25 reuse old case upgrade
+      replay_ref: D:\diypc\assets\replay\25_reuse_old_case_upgrade.json
+      personas: *id044
+      need_axes: *id045
+      difficulty_axes: *id046
+    - case_id: case_replay_file_026
+      scene_family: 26_reuse_old_psu_quality
+      display_name: 26 reuse old psu quality
+      replay_ref: D:\diypc\assets\replay\26_reuse_old_psu_quality.json
+      personas: *id047
+      need_axes: *id048
+      difficulty_axes: *id049
+    - case_id: case_replay_file_027
+      scene_family: 27_multi_reuse_parts_planning
+      display_name: 27 multi reuse parts planning
+      replay_ref: D:\diypc\assets\replay\27_multi_reuse_parts_planning.json
+      personas: *id050
+      need_axes: *id051
+      difficulty_axes: *id052
+    - case_id: case_replay_file_028
+      scene_family: 28_reuse_blacklist_conflict
+      display_name: 28 reuse blacklist conflict
+      replay_ref: D:\diypc\assets\replay\28_reuse_blacklist_conflict.json
+      personas: *id053
+      need_axes: *id054
+      difficulty_axes: *id055
+    - case_id: case_replay_file_029
+      scene_family: 29_entry_gaming_budget_floor
+      display_name: 29 entry gaming budget floor
+      replay_ref: D:\diypc\assets\replay\29_entry_gaming_budget_floor.json
+      personas: *id056
+      need_axes: *id057
+      difficulty_axes: *id058
+    - case_id: case_replay_file_030
+      scene_family: 30_budget_edge_5999_gaming
+      display_name: 30 budget edge 5999 gaming
+      replay_ref: D:\diypc\assets\replay\30_budget_edge_5999_gaming.json
+      personas: *id059
+      need_axes: *id060
+      difficulty_axes: *id061
+    - case_id: case_replay_file_031
+      scene_family: 31_high_budget_showcase
+      display_name: 31 high budget showcase
+      replay_ref: D:\diypc\assets\replay\31_high_budget_showcase.json
+      personas: *id062
+      need_axes: *id063
+      difficulty_axes: *id064
+    - case_id: case_replay_file_032
+      scene_family: 32_budget_plus_500_revision
+      display_name: 32 budget plus 500 revision
+      replay_ref: D:\diypc\assets\replay\32_budget_plus_500_revision.json
+      personas: *id065
+      need_axes: *id066
+      difficulty_axes: *id067
+    required_personas:
+    - 复用旧件用户
+    - 电竞/游戏用户
+    - 混合用途用户
+    - 电竞/高刷用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '需求轴: 复用旧件'
+    - '用途目标: 游戏'
+    - '用途目标: 混合用途'
+    - '需求轴: 禁水冷'
+    - '预算控制: 低预算'
+    required_difficulty_axes:
+    - 新装/升级边界不清
+    - 信息缺失
+    - 预算边界不清
+    - 表达模糊
+    - 条件冲突
+  - pack_index: 33
+    pack_id: language_adapter_pack_033
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_033
+      scene_family: 33_budget_minus_500_revision
+      display_name: 33 budget minus 500 revision
+      replay_ref: D:\diypc\assets\replay\33_budget_minus_500_revision.json
+      personas: *id068
+      need_axes: *id069
+      difficulty_axes: *id070
+    - case_id: case_replay_file_034
+      scene_family: 34_local_model_productivity
+      display_name: 34 local model productivity
+      replay_ref: D:\diypc\assets\replay\34_local_model_productivity.json
+      personas: *id071
+      need_axes: *id072
+      difficulty_axes: *id073
+    - case_id: case_replay_file_035
+      scene_family: 35_watercooling_disabled_quiet
+      display_name: 35 watercooling disabled quiet
+      replay_ref: D:\diypc\assets\replay\35_watercooling_disabled_quiet.json
+      personas: *id074
+      need_axes: *id075
+      difficulty_axes: *id076
+    - case_id: case_replay_file_036
+      scene_family: 36_socket_domain_unsat_backup
+      display_name: 36 socket domain unsat backup
+      replay_ref: D:\diypc\assets\replay\36_socket_domain_unsat_backup.json
+      personas: *id077
+      need_axes: *id078
+      difficulty_axes: *id079
+    - case_id: case_replay_file_001
+      scene_family: 01_mainline_gaming
+      display_name: 01 mainline gaming
+      replay_ref: D:\diypc\assets\replay\01_mainline_gaming.json
+      personas: *id002
+      need_axes: *id003
+      difficulty_axes: *id004
+    - case_id: case_replay_file_002
+      scene_family: 02_white_quiet_gaming
+      display_name: 02 white quiet gaming
+      replay_ref: D:\diypc\assets\replay\02_white_quiet_gaming.json
+      personas: *id005
+      need_axes: *id006
+      difficulty_axes: *id007
+    - case_id: case_replay_file_003
+      scene_family: 03_high_budget_gaming
+      display_name: 03 high budget gaming
+      replay_ref: D:\diypc\assets\replay\03_high_budget_gaming.json
+      personas: *id008
+      need_axes: *id009
+      difficulty_axes: *id010
+    - case_id: case_replay_file_004
+      scene_family: 04_unsat_socket_conflict
+      display_name: 04 unsat socket conflict
+      replay_ref: D:\diypc\assets\replay\04_unsat_socket_conflict.json
+      personas: *id011
+      need_axes: *id012
+      difficulty_axes: *id013
+    required_personas:
+    - 电竞/游戏用户
+    - 静音/小体积强偏好用户
+    - 复用旧件用户
+    - 外观强偏好用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '用途目标: 游戏'
+    - '需求轴: 静音偏好'
+    - '用途目标: 本地模型/高负载生产力'
+    - '需求轴: 复用旧件'
+    - '需求轴: 禁水冷'
+    required_difficulty_axes:
+    - 表达模糊
+    - 信息缺失
+    - 条件冲突
+    - 前后矛盾
+    - 预算边界不清
+  - pack_index: 34
+    pack_id: language_adapter_pack_034
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_005
+      scene_family: 05_incomplete_case
+      display_name: 05 incomplete case
+      replay_ref: D:\diypc\assets\replay\05_incomplete_case.json
+      personas: *id014
+      need_axes: *id015
+      difficulty_axes: *id016
+    - case_id: case_replay_file_016
+      scene_family: 16_esports_1080p_ladder
+      display_name: 16 esports 1080p ladder
+      replay_ref: D:\diypc\assets\replay\16_esports_1080p_ladder.json
+      personas: *id017
+      need_axes: *id018
+      difficulty_axes: *id019
+    - case_id: case_replay_file_017
+      scene_family: 17_productivity_creator_workstation
+      display_name: 17 productivity creator workstation
+      replay_ref: D:\diypc\assets\replay\17_productivity_creator_workstation.json
+      personas: *id020
+      need_axes: *id021
+      difficulty_axes: *id022
+    - case_id: case_replay_file_018
+      scene_family: 18_mixed_gaming_editing
+      display_name: 18 mixed gaming editing
+      replay_ref: D:\diypc\assets\replay\18_mixed_gaming_editing.json
+      personas: *id023
+      need_axes: *id024
+      difficulty_axes: *id025
+    - case_id: case_replay_file_019
+      scene_family: 19_office_home_low_budget
+      display_name: 19 office home low budget
+      replay_ref: D:\diypc\assets\replay\19_office_home_low_budget.json
+      personas: *id026
+      need_axes: *id027
+      difficulty_axes: *id028
+    - case_id: case_replay_file_020
+      scene_family: 20_4k_high_fidelity_gaming
+      display_name: 20 4k high fidelity gaming
+      replay_ref: D:\diypc\assets\replay\20_4k_high_fidelity_gaming.json
+      personas: *id029
+      need_axes: *id030
+      difficulty_axes: *id031
+    - case_id: case_replay_file_021
+      scene_family: 21_quiet_black_minimal_gaming
+      display_name: 21 quiet black minimal gaming
+      replay_ref: D:\diypc\assets\replay\21_quiet_black_minimal_gaming.json
+      personas: *id032
+      need_axes: *id033
+      difficulty_axes: *id034
+    - case_id: case_replay_file_022
+      scene_family: 22_compact_balanced_gaming
+      display_name: 22 compact balanced gaming
+      replay_ref: D:\diypc\assets\replay\22_compact_balanced_gaming.json
+      personas: *id035
+      need_axes: *id036
+      difficulty_axes: *id037
+    required_personas:
+    - 静音/小体积强偏好用户
+    - 新手首次装机用户
+    - 电竞/高刷用户
+    - 创作/生产力用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '预算控制: 高预算'
+    - '分辨率目标: 1080P'
+    - '用途目标: 电竞/高刷'
+    - '分辨率目标: 4K'
+    - '用途目标: 创作/生产力'
+    required_difficulty_axes:
+    - 表达模糊
+    - 信息缺失
+    - 条件冲突
+    - 预算边界不清
+  - pack_index: 35
+    pack_id: language_adapter_pack_035
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_023
+      scene_family: 23_white_compact_conflict
+      display_name: 23 white compact conflict
+      replay_ref: D:\diypc\assets\replay\23_white_compact_conflict.json
+      personas: *id038
+      need_axes: *id039
+      difficulty_axes: *id040
+    - case_id: case_replay_file_024
+      scene_family: 24_reuse_old_gpu_balanced
+      display_name: 24 reuse old gpu balanced
+      replay_ref: D:\diypc\assets\replay\24_reuse_old_gpu_balanced.json
+      personas: *id041
+      need_axes: *id042
+      difficulty_axes: *id043
+    - case_id: case_replay_file_025
+      scene_family: 25_reuse_old_case_upgrade
+      display_name: 25 reuse old case upgrade
+      replay_ref: D:\diypc\assets\replay\25_reuse_old_case_upgrade.json
+      personas: *id044
+      need_axes: *id045
+      difficulty_axes: *id046
+    - case_id: case_replay_file_026
+      scene_family: 26_reuse_old_psu_quality
+      display_name: 26 reuse old psu quality
+      replay_ref: D:\diypc\assets\replay\26_reuse_old_psu_quality.json
+      personas: *id047
+      need_axes: *id048
+      difficulty_axes: *id049
+    - case_id: case_replay_file_027
+      scene_family: 27_multi_reuse_parts_planning
+      display_name: 27 multi reuse parts planning
+      replay_ref: D:\diypc\assets\replay\27_multi_reuse_parts_planning.json
+      personas: *id050
+      need_axes: *id051
+      difficulty_axes: *id052
+    - case_id: case_replay_file_028
+      scene_family: 28_reuse_blacklist_conflict
+      display_name: 28 reuse blacklist conflict
+      replay_ref: D:\diypc\assets\replay\28_reuse_blacklist_conflict.json
+      personas: *id053
+      need_axes: *id054
+      difficulty_axes: *id055
+    - case_id: case_replay_file_029
+      scene_family: 29_entry_gaming_budget_floor
+      display_name: 29 entry gaming budget floor
+      replay_ref: D:\diypc\assets\replay\29_entry_gaming_budget_floor.json
+      personas: *id056
+      need_axes: *id057
+      difficulty_axes: *id058
+    - case_id: case_replay_file_030
+      scene_family: 30_budget_edge_5999_gaming
+      display_name: 30 budget edge 5999 gaming
+      replay_ref: D:\diypc\assets\replay\30_budget_edge_5999_gaming.json
+      personas: *id059
+      need_axes: *id060
+      difficulty_axes: *id061
+    required_personas:
+    - 复用旧件用户
+    - 混合用途用户
+    - 外观强偏好用户
+    - 静音/小体积强偏好用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '需求轴: 复用旧件'
+    - '用途目标: 混合用途'
+    - '需求轴: 体积限制'
+    - '需求轴: 外观偏好:WHITE'
+    - '需求轴: 禁水冷'
+    required_difficulty_axes:
+    - 信息缺失
+    - 新装/升级边界不清
+    - 条件冲突
+    - 预算边界不清
+    - 表达模糊
+  - pack_index: 36
+    pack_id: language_adapter_pack_036
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_031
+      scene_family: 31_high_budget_showcase
+      display_name: 31 high budget showcase
+      replay_ref: D:\diypc\assets\replay\31_high_budget_showcase.json
+      personas: *id062
+      need_axes: *id063
+      difficulty_axes: *id064
+    - case_id: case_replay_file_032
+      scene_family: 32_budget_plus_500_revision
+      display_name: 32 budget plus 500 revision
+      replay_ref: D:\diypc\assets\replay\32_budget_plus_500_revision.json
+      personas: *id065
+      need_axes: *id066
+      difficulty_axes: *id067
+    - case_id: case_replay_file_033
+      scene_family: 33_budget_minus_500_revision
+      display_name: 33 budget minus 500 revision
+      replay_ref: D:\diypc\assets\replay\33_budget_minus_500_revision.json
+      personas: *id068
+      need_axes: *id069
+      difficulty_axes: *id070
+    - case_id: case_replay_file_034
+      scene_family: 34_local_model_productivity
+      display_name: 34 local model productivity
+      replay_ref: D:\diypc\assets\replay\34_local_model_productivity.json
+      personas: *id071
+      need_axes: *id072
+      difficulty_axes: *id073
+    - case_id: case_replay_file_035
+      scene_family: 35_watercooling_disabled_quiet
+      display_name: 35 watercooling disabled quiet
+      replay_ref: D:\diypc\assets\replay\35_watercooling_disabled_quiet.json
+      personas: *id074
+      need_axes: *id075
+      difficulty_axes: *id076
+    - case_id: case_replay_file_036
+      scene_family: 36_socket_domain_unsat_backup
+      display_name: 36 socket domain unsat backup
+      replay_ref: D:\diypc\assets\replay\36_socket_domain_unsat_backup.json
+      personas: *id077
+      need_axes: *id078
+      difficulty_axes: *id079
+    - case_id: case_replay_file_001
+      scene_family: 01_mainline_gaming
+      display_name: 01 mainline gaming
+      replay_ref: D:\diypc\assets\replay\01_mainline_gaming.json
+      personas: *id002
+      need_axes: *id003
+      difficulty_axes: *id004
+    - case_id: case_replay_file_002
+      scene_family: 02_white_quiet_gaming
+      display_name: 02 white quiet gaming
+      replay_ref: D:\diypc\assets\replay\02_white_quiet_gaming.json
+      personas: *id005
+      need_axes: *id006
+      difficulty_axes: *id007
+    required_personas:
+    - 电竞/游戏用户
+    - 静音/小体积强偏好用户
+    - 复用旧件用户
+    - 外观强偏好用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '用途目标: 游戏'
+    - '需求轴: 静音偏好'
+    - '需求轴: 外观展示'
+    - '预算控制: 高预算'
+    - '用途目标: 本地模型/高负载生产力'
+    required_difficulty_axes:
+    - 表达模糊
+    - 前后矛盾
+    - 预算边界不清
+    - 新装/升级边界不清
+    - 偏好过强
+  - pack_index: 37
+    pack_id: language_adapter_pack_037
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_003
+      scene_family: 03_high_budget_gaming
+      display_name: 03 high budget gaming
+      replay_ref: D:\diypc\assets\replay\03_high_budget_gaming.json
+      personas: *id008
+      need_axes: *id009
+      difficulty_axes: *id010
+    - case_id: case_replay_file_004
+      scene_family: 04_unsat_socket_conflict
+      display_name: 04 unsat socket conflict
+      replay_ref: D:\diypc\assets\replay\04_unsat_socket_conflict.json
+      personas: *id011
+      need_axes: *id012
+      difficulty_axes: *id013
+    - case_id: case_replay_file_005
+      scene_family: 05_incomplete_case
+      display_name: 05 incomplete case
+      replay_ref: D:\diypc\assets\replay\05_incomplete_case.json
+      personas: *id014
+      need_axes: *id015
+      difficulty_axes: *id016
+    - case_id: case_replay_file_016
+      scene_family: 16_esports_1080p_ladder
+      display_name: 16 esports 1080p ladder
+      replay_ref: D:\diypc\assets\replay\16_esports_1080p_ladder.json
+      personas: *id017
+      need_axes: *id018
+      difficulty_axes: *id019
+    - case_id: case_replay_file_017
+      scene_family: 17_productivity_creator_workstation
+      display_name: 17 productivity creator workstation
+      replay_ref: D:\diypc\assets\replay\17_productivity_creator_workstation.json
+      personas: *id020
+      need_axes: *id021
+      difficulty_axes: *id022
+    - case_id: case_replay_file_018
+      scene_family: 18_mixed_gaming_editing
+      display_name: 18 mixed gaming editing
+      replay_ref: D:\diypc\assets\replay\18_mixed_gaming_editing.json
+      personas: *id023
+      need_axes: *id024
+      difficulty_axes: *id025
+    - case_id: case_replay_file_019
+      scene_family: 19_office_home_low_budget
+      display_name: 19 office home low budget
+      replay_ref: D:\diypc\assets\replay\19_office_home_low_budget.json
+      personas: *id026
+      need_axes: *id027
+      difficulty_axes: *id028
+    - case_id: case_replay_file_020
+      scene_family: 20_4k_high_fidelity_gaming
+      display_name: 20 4k high fidelity gaming
+      replay_ref: D:\diypc\assets\replay\20_4k_high_fidelity_gaming.json
+      personas: *id029
+      need_axes: *id030
+      difficulty_axes: *id031
+    required_personas:
+    - 电竞/游戏用户
+    - 新手首次装机用户
+    - 电竞/高刷用户
+    - 创作/生产力用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '用途目标: 游戏'
+    - '预算控制: 高预算'
+    - '分辨率目标: 1080P'
+    - '用途目标: 电竞/高刷'
+    - '分辨率目标: 4K'
+    required_difficulty_axes:
+    - 表达模糊
+    - 信息缺失
+    - 条件冲突
+    - 预算边界不清
+  - pack_index: 38
+    pack_id: language_adapter_pack_038
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_021
+      scene_family: 21_quiet_black_minimal_gaming
+      display_name: 21 quiet black minimal gaming
+      replay_ref: D:\diypc\assets\replay\21_quiet_black_minimal_gaming.json
+      personas: *id032
+      need_axes: *id033
+      difficulty_axes: *id034
+    - case_id: case_replay_file_022
+      scene_family: 22_compact_balanced_gaming
+      display_name: 22 compact balanced gaming
+      replay_ref: D:\diypc\assets\replay\22_compact_balanced_gaming.json
+      personas: *id035
+      need_axes: *id036
+      difficulty_axes: *id037
+    - case_id: case_replay_file_023
+      scene_family: 23_white_compact_conflict
+      display_name: 23 white compact conflict
+      replay_ref: D:\diypc\assets\replay\23_white_compact_conflict.json
+      personas: *id038
+      need_axes: *id039
+      difficulty_axes: *id040
+    - case_id: case_replay_file_024
+      scene_family: 24_reuse_old_gpu_balanced
+      display_name: 24 reuse old gpu balanced
+      replay_ref: D:\diypc\assets\replay\24_reuse_old_gpu_balanced.json
+      personas: *id041
+      need_axes: *id042
+      difficulty_axes: *id043
+    - case_id: case_replay_file_025
+      scene_family: 25_reuse_old_case_upgrade
+      display_name: 25 reuse old case upgrade
+      replay_ref: D:\diypc\assets\replay\25_reuse_old_case_upgrade.json
+      personas: *id044
+      need_axes: *id045
+      difficulty_axes: *id046
+    - case_id: case_replay_file_026
+      scene_family: 26_reuse_old_psu_quality
+      display_name: 26 reuse old psu quality
+      replay_ref: D:\diypc\assets\replay\26_reuse_old_psu_quality.json
+      personas: *id047
+      need_axes: *id048
+      difficulty_axes: *id049
+    - case_id: case_replay_file_027
+      scene_family: 27_multi_reuse_parts_planning
+      display_name: 27 multi reuse parts planning
+      replay_ref: D:\diypc\assets\replay\27_multi_reuse_parts_planning.json
+      personas: *id050
+      need_axes: *id051
+      difficulty_axes: *id052
+    - case_id: case_replay_file_028
+      scene_family: 28_reuse_blacklist_conflict
+      display_name: 28 reuse blacklist conflict
+      replay_ref: D:\diypc\assets\replay\28_reuse_blacklist_conflict.json
+      personas: *id053
+      need_axes: *id054
+      difficulty_axes: *id055
+    required_personas:
+    - 复用旧件用户
+    - 静音/小体积强偏好用户
+    - 外观强偏好用户
+    - 混合用途用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '需求轴: 复用旧件'
+    - '需求轴: 体积限制'
+    - '用途目标: 混合用途'
+    - '需求轴: 外观偏好:BLACK'
+    - '需求轴: 静音偏好'
+    required_difficulty_axes:
+    - 信息缺失
+    - 新装/升级边界不清
+    - 表达模糊
+    - 条件冲突
+  - pack_index: 39
+    pack_id: language_adapter_pack_039
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_029
+      scene_family: 29_entry_gaming_budget_floor
+      display_name: 29 entry gaming budget floor
+      replay_ref: D:\diypc\assets\replay\29_entry_gaming_budget_floor.json
+      personas: *id056
+      need_axes: *id057
+      difficulty_axes: *id058
+    - case_id: case_replay_file_030
+      scene_family: 30_budget_edge_5999_gaming
+      display_name: 30 budget edge 5999 gaming
+      replay_ref: D:\diypc\assets\replay\30_budget_edge_5999_gaming.json
+      personas: *id059
+      need_axes: *id060
+      difficulty_axes: *id061
+    - case_id: case_replay_file_031
+      scene_family: 31_high_budget_showcase
+      display_name: 31 high budget showcase
+      replay_ref: D:\diypc\assets\replay\31_high_budget_showcase.json
+      personas: *id062
+      need_axes: *id063
+      difficulty_axes: *id064
+    - case_id: case_replay_file_032
+      scene_family: 32_budget_plus_500_revision
+      display_name: 32 budget plus 500 revision
+      replay_ref: D:\diypc\assets\replay\32_budget_plus_500_revision.json
+      personas: *id065
+      need_axes: *id066
+      difficulty_axes: *id067
+    - case_id: case_replay_file_033
+      scene_family: 33_budget_minus_500_revision
+      display_name: 33 budget minus 500 revision
+      replay_ref: D:\diypc\assets\replay\33_budget_minus_500_revision.json
+      personas: *id068
+      need_axes: *id069
+      difficulty_axes: *id070
+    - case_id: case_replay_file_034
+      scene_family: 34_local_model_productivity
+      display_name: 34 local model productivity
+      replay_ref: D:\diypc\assets\replay\34_local_model_productivity.json
+      personas: *id071
+      need_axes: *id072
+      difficulty_axes: *id073
+    - case_id: case_replay_file_035
+      scene_family: 35_watercooling_disabled_quiet
+      display_name: 35 watercooling disabled quiet
+      replay_ref: D:\diypc\assets\replay\35_watercooling_disabled_quiet.json
+      personas: *id074
+      need_axes: *id075
+      difficulty_axes: *id076
+    - case_id: case_replay_file_036
+      scene_family: 36_socket_domain_unsat_backup
+      display_name: 36 socket domain unsat backup
+      replay_ref: D:\diypc\assets\replay\36_socket_domain_unsat_backup.json
+      personas: *id077
+      need_axes: *id078
+      difficulty_axes: *id079
+    required_personas:
+    - 电竞/游戏用户
+    - 电竞/高刷用户
+    - 复用旧件用户
+    - 静音/小体积强偏好用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '用途目标: 游戏'
+    - '预算控制: 低预算'
+    - '分辨率目标: 1080P'
+    - '用途目标: 电竞/高刷'
+    - '需求轴: 外观展示'
+    required_difficulty_axes:
+    - 预算边界不清
+    - 表达模糊
+    - 前后矛盾
+    - 新装/升级边界不清
+    - 偏好过强
+  - pack_index: 40
+    pack_id: language_adapter_pack_040
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_001
+      scene_family: 01_mainline_gaming
+      display_name: 01 mainline gaming
+      replay_ref: D:\diypc\assets\replay\01_mainline_gaming.json
+      personas: *id002
+      need_axes: *id003
+      difficulty_axes: *id004
+    - case_id: case_replay_file_002
+      scene_family: 02_white_quiet_gaming
+      display_name: 02 white quiet gaming
+      replay_ref: D:\diypc\assets\replay\02_white_quiet_gaming.json
+      personas: *id005
+      need_axes: *id006
+      difficulty_axes: *id007
+    - case_id: case_replay_file_003
+      scene_family: 03_high_budget_gaming
+      display_name: 03 high budget gaming
+      replay_ref: D:\diypc\assets\replay\03_high_budget_gaming.json
+      personas: *id008
+      need_axes: *id009
+      difficulty_axes: *id010
+    - case_id: case_replay_file_004
+      scene_family: 04_unsat_socket_conflict
+      display_name: 04 unsat socket conflict
+      replay_ref: D:\diypc\assets\replay\04_unsat_socket_conflict.json
+      personas: *id011
+      need_axes: *id012
+      difficulty_axes: *id013
+    - case_id: case_replay_file_005
+      scene_family: 05_incomplete_case
+      display_name: 05 incomplete case
+      replay_ref: D:\diypc\assets\replay\05_incomplete_case.json
+      personas: *id014
+      need_axes: *id015
+      difficulty_axes: *id016
+    - case_id: case_replay_file_016
+      scene_family: 16_esports_1080p_ladder
+      display_name: 16 esports 1080p ladder
+      replay_ref: D:\diypc\assets\replay\16_esports_1080p_ladder.json
+      personas: *id017
+      need_axes: *id018
+      difficulty_axes: *id019
+    - case_id: case_replay_file_017
+      scene_family: 17_productivity_creator_workstation
+      display_name: 17 productivity creator workstation
+      replay_ref: D:\diypc\assets\replay\17_productivity_creator_workstation.json
+      personas: *id020
+      need_axes: *id021
+      difficulty_axes: *id022
+    - case_id: case_replay_file_018
+      scene_family: 18_mixed_gaming_editing
+      display_name: 18 mixed gaming editing
+      replay_ref: D:\diypc\assets\replay\18_mixed_gaming_editing.json
+      personas: *id023
+      need_axes: *id024
+      difficulty_axes: *id025
+    required_personas:
+    - 电竞/游戏用户
+    - 外观强偏好用户
+    - 静音/小体积强偏好用户
+    - 新手首次装机用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '用途目标: 游戏'
+    - '预算控制: 高预算'
+    - '需求轴: 外观偏好:WHITE'
+    - '需求轴: 静音偏好'
+    - '分辨率目标: 1080P'
+    required_difficulty_axes:
+    - 表达模糊
+    - 信息缺失
+    - 条件冲突
+  - pack_index: 41
+    pack_id: language_adapter_pack_041
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_019
+      scene_family: 19_office_home_low_budget
+      display_name: 19 office home low budget
+      replay_ref: D:\diypc\assets\replay\19_office_home_low_budget.json
+      personas: *id026
+      need_axes: *id027
+      difficulty_axes: *id028
+    - case_id: case_replay_file_020
+      scene_family: 20_4k_high_fidelity_gaming
+      display_name: 20 4k high fidelity gaming
+      replay_ref: D:\diypc\assets\replay\20_4k_high_fidelity_gaming.json
+      personas: *id029
+      need_axes: *id030
+      difficulty_axes: *id031
+    - case_id: case_replay_file_021
+      scene_family: 21_quiet_black_minimal_gaming
+      display_name: 21 quiet black minimal gaming
+      replay_ref: D:\diypc\assets\replay\21_quiet_black_minimal_gaming.json
+      personas: *id032
+      need_axes: *id033
+      difficulty_axes: *id034
+    - case_id: case_replay_file_022
+      scene_family: 22_compact_balanced_gaming
+      display_name: 22 compact balanced gaming
+      replay_ref: D:\diypc\assets\replay\22_compact_balanced_gaming.json
+      personas: *id035
+      need_axes: *id036
+      difficulty_axes: *id037
+    - case_id: case_replay_file_023
+      scene_family: 23_white_compact_conflict
+      display_name: 23 white compact conflict
+      replay_ref: D:\diypc\assets\replay\23_white_compact_conflict.json
+      personas: *id038
+      need_axes: *id039
+      difficulty_axes: *id040
+    - case_id: case_replay_file_024
+      scene_family: 24_reuse_old_gpu_balanced
+      display_name: 24 reuse old gpu balanced
+      replay_ref: D:\diypc\assets\replay\24_reuse_old_gpu_balanced.json
+      personas: *id041
+      need_axes: *id042
+      difficulty_axes: *id043
+    - case_id: case_replay_file_025
+      scene_family: 25_reuse_old_case_upgrade
+      display_name: 25 reuse old case upgrade
+      replay_ref: D:\diypc\assets\replay\25_reuse_old_case_upgrade.json
+      personas: *id044
+      need_axes: *id045
+      difficulty_axes: *id046
+    - case_id: case_replay_file_026
+      scene_family: 26_reuse_old_psu_quality
+      display_name: 26 reuse old psu quality
+      replay_ref: D:\diypc\assets\replay\26_reuse_old_psu_quality.json
+      personas: *id047
+      need_axes: *id048
+      difficulty_axes: *id049
+    required_personas:
+    - 静音/小体积强偏好用户
+    - 复用旧件用户
+    - 外观强偏好用户
+    - 混合用途用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '需求轴: 复用旧件'
+    - '需求轴: 体积限制'
+    - '用途目标: 混合用途'
+    - '用途目标: 家庭/办公'
+    - '预算控制: 低预算'
+    required_difficulty_axes:
+    - 信息缺失
+    - 表达模糊
+    - 新装/升级边界不清
+    - 预算边界不清
+    - 条件冲突
+  - pack_index: 42
+    pack_id: language_adapter_pack_042
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_027
+      scene_family: 27_multi_reuse_parts_planning
+      display_name: 27 multi reuse parts planning
+      replay_ref: D:\diypc\assets\replay\27_multi_reuse_parts_planning.json
+      personas: *id050
+      need_axes: *id051
+      difficulty_axes: *id052
+    - case_id: case_replay_file_028
+      scene_family: 28_reuse_blacklist_conflict
+      display_name: 28 reuse blacklist conflict
+      replay_ref: D:\diypc\assets\replay\28_reuse_blacklist_conflict.json
+      personas: *id053
+      need_axes: *id054
+      difficulty_axes: *id055
+    - case_id: case_replay_file_029
+      scene_family: 29_entry_gaming_budget_floor
+      display_name: 29 entry gaming budget floor
+      replay_ref: D:\diypc\assets\replay\29_entry_gaming_budget_floor.json
+      personas: *id056
+      need_axes: *id057
+      difficulty_axes: *id058
+    - case_id: case_replay_file_030
+      scene_family: 30_budget_edge_5999_gaming
+      display_name: 30 budget edge 5999 gaming
+      replay_ref: D:\diypc\assets\replay\30_budget_edge_5999_gaming.json
+      personas: *id059
+      need_axes: *id060
+      difficulty_axes: *id061
+    - case_id: case_replay_file_031
+      scene_family: 31_high_budget_showcase
+      display_name: 31 high budget showcase
+      replay_ref: D:\diypc\assets\replay\31_high_budget_showcase.json
+      personas: *id062
+      need_axes: *id063
+      difficulty_axes: *id064
+    - case_id: case_replay_file_032
+      scene_family: 32_budget_plus_500_revision
+      display_name: 32 budget plus 500 revision
+      replay_ref: D:\diypc\assets\replay\32_budget_plus_500_revision.json
+      personas: *id065
+      need_axes: *id066
+      difficulty_axes: *id067
+    - case_id: case_replay_file_033
+      scene_family: 33_budget_minus_500_revision
+      display_name: 33 budget minus 500 revision
+      replay_ref: D:\diypc\assets\replay\33_budget_minus_500_revision.json
+      personas: *id068
+      need_axes: *id069
+      difficulty_axes: *id070
+    - case_id: case_replay_file_034
+      scene_family: 34_local_model_productivity
+      display_name: 34 local model productivity
+      replay_ref: D:\diypc\assets\replay\34_local_model_productivity.json
+      personas: *id071
+      need_axes: *id072
+      difficulty_axes: *id073
+    required_personas:
+    - 电竞/游戏用户
+    - 复用旧件用户
+    - 电竞/高刷用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '用途目标: 游戏'
+    - '需求轴: 复用旧件'
+    - '预算控制: 低预算'
+    - '分辨率目标: 1080P'
+    - '用途目标: 电竞/高刷'
+    required_difficulty_axes:
+    - 新装/升级边界不清
+    - 预算边界不清
+    - 表达模糊
+    - 前后矛盾
+    - 信息缺失
+  - pack_index: 43
+    pack_id: language_adapter_pack_043
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_035
+      scene_family: 35_watercooling_disabled_quiet
+      display_name: 35 watercooling disabled quiet
+      replay_ref: D:\diypc\assets\replay\35_watercooling_disabled_quiet.json
+      personas: *id074
+      need_axes: *id075
+      difficulty_axes: *id076
+    - case_id: case_replay_file_036
+      scene_family: 36_socket_domain_unsat_backup
+      display_name: 36 socket domain unsat backup
+      replay_ref: D:\diypc\assets\replay\36_socket_domain_unsat_backup.json
+      personas: *id077
+      need_axes: *id078
+      difficulty_axes: *id079
+    - case_id: case_replay_file_001
+      scene_family: 01_mainline_gaming
+      display_name: 01 mainline gaming
+      replay_ref: D:\diypc\assets\replay\01_mainline_gaming.json
+      personas: *id002
+      need_axes: *id003
+      difficulty_axes: *id004
+    - case_id: case_replay_file_002
+      scene_family: 02_white_quiet_gaming
+      display_name: 02 white quiet gaming
+      replay_ref: D:\diypc\assets\replay\02_white_quiet_gaming.json
+      personas: *id005
+      need_axes: *id006
+      difficulty_axes: *id007
+    - case_id: case_replay_file_003
+      scene_family: 03_high_budget_gaming
+      display_name: 03 high budget gaming
+      replay_ref: D:\diypc\assets\replay\03_high_budget_gaming.json
+      personas: *id008
+      need_axes: *id009
+      difficulty_axes: *id010
+    - case_id: case_replay_file_004
+      scene_family: 04_unsat_socket_conflict
+      display_name: 04 unsat socket conflict
+      replay_ref: D:\diypc\assets\replay\04_unsat_socket_conflict.json
+      personas: *id011
+      need_axes: *id012
+      difficulty_axes: *id013
+    - case_id: case_replay_file_005
+      scene_family: 05_incomplete_case
+      display_name: 05 incomplete case
+      replay_ref: D:\diypc\assets\replay\05_incomplete_case.json
+      personas: *id014
+      need_axes: *id015
+      difficulty_axes: *id016
+    - case_id: case_replay_file_016
+      scene_family: 16_esports_1080p_ladder
+      display_name: 16 esports 1080p ladder
+      replay_ref: D:\diypc\assets\replay\16_esports_1080p_ladder.json
+      personas: *id017
+      need_axes: *id018
+      difficulty_axes: *id019
+    required_personas:
+    - 电竞/游戏用户
+    - 静音/小体积强偏好用户
+    - 外观强偏好用户
+    - 新手首次装机用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '用途目标: 游戏'
+    - '需求轴: 静音偏好'
+    - '需求轴: 禁水冷'
+    - '需求轴: 外观偏好:WHITE'
+    - '预算控制: 高预算'
+    required_difficulty_axes:
+    - 表达模糊
+    - 信息缺失
+    - 条件冲突
+    - 偏好过强
+  - pack_index: 44
+    pack_id: language_adapter_pack_044
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_017
+      scene_family: 17_productivity_creator_workstation
+      display_name: 17 productivity creator workstation
+      replay_ref: D:\diypc\assets\replay\17_productivity_creator_workstation.json
+      personas: *id020
+      need_axes: *id021
+      difficulty_axes: *id022
+    - case_id: case_replay_file_018
+      scene_family: 18_mixed_gaming_editing
+      display_name: 18 mixed gaming editing
+      replay_ref: D:\diypc\assets\replay\18_mixed_gaming_editing.json
+      personas: *id023
+      need_axes: *id024
+      difficulty_axes: *id025
+    - case_id: case_replay_file_019
+      scene_family: 19_office_home_low_budget
+      display_name: 19 office home low budget
+      replay_ref: D:\diypc\assets\replay\19_office_home_low_budget.json
+      personas: *id026
+      need_axes: *id027
+      difficulty_axes: *id028
+    - case_id: case_replay_file_020
+      scene_family: 20_4k_high_fidelity_gaming
+      display_name: 20 4k high fidelity gaming
+      replay_ref: D:\diypc\assets\replay\20_4k_high_fidelity_gaming.json
+      personas: *id029
+      need_axes: *id030
+      difficulty_axes: *id031
+    - case_id: case_replay_file_021
+      scene_family: 21_quiet_black_minimal_gaming
+      display_name: 21 quiet black minimal gaming
+      replay_ref: D:\diypc\assets\replay\21_quiet_black_minimal_gaming.json
+      personas: *id032
+      need_axes: *id033
+      difficulty_axes: *id034
+    - case_id: case_replay_file_022
+      scene_family: 22_compact_balanced_gaming
+      display_name: 22 compact balanced gaming
+      replay_ref: D:\diypc\assets\replay\22_compact_balanced_gaming.json
+      personas: *id035
+      need_axes: *id036
+      difficulty_axes: *id037
+    - case_id: case_replay_file_023
+      scene_family: 23_white_compact_conflict
+      display_name: 23 white compact conflict
+      replay_ref: D:\diypc\assets\replay\23_white_compact_conflict.json
+      personas: *id038
+      need_axes: *id039
+      difficulty_axes: *id040
+    - case_id: case_replay_file_024
+      scene_family: 24_reuse_old_gpu_balanced
+      display_name: 24 reuse old gpu balanced
+      replay_ref: D:\diypc\assets\replay\24_reuse_old_gpu_balanced.json
+      personas: *id041
+      need_axes: *id042
+      difficulty_axes: *id043
+    required_personas:
+    - 静音/小体积强偏好用户
+    - 混合用途用户
+    - 外观强偏好用户
+    - 创作/生产力用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '预算控制: 高预算'
+    - '用途目标: 混合用途'
+    - '需求轴: 体积限制'
+    - '分辨率目标: 4K'
+    - '用途目标: 创作/生产力'
+    required_difficulty_axes:
+    - 表达模糊
+    - 信息缺失
+    - 预算边界不清
+    - 条件冲突
+    - 新装/升级边界不清
+  - pack_index: 45
+    pack_id: language_adapter_pack_045
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_025
+      scene_family: 25_reuse_old_case_upgrade
+      display_name: 25 reuse old case upgrade
+      replay_ref: D:\diypc\assets\replay\25_reuse_old_case_upgrade.json
+      personas: *id044
+      need_axes: *id045
+      difficulty_axes: *id046
+    - case_id: case_replay_file_026
+      scene_family: 26_reuse_old_psu_quality
+      display_name: 26 reuse old psu quality
+      replay_ref: D:\diypc\assets\replay\26_reuse_old_psu_quality.json
+      personas: *id047
+      need_axes: *id048
+      difficulty_axes: *id049
+    - case_id: case_replay_file_027
+      scene_family: 27_multi_reuse_parts_planning
+      display_name: 27 multi reuse parts planning
+      replay_ref: D:\diypc\assets\replay\27_multi_reuse_parts_planning.json
+      personas: *id050
+      need_axes: *id051
+      difficulty_axes: *id052
+    - case_id: case_replay_file_028
+      scene_family: 28_reuse_blacklist_conflict
+      display_name: 28 reuse blacklist conflict
+      replay_ref: D:\diypc\assets\replay\28_reuse_blacklist_conflict.json
+      personas: *id053
+      need_axes: *id054
+      difficulty_axes: *id055
+    - case_id: case_replay_file_029
+      scene_family: 29_entry_gaming_budget_floor
+      display_name: 29 entry gaming budget floor
+      replay_ref: D:\diypc\assets\replay\29_entry_gaming_budget_floor.json
+      personas: *id056
+      need_axes: *id057
+      difficulty_axes: *id058
+    - case_id: case_replay_file_030
+      scene_family: 30_budget_edge_5999_gaming
+      display_name: 30 budget edge 5999 gaming
+      replay_ref: D:\diypc\assets\replay\30_budget_edge_5999_gaming.json
+      personas: *id059
+      need_axes: *id060
+      difficulty_axes: *id061
+    - case_id: case_replay_file_031
+      scene_family: 31_high_budget_showcase
+      display_name: 31 high budget showcase
+      replay_ref: D:\diypc\assets\replay\31_high_budget_showcase.json
+      personas: *id062
+      need_axes: *id063
+      difficulty_axes: *id064
+    - case_id: case_replay_file_032
+      scene_family: 32_budget_plus_500_revision
+      display_name: 32 budget plus 500 revision
+      replay_ref: D:\diypc\assets\replay\32_budget_plus_500_revision.json
+      personas: *id065
+      need_axes: *id066
+      difficulty_axes: *id067
+    required_personas:
+    - 复用旧件用户
+    - 电竞/游戏用户
+    - 混合用途用户
+    - 电竞/高刷用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '需求轴: 复用旧件'
+    - '用途目标: 游戏'
+    - '用途目标: 混合用途'
+    - '需求轴: 禁水冷'
+    - '预算控制: 低预算'
+    required_difficulty_axes:
+    - 新装/升级边界不清
+    - 信息缺失
+    - 预算边界不清
+    - 表达模糊
+    - 条件冲突
+  - pack_index: 46
+    pack_id: language_adapter_pack_046
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_033
+      scene_family: 33_budget_minus_500_revision
+      display_name: 33 budget minus 500 revision
+      replay_ref: D:\diypc\assets\replay\33_budget_minus_500_revision.json
+      personas: *id068
+      need_axes: *id069
+      difficulty_axes: *id070
+    - case_id: case_replay_file_034
+      scene_family: 34_local_model_productivity
+      display_name: 34 local model productivity
+      replay_ref: D:\diypc\assets\replay\34_local_model_productivity.json
+      personas: *id071
+      need_axes: *id072
+      difficulty_axes: *id073
+    - case_id: case_replay_file_035
+      scene_family: 35_watercooling_disabled_quiet
+      display_name: 35 watercooling disabled quiet
+      replay_ref: D:\diypc\assets\replay\35_watercooling_disabled_quiet.json
+      personas: *id074
+      need_axes: *id075
+      difficulty_axes: *id076
+    - case_id: case_replay_file_036
+      scene_family: 36_socket_domain_unsat_backup
+      display_name: 36 socket domain unsat backup
+      replay_ref: D:\diypc\assets\replay\36_socket_domain_unsat_backup.json
+      personas: *id077
+      need_axes: *id078
+      difficulty_axes: *id079
+    - case_id: case_replay_file_001
+      scene_family: 01_mainline_gaming
+      display_name: 01 mainline gaming
+      replay_ref: D:\diypc\assets\replay\01_mainline_gaming.json
+      personas: *id002
+      need_axes: *id003
+      difficulty_axes: *id004
+    - case_id: case_replay_file_002
+      scene_family: 02_white_quiet_gaming
+      display_name: 02 white quiet gaming
+      replay_ref: D:\diypc\assets\replay\02_white_quiet_gaming.json
+      personas: *id005
+      need_axes: *id006
+      difficulty_axes: *id007
+    - case_id: case_replay_file_003
+      scene_family: 03_high_budget_gaming
+      display_name: 03 high budget gaming
+      replay_ref: D:\diypc\assets\replay\03_high_budget_gaming.json
+      personas: *id008
+      need_axes: *id009
+      difficulty_axes: *id010
+    - case_id: case_replay_file_004
+      scene_family: 04_unsat_socket_conflict
+      display_name: 04 unsat socket conflict
+      replay_ref: D:\diypc\assets\replay\04_unsat_socket_conflict.json
+      personas: *id011
+      need_axes: *id012
+      difficulty_axes: *id013
+    required_personas:
+    - 电竞/游戏用户
+    - 静音/小体积强偏好用户
+    - 复用旧件用户
+    - 外观强偏好用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '用途目标: 游戏'
+    - '需求轴: 静音偏好'
+    - '用途目标: 本地模型/高负载生产力'
+    - '需求轴: 复用旧件'
+    - '需求轴: 禁水冷'
+    required_difficulty_axes:
+    - 表达模糊
+    - 信息缺失
+    - 条件冲突
+    - 前后矛盾
+    - 预算边界不清
+  - pack_index: 47
+    pack_id: language_adapter_pack_047
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_005
+      scene_family: 05_incomplete_case
+      display_name: 05 incomplete case
+      replay_ref: D:\diypc\assets\replay\05_incomplete_case.json
+      personas: *id014
+      need_axes: *id015
+      difficulty_axes: *id016
+    - case_id: case_replay_file_016
+      scene_family: 16_esports_1080p_ladder
+      display_name: 16 esports 1080p ladder
+      replay_ref: D:\diypc\assets\replay\16_esports_1080p_ladder.json
+      personas: *id017
+      need_axes: *id018
+      difficulty_axes: *id019
+    - case_id: case_replay_file_017
+      scene_family: 17_productivity_creator_workstation
+      display_name: 17 productivity creator workstation
+      replay_ref: D:\diypc\assets\replay\17_productivity_creator_workstation.json
+      personas: *id020
+      need_axes: *id021
+      difficulty_axes: *id022
+    - case_id: case_replay_file_018
+      scene_family: 18_mixed_gaming_editing
+      display_name: 18 mixed gaming editing
+      replay_ref: D:\diypc\assets\replay\18_mixed_gaming_editing.json
+      personas: *id023
+      need_axes: *id024
+      difficulty_axes: *id025
+    - case_id: case_replay_file_019
+      scene_family: 19_office_home_low_budget
+      display_name: 19 office home low budget
+      replay_ref: D:\diypc\assets\replay\19_office_home_low_budget.json
+      personas: *id026
+      need_axes: *id027
+      difficulty_axes: *id028
+    - case_id: case_replay_file_020
+      scene_family: 20_4k_high_fidelity_gaming
+      display_name: 20 4k high fidelity gaming
+      replay_ref: D:\diypc\assets\replay\20_4k_high_fidelity_gaming.json
+      personas: *id029
+      need_axes: *id030
+      difficulty_axes: *id031
+    - case_id: case_replay_file_021
+      scene_family: 21_quiet_black_minimal_gaming
+      display_name: 21 quiet black minimal gaming
+      replay_ref: D:\diypc\assets\replay\21_quiet_black_minimal_gaming.json
+      personas: *id032
+      need_axes: *id033
+      difficulty_axes: *id034
+    - case_id: case_replay_file_022
+      scene_family: 22_compact_balanced_gaming
+      display_name: 22 compact balanced gaming
+      replay_ref: D:\diypc\assets\replay\22_compact_balanced_gaming.json
+      personas: *id035
+      need_axes: *id036
+      difficulty_axes: *id037
+    required_personas:
+    - 静音/小体积强偏好用户
+    - 新手首次装机用户
+    - 电竞/高刷用户
+    - 创作/生产力用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '预算控制: 高预算'
+    - '分辨率目标: 1080P'
+    - '用途目标: 电竞/高刷'
+    - '分辨率目标: 4K'
+    - '用途目标: 创作/生产力'
+    required_difficulty_axes:
+    - 表达模糊
+    - 信息缺失
+    - 条件冲突
+    - 预算边界不清
+  - pack_index: 48
+    pack_id: language_adapter_pack_048
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_023
+      scene_family: 23_white_compact_conflict
+      display_name: 23 white compact conflict
+      replay_ref: D:\diypc\assets\replay\23_white_compact_conflict.json
+      personas: *id038
+      need_axes: *id039
+      difficulty_axes: *id040
+    - case_id: case_replay_file_024
+      scene_family: 24_reuse_old_gpu_balanced
+      display_name: 24 reuse old gpu balanced
+      replay_ref: D:\diypc\assets\replay\24_reuse_old_gpu_balanced.json
+      personas: *id041
+      need_axes: *id042
+      difficulty_axes: *id043
+    - case_id: case_replay_file_025
+      scene_family: 25_reuse_old_case_upgrade
+      display_name: 25 reuse old case upgrade
+      replay_ref: D:\diypc\assets\replay\25_reuse_old_case_upgrade.json
+      personas: *id044
+      need_axes: *id045
+      difficulty_axes: *id046
+    - case_id: case_replay_file_026
+      scene_family: 26_reuse_old_psu_quality
+      display_name: 26 reuse old psu quality
+      replay_ref: D:\diypc\assets\replay\26_reuse_old_psu_quality.json
+      personas: *id047
+      need_axes: *id048
+      difficulty_axes: *id049
+    - case_id: case_replay_file_027
+      scene_family: 27_multi_reuse_parts_planning
+      display_name: 27 multi reuse parts planning
+      replay_ref: D:\diypc\assets\replay\27_multi_reuse_parts_planning.json
+      personas: *id050
+      need_axes: *id051
+      difficulty_axes: *id052
+    - case_id: case_replay_file_028
+      scene_family: 28_reuse_blacklist_conflict
+      display_name: 28 reuse blacklist conflict
+      replay_ref: D:\diypc\assets\replay\28_reuse_blacklist_conflict.json
+      personas: *id053
+      need_axes: *id054
+      difficulty_axes: *id055
+    - case_id: case_replay_file_029
+      scene_family: 29_entry_gaming_budget_floor
+      display_name: 29 entry gaming budget floor
+      replay_ref: D:\diypc\assets\replay\29_entry_gaming_budget_floor.json
+      personas: *id056
+      need_axes: *id057
+      difficulty_axes: *id058
+    - case_id: case_replay_file_030
+      scene_family: 30_budget_edge_5999_gaming
+      display_name: 30 budget edge 5999 gaming
+      replay_ref: D:\diypc\assets\replay\30_budget_edge_5999_gaming.json
+      personas: *id059
+      need_axes: *id060
+      difficulty_axes: *id061
+    required_personas:
+    - 复用旧件用户
+    - 混合用途用户
+    - 外观强偏好用户
+    - 静音/小体积强偏好用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '需求轴: 复用旧件'
+    - '用途目标: 混合用途'
+    - '需求轴: 体积限制'
+    - '需求轴: 外观偏好:WHITE'
+    - '需求轴: 禁水冷'
+    required_difficulty_axes:
+    - 信息缺失
+    - 新装/升级边界不清
+    - 条件冲突
+    - 预算边界不清
+    - 表达模糊
+  - pack_index: 49
+    pack_id: language_adapter_pack_049
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_031
+      scene_family: 31_high_budget_showcase
+      display_name: 31 high budget showcase
+      replay_ref: D:\diypc\assets\replay\31_high_budget_showcase.json
+      personas: *id062
+      need_axes: *id063
+      difficulty_axes: *id064
+    - case_id: case_replay_file_032
+      scene_family: 32_budget_plus_500_revision
+      display_name: 32 budget plus 500 revision
+      replay_ref: D:\diypc\assets\replay\32_budget_plus_500_revision.json
+      personas: *id065
+      need_axes: *id066
+      difficulty_axes: *id067
+    - case_id: case_replay_file_033
+      scene_family: 33_budget_minus_500_revision
+      display_name: 33 budget minus 500 revision
+      replay_ref: D:\diypc\assets\replay\33_budget_minus_500_revision.json
+      personas: *id068
+      need_axes: *id069
+      difficulty_axes: *id070
+    - case_id: case_replay_file_034
+      scene_family: 34_local_model_productivity
+      display_name: 34 local model productivity
+      replay_ref: D:\diypc\assets\replay\34_local_model_productivity.json
+      personas: *id071
+      need_axes: *id072
+      difficulty_axes: *id073
+    - case_id: case_replay_file_035
+      scene_family: 35_watercooling_disabled_quiet
+      display_name: 35 watercooling disabled quiet
+      replay_ref: D:\diypc\assets\replay\35_watercooling_disabled_quiet.json
+      personas: *id074
+      need_axes: *id075
+      difficulty_axes: *id076
+    - case_id: case_replay_file_036
+      scene_family: 36_socket_domain_unsat_backup
+      display_name: 36 socket domain unsat backup
+      replay_ref: D:\diypc\assets\replay\36_socket_domain_unsat_backup.json
+      personas: *id077
+      need_axes: *id078
+      difficulty_axes: *id079
+    - case_id: case_replay_file_001
+      scene_family: 01_mainline_gaming
+      display_name: 01 mainline gaming
+      replay_ref: D:\diypc\assets\replay\01_mainline_gaming.json
+      personas: *id002
+      need_axes: *id003
+      difficulty_axes: *id004
+    - case_id: case_replay_file_002
+      scene_family: 02_white_quiet_gaming
+      display_name: 02 white quiet gaming
+      replay_ref: D:\diypc\assets\replay\02_white_quiet_gaming.json
+      personas: *id005
+      need_axes: *id006
+      difficulty_axes: *id007
+    required_personas:
+    - 电竞/游戏用户
+    - 静音/小体积强偏好用户
+    - 复用旧件用户
+    - 外观强偏好用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '用途目标: 游戏'
+    - '需求轴: 静音偏好'
+    - '需求轴: 外观展示'
+    - '预算控制: 高预算'
+    - '用途目标: 本地模型/高负载生产力'
+    required_difficulty_axes:
+    - 表达模糊
+    - 前后矛盾
+    - 预算边界不清
+    - 新装/升级边界不清
+    - 偏好过强
+  - pack_index: 50
+    pack_id: language_adapter_pack_050
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_003
+      scene_family: 03_high_budget_gaming
+      display_name: 03 high budget gaming
+      replay_ref: D:\diypc\assets\replay\03_high_budget_gaming.json
+      personas: *id008
+      need_axes: *id009
+      difficulty_axes: *id010
+    - case_id: case_replay_file_004
+      scene_family: 04_unsat_socket_conflict
+      display_name: 04 unsat socket conflict
+      replay_ref: D:\diypc\assets\replay\04_unsat_socket_conflict.json
+      personas: *id011
+      need_axes: *id012
+      difficulty_axes: *id013
+    - case_id: case_replay_file_005
+      scene_family: 05_incomplete_case
+      display_name: 05 incomplete case
+      replay_ref: D:\diypc\assets\replay\05_incomplete_case.json
+      personas: *id014
+      need_axes: *id015
+      difficulty_axes: *id016
+    - case_id: case_replay_file_016
+      scene_family: 16_esports_1080p_ladder
+      display_name: 16 esports 1080p ladder
+      replay_ref: D:\diypc\assets\replay\16_esports_1080p_ladder.json
+      personas: *id017
+      need_axes: *id018
+      difficulty_axes: *id019
+    - case_id: case_replay_file_017
+      scene_family: 17_productivity_creator_workstation
+      display_name: 17 productivity creator workstation
+      replay_ref: D:\diypc\assets\replay\17_productivity_creator_workstation.json
+      personas: *id020
+      need_axes: *id021
+      difficulty_axes: *id022
+    - case_id: case_replay_file_018
+      scene_family: 18_mixed_gaming_editing
+      display_name: 18 mixed gaming editing
+      replay_ref: D:\diypc\assets\replay\18_mixed_gaming_editing.json
+      personas: *id023
+      need_axes: *id024
+      difficulty_axes: *id025
+    - case_id: case_replay_file_019
+      scene_family: 19_office_home_low_budget
+      display_name: 19 office home low budget
+      replay_ref: D:\diypc\assets\replay\19_office_home_low_budget.json
+      personas: *id026
+      need_axes: *id027
+      difficulty_axes: *id028
+    - case_id: case_replay_file_020
+      scene_family: 20_4k_high_fidelity_gaming
+      display_name: 20 4k high fidelity gaming
+      replay_ref: D:\diypc\assets\replay\20_4k_high_fidelity_gaming.json
+      personas: *id029
+      need_axes: *id030
+      difficulty_axes: *id031
+    required_personas:
+    - 电竞/游戏用户
+    - 新手首次装机用户
+    - 电竞/高刷用户
+    - 创作/生产力用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '用途目标: 游戏'
+    - '预算控制: 高预算'
+    - '分辨率目标: 1080P'
+    - '用途目标: 电竞/高刷'
+    - '分辨率目标: 4K'
+    required_difficulty_axes:
+    - 表达模糊
+    - 信息缺失
+    - 条件冲突
+    - 预算边界不清
+  - pack_index: 51
+    pack_id: language_adapter_pack_051
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_021
+      scene_family: 21_quiet_black_minimal_gaming
+      display_name: 21 quiet black minimal gaming
+      replay_ref: D:\diypc\assets\replay\21_quiet_black_minimal_gaming.json
+      personas: *id032
+      need_axes: *id033
+      difficulty_axes: *id034
+    - case_id: case_replay_file_022
+      scene_family: 22_compact_balanced_gaming
+      display_name: 22 compact balanced gaming
+      replay_ref: D:\diypc\assets\replay\22_compact_balanced_gaming.json
+      personas: *id035
+      need_axes: *id036
+      difficulty_axes: *id037
+    - case_id: case_replay_file_023
+      scene_family: 23_white_compact_conflict
+      display_name: 23 white compact conflict
+      replay_ref: D:\diypc\assets\replay\23_white_compact_conflict.json
+      personas: *id038
+      need_axes: *id039
+      difficulty_axes: *id040
+    - case_id: case_replay_file_024
+      scene_family: 24_reuse_old_gpu_balanced
+      display_name: 24 reuse old gpu balanced
+      replay_ref: D:\diypc\assets\replay\24_reuse_old_gpu_balanced.json
+      personas: *id041
+      need_axes: *id042
+      difficulty_axes: *id043
+    - case_id: case_replay_file_025
+      scene_family: 25_reuse_old_case_upgrade
+      display_name: 25 reuse old case upgrade
+      replay_ref: D:\diypc\assets\replay\25_reuse_old_case_upgrade.json
+      personas: *id044
+      need_axes: *id045
+      difficulty_axes: *id046
+    - case_id: case_replay_file_026
+      scene_family: 26_reuse_old_psu_quality
+      display_name: 26 reuse old psu quality
+      replay_ref: D:\diypc\assets\replay\26_reuse_old_psu_quality.json
+      personas: *id047
+      need_axes: *id048
+      difficulty_axes: *id049
+    - case_id: case_replay_file_027
+      scene_family: 27_multi_reuse_parts_planning
+      display_name: 27 multi reuse parts planning
+      replay_ref: D:\diypc\assets\replay\27_multi_reuse_parts_planning.json
+      personas: *id050
+      need_axes: *id051
+      difficulty_axes: *id052
+    - case_id: case_replay_file_028
+      scene_family: 28_reuse_blacklist_conflict
+      display_name: 28 reuse blacklist conflict
+      replay_ref: D:\diypc\assets\replay\28_reuse_blacklist_conflict.json
+      personas: *id053
+      need_axes: *id054
+      difficulty_axes: *id055
+    required_personas:
+    - 复用旧件用户
+    - 静音/小体积强偏好用户
+    - 外观强偏好用户
+    - 混合用途用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '需求轴: 复用旧件'
+    - '需求轴: 体积限制'
+    - '用途目标: 混合用途'
+    - '需求轴: 外观偏好:BLACK'
+    - '需求轴: 静音偏好'
+    required_difficulty_axes:
+    - 信息缺失
+    - 新装/升级边界不清
+    - 表达模糊
+    - 条件冲突
+  - pack_index: 52
+    pack_id: language_adapter_pack_052
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_029
+      scene_family: 29_entry_gaming_budget_floor
+      display_name: 29 entry gaming budget floor
+      replay_ref: D:\diypc\assets\replay\29_entry_gaming_budget_floor.json
+      personas: *id056
+      need_axes: *id057
+      difficulty_axes: *id058
+    - case_id: case_replay_file_030
+      scene_family: 30_budget_edge_5999_gaming
+      display_name: 30 budget edge 5999 gaming
+      replay_ref: D:\diypc\assets\replay\30_budget_edge_5999_gaming.json
+      personas: *id059
+      need_axes: *id060
+      difficulty_axes: *id061
+    - case_id: case_replay_file_031
+      scene_family: 31_high_budget_showcase
+      display_name: 31 high budget showcase
+      replay_ref: D:\diypc\assets\replay\31_high_budget_showcase.json
+      personas: *id062
+      need_axes: *id063
+      difficulty_axes: *id064
+    - case_id: case_replay_file_032
+      scene_family: 32_budget_plus_500_revision
+      display_name: 32 budget plus 500 revision
+      replay_ref: D:\diypc\assets\replay\32_budget_plus_500_revision.json
+      personas: *id065
+      need_axes: *id066
+      difficulty_axes: *id067
+    - case_id: case_replay_file_033
+      scene_family: 33_budget_minus_500_revision
+      display_name: 33 budget minus 500 revision
+      replay_ref: D:\diypc\assets\replay\33_budget_minus_500_revision.json
+      personas: *id068
+      need_axes: *id069
+      difficulty_axes: *id070
+    - case_id: case_replay_file_034
+      scene_family: 34_local_model_productivity
+      display_name: 34 local model productivity
+      replay_ref: D:\diypc\assets\replay\34_local_model_productivity.json
+      personas: *id071
+      need_axes: *id072
+      difficulty_axes: *id073
+    - case_id: case_replay_file_035
+      scene_family: 35_watercooling_disabled_quiet
+      display_name: 35 watercooling disabled quiet
+      replay_ref: D:\diypc\assets\replay\35_watercooling_disabled_quiet.json
+      personas: *id074
+      need_axes: *id075
+      difficulty_axes: *id076
+    - case_id: case_replay_file_036
+      scene_family: 36_socket_domain_unsat_backup
+      display_name: 36 socket domain unsat backup
+      replay_ref: D:\diypc\assets\replay\36_socket_domain_unsat_backup.json
+      personas: *id077
+      need_axes: *id078
+      difficulty_axes: *id079
+    required_personas:
+    - 电竞/游戏用户
+    - 电竞/高刷用户
+    - 复用旧件用户
+    - 静音/小体积强偏好用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '用途目标: 游戏'
+    - '预算控制: 低预算'
+    - '分辨率目标: 1080P'
+    - '用途目标: 电竞/高刷'
+    - '需求轴: 外观展示'
+    required_difficulty_axes:
+    - 预算边界不清
+    - 表达模糊
+    - 前后矛盾
+    - 新装/升级边界不清
+    - 偏好过强
+  - pack_index: 53
+    pack_id: language_adapter_pack_053
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_001
+      scene_family: 01_mainline_gaming
+      display_name: 01 mainline gaming
+      replay_ref: D:\diypc\assets\replay\01_mainline_gaming.json
+      personas: *id002
+      need_axes: *id003
+      difficulty_axes: *id004
+    - case_id: case_replay_file_002
+      scene_family: 02_white_quiet_gaming
+      display_name: 02 white quiet gaming
+      replay_ref: D:\diypc\assets\replay\02_white_quiet_gaming.json
+      personas: *id005
+      need_axes: *id006
+      difficulty_axes: *id007
+    - case_id: case_replay_file_003
+      scene_family: 03_high_budget_gaming
+      display_name: 03 high budget gaming
+      replay_ref: D:\diypc\assets\replay\03_high_budget_gaming.json
+      personas: *id008
+      need_axes: *id009
+      difficulty_axes: *id010
+    - case_id: case_replay_file_004
+      scene_family: 04_unsat_socket_conflict
+      display_name: 04 unsat socket conflict
+      replay_ref: D:\diypc\assets\replay\04_unsat_socket_conflict.json
+      personas: *id011
+      need_axes: *id012
+      difficulty_axes: *id013
+    - case_id: case_replay_file_005
+      scene_family: 05_incomplete_case
+      display_name: 05 incomplete case
+      replay_ref: D:\diypc\assets\replay\05_incomplete_case.json
+      personas: *id014
+      need_axes: *id015
+      difficulty_axes: *id016
+    - case_id: case_replay_file_016
+      scene_family: 16_esports_1080p_ladder
+      display_name: 16 esports 1080p ladder
+      replay_ref: D:\diypc\assets\replay\16_esports_1080p_ladder.json
+      personas: *id017
+      need_axes: *id018
+      difficulty_axes: *id019
+    - case_id: case_replay_file_017
+      scene_family: 17_productivity_creator_workstation
+      display_name: 17 productivity creator workstation
+      replay_ref: D:\diypc\assets\replay\17_productivity_creator_workstation.json
+      personas: *id020
+      need_axes: *id021
+      difficulty_axes: *id022
+    - case_id: case_replay_file_018
+      scene_family: 18_mixed_gaming_editing
+      display_name: 18 mixed gaming editing
+      replay_ref: D:\diypc\assets\replay\18_mixed_gaming_editing.json
+      personas: *id023
+      need_axes: *id024
+      difficulty_axes: *id025
+    required_personas:
+    - 电竞/游戏用户
+    - 外观强偏好用户
+    - 静音/小体积强偏好用户
+    - 新手首次装机用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '用途目标: 游戏'
+    - '预算控制: 高预算'
+    - '需求轴: 外观偏好:WHITE'
+    - '需求轴: 静音偏好'
+    - '分辨率目标: 1080P'
+    required_difficulty_axes:
+    - 表达模糊
+    - 信息缺失
+    - 条件冲突
+  - pack_index: 54
+    pack_id: language_adapter_pack_054
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_019
+      scene_family: 19_office_home_low_budget
+      display_name: 19 office home low budget
+      replay_ref: D:\diypc\assets\replay\19_office_home_low_budget.json
+      personas: *id026
+      need_axes: *id027
+      difficulty_axes: *id028
+    - case_id: case_replay_file_020
+      scene_family: 20_4k_high_fidelity_gaming
+      display_name: 20 4k high fidelity gaming
+      replay_ref: D:\diypc\assets\replay\20_4k_high_fidelity_gaming.json
+      personas: *id029
+      need_axes: *id030
+      difficulty_axes: *id031
+    - case_id: case_replay_file_021
+      scene_family: 21_quiet_black_minimal_gaming
+      display_name: 21 quiet black minimal gaming
+      replay_ref: D:\diypc\assets\replay\21_quiet_black_minimal_gaming.json
+      personas: *id032
+      need_axes: *id033
+      difficulty_axes: *id034
+    - case_id: case_replay_file_022
+      scene_family: 22_compact_balanced_gaming
+      display_name: 22 compact balanced gaming
+      replay_ref: D:\diypc\assets\replay\22_compact_balanced_gaming.json
+      personas: *id035
+      need_axes: *id036
+      difficulty_axes: *id037
+    - case_id: case_replay_file_023
+      scene_family: 23_white_compact_conflict
+      display_name: 23 white compact conflict
+      replay_ref: D:\diypc\assets\replay\23_white_compact_conflict.json
+      personas: *id038
+      need_axes: *id039
+      difficulty_axes: *id040
+    - case_id: case_replay_file_024
+      scene_family: 24_reuse_old_gpu_balanced
+      display_name: 24 reuse old gpu balanced
+      replay_ref: D:\diypc\assets\replay\24_reuse_old_gpu_balanced.json
+      personas: *id041
+      need_axes: *id042
+      difficulty_axes: *id043
+    - case_id: case_replay_file_025
+      scene_family: 25_reuse_old_case_upgrade
+      display_name: 25 reuse old case upgrade
+      replay_ref: D:\diypc\assets\replay\25_reuse_old_case_upgrade.json
+      personas: *id044
+      need_axes: *id045
+      difficulty_axes: *id046
+    - case_id: case_replay_file_026
+      scene_family: 26_reuse_old_psu_quality
+      display_name: 26 reuse old psu quality
+      replay_ref: D:\diypc\assets\replay\26_reuse_old_psu_quality.json
+      personas: *id047
+      need_axes: *id048
+      difficulty_axes: *id049
+    required_personas:
+    - 静音/小体积强偏好用户
+    - 复用旧件用户
+    - 外观强偏好用户
+    - 混合用途用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '需求轴: 复用旧件'
+    - '需求轴: 体积限制'
+    - '用途目标: 混合用途'
+    - '用途目标: 家庭/办公'
+    - '预算控制: 低预算'
+    required_difficulty_axes:
+    - 信息缺失
+    - 表达模糊
+    - 新装/升级边界不清
+    - 预算边界不清
+    - 条件冲突
+  - pack_index: 55
+    pack_id: language_adapter_pack_055
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_027
+      scene_family: 27_multi_reuse_parts_planning
+      display_name: 27 multi reuse parts planning
+      replay_ref: D:\diypc\assets\replay\27_multi_reuse_parts_planning.json
+      personas: *id050
+      need_axes: *id051
+      difficulty_axes: *id052
+    - case_id: case_replay_file_028
+      scene_family: 28_reuse_blacklist_conflict
+      display_name: 28 reuse blacklist conflict
+      replay_ref: D:\diypc\assets\replay\28_reuse_blacklist_conflict.json
+      personas: *id053
+      need_axes: *id054
+      difficulty_axes: *id055
+    - case_id: case_replay_file_029
+      scene_family: 29_entry_gaming_budget_floor
+      display_name: 29 entry gaming budget floor
+      replay_ref: D:\diypc\assets\replay\29_entry_gaming_budget_floor.json
+      personas: *id056
+      need_axes: *id057
+      difficulty_axes: *id058
+    - case_id: case_replay_file_030
+      scene_family: 30_budget_edge_5999_gaming
+      display_name: 30 budget edge 5999 gaming
+      replay_ref: D:\diypc\assets\replay\30_budget_edge_5999_gaming.json
+      personas: *id059
+      need_axes: *id060
+      difficulty_axes: *id061
+    - case_id: case_replay_file_031
+      scene_family: 31_high_budget_showcase
+      display_name: 31 high budget showcase
+      replay_ref: D:\diypc\assets\replay\31_high_budget_showcase.json
+      personas: *id062
+      need_axes: *id063
+      difficulty_axes: *id064
+    - case_id: case_replay_file_032
+      scene_family: 32_budget_plus_500_revision
+      display_name: 32 budget plus 500 revision
+      replay_ref: D:\diypc\assets\replay\32_budget_plus_500_revision.json
+      personas: *id065
+      need_axes: *id066
+      difficulty_axes: *id067
+    - case_id: case_replay_file_033
+      scene_family: 33_budget_minus_500_revision
+      display_name: 33 budget minus 500 revision
+      replay_ref: D:\diypc\assets\replay\33_budget_minus_500_revision.json
+      personas: *id068
+      need_axes: *id069
+      difficulty_axes: *id070
+    - case_id: case_replay_file_034
+      scene_family: 34_local_model_productivity
+      display_name: 34 local model productivity
+      replay_ref: D:\diypc\assets\replay\34_local_model_productivity.json
+      personas: *id071
+      need_axes: *id072
+      difficulty_axes: *id073
+    required_personas:
+    - 电竞/游戏用户
+    - 复用旧件用户
+    - 电竞/高刷用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '用途目标: 游戏'
+    - '需求轴: 复用旧件'
+    - '预算控制: 低预算'
+    - '分辨率目标: 1080P'
+    - '用途目标: 电竞/高刷'
+    required_difficulty_axes:
+    - 新装/升级边界不清
+    - 预算边界不清
+    - 表达模糊
+    - 前后矛盾
+    - 信息缺失
+  - pack_index: 56
+    pack_id: language_adapter_pack_056
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_035
+      scene_family: 35_watercooling_disabled_quiet
+      display_name: 35 watercooling disabled quiet
+      replay_ref: D:\diypc\assets\replay\35_watercooling_disabled_quiet.json
+      personas: *id074
+      need_axes: *id075
+      difficulty_axes: *id076
+    - case_id: case_replay_file_036
+      scene_family: 36_socket_domain_unsat_backup
+      display_name: 36 socket domain unsat backup
+      replay_ref: D:\diypc\assets\replay\36_socket_domain_unsat_backup.json
+      personas: *id077
+      need_axes: *id078
+      difficulty_axes: *id079
+    - case_id: case_replay_file_001
+      scene_family: 01_mainline_gaming
+      display_name: 01 mainline gaming
+      replay_ref: D:\diypc\assets\replay\01_mainline_gaming.json
+      personas: *id002
+      need_axes: *id003
+      difficulty_axes: *id004
+    - case_id: case_replay_file_002
+      scene_family: 02_white_quiet_gaming
+      display_name: 02 white quiet gaming
+      replay_ref: D:\diypc\assets\replay\02_white_quiet_gaming.json
+      personas: *id005
+      need_axes: *id006
+      difficulty_axes: *id007
+    - case_id: case_replay_file_003
+      scene_family: 03_high_budget_gaming
+      display_name: 03 high budget gaming
+      replay_ref: D:\diypc\assets\replay\03_high_budget_gaming.json
+      personas: *id008
+      need_axes: *id009
+      difficulty_axes: *id010
+    - case_id: case_replay_file_004
+      scene_family: 04_unsat_socket_conflict
+      display_name: 04 unsat socket conflict
+      replay_ref: D:\diypc\assets\replay\04_unsat_socket_conflict.json
+      personas: *id011
+      need_axes: *id012
+      difficulty_axes: *id013
+    - case_id: case_replay_file_005
+      scene_family: 05_incomplete_case
+      display_name: 05 incomplete case
+      replay_ref: D:\diypc\assets\replay\05_incomplete_case.json
+      personas: *id014
+      need_axes: *id015
+      difficulty_axes: *id016
+    - case_id: case_replay_file_016
+      scene_family: 16_esports_1080p_ladder
+      display_name: 16 esports 1080p ladder
+      replay_ref: D:\diypc\assets\replay\16_esports_1080p_ladder.json
+      personas: *id017
+      need_axes: *id018
+      difficulty_axes: *id019
+    required_personas:
+    - 电竞/游戏用户
+    - 静音/小体积强偏好用户
+    - 外观强偏好用户
+    - 新手首次装机用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '用途目标: 游戏'
+    - '需求轴: 静音偏好'
+    - '需求轴: 禁水冷'
+    - '需求轴: 外观偏好:WHITE'
+    - '预算控制: 高预算'
+    required_difficulty_axes:
+    - 表达模糊
+    - 信息缺失
+    - 条件冲突
+    - 偏好过强
+  - pack_index: 57
+    pack_id: language_adapter_pack_057
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_017
+      scene_family: 17_productivity_creator_workstation
+      display_name: 17 productivity creator workstation
+      replay_ref: D:\diypc\assets\replay\17_productivity_creator_workstation.json
+      personas: *id020
+      need_axes: *id021
+      difficulty_axes: *id022
+    - case_id: case_replay_file_018
+      scene_family: 18_mixed_gaming_editing
+      display_name: 18 mixed gaming editing
+      replay_ref: D:\diypc\assets\replay\18_mixed_gaming_editing.json
+      personas: *id023
+      need_axes: *id024
+      difficulty_axes: *id025
+    - case_id: case_replay_file_019
+      scene_family: 19_office_home_low_budget
+      display_name: 19 office home low budget
+      replay_ref: D:\diypc\assets\replay\19_office_home_low_budget.json
+      personas: *id026
+      need_axes: *id027
+      difficulty_axes: *id028
+    - case_id: case_replay_file_020
+      scene_family: 20_4k_high_fidelity_gaming
+      display_name: 20 4k high fidelity gaming
+      replay_ref: D:\diypc\assets\replay\20_4k_high_fidelity_gaming.json
+      personas: *id029
+      need_axes: *id030
+      difficulty_axes: *id031
+    - case_id: case_replay_file_021
+      scene_family: 21_quiet_black_minimal_gaming
+      display_name: 21 quiet black minimal gaming
+      replay_ref: D:\diypc\assets\replay\21_quiet_black_minimal_gaming.json
+      personas: *id032
+      need_axes: *id033
+      difficulty_axes: *id034
+    - case_id: case_replay_file_022
+      scene_family: 22_compact_balanced_gaming
+      display_name: 22 compact balanced gaming
+      replay_ref: D:\diypc\assets\replay\22_compact_balanced_gaming.json
+      personas: *id035
+      need_axes: *id036
+      difficulty_axes: *id037
+    - case_id: case_replay_file_023
+      scene_family: 23_white_compact_conflict
+      display_name: 23 white compact conflict
+      replay_ref: D:\diypc\assets\replay\23_white_compact_conflict.json
+      personas: *id038
+      need_axes: *id039
+      difficulty_axes: *id040
+    - case_id: case_replay_file_024
+      scene_family: 24_reuse_old_gpu_balanced
+      display_name: 24 reuse old gpu balanced
+      replay_ref: D:\diypc\assets\replay\24_reuse_old_gpu_balanced.json
+      personas: *id041
+      need_axes: *id042
+      difficulty_axes: *id043
+    required_personas:
+    - 静音/小体积强偏好用户
+    - 混合用途用户
+    - 外观强偏好用户
+    - 创作/生产力用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '预算控制: 高预算'
+    - '用途目标: 混合用途'
+    - '需求轴: 体积限制'
+    - '分辨率目标: 4K'
+    - '用途目标: 创作/生产力'
+    required_difficulty_axes:
+    - 表达模糊
+    - 信息缺失
+    - 预算边界不清
+    - 条件冲突
+    - 新装/升级边界不清
+  - pack_index: 58
+    pack_id: language_adapter_pack_058
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_025
+      scene_family: 25_reuse_old_case_upgrade
+      display_name: 25 reuse old case upgrade
+      replay_ref: D:\diypc\assets\replay\25_reuse_old_case_upgrade.json
+      personas: *id044
+      need_axes: *id045
+      difficulty_axes: *id046
+    - case_id: case_replay_file_026
+      scene_family: 26_reuse_old_psu_quality
+      display_name: 26 reuse old psu quality
+      replay_ref: D:\diypc\assets\replay\26_reuse_old_psu_quality.json
+      personas: *id047
+      need_axes: *id048
+      difficulty_axes: *id049
+    - case_id: case_replay_file_027
+      scene_family: 27_multi_reuse_parts_planning
+      display_name: 27 multi reuse parts planning
+      replay_ref: D:\diypc\assets\replay\27_multi_reuse_parts_planning.json
+      personas: *id050
+      need_axes: *id051
+      difficulty_axes: *id052
+    - case_id: case_replay_file_028
+      scene_family: 28_reuse_blacklist_conflict
+      display_name: 28 reuse blacklist conflict
+      replay_ref: D:\diypc\assets\replay\28_reuse_blacklist_conflict.json
+      personas: *id053
+      need_axes: *id054
+      difficulty_axes: *id055
+    - case_id: case_replay_file_029
+      scene_family: 29_entry_gaming_budget_floor
+      display_name: 29 entry gaming budget floor
+      replay_ref: D:\diypc\assets\replay\29_entry_gaming_budget_floor.json
+      personas: *id056
+      need_axes: *id057
+      difficulty_axes: *id058
+    - case_id: case_replay_file_030
+      scene_family: 30_budget_edge_5999_gaming
+      display_name: 30 budget edge 5999 gaming
+      replay_ref: D:\diypc\assets\replay\30_budget_edge_5999_gaming.json
+      personas: *id059
+      need_axes: *id060
+      difficulty_axes: *id061
+    - case_id: case_replay_file_031
+      scene_family: 31_high_budget_showcase
+      display_name: 31 high budget showcase
+      replay_ref: D:\diypc\assets\replay\31_high_budget_showcase.json
+      personas: *id062
+      need_axes: *id063
+      difficulty_axes: *id064
+    - case_id: case_replay_file_032
+      scene_family: 32_budget_plus_500_revision
+      display_name: 32 budget plus 500 revision
+      replay_ref: D:\diypc\assets\replay\32_budget_plus_500_revision.json
+      personas: *id065
+      need_axes: *id066
+      difficulty_axes: *id067
+    required_personas:
+    - 复用旧件用户
+    - 电竞/游戏用户
+    - 混合用途用户
+    - 电竞/高刷用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '需求轴: 复用旧件'
+    - '用途目标: 游戏'
+    - '用途目标: 混合用途'
+    - '需求轴: 禁水冷'
+    - '预算控制: 低预算'
+    required_difficulty_axes:
+    - 新装/升级边界不清
+    - 信息缺失
+    - 预算边界不清
+    - 表达模糊
+    - 条件冲突
+  - pack_index: 59
+    pack_id: language_adapter_pack_059
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_033
+      scene_family: 33_budget_minus_500_revision
+      display_name: 33 budget minus 500 revision
+      replay_ref: D:\diypc\assets\replay\33_budget_minus_500_revision.json
+      personas: *id068
+      need_axes: *id069
+      difficulty_axes: *id070
+    - case_id: case_replay_file_034
+      scene_family: 34_local_model_productivity
+      display_name: 34 local model productivity
+      replay_ref: D:\diypc\assets\replay\34_local_model_productivity.json
+      personas: *id071
+      need_axes: *id072
+      difficulty_axes: *id073
+    - case_id: case_replay_file_035
+      scene_family: 35_watercooling_disabled_quiet
+      display_name: 35 watercooling disabled quiet
+      replay_ref: D:\diypc\assets\replay\35_watercooling_disabled_quiet.json
+      personas: *id074
+      need_axes: *id075
+      difficulty_axes: *id076
+    - case_id: case_replay_file_036
+      scene_family: 36_socket_domain_unsat_backup
+      display_name: 36 socket domain unsat backup
+      replay_ref: D:\diypc\assets\replay\36_socket_domain_unsat_backup.json
+      personas: *id077
+      need_axes: *id078
+      difficulty_axes: *id079
+    - case_id: case_replay_file_001
+      scene_family: 01_mainline_gaming
+      display_name: 01 mainline gaming
+      replay_ref: D:\diypc\assets\replay\01_mainline_gaming.json
+      personas: *id002
+      need_axes: *id003
+      difficulty_axes: *id004
+    - case_id: case_replay_file_002
+      scene_family: 02_white_quiet_gaming
+      display_name: 02 white quiet gaming
+      replay_ref: D:\diypc\assets\replay\02_white_quiet_gaming.json
+      personas: *id005
+      need_axes: *id006
+      difficulty_axes: *id007
+    - case_id: case_replay_file_003
+      scene_family: 03_high_budget_gaming
+      display_name: 03 high budget gaming
+      replay_ref: D:\diypc\assets\replay\03_high_budget_gaming.json
+      personas: *id008
+      need_axes: *id009
+      difficulty_axes: *id010
+    - case_id: case_replay_file_004
+      scene_family: 04_unsat_socket_conflict
+      display_name: 04 unsat socket conflict
+      replay_ref: D:\diypc\assets\replay\04_unsat_socket_conflict.json
+      personas: *id011
+      need_axes: *id012
+      difficulty_axes: *id013
+    required_personas:
+    - 电竞/游戏用户
+    - 静音/小体积强偏好用户
+    - 复用旧件用户
+    - 外观强偏好用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '用途目标: 游戏'
+    - '需求轴: 静音偏好'
+    - '用途目标: 本地模型/高负载生产力'
+    - '需求轴: 复用旧件'
+    - '需求轴: 禁水冷'
+    required_difficulty_axes:
+    - 表达模糊
+    - 信息缺失
+    - 条件冲突
+    - 前后矛盾
+    - 预算边界不清
+  - pack_index: 60
+    pack_id: language_adapter_pack_060
+    target_item_count: 1000
+    expected_mix: *id001
+    required_cases:
+    - case_id: case_replay_file_005
+      scene_family: 05_incomplete_case
+      display_name: 05 incomplete case
+      replay_ref: D:\diypc\assets\replay\05_incomplete_case.json
+      personas: *id014
+      need_axes: *id015
+      difficulty_axes: *id016
+    - case_id: case_replay_file_016
+      scene_family: 16_esports_1080p_ladder
+      display_name: 16 esports 1080p ladder
+      replay_ref: D:\diypc\assets\replay\16_esports_1080p_ladder.json
+      personas: *id017
+      need_axes: *id018
+      difficulty_axes: *id019
+    - case_id: case_replay_file_017
+      scene_family: 17_productivity_creator_workstation
+      display_name: 17 productivity creator workstation
+      replay_ref: D:\diypc\assets\replay\17_productivity_creator_workstation.json
+      personas: *id020
+      need_axes: *id021
+      difficulty_axes: *id022
+    - case_id: case_replay_file_018
+      scene_family: 18_mixed_gaming_editing
+      display_name: 18 mixed gaming editing
+      replay_ref: D:\diypc\assets\replay\18_mixed_gaming_editing.json
+      personas: *id023
+      need_axes: *id024
+      difficulty_axes: *id025
+    - case_id: case_replay_file_019
+      scene_family: 19_office_home_low_budget
+      display_name: 19 office home low budget
+      replay_ref: D:\diypc\assets\replay\19_office_home_low_budget.json
+      personas: *id026
+      need_axes: *id027
+      difficulty_axes: *id028
+    - case_id: case_replay_file_020
+      scene_family: 20_4k_high_fidelity_gaming
+      display_name: 20 4k high fidelity gaming
+      replay_ref: D:\diypc\assets\replay\20_4k_high_fidelity_gaming.json
+      personas: *id029
+      need_axes: *id030
+      difficulty_axes: *id031
+    - case_id: case_replay_file_021
+      scene_family: 21_quiet_black_minimal_gaming
+      display_name: 21 quiet black minimal gaming
+      replay_ref: D:\diypc\assets\replay\21_quiet_black_minimal_gaming.json
+      personas: *id032
+      need_axes: *id033
+      difficulty_axes: *id034
+    - case_id: case_replay_file_022
+      scene_family: 22_compact_balanced_gaming
+      display_name: 22 compact balanced gaming
+      replay_ref: D:\diypc\assets\replay\22_compact_balanced_gaming.json
+      personas: *id035
+      need_axes: *id036
+      difficulty_axes: *id037
+    required_personas:
+    - 静音/小体积强偏好用户
+    - 新手首次装机用户
+    - 电竞/高刷用户
+    - 创作/生产力用户
+    required_need_axes:
+    - '预算控制: 中预算'
+    - '预算控制: 高预算'
+    - '分辨率目标: 1080P'
+    - '用途目标: 电竞/高刷'
+    - '分辨率目标: 4K'
+    - '用途目标: 创作/生产力'
+    required_difficulty_axes:
+    - 表达模糊
+    - 信息缺失
+    - 条件冲突
+    - 预算边界不清
+  acceptance_rules:
+    demo_source_allowed: false
+    ungrounded_trace_allowed: false
+    validator_rejected_allowed: 0
+    validator_needs_review_allowed: 0
+    label_rule_self_check_must_be_rewrite_needed: true

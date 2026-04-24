@@ -1,0 +1,25 @@
+decision:
+  strategy: keep
+  target_area: "services/python-order-api/features/refund-note"
+  repo_shape: feature-first
+  artifact_type: service-endpoint
+  stack: python
+  files:
+    - path: "services/python-order-api/features/refund-note/note_endpoint.py"
+      role: "endpoint"
+      responsibility: "Own request parsing, local validation, note normalization, preview-label shaping, and response construction for the refund note slice."
+      reason: "The strongest local signal wins here: this slice has one endpoint-local flow and no real IO seam, even though nearby sibling examples show both split and merge outcomes for different reasons."
+  keep_inline:
+    - "Request and response dataclasses"
+    - "note normalization and preview label logic"
+  avoid:
+    - "note_service.py"
+    - "schemas.py"
+    - "validators.py"
+  why_not_fewer: "One endpoint file is already the smallest useful boundary for this refund note slice."
+  why_not_more: "The nearby sibling examples are conflicting sibling examples, but neither justifies a split here. refunds/quote_endpoint.py splits because it mixes real database and remote IO, while refund-audit merged because its extra service hop was thin ceremony. note_endpoint.py has no real IO seam and no extra hop to keep."
+  risks:
+    - "Mixed nearby patterns lower confidence slightly because the local area includes both split and merge precedents for different slices."
+    - "If refund notes later add persistence, remote moderation, or a second consumer for note formatting, revisit the boundary."
+    - "The current recommendation assumes note_endpoint.py remains a local rules and shaping endpoint rather than turning into a heavier orchestration slice."
+  confidence: medium

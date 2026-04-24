@@ -1,0 +1,26 @@
+decision:
+  strategy: keep
+  target_area: "scripts/ops"
+  repo_shape: mixed
+  artifact_type: cli-command
+  stack: python
+  files:
+    - path: "scripts/ops/review_refund_export.py"
+      role: "command"
+      responsibility: "Own argparse handling, preview row loading, JSON preview formatting, and command output for the refund export review flow."
+      reason: "This is the same command from parse to preview printout, and the visible behavior does not introduce a separate adapter boundary inside the target slice."
+  keep_inline:
+    - "argparse options"
+    - "preview row loop"
+    - "JSON preview formatting"
+  avoid:
+    - "review_refund_export_service.py"
+    - "review_refund_export_client.py"
+    - "command_base.py"
+  why_not_fewer: "One command file is already the smallest useful boundary for this review flow."
+  why_not_more: "The nearby ops examples show different local patterns: summarize_refund_queue.py stays compact while sync_partner_catalog.py splits only because it carries a heavier external workflow. review_refund_export.py is still the same command with one visible file-in and preview-out flow, so extra command or client files would mostly add ceremony."
+  risks:
+    - "The mixed local signals in scripts/ops lower confidence slightly, because the area contains keep, merge, and split examples with different IO weights."
+    - "Nearby comparison files are reference only and should not be copied into the returned plan unless the scope expands beyond review_refund_export.py."
+    - "If this command starts owning network fetches, report writing, or reusable export transport code, revisit the boundary."
+  confidence: medium

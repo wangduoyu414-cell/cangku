@@ -1,0 +1,48 @@
+{
+  "anchor": {
+    "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow/.tmp/codex-skill-targeted-20260323/build_repo",
+    "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/.tmp/codex-skill-targeted-20260323/build_repo/src/helper.ts",
+    "repo_relative_path": "src/helper.ts",
+    "symbol": "",
+    "selection_range": "",
+    "language": "typescript",
+    "role_hint": "source"
+  },
+  "stack": {
+    "stack_family": "typescript",
+    "stack_id": "typescript-stack",
+    "confidence": "high",
+    "reasons": [
+      "file extension suggests typescript",
+      "found package.json"
+    ],
+    "reference_file": "references/ts-edge-rules.md",
+    "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow/.tmp/codex-skill-targeted-20260323/build_repo",
+    "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/.tmp/codex-skill-targeted-20260323/build_repo/src/helper.ts"
+  },
+  "edges": [
+    {
+      "from": "Makefile",
+      "to": "src/helper.ts",
+      "direction": "inbound",
+      "edge_kind": "build",
+      "symbol": "",
+      "evidence_ref": "Makefile:1",
+      "confidence": "low",
+      "resolution": "resolved"
+    },
+    {
+      "from": "package.json",
+      "to": "src/helper.ts",
+      "direction": "inbound",
+      "edge_kind": "build",
+      "symbol": "",
+      "evidence_ref": "package.json:3",
+      "confidence": "low",
+      "resolution": "resolved"
+    }
+  ],
+  "blind_spots": [
+    "Context links are search-based and may miss framework-specific runtime wiring."
+  ]
+}

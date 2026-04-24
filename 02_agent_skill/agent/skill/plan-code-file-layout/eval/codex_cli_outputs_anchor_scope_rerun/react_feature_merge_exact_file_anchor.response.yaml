@@ -1,0 +1,29 @@
+decision:
+  strategy: merge
+  target_area: "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-timeline/RefundTimelinePanel.tsx"
+  repo_shape: feature-first
+  artifact_type: ui-component
+  stack: typescript-javascript
+  files:
+    - path: "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-timeline/RefundTimelinePanel.tsx"
+      role: "feature panel component"
+      responsibility: "Own the refund timeline panel render path, including local filter state, derived header text, reset behavior, and row filtering while the feature remains local-data driven."
+      reason: "The current hook only wraps panel-local UI state and derived values. It has no separate IO seam, reuse need, or independent failure/test boundary, so merging keeps the common debug and change path in one file."
+  keep_inline:
+    - "The local filter state and setters currently exposed by `useRefundTimelineFilters`"
+    - "Header-label derivation and reset behavior"
+    - "`StatusFilter` and other panel-only types"
+    - "`formatStatusLabel` and row-filtering logic"
+    - "`SAMPLE_ROWS` while the panel remains demo/local-data based"
+  avoid:
+    - "Keeping `useRefundTimelineFilters.ts` as a separate file when it only forwards panel-local state"
+    - "Adding a `refundTimelineApi.ts` before the timeline has real remote IO"
+    - "Extracting panel-only formatting or filter helpers into shared/common utilities"
+    - "Adding barrel or wrapper files around this feature slice"
+  why_not_fewer: "One production file is already the minimum useful boundary for this exact slice. The panel is the entry artifact, and its filter state is local UI behavior rather than a separate module seam."
+  why_not_more: "Keeping the current panel-and-hook split would be a function-per-file extraction with the same change reason and test surface on both sides. The nearby refund-detail example supports splitting only at a real boundary: it separates fetch logic into an API file because network IO and error handling are materially distinct from rendering, which is not true for this timeline panel today."
+  risks:
+    - "If refund timeline soon gains fetch logic, persistence, or remote mutation behavior, introduce a real adapter seam at that point and keep the panel focused on rendering and local interaction."
+    - "If the same filter state starts serving multiple panels or routes, a reusable hook can become justified later; there is no evidence of that second consumer in the current slice."
+    - "Baseline repository docs mainly define backend `src/app` layering and HTTP transport migration, so they do not override this frontend feature-local boundary; the decision relies primarily on the local feature-first React slice and nearby comparison evidence."
+  confidence: "high"

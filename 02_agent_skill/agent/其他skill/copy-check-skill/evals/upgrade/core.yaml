@@ -1,0 +1,26 @@
+suite_id: "copy-check-upgrade-core"
+baseline:
+  previous_version: "pre-formal-2026-04-22"
+  baseline_artifact: "evals/upgrade/frozen-baseline.md"
+cases:
+  - id: "preserve-routing-and-boundaries"
+    goal: "升级时不得破坏触发边界、低语境分流和复检切回规则"
+    before:
+      - "只有 SKILL.md、references、agents/openai.yaml"
+      - "已有首轮/复检分流、低语境门槛和伪复检切回规则"
+    after:
+      - "补入 skill.yaml、examples、trigger/task/regression evals 和统一正文骨架"
+    expected:
+      - "仍保留首轮与复检分流"
+      - "仍保留缺 copy_text 时的硬中断"
+      - "仍保留对象或主目标变化时的伪复检切回"
+    notes: "验证结构升级没有破坏稳定内核。"
+  - id: "formatting-scaffold-remains-optional"
+    goal: "模板脚本继续属于可删脚手架，不应被错误提升为稳定内核"
+    before:
+      - "scripts/optional-result-template.ps1 仅用于快速稳定输出骨架"
+    after:
+      - "正文仍明确该脚本只提供模板，不替代判断"
+    expected:
+      - "升级时可以删除或替换脚本，但必须保留输出契约本身"
+    notes: "验证脚手架与不变量的边界。"

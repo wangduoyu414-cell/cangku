@@ -1,0 +1,26 @@
+{
+  "anchor": {
+    "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+    "file_path": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis/src/app/entrypoints/main.go",
+    "repo_relative_path": "src/app/entrypoints/main.go",
+    "symbol": "",
+    "selection_range": "",
+    "language": "go",
+    "role_hint": "source"
+  },
+  "stack": {
+    "stack_family": "go",
+    "stack_id": "go-stack",
+    "confidence": "medium",
+    "reasons": [
+      "file extension suggests go"
+    ],
+    "reference_file": "references/go-edge-rules.md",
+    "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+    "file_path": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis/src/app/entrypoints/main.go"
+  },
+  "edges": [],
+  "blind_spots": [
+    "Context links are search-based and may miss framework-specific runtime wiring."
+  ]
+}

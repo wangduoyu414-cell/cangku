@@ -1,0 +1,21 @@
+{
+  "id": "ts_backend_endpoint_keep_small",
+  "prompt": "Should this TypeScript refund preview endpoint stay in one route file or split into route, service, and schema files? Anchor the decision in services/node-refund-api/src/features/refund-preview and compare it with the nearby refund-batch feature, which already split a real network adapter.",
+  "target_area": "services/node-refund-api/src/features/refund-preview",
+  "source_paths": [
+    "services/node-refund-api/src/features/refund-preview/refundPreviewRoute.ts",
+    "services/node-refund-api/src/features/refund-batch/refundBatchRoute.ts",
+    "services/node-refund-api/src/features/refund-batch/refundBatchClient.ts"
+  ],
+  "expected_summary": {
+    "strategy": "keep",
+    "repo_shape": "feature-first",
+    "artifact_type": "service-endpoint",
+    "stack": "typescript-javascript",
+    "confidence": "high",
+    "files": [
+      "services/node-refund-api/src/features/refund-preview/refundPreviewRoute.ts"
+    ]
+  },
+  "validation_command": "python eval/validate_saved_output.py --case ts_backend_endpoint_keep_small --output outputs/ts_backend_endpoint_keep_small.yaml"
+}

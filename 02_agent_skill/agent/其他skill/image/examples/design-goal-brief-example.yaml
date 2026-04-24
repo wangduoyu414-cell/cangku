@@ -1,0 +1,4 @@
+id: "design-goal-brief-serum-baseline"
+user_request: |
+  我现在只有一个设计目标，还没有拆场景。请先帮我把它补成可比较的场景，再判断默认起点应该是什么。目标是：把同一款护肤精华做成一个稳定视觉基线，后面既能用于电商商品主图，也能延展到 Instagram reel 封面，还能支撑已有海报的小改版。共同要求是瓶身轮廓稳定、标签文字尽量准确、不要出现包装改形。
+notes: "代表 design_goal_brief（设计目标简报） 输入。重点验证技能是否会先派生出完整场景，再输出 Scenario Validation Report（场景验证报告），而不是直接跳到结论。"

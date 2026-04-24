@@ -1,0 +1,61 @@
+skill_name: release-review-orchestrator
+mode: generate
+request_summary: "Turn repeated release review findings into a reusable orchestration skill with baseline comparisons and iteration hooks."
+constraints:
+  - "Preserve clear non-scope（非边界） for direct code edits and deployment execution."
+  - "Bind every generated plan to evals（评测） and baseline comparison（基线对比） expectations."
+quality_goals:
+  - "Stable trigger（触发） across repeated release-review style requests."
+  - "Actionable output（可执行输出） with owners, sequencing, and regression checks."
+scope:
+  - "Normalize repeated release-review findings into a reusable planning workflow."
+  - "Separate blockers, optional fixes, and follow-up regression work."
+  - "Retain evidence and baseline notes for future iteration."
+non_scope:
+  - "Do not change source code directly."
+  - "Do not approve production rollout."
+  - "Do not replace security or governance review."
+inputs:
+  - "release findings（发布发现）"
+  - "repository constraints（仓库约束）"
+  - "historical failure feedback（历史失败反馈）"
+outputs:
+  - "fix planning skill bundle（修复规划技能包）"
+  - "baseline comparison（基线对比）"
+  - "iteration backlog（迭代待办）"
+risks:
+  - "Overfit a single release incident（对单次发布事故过拟合）"
+  - "Lose dependency ordering（丢失依赖顺序）"
+success_bar:
+  - "Must express scope（边界） and non-scope（非边界） clearly."
+  - "Must include baseline comparison（基线对比） and next-fix backlog（下一轮待办）."
+repeated_signals:
+  - "Release review findings keep recurring across services."
+  - "Manual planning keeps missing rollback dependencies."
+success_patterns:
+  - "Group findings by blocking severity before writing action items."
+  - "Always attach regression checks to each blocking fix."
+failure_feedback:
+  - "Past review plans often forgot post-release validation."
+baseline:
+  candidate: "release-review-orchestrator（发布评审编排器）"
+  baseline: "manual prompt workflow（手工提示工作流）"
+  quality_delta:
+    correctness: "higher"
+    actionability: "higher"
+    scope_clarity: "higher"
+    contract_completeness: "higher"
+  cost_delta:
+    token_estimate: "slightly_higher"
+    wall_clock_estimate: "similar"
+    tool_call_estimate: "similar"
+  notes:
+    - "Quality gains come from explicit dependency and regression planning."
+iteration_backlog:
+  next_fixes:
+    - "Add more negative trigger cases around one-off release retrospectives."
+    - "Add rollback dependency replay samples."
+  deferred_work:
+    - "Connect live telemetry for actual planning cost."
+  why_now:
+    - "Current planning failures are systematic, not incidental."

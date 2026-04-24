@@ -1,0 +1,22 @@
+{
+  "id": "python_library_keep_shared_helper",
+  "prompt": "Plan the file layout for the shared refund reason slice in src/app/shared/utils. create_refund_use_case.py and refund_summary_card.py both need the same normalization and display behavior, and the nearby money helper shows how small shared utilities usually live in this repository.",
+  "target_area": "src/app/shared/utils",
+  "source_paths": [
+    "src/app/shared/utils/refund_reason.py",
+    "src/app/shared/utils/money.py",
+    "src/app/application/refunds/create_refund_use_case.py",
+    "src/app/shared/components/refund_summary_card.py"
+  ],
+  "expected_summary": {
+    "strategy": "keep",
+    "repo_shape": "mixed",
+    "artifact_type": "library-module",
+    "stack": "python",
+    "confidence": "high",
+    "files": [
+      "src/app/shared/utils/refund_reason.py"
+    ]
+  },
+  "validation_command": "python eval/validate_saved_output.py --case python_library_keep_shared_helper --output outputs/python_library_keep_shared_helper.yaml"
+}

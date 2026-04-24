@@ -1,0 +1,23 @@
+decision:
+  strategy: keep
+  target_area: "services/node-refund-api/src/features/refund-preview"
+  repo_shape: feature-first
+  artifact_type: service-endpoint
+  stack: typescript-javascript
+  files:
+    - path: "services/node-refund-api/src/features/refund-preview/refundPreviewRoute.ts"
+      role: "route"
+      responsibility: "Own request parsing, local validation, fee estimation, and response shaping for refund previews."
+      reason: "This route has one cohesive request flow and no separate remote or persistence boundary."
+  keep_inline:
+    - "RefundPreviewRequest type."
+    - "The request parser."
+  avoid:
+    - "refundPreviewSchema.ts"
+    - "refundPreviewService.ts"
+    - "types.ts"
+  why_not_fewer: "One route file is already the smallest useful boundary for this preview endpoint."
+  why_not_more: "Unlike the nearby batch feature, this slice has no real adapter boundary, so extra route, service, and schema files would mostly add ceremony."
+  risks:
+    - "If preview generation later starts calling pricing services or persistence, a feature-local adapter split may become appropriate."
+  confidence: high

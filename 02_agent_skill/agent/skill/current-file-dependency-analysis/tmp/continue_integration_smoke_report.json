@@ -1,0 +1,37 @@
+{
+  "generated_at": "2026-04-21T14:15:12.660Z",
+  "config_root": "C:\\Users\\admin\\.continue",
+  "compiled_config_js": "C:\\Users\\admin\\.continue\\out\\config.js",
+  "file_path": "C:\\Users\\admin\\CodexManager-SharedKey\\codex-home\\skills\\current-file-dependency-analysis\\src\\app\\services\\orderApi.ts",
+  "repo_root": "C:\\Users\\admin\\CodexManager-SharedKey\\codex-home\\skills\\current-file-dependency-analysis",
+  "slash_command": {
+    "messages": [
+      "Generated dependency context profile=feature output=pretty"
+    ],
+    "context_item_count": 1,
+    "item_name": "depsctx",
+    "packet_kind": "auto_expand_bundle",
+    "packet_target": "src/app/services/orderApi.ts",
+    "analysis_state": "success"
+  },
+  "context_provider": {
+    "item_count": 1,
+    "item_name": "depsctx",
+    "packet_kind": "first_batch",
+    "packet_target": "src/app/services/orderApi.ts",
+    "analysis_state": "success"
+  },
+  "unsaved_file_paths": {
+    "slash_messages": [
+      "Dependency context is unavailable because there is no saved active file."
+    ],
+    "provider_items": [
+      {
+        "name": "depsctx-error",
+        "content": "{\"packet_kind\":\"error\",\"target\":{\"file\":\"\",\"analysis_state\":\"unsaved_file\"}}"
+      }
+    ]
+  },
+  "failures": [],
+  "status": "pass"
+}

@@ -1,0 +1,31 @@
+decision:
+  strategy: split
+  target_area: "packages/web-dashboard/src/features/refund-triage"
+  repo_shape: feature-first
+  artifact_type: ui-component
+  stack: typescript-javascript
+  files:
+    - path: "packages/web-dashboard/src/features/refund-triage/RefundTriagePanel.tsx"
+      role: "panel-component"
+      responsibility: "Own the triage queue view, selection UI, and page-level rendering for refund review."
+      reason: "The panel should stay focused on feature rendering instead of carrying all queue orchestration details."
+    - path: "packages/web-dashboard/src/features/refund-triage/RefundDecisionDrawer.tsx"
+      role: "drawer-component"
+      responsibility: "Own the decision drawer presentation, note entry, and refund-specific review actions."
+      reason: "The drawer has a real view role separate from the panel."
+    - path: "packages/web-dashboard/src/features/refund-triage/useRefundDecisionQueue.ts"
+      role: "feature-hook"
+      responsibility: "Own shared queue loading, decision submission, refresh flow, and async error state for the triage feature."
+      reason: "Both components participate in the same stateful async flow, so the shared hook is the real reuse and failure boundary."
+  keep_inline:
+    - "The drawer visibility state."
+    - "The row label formatting."
+  avoid:
+    - "refundTriage.types.ts"
+    - "index.ts"
+    - "refundDecisionActions.ts"
+  why_not_fewer: "Keeping queue loading and decision submission spread across both components would duplicate async state and make routine triage changes harder to trace."
+  why_not_more: "Additional types or action files would mostly add ceremony because the meaningful split is the shared hook plus the two view components."
+  risks:
+    - "If triage APIs later gain broader reuse outside this feature, a dedicated adapter file may also become justified."
+  confidence: high

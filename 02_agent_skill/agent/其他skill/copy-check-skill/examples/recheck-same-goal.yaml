@@ -1,0 +1,13 @@
+id: "recheck-same-goal"
+task_type: "recheck"
+user_request: |
+  这是我上一版口播稿修改后的版本，还是同一条视频开头，目标还是提升关注转化。
+  原版：“自媒体做不起来，不是你不努力，是你不会表达。”
+  新版：“自媒体做不起来，很多时候不是表达差，而是你根本没让用户在前三句看到新的判断。”
+content_slot: "short-video-opening"
+primary_goal: "提升关注转化"
+expected_route: "recheck"
+expected_focus:
+  - "先做可比性检查"
+  - "输出已解决问题、未解决问题和新增副作用"
+notes: "对象和主目标未变，应进入真复检。"

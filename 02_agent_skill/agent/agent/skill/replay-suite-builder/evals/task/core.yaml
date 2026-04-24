@@ -1,0 +1,31 @@
+suite_id: "replay-suite-builder-task-core"
+cases:
+  - id: "standard-generate-replay-plan"
+    goal: "标准路径应生成回放方案"
+    input:
+      suite_dir: "D:\\diypc\\assets\\replay_suite_default"
+      task: "task 13"
+    expected:
+      output_sections:
+        - "suite_targets"
+        - "diff_dimensions"
+        - "quality_thresholds"
+    type: "standard"
+    notes: "标准输出形态来自现有脚本和样例。"
+  - id: "boundary-missing-suite"
+    goal: "缺少回放集资产时不能伪造完整方案"
+    input:
+      suite_dir: ""
+      task: "task 13"
+    expected:
+      must_stop_for_missing_inputs: true
+    type: "boundary"
+    notes: "边界条件是缺少回放集资产。"
+  - id: "error-prone-old-replay-substitute"
+    goal: "不得用旧 replayd 样例替代新核心正式回放集"
+    input:
+      uses_legacy_replayd_fixture: true
+    expected:
+      forbid_legacy_replay_substitution: true
+    type: "error-prone"
+    notes: "这是当前稳定红线。"

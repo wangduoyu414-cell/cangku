@@ -1,0 +1,26 @@
+decision:
+  strategy: merge
+  target_area: src/app/interfaces/refunds
+  repo_shape: layer-first
+  artifact_type: service-endpoint
+  stack: python
+  files:
+    - path: src/app/entrypoints/http/refund_routes.py
+      role: refund-http-route
+      responsibility: Own the refund HTTP transport seam by receiving the incoming refund payload, translating it into the create_refund use-case call, and returning the route-level response shape from the documented entrypoint layer.
+      reason: The layering rules and refund module migration notes explicitly place new refund HTTP transport work in entrypoints, and the current slice is small enough that one route file keeps the common edit and debug path local without a duplicate controller seam.
+  keep_inline:
+    - Required payload field extraction and request-to-use-case argument mapping for refund creation.
+    - Route-local response passthrough or light response shaping that exists only for this endpoint.
+    - Any one-off payload alias or minimal validation that is only used by this route.
+  avoid:
+    - A new or expanded controller under src/app/interfaces/refunds that only forwards to the same use case.
+    - A route -> controller -> service chain for this single refund POST path.
+    - Separate presenter, mapper, or DTO files until validation or response shaping gains a distinct test surface.
+  why_not_fewer: Removing the dedicated route file would push HTTP payload translation into the application use case and blur the transport boundary that the target-area docs are explicitly trying to restore.
+  why_not_more: This slice currently has one ingress path, one use-case call, and no separate transport-side IO boundary, so extra controller or contract files would mostly add ceremony and make the migration harder to trace.
+  risks:
+    - Migration cost remains because any callers or imports still using src/app/interfaces/refunds/create_refund_controller.py need to be cut over or temporarily shimmed outside this plan.
+    - README.md still broadly describes interfaces as the HTTP/CLI adapter layer, so contributors may keep placing refund transport code under src/app/interfaces until the broader repo docs are reconciled.
+    - The use case currently returns a transport-friendly dict, so if richer HTTP-specific validation or response shaping appears later, this slice may need a second file for a real contract seam.
+  confidence: medium

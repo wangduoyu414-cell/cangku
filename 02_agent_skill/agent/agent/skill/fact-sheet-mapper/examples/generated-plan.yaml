@@ -1,0 +1,19 @@
+id: "generated-plan-example"
+user_request: |
+  请基于 D:\diypc 的工作簿和字段字典，生成 task 02 和 task 03 的事实资产方案与版本绑定说明。
+notes: "这是现有脚本生成后的目标输出形态示例，用于校准 fact_asset_plan 的完整结构。"
+sample_output:
+  fact_asset_plan:
+    source_workbooks:
+      - 'D:\diypc\电脑配件参数采集规划.xlsx'
+    fact_version_binding:
+      - "compile_version（编译版本）: truth-18a1769c0b7e2d90-8e41e7b825e4"
+      - "source_sha256（来源摘要）: 8e41e7b825e4b14808411113f276566ec2bd66e7e8bbd44974e66d0fd3475757"
+    field_dictionary_summary:
+      - "field_count（字段总数）: 177"
+      - "hard_constraint_fields（可进硬约束字段数）: 14"
+      - "evidence_fields（证据字段数）: 3"
+      - "commerce_fields（商业字段数）: 8"
+    field_mapping_notes:
+      - "字段必须先进入字段字典，再进入正式事实资产消费路径"
+      - "事实资产必须绑定事实摘要版本、价格快照版本与商品目录版本"

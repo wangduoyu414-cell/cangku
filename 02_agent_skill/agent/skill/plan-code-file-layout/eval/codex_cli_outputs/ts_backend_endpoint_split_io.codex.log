@@ -1,0 +1,1042 @@
+COMMAND:
+codex exec --skip-git-repo-check --ephemeral --sandbox read-only --color never -C D:\yongyongmoban -o C:\Users\admin\CodexManager-SharedKey\codex-home\skills\plan-code-file-layout\eval\codex_cli_outputs\ts_backend_endpoint_split_io.response.yaml -
+
+STDOUT:
+decision:
+  strategy: split
+  target_area: services/node-refund-api/src/features/refund-webhooks
+  repo_shape: feature-first
+  artifact_type: service-endpoint
+  stack: typescript-javascript
+  files:
+    - path: services/node-refund-api/src/features/refund-webhooks/refundWebhookRoute.ts
+      role: "路由入口"
+      responsibility: "处理 webhook 框架接入、读取原始请求与头信息、按顺序编排签名校验、合作方查询与事件落库，并返回最终响应。"
+      reason: "入口文件应保留可读的主流程，但不再承载具体安全校验或外部 IO 细节。"
+    - path: services/node-refund-api/src/features/refund-webhooks/refundWebhookSignatureVerifier.ts
+      role: "签名校验"
+      responsibility: "封装 webhook 签名规则、原始载荷参与的校验过程，以及校验失败时暴露给路由的明确结果。"
+      reason: "签名验证是独立的安全与测试边界，留在路由内会把框架胶水和安全规则混在一起。"
+    - path: services/node-refund-api/src/features/refund-webhooks/refundWebhookPartnerClient.ts
+      role: "合作方客户端"
+      responsibility: "负责按 webhook 标识查询合作方配置、密钥或映射信息，并隔离远程调用或数据读取细节。"
+      reason: "合作方查询属于独立外部 IO 失败面，和路由编排、事件持久化分开后更容易调试与替换。"
+    - path: services/node-refund-api/src/features/refund-webhooks/refundWebhookEventRepository.ts
+      role: "事件持久化"
+      responsibility: "负责 webhook 事件的幂等写入、状态记录与持久化模型映射。"
+      reason: "事件落库是单独的持久化边界，拆出后可以独立测试重复事件、写入失败和审计记录。"
+  keep_inline:
+    - "路由专用的响应映射与少量参数解包逻辑留在 refundWebhookRoute.ts 内，不单独抽文件。"
+    - "仅供持久化使用的事件到记录映射和本地类型留在 refundWebhookEventRepository.ts 内，暂不拆 contract 文件。"
+  avoid:
+    - "不要新增 refundWebhookService.ts 这类只转发参数的薄服务层。"
+    - "不要为单个特性目录增加 index.ts barrel 或 shared/common 工具文件。"
+    - "不要把兼容性桥接、过渡 shim 或 rollout 专用路径放进该目录的正式 files 计划。"
+  why_not_fewer: "将签名校验、合作方查询和事件落库继续塞回 refundWebhookRoute.ts，会把框架入口、安全校验、外部读取和持久化四类变更原因混在一起，削弱测试与故障定位边界。"
+  why_not_more: "再继续拆成额外的 orchestration/service、schema、mapper 或 barrel 文件，大多只会增加跳转层级；按当前局部约定，保留一个可读路由加三个真实边界文件已经足够。"
+  risks:
+    - "当前可见实现文件都是占位内容，本地证据主要来自目录命名而不是实际逻辑，命名细节后续可能需要按真实依赖微调。"
+    - "如果仓库中另有未展示的基线文档明确规定持久化文件应使用不同后缀或共享适配器目录，应保留这次 split 的边界判断，但按文档调整文件名与落点。"
+    - "如果合作方查询最终只是一次极轻量的本地查表而非独立 IO，refundWebhookPartnerClient.ts 可能可以回收到路由；当前建议仍按请求描述中的 partner lookups 作为独立失败面处理。"
+  confidence: medium
+
+
+STDERR:
+2026-04-21T14:13:16.103302Z  WARN codex_core::plugins::startup_sync: startup remote plugin sync failed; will retry on next app-server start error=chatgpt authentication required to sync remote plugins; api key auth is not supported
+2026-04-21T14:13:17.472963Z  WARN codex_core::plugins::manager: failed to warm featured plugin ids cache error=remote plugin sync request to https://chatgpt.com/backend-api/plugins/featured failed with status 403 Forbidden: <html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style global>body{font-family:Arial,Helvetica,sans-serif}.container{align-items:center;display:flex;flex-direction:column;gap:2rem;height:100%;justify-content:center;width:100%}@keyframes enlarge-appear{0%{opacity:0;transform:scale(75%) rotate(-90deg)}to{opacity:1;transform:scale(100%) rotate(0deg)}}.logo{color:#8e8ea0}.scale-appear{animation:enlarge-appear .4s ease-out}@media (min-width:768px){.scale-appear{height:48px;width:48px}}.data:empty{display:none}.data{border-radius:5px;color:#8e8ea0;text-align:center}@media (prefers-color-scheme:dark){body{background-color:#343541}.logo{color:#acacbe}}</style>
+  <meta http-equiv="refresh" content="360"></head>
+  <body>
+    <div class="container">
+      <div class="logo">
+        <svg
+          width="41"
+          height="41"
+          viewBox="0 0 41 41"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          strokeWidth="2"
+          class="scale-appear"
+        >
+          <path
+            d="M37.5324 16.8707C37.9808 15.5241 38.1363 14.0974 37.9886 12.6859C37.8409 11.2744 37.3934 9.91076 36.676 8.68622C35.6126 6.83404 33.9882 5.3676 32.0373 4.4985C30.0864 3.62941 27.9098 3.40259 25.8215 3.85078C24.8796 2.7893 23.7219 1.94125 22.4257 1.36341C21.1295 0.785575 19.7249 0.491269 18.3058 0.500197C16.1708 0.495044 14.0893 1.16803 12.3614 2.42214C10.6335 3.67624 9.34853 5.44666 8.6917 7.47815C7.30085 7.76286 5.98686 8.3414 4.8377 9.17505C3.68854 10.0087 2.73073 11.0782 2.02839 12.312C0.956464 14.1591 0.498905 16.2988 0.721698 18.4228C0.944492 20.5467 1.83612 22.5449 3.268 24.1293C2.81966 25.4759 2.66413 26.9026 2.81182 28.3141C2.95951 29.7256 3.40701 31.0892 4.12437 32.3138C5.18791 34.1659 6.8123 35.6322 8.76321 36.5013C10.7141 37.3704 12.8907 37.5973 14.9789 37.1492C15.9208 38.2107 17.0786 39.0587 18.3747 39.6366C19.6709 40.2144 21.0755 40.5087 22.4946 40.4998C24.6307 40.5054 26.7133 39.8321 28.4418 38.5772C30.1704 37.3223 31.4556 35.5506 32.1119 33.5179C33.5027 33.2332 34.8167 32.6547 35.9659 31.821C37.115 30.9874 38.0728 29.9178 38.7752 28.684C39.8458 26.8371 40.3023 24.6979 40.0789 22.5748C39.8556 20.4517 38.9639 18.4544 37.5324 16.8707ZM22.4978 37.8849C20.7443 37.8874 19.0459 37.2733 17.6994 36.1501C17.7601 36.117 17.8666 36.0586 17.936 36.0161L25.9004 31.4156C26.1003 31.3019 26.2663 31.137 26.3813 30.9378C26.4964 30.7386 26.5563 30.5124 26.5549 30.2825V19.0542L29.9213 20.998C29.9389 21.0068 29.9541 21.0198 29.9656 21.0359C29.977 21.052 29.9842 21.0707 29.9867 21.0902V30.3889C29.9842 32.375 29.1946 34.2791 27.7909 35.6841C26.3872 37.0892 24.4838 37.8806 22.4978 37.8849ZM6.39227 31.0064C5.51397 29.4888 5.19742 27.7107 5.49804 25.9832C5.55718 26.0187 5.66048 26.0818 5.73461 26.1244L13.699 30.7248C13.8975 30.8408 14.1233 30.902 14.3532 30.902C14.583 30.902 14.8088 30.8408 15.0073 30.7248L24.731 25.1103V28.9979C24.7321 29.0177 24.7283 29.0376 24.7199 29.0556C24.7115 29.0736 24.6988 29.0893 24.6829 29.1012L16.6317 33.7497C14.9096 34.7416 12.8643 35.0097 10.9447 34.4954C9.02506 33.9811 7.38785 32.7263 6.39227 31.0064ZM4.29707 13.6194C5.17156 12.0998 6.55279 10.9364 8.19885 10.3327C8.19885 10.4013 8.19491 10.5228 8.19491 10.6071V19.808C8.19351 20.0378 8.25334 20.2638 8.36823 20.4629C8.48312 20.6619 8.64893 20.8267 8.84863 20.9404L18.5723 26.5542L15.206 28.4979C15.1894 28.5089 15.1703 28.5155 15.1505 28.5173C15.1307 28.5191 15.1107 28.516 15.0924 28.5082L7.04046 23.8557C5.32135 22.8601 4.06716 21.2235 3.55289 19.3046C3.03862 17.3858 3.30624 15.3413 4.29707 13.6194ZM31.955 20.0556L22.2312 14.4411L25.5976 12.4981C25.6142 12.4872 25.6333 12.4805 25.6531 12.4787C25.6729 12.4769 25.6928 12.4801 25.7111 12.4879L33.7631 17.1364C34.9967 17.849 36.0017 18.8982 36.6606 20.1613C37.3194 21.4244 37.6047 22.849 37.4832 24.2684C37.3617 25.6878 36.8382 27.0432 35.9743 28.1759C35.1103 29.3086 33.9415 30.1717 32.6047 30.6641C32.6047 30.5947 32.6047 30.4733 32.6047 30.3889V21.188C32.6066 20.9586 32.5474 20.7328 32.4332 20.5338C32.319 20.3348 32.154 20.1698 31.955 20.0556ZM35.3055 15.0128C35.2464 14.9765 35.1431 14.9142 35.069 14.8717L27.1045 10.2712C26.906 10.1554 26.6803 10.0943 26.4504 10.0943C26.2206 10.0943 25.9948 10.1554 25.7963 10.2712L16.0726 15.8858V11.9982C16.0715 11.9783 16.0753 11.9585 16.0837 11.9405C16.0921 11.9225 16.1048 11.9068 16.1207 11.8949L24.1719 7.25025C25.4053 6.53903 26.8158 6.19376 28.2383 6.25482C29.6608 6.31589 31.0364 6.78077 32.2044 7.59508C33.3723 8.40939 34.2842 9.53945 34.8334 10.8531C35.3826 12.1667 35.5464 13.6095 35.3055 15.0128ZM14.2424 21.9419L10.8752 19.9981C10.8576 19.9893 10.8423 19.9763 10.8309 19.9602C10.8195 19.9441 10.8122 19.9254 10.8098 19.9058V10.6071C10.8107 9.18295 11.2173 7.78848 11.9819 6.58696C12.7466 5.38544 13.8377 4.42659 15.1275 3.82264C16.4173 3.21869 17.8524 2.99464 19.2649 3.1767C20.6775 3.35876 22.0089 3.93941 23.1034 4.85067C23.0427 4.88379 22.937 4.94215 22.8668 4.98473L14.9024 9.58517C14.7025 9.69878 14.5366 9.86356 14.4215 10.0626C14.3065 10.2616 14.2466 10.4877 14.2479 10.7175L14.2424 21.9419ZM16.071 17.9991L20.4018 15.4978L24.7325 17.9975V22.9985L20.4018 25.4983L16.071 22.9985V17.9991Z"
+            fill="currentColor"
+          />
+        </svg>
+      </div>
+      <div class="data"><div class="main-wrapper" role="main"><div class="main-content"><noscript><div class="h2"><span id="challenge-error-text">Enable JavaScript and cookies to continue</span></div></noscript></div></div><script>(function(){window._cf_chl_opt = {cFPWv: 'b',cH: 'rPpScqplOuRvMxI081QzbIWMA.lrVCt1iTvH55GmHV8-1776780795-1.2.1.1-_rroUCjlgCl_LOCmY4NmKspiuEq3vCLSWWZbL6JMO0QQ0rcp0D2_AD_F1fV5lgk1',cITimeS: '1776780795',cRay: '9efcfd06dc1bbd64',cTplB: '0',cTplC:1,cTplO:0,cTplV:5,cType: 'managed',cUPMDTk:"/backend-api/plugins/featured?platform=codex&__cf_chl_tk=Vw2jO5xC8xEkon6gQVEzM_IMnomQxtpskLIrU_kP8xU-1776780795-1.0.1.1-Tlv0XEEVqEDSWAfMMYQlGOqxxnjwaDVEOMLFbGIcljc",cvId: '3',cZone: 'chatgpt.com',fa:"/backend-api/plugins/featured?platform=codex&__cf_chl_f_tk=Vw2jO5xC8xEkon6gQVEzM_IMnomQxtpskLIrU_kP8xU-1776780795-1.0.1.1-Tlv0XEEVqEDSWAfMMYQlGOqxxnjwaDVEOMLFbGIcljc",md: 'wJ39zakNpcgEdIy4PxxUhaMSVFRR5pAeA8xxVKZDVAc-1776780795-1.2.1.1-srVCSP33LAxpwLt7vS77u_4zVZInEJhWy58AFL7zOH9JxnN8LNZ6oGJVfa7uirTzotjxe_Q9NAca5WFzFh1ZBZYGriBK_HIxq8fhaCYwHC7dvR_GpoaAYV1gK7yfV4Rl4ET7Gyf0DTzga3VLCxWpH91v3skiDmLQzYSMvFV4kJqrpUB.B1kikJp4Bx6ddhbHepstxrG8Zw_5rqVpqB7qExO73wz.xCHEzY.gtmWhKoOq6GNwdu9OR4CoR7znSLPmuiyW8Adc4TGxeuFyrzJ61Muo69g.ut9IF.oVOjUQ0P_REqnDLtLnHNEQP3e.eblfH_d1y8B_CaSDSbSsjO1Ji1_pny5FNBziPGoisJi9lUhO63OsmRHGVdgYNIdyANL6zLaRoWCQ6ScNAPSEBcmkW6YSe1REDt_N4SgBCbZbbL1FXabSzGZV1Avjcmv09bBmFTRxvabfyA23kj_d6e5G5ZJG.A3PN4UJ9OWb9u.OCukL_tdNPpBDZhiwsKgA8XhS7q3TCv6wA_.x44EEz7lJCLgPoPSnLrkxKz8BHUjLw7TRQI5DedVHVNO5rC2etua59Rz3AsGI3MpJLHRgqxnk6tiWSDSLLpjF2.Wd8ATlu48pbNUR63xc7uuaKH5XNnN79_wj97W9DMU8q.SYqx0CMvqQC4uN6YaC982XuSBTt1.jE8T5ZRtPGZxANLT2kdRk.uMkFdVZF1eCspEYNVUL.OqCeXM2D4g78lH4IRrjX9B6xgH2fTzN2efSPglhftyNq6skco7yMJc67k6ogfGZ2tiKzyzsrxVODN2EfL_jO_bK7z_lvTJ24OfZbrrUXeYk4h8kaWYjTJ8TIrLQ5kuUNX7CvwCyHcUQIwAYD5NOl0gLY8C_OMEdtImEbS12EVU0UU8lTuCci7_TT6TPWt48SjoBLwaNGEaWe9P2Uo2r4v9hktWLaOEHC1nhu.KzGmpfOtRNw_uJU2Ud7VmvP42IrjyPglvWg3.aBVjFMO8EJdkZGNm1oykcIrUkqaj_e94RorWIkSevBPfpmpi9TYvYUA',mdrd: 'X7YSW4InM3fG5JwZG0rj5xjIntzQbFS5.T_aTRVCoZo-1776780795-1.2.1.1-.3xo9DHsQYY4_e5VEcTkI3eDQIBhb9EYXpeW0Od1AjpXzU_uT_QiswESmmw0A62KFzQ2EI9pPGe5GWQmtQNfvZUc486Qy8QFNAAyB74OePTiHfNhp093d.hVoViRUBWKCyKCLUdiJfp9WE88Q6FI5Q78HNfR1MfXdxysedFY.3Rm237NP9Grr3N1P35MujrFki903fQhiNO6EuCEVL35NzNpAsLqCKCHOx83ud1FQFpfwO71_qkOXEsFya5nOfydZKuAt9Nz9AIdcXcNCJaVCwf5rNLN2PU9bH_74W6RfbUOaudIxE3JqOTeZshdNF5vhXH32eHj6KwdG2VBEq4BLw',};var a = document.createElement('script');a.src = '/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1?ray=9efcfd06dc1bbd64';window._cf_chl_opt.cOgUHash = location.hash === '' && location.href.indexOf('#') !== -1 ? '#' : location.hash;window._cf_chl_opt.cOgUQuery = location.search === '' && location.href.slice(0, location.href.length - window._cf_chl_opt.cOgUHash.length).indexOf('?') !== -1 ? '?' : location.search;if (window.history && window.history.replaceState) {var ogU = location.pathname + window._cf_chl_opt.cOgUQuery + window._cf_chl_opt.cOgUHash;history.replaceState(null, null,"/backend-api/plugins/featured?platform=codex&__cf_chl_rt_tk=Vw2jO5xC8xEkon6gQVEzM_IMnomQxtpskLIrU_kP8xU-1776780795-1.0.1.1-Tlv0XEEVqEDSWAfMMYQlGOqxxnjwaDVEOMLFbGIcljc"+ window._cf_chl_opt.cOgUHash);a.onload = function() {history.replaceState(null, null, ogU);}}document.getElementsByTagName('head')[0].appendChild(a);}());</script></div>
+    </div>
+  </body>
+</html>
+
+2026-04-21T14:13:23.341422Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+OpenAI Codex v0.122.0-alpha.13 (research preview)
+--------
+workdir: D:\yongyongmoban
+model: gpt-5.4
+provider: codexmanager_lan
+approval: never
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019db063-6174-7ae1-91d8-c89f923d1e9d
+--------
+user
+You are executing a repository skill evaluation inside Codex CLI. Follow the skill workflow and references exactly, and return only YAML with no markdown fences.
+
+# Skill
+
+---
+name: plan-code-file-layout
+description: Plan repository-aligned file boundaries for one concrete implementation slice. Use when the user asks whether a change should stay in one file or be split, how many files to create, what each file should own, or how to organize Python, TypeScript/JavaScript, Vue, or Go code for maintainability and debugging inside that slice. Also use for near-miss requests like component/composable split, endpoint file layout, feature-folder planning, or deciding whether to extract helpers. Do not use for dependency analysis, generic module-context explanation, style-only questions, post-hoc code review, or whole-system architecture redesign.
+---
+
+# Plan Code File Layout
+
+## Overview
+
+Plan file boundaries for one concrete implementation slice.
+Stay aligned with nearby repository conventions, artifact role, and stack-specific constraints instead of applying generic style advice.
+This skill decides file ownership only; it does not explain repository architecture, infer the dependency graph, or act as a default semantic preflight.
+
+## Quick Reference
+
+- If the target area is unclear, stop and ask for the intended directory, module, or feature anchor.
+- If the user is really asking what a module does, which layer it belongs to, or how layers relate, do not stretch this skill into a generic context explainer.
+- Treat `target_area` as an exact anchor string, not a paraphrase; reuse the concrete path or file anchor from the request instead of rewriting it into a sentence.
+- Preserve anchor granularity: if the request anchor is an exact file path, keep that exact file path in `target_area`; if the request anchor is a directory, feature, or module anchor, keep that higher-level anchor instead of shrinking it to one file.
+- If nearby code already shows a stable organization pattern, align with it unless it is clearly causing maintenance or debug pain.
+- If baseline docs explicitly define the target layer, module boundary, or migration direction, follow the baseline docs even when nearby code is off-pattern.
+- If baseline docs conflict with each other, prefer the one that most directly defines the target area's current migration state or rollout rule; treat broader architecture summaries as secondary evidence and lower confidence if ambiguity remains.
+- If target-area baseline docs agree on the current migration phase but differ on file-boundary granularity, prefer the doc that gives the more concrete file-role guidance for that phase.
+- If the repository shape is unclear, read [repo-shape.md](./references/repo-shape.md) and classify it before planning files.
+- If the code role is unclear, choose one artifact path from the `artifact-*` references before reading stack deltas.
+- If the repository is mixed, make the decision around the target area and treat other stacks as surrounding constraints rather than primary drivers.
+- When signals conflict, prefer them in this order: explicit baseline docs for the target area, target file reality, nearby sibling examples, target directory convention, broader repository docs, global architecture docs.
+- Within explicit baseline docs, prefer target-area migration notes over broader architecture summaries when they disagree about the current slice.
+- Within target-area baseline docs for the same phase, prefer concrete seam guidance over abstract location guidance when choosing whether to keep, split, or merge files.
+- Treat file naming as a local clarity choice, not a unique global template; prefer names that express the role clearly inside the target area.
+- Treat nearby examples and comparison files as evidence, not as files to include in the plan unless the user explicitly expands the implementation slice to cover them too.
+- Mention comparison or legacy files only in explanatory fields like `why_not_more` or `risks`; do not return them in `files` unless the user explicitly expands scope to include them.
+
+## Upstream Result Consumption
+
+- This skill can run on its own; upstream skill results are optional evidence when already available, never hard prerequisites.
+- If explicit layer or module-responsibility evidence already exists in local docs or prior task context, consume it first for target-layer assignment, module responsibility, and coding constraints that clarify the current slice.
+- Map explicit layer and responsibility signals into `artifact_type` and `files[].role` before inventing new role labels from scratch.
+- If a valid `current-file-dependency-analysis` result already exists, consume its `hard_facts` and `estimated_impact` to pressure-test the boundary plan.
+- Map dependency facts and impact estimates from `current-file-dependency-analysis` into `strategy`, `risks`, and `confidence`.
+- Treat upstream results as bounded evidence for the current slice; do not widen `target_area`, do not broaden `files`, and do not pull adjacent evidence files into the returned plan just because an upstream result mentioned them.
+- If upstream results are missing, partial, stale, or not worth loading, continue with local reading and mark uncertainty normally instead of blocking on a prerequisite.
+
+## Workflow
+
+1. Anchor the request to one concrete implementation slice: feature, endpoint, component, command, pipeline step, or module.
+2. Prefer consuming any already-available upstream results that clarify the current slice before re-deriving the same context locally; do not require or trigger them as a default pre-step.
+3. Read nearby files and infer repository shape with [repo-shape.md](./references/repo-shape.md).
+4. Read [core-principles.md](./references/core-principles.md) and pick the closest artifact guide.
+5. Read one stack guide that matches the dominant local stack, or treat the area as mixed if multiple stacks materially shape the boundary.
+6. Decide `keep`, `split`, or `merge`.
+7. Produce a file plan using [output-shape.md](./references/output-shape.md).
+8. Explain `why_not_fewer` and `why_not_more`, then list risks or confidence limits.
+
+## Resource Routing
+
+- [core-principles.md](./references/core-principles.md): Read for every task.
+- [repo-shape.md](./references/repo-shape.md): Read before planning files in an unfamiliar repository or directory.
+- [output-shape.md](./references/output-shape.md): Use to format the final decision.
+- [anti-patterns.md](./references/anti-patterns.md): Read when the local codebase already shows fragmentation, giant files, or `shared/utils/common` sprawl.
+- [artifact-ui-component.md](./references/artifact-ui-component.md): Use for UI pages, components, composables, or view-focused work.
+- [artifact-service-endpoint.md](./references/artifact-service-endpoint.md): Use for request/response handlers, services, and persistence edges.
+- [artifact-cli-command.md](./references/artifact-cli-command.md): Use for commands, scripts, and operator tools.
+- [artifact-data-pipeline-step.md](./references/artifact-data-pipeline-step.md): Use for ETL, jobs, stream stages, or batch steps.
+- [artifact-library-module.md](./references/artifact-library-module.md): Use for reusable modules and library-facing code.
+- [stack-python.md](./references/stack-python.md): Read when Python materially shapes module boundaries.
+- [stack-typescript-javascript.md](./references/stack-typescript-javascript.md): Read when TypeScript or JavaScript materially shapes module boundaries.
+- [stack-vue.md](./references/stack-vue.md): Read when Vue single-file components or composables are involved.
+- [stack-go.md](./references/stack-go.md): Read when Go package cohesion or public API shape is involved.
+
+## Critical Rules
+
+- Default to a small number of high-cohesion files rather than the smallest possible files.
+- Keep this skill limited to concrete file-boundary decisions for the target slice; do not turn it into dependency analysis, repository summarization, or generic module-context explanation.
+- Split files only when change reasons, side-effect boundaries, test boundaries, or real reuse needs are materially separate.
+- Keep private helpers, local types, and one-off mappers inline until they clearly interfere with reading or gain a second real consumer.
+- Avoid thin pass-through wrappers whose only job is forwarding calls or re-exporting local logic.
+- Keep a common bug or common change readable through roughly one to three files, not a long ping-pong chain.
+- Let repository reality win over generic advice only when baseline docs do not explicitly define a different target state.
+- If one baseline doc states the long-term target and another gives temporary rollout guidance for the same slice, follow the temporary rollout guidance for the current plan and note the long-term target in `risks`.
+- If multiple target-area docs all describe the current phase, follow the one that most concretely assigns file roles, framework glue, or seam ownership for the slice under discussion.
+- Hold the core boundary decision stable even when role labels, confidence wording, or local file names could reasonably vary.
+- Keep `target_area` exact; do not add explanatory prefixes, suffixes, or migration notes to the anchor field.
+- Do not widen an exact file-path anchor into its parent directory, and do not collapse a directory or feature anchor down to one file unless the request itself anchors on that file.
+- Use upstream results to clarify semantic role and impact, not to rewrite the request anchor or enlarge the implementation slice.
+- Keep the recommendation scoped to the concrete target slice; do not widen the `files` list to sibling helpers, comparison examples, or the whole directory just because those files were shown as context.
+- Never include comparison files, support docs, or nearby evidence files in `files` unless the user explicitly expands the implementation scope to include them.
+- If baseline docs and local code conflict, plan toward the documented target state and treat the local layout as legacy evidence to migrate away from.
+
+## Validation
+
+- Confirm the plan is anchored to one target area rather than drifting into repository redesign.
+- Confirm the plan stays a file-boundary decision and does not drift into dependency mapping or semantic layer explanation.
+- Confirm `target_area` is copied from the concrete request anchor rather than rewritten into a prose label.
+- Confirm exact file-path anchors stay exact file-path anchors, and directory or feature anchors stay directory or feature anchors.
+- Confirm the `files` list covers only the target implementation slice and not nearby comparison files.
+- Confirm any upstream results were consumed as optional evidence and did not widen `target_area` or `files`.
+- Confirm each proposed file has a distinct role and is not a naming-only split.
+- Confirm the plan respects nearby directory conventions, package layout, and import style.
+- Confirm explicit baseline docs are honored when they conflict with the local slice layout.
+- Confirm conflicting baseline docs are resolved in favor of the one that most directly names the current target slice or migration phase.
+- Confirm same-phase target-area docs with different boundary granularity are resolved in favor of the more concrete seam guidance.
+- Confirm the plan explains why the boundary is not smaller and not larger.
+- Confirm mixed repositories are treated locally rather than forcing one global stack model onto everything.
+
+## Pre-Return Check
+
+- Recheck that `target_area` exactly matches the request anchor.
+- Recheck that anchor granularity stayed intact: file-path anchors remain file-path anchors, and directory or feature anchors were not narrowed.
+- Recheck that every entry in `files` is a production file for the target slice itself.
+- Recheck that no comparison file, support doc, or sibling example leaked into `files`.
+- Recheck that any upstream-result consumption only informed role, impact, or confidence and did not expand the plan scope.
+- Recheck whether conflicting signals, partial visibility, or anchor recovery uncertainty should lower `confidence`.
+
+## Output Contract
+
+Done means:
+
+- The final answer uses the structure in [output-shape.md](./references/output-shape.md).
+- The answer returns `keep`, `split`, or `merge`.
+- The answer lists the recommended files and each file's responsibility.
+- The answer includes the core decision fields `strategy`, `target_area`, `files`, `why_not_fewer`, and `why_not_more`.
+- The answer includes the explanatory fields `repo_shape`, `artifact_type`, `stack`, and `confidence`, and it uses `keep_inline`, `avoid`, and `risks` when those lists have content.
+- `keep_inline`, `avoid`, and `risks` may be omitted when they would otherwise be empty; when present, keep their existing meanings and list shape.
+- `target_area` stays equal to the concrete path or file anchor from the request.
+- `target_area` also preserves the request's anchor granularity instead of widening a file anchor or narrowing a directory anchor.
+- `files` excludes comparison files, support docs, and repository context files that were shown only as evidence.
+- The answer is narrow enough that an implementation workflow can consume it directly.
+
+## Failure Handling
+
+- If the target area is missing, stop and recover the directory, file, or feature anchor.
+- Recover missing anchors in this order: explicit path in the request, explicit current file, uniquely named file or directory from the request, one unambiguous nearby candidate from local context. If more than one candidate remains, stop and ask for the anchor.
+- If upstream results disagree with the explicit request anchor, keep the explicit request anchor and treat the upstream mismatch as a confidence-lowering signal rather than a reason to rewrite `target_area`.
+- If nearby code conflicts with explicit baseline docs, follow the baseline docs and call out relocation or migration cost in `risks`.
+- If baseline docs conflict with each other, follow the one that most directly names the target slice's current migration phase, mention the competing long-term target in `risks`, and lower confidence if the cutover state is still uncertain.
+- If baseline docs agree on the current phase but disagree on boundary granularity, follow the more concrete seam rule and mention the broader or looser alternative in `risks` when it materially changes the plan.
+- If nearby code gives conflicting local signals without an explicit baseline-doc override, follow the strongest signal according to the precedence above and lower confidence.
+- If the task is really asking for dependency facts, hand off to `current-file-dependency-analysis` instead of stretching this skill.
+- If the task is really asking for layer ownership, module responsibility, or semantic routing, stop and treat that as a local reasoning question instead of stretching this skill.
+- If the task expands into repository-wide restructuring or architecture redesign, hand off to a broader workflow instead of stretching this skill.
+- If the stack is unknown, return a repository-aligned generic plan and explicitly mark the stack uncertainty.
+
+
+# Reference: core-principles.md
+
+# Core Principles
+
+Use these rules before reading any artifact or stack guide.
+
+## Decision Order
+
+1. Read the target area and nearby files.
+2. Classify the local repository shape.
+3. Classify the artifact role.
+4. Apply stack deltas.
+5. Decide `keep`, `split`, or `merge`.
+
+## Conflict Precedence
+
+When local signals disagree, prefer them in this order:
+
+1. Explicit baseline docs or migration rules that define the target area
+2. The target file and the concrete implementation slice itself
+3. Nearby sibling examples in the same local area
+4. The target directory's existing convention
+5. Broader repository documentation
+6. Global architecture guidance
+
+If explicit baseline docs conflict with local structure, follow the documented target state and treat the local layout as legacy evidence. If the winning signal is still ambiguous, lower confidence and call out migration cost or uncertainty explicitly.
+
+When explicit baseline docs conflict with each other, prefer the one that most directly defines the target slice's current migration phase or rollout status. Use broader architecture summaries as secondary evidence, and call out the unresolved long-term target in `risks` when the docs describe different phases of the same migration.
+
+When target-area baseline docs agree on the current phase but differ on file-boundary granularity, prefer the one that gives the more concrete seam guidance for the slice itself. A doc that names which file should own framework glue, response shaping, or adapter behavior should beat a doc that only names the broader destination directory.
+
+## Default Bias
+
+- Prefer a small number of high-cohesion files.
+- Prefer boundaries that make common debugging and common edits local.
+- Prefer local helpers over premature extraction.
+- Prefer the shortest file chain that still exposes real side-effect boundaries.
+- Do not insert an extra orchestration layer when the entry file plus the real IO edges already keeps the common path readable.
+- Keep the recommendation scoped to the concrete slice under discussion; nearby examples are there to calibrate the decision, not to be copied into the returned file plan.
+- When baseline docs explicitly define a different layer or module boundary, prefer the documented target state over preserving an off-pattern local layout.
+
+## Split Signals
+
+Split when one or more of these become materially separate:
+
+- Change reason
+- Side-effect boundary
+- Test surface
+- Reuse need
+- Public API surface
+
+Treat stronger signals as:
+
+- External IO or framework glue mixed with business rules
+- One file mixing entrypoint, orchestration, and persistence
+- One file hiding multiple independent failure modes
+- One file where the real split is "entry + external adapter + persistence adapter", not "entry + service + adapter"
+
+## Keep Signals
+
+Keep code in one file when most of these are true:
+
+- The change reason is shared.
+- The code is only used locally.
+- The same tests cover the whole slice.
+- Splitting would add wrapper files or longer jumps without clearer ownership.
+- The main flow is still readable in the entry file once real adapter boundaries are extracted.
+
+## Merge Signals
+
+Merge when the current boundary causes more movement than clarity:
+
+- Frequent bug tracing crosses four or more files.
+- A file exists only to forward calls or re-export local code.
+- Two files almost always change together and do not have separate test or side-effect value.
+
+## Heuristic Thresholds
+
+Treat these as warning signs, not hard limits:
+
+- A common change should usually stay readable through one to three files.
+- Very large files are suspicious when they mix multiple abstraction layers.
+- Very small files are suspicious when they exist only for naming or ceremony.
+
+
+# Reference: repo-shape.md
+
+# Repository Shape
+
+Classify the target area before proposing new files.
+
+## Feature-First
+
+Typical signs:
+
+- Directories grouped by domain or feature
+- UI, service, and tests for one feature live near each other
+
+Planning rule:
+
+- Keep new files near the feature.
+- Prefer local file splits inside the feature instead of creating global shared folders.
+
+## Layer-First
+
+Typical signs:
+
+- Global folders like `controllers/`, `services/`, `repositories/`, `components/`
+- Files for one feature are spread across layer directories
+
+Planning rule:
+
+- Respect the existing layout unless it is clearly being replaced.
+- Avoid introducing a one-off feature island inside a strong layer-first codebase.
+
+## Package-First
+
+Typical signs:
+
+- Package boundaries carry most of the meaning
+- Common in Go and some Python monorepos
+
+Planning rule:
+
+- First choose the right package.
+- Then keep file count modest inside the package unless multiple roles need separation.
+
+## Mixed
+
+Typical signs:
+
+- Different areas follow different patterns
+- Frontend, backend, scripts, and infra each organize differently
+
+Planning rule:
+
+- Make the decision locally around the target area.
+- Do not force one repository-wide shape onto the entire codebase.
+- Let the target artifact type and dominant local stack drive the plan.
+
+
+# Reference: output-shape.md
+
+# Output Shape
+
+Return the final plan in this structure.
+
+```yaml
+decision:
+  strategy: keep | split | merge
+  target_area: ""
+  repo_shape: feature-first | layer-first | package-first | mixed
+  artifact_type: ui-component | service-endpoint | cli-command | data-pipeline-step | library-module
+  stack: python | typescript-javascript | vue | go | mixed | unknown
+  files:
+    - path: ""
+      role: ""
+      responsibility: ""
+      reason: ""
+  keep_inline: [] # optional when empty
+  avoid: [] # optional when empty
+  why_not_fewer: ""
+  why_not_more: ""
+  risks: [] # optional when empty
+  confidence: high | medium | low
+```
+
+## Field Notes
+
+### Core Decision Fields
+
+- `strategy`: Main boundary decision for this implementation slice.
+- `target_area`: Directory, feature, file, or module anchor used for the decision.
+- `target_area` should copy the concrete anchor from the request exactly rather than turning it into a prose label or migration summary.
+- `target_area` should also preserve the same anchor granularity as the request: keep exact file-path anchors as file paths, and keep directory, feature, or module anchors at that higher level.
+- `files`: Recommended production files only.
+- `files` should list only the production files for the target slice itself, not sibling examples or comparison files that were shown as context.
+- `files` should also exclude support docs, baseline docs, and repository context files that were injected only to guide the decision.
+- Comparison files, legacy shims, and other evidence files may still be mentioned in `why_not_more` or `risks`, but they should not appear under `files` unless the request explicitly expands scope to include them.
+- Upstream results from other skills may inform role, impact, or confidence, but they should not widen `target_area` or pull additional evidence files into `files`.
+- When baseline docs conflict with the local layout, `files` should follow the documented target state and `risks` should note migration or relocation impact.
+- `why_not_fewer`: Explain why a smaller layout would blur a real boundary.
+- `why_not_more`: Explain why further splitting would mostly add ceremony.
+
+These fields carry the main implementation decision and should remain stable across reasonable model variations.
+
+### Explanatory Fields
+
+- `repo_shape`: Local repository organization around the target area.
+- `artifact_type`: Primary code role that drives the boundary.
+- `stack`: Dominant local stack, not the entire repository.
+- `keep_inline`: Helpers, types, validators, or mappers that should stay local for now. Omit this field when it would otherwise be empty.
+- `avoid`: Unhelpful files or abstractions that should not be created. Omit this field when it would otherwise be empty.
+- `risks`: List uncertainty, convention conflicts, or likely follow-up questions. Omit this field when it would otherwise be empty.
+- `confidence`: Record how stable the recommendation looks after weighing local signals and conflicts.
+
+These fields explain or classify the decision. They should still be present, but some wording, naming, or classification differences can remain acceptable when the core boundary decision is unchanged.
+
+
+# Reference: artifact-service-endpoint.md
+
+# Artifact: Service Endpoint
+
+Use for HTTP handlers, RPC handlers, controller actions, and service-facing request flows.
+
+## Default Boundary
+
+Small endpoints may keep handler logic and light orchestration together when persistence and external IO are trivial.
+
+## Split When
+
+- Framework entry glue, business orchestration, and external IO are all present.
+- Persistence, network clients, or serialization logic create separate failure modes.
+- Contract validation or schema handling has independent test value.
+- The route can stay as the visible orchestration file while external adapters take the real IO boundaries.
+
+## Common Roles
+
+- Handler or controller
+- Use-case or service orchestration
+- Repository or gateway
+- Contract or schema definition
+
+## Avoid
+
+- One-off repositories that only wrap a single local query with no ownership benefit.
+- Global service layers that just pass through controller parameters unchanged.
+- Feature-local service files whose only extra value is moving a short route orchestration out of the handler while client and store files already hold the real boundaries.
+- Route -> service -> client -> repository chains when the common endpoint path is still readable through route plus the real adapters.
+
+
+# Reference: stack-typescript-javascript.md
+
+# Stack: TypeScript / JavaScript
+
+Use this guide as a delta on top of the core and artifact rules.
+
+## Bias
+
+- Prefer feature-local organization over global layer sprawl when the repository allows it.
+- Keep local types, mappers, and validators close to the feature until reuse is real.
+
+## Split When
+
+- Framework glue, business orchestration, and external IO all coexist in one file.
+- The same file carries both UI concerns and remote data concerns.
+- A contract, schema, or adapter has its own test and failure boundary.
+
+## Avoid
+
+- Pass-through wrapper files
+- Barrel files that add indirection without a public API reason
+- Extracting every helper because import paths look cleaner on paper
+- Adding a feature-local service layer between a route and its real adapters when the route can still visibly orchestrate one short flow.
+
+
+User request:
+Plan the file layout for this TypeScript webhook endpoint before implementation moves further. Anchor the decision in services/node-refund-api/src/features/refund-webhooks, where one route currently mixes signature checks, partner lookups, and event persistence.
+Repository root: D:\yongyongmoban
+Target area: services/node-refund-api/src/features/refund-webhooks
+Anchor lock: copy target_area exactly as `services/node-refund-api/src/features/refund-webhooks`. This request uses a directory, feature, or module anchor. Do not rewrite it into prose, and do not narrow it down to a single file unless the request itself anchors on that file.
+Important scope rule: recommend only the production files for the concrete target slice named in the request. Nearby comparison files are reference only and must not be copied into the returned file plan unless the request explicitly expands scope.
+Important precedence rule: if baseline repository docs explicitly define a target layer, module boundary, or migration direction that conflicts with the local layout, follow the baseline docs and treat the local layout as legacy evidence.
+Important compatibility rule: files shown as legacy compatibility shims, transitional bridges, or rollout-only paths are evidence or migration risks by default and must not be included in `files` unless the request explicitly asks to preserve transitional files.
+Primary implementation files:
+- services/node-refund-api/src/features/refund-webhooks/refundWebhookRoute.ts
+- services/node-refund-api/src/features/refund-preview/refundPreviewRoute.ts
+- services/node-refund-api/src/features/refund-batch/refundBatchRoute.ts
+- services/node-refund-api/src/features/refund-batch/refundBatchClient.ts
+Additional local context files:
+- services/node-refund-api/src/features/refund-webhooks/refundWebhookRoute.ts
+- services/node-refund-api/src/features/refund-preview/refundPreviewRoute.ts
+- services/node-refund-api/src/features/refund-batch/refundBatchRoute.ts
+- services/node-refund-api/src/features/refund-batch/refundBatchClient.ts
+
+Repository context:
+
+Additional local context file contents:
+
+## File: services/node-refund-api/src/features/refund-webhooks/refundWebhookRoute.ts
+
+```text
+﻿export const placeholder = true;
+
+
+```
+
+## File: services/node-refund-api/src/features/refund-preview/refundPreviewRoute.ts
+
+```text
+﻿export const placeholder = true;
+
+
+```
+
+## File: services/node-refund-api/src/features/refund-batch/refundBatchRoute.ts
+
+```text
+﻿export const placeholder = true;
+
+
+```
+
+## File: services/node-refund-api/src/features/refund-batch/refundBatchClient.ts
+
+```text
+﻿export const placeholder = true;
+
+
+```
+
+Return only YAML that follows the skill output contract. `target_area` must equal `services/node-refund-api/src/features/refund-webhooks` exactly.
+
+2026-04-21T14:13:25.705609Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when Client(Reqwest(reqwest::Error { kind: Request, url: "http://localhost:6006/mcp", source: hyper_util::client::legacy::Error(Connect, ConnectError("tcp connect error", 127.0.0.1:6006, Os { code: 10061, kind: ConnectionRefused, message: "由于目标计算机积极拒绝，无法连接。" })) }))
+2026-04-21T14:13:25.711107Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when Client(Reqwest(reqwest::Error { kind: Request, url: "http://localhost:4401/mcp", source: hyper_util::client::legacy::Error(Connect, ConnectError("tcp connect error", 127.0.0.1:4401, Os { code: 10061, kind: ConnectionRefused, message: "由于目标计算机积极拒绝，无法连接。" })) }))
+codex
+按要求我先用该技能的工作流核对目标锚点，并读取仓库里与 `services/node-refund-api/src/features/refund-webhooks` 邻近的结构和基线文档信号，再给出仅限该实现切片的文件边界方案。
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "rg --files 'services/node-refund-api/src/features'" in D:\yongyongmoban
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-Content -Raw 'C:\\Users\\admin\\CodexManager-SharedKey\\codex-home\\skills\\plan-code-file-layout\\SKILL.md'" in D:\yongyongmoban
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "rg -n --hidden --glob '"'!node_modules'"' --glob '"'!dist'"' --glob '"'!build'"' \"refund-webhooks|node-refund-api|migration|architecture|feature-first|layer-first|controllers|services|repositories\" ." in D:\yongyongmoban
+ succeeded in 474ms:
+---
+name: plan-code-file-layout
+description: Plan repository-aligned file boundaries for one concrete implementation slice. Use when the user asks whether a change should stay in one file or be split, how many files to create, what each file should own, or how to organize Python, TypeScript/JavaScript, Vue, or Go code for maintainability and debugging inside that slice. Also use for near-miss requests like component/composable split, endpoint file layout, feature-folder planning, or deciding whether to extract helpers. Do not use for dependency analysis, generic module-context explanation, style-only questions, post-hoc code review, or whole-system architecture redesign.
+---
+
+# Plan Code File Layout
+
+## Overview
+
+Plan file boundaries for one concrete implementation slice.
+Stay aligned with nearby repository conventions, artifact role, and stack-specific constraints instead of applying generic style advice.
+This skill decides file ownership only; it does not explain repository architecture, infer the dependency graph, or act as a default semantic preflight.
+
+## Quick Reference
+
+- If the target area is unclear, stop and ask for the intended directory, module, or feature anchor.
+- If the user is really asking what a module does, which layer it belongs to, or how layers relate, do not stretch this skill into a generic context explainer.
+- Treat `target_area` as an exact anchor string, not a paraphrase; reuse the concrete path or file anchor from the request instead of rewriting it into a sentence.
+- Preserve anchor granularity: if the request anchor is an exact file path, keep that exact file path in `target_area`; if the request anchor is a directory, feature, or module anchor, keep that higher-level anchor instead of shrinking it to one file.
+- If nearby code already shows a stable organization pattern, align with it unless it is clearly causing maintenance or debug pain.
+- If baseline docs explicitly define the target layer, module boundary, or migration direction, follow the baseline docs even when nearby code is off-pattern.
+- If baseline docs conflict with each other, prefer the one that most directly defines the target area's current migration state or rollout rule; treat broader architecture summaries as secondary evidence and lower confidence if ambiguity remains.
+- If target-area baseline docs agree on the current migration phase but differ on file-boundary granularity, prefer the doc that gives the more concrete file-role guidance for that phase.
+- If the repository shape is unclear, read [repo-shape.md](./references/repo-shape.md) and classify it before planning files.
+- If the code role is unclear, choose one artifact path from the `artifact-*` references before reading stack deltas.
+- If the repository is mixed, make the decision around the target area and treat other stacks as surrounding constraints rather than primary drivers.
+- When signals conflict, prefer them in this order: explicit baseline docs for the target area, target file reality, nearby sibling examples, target directory convention, broader repository docs, global architecture docs.
+- Within explicit baseline docs, prefer target-area migration notes over broader architecture summaries when they disagree about the current slice.
+- Within target-area baseline docs for the same phase, prefer concrete seam guidance over abstract location guidance when choosing whether to keep, split, or merge files.
+- Treat file naming as a local clarity choice, not a unique global template; prefer names that express the role clearly inside the target area.
+- Treat nearby examples and comparison files as evidence, not as files to include in the plan unless the user explicitly expands the implementation slice to cover them too.
+- Mention comparison or legacy files only in explanatory fields like `why_not_more` or `risks`; do not return them in `files` unless the user explicitly expands scope to include them.
+
+## Upstream Result Consumption
+
+- This skill can run on its own; upstream skill results are optional evidence when already available, never hard prerequisites.
+- If explicit layer or module-responsibility evidence already exists in local docs or prior task context, consume it first for target-layer assignment, module responsibility, and coding constraints that clarify the current slice.
+- Map explicit layer and responsibility signals into `artifact_type` and `files[].role` before inventing new role labels from scratch.
+- If a valid `current-file-dependency-analysis` result already exists, consume its `hard_facts` and `estimated_impact` to pressure-test the boundary plan.
+- Map dependency facts and impact estimates from `current-file-dependency-analysis` into `strategy`, `risks`, and `confidence`.
+- Treat upstream results as bounded evidence for the current slice; do not widen `target_area`, do not broaden `files`, and do not pull adjacent evidence files into the returned plan just because an upstream result mentioned them.
+- If upstream results are missing, partial, stale, or not worth loading, continue with local reading and mark uncertainty normally instead of blocking on a prerequisite.
+
+## Workflow
+
+1. Anchor the request to one concrete implementation slice: feature, endpoint, component, command, pipeline step, or module.
+2. Prefer consuming any already-available upstream results that clarify the current slice before re-deriving the same context locally; do not require or trigger them as a default pre-step.
+3. Read nearby files and infer repository shape with [repo-shape.md](./references/repo-shape.md).
+4. Read [core-principles.md](./references/core-principles.md) and pick the closest artifact guide.
+5. Read one stack guide that matches the dominant local stack, or treat the area as mixed if multiple stacks materially shape the boundary.
+6. Decide `keep`, `split`, or `merge`.
+7. Produce a file plan using [output-shape.md](./references/output-shape.md).
+8. Explain `why_not_fewer` and `why_not_more`, then list risks or confidence limits.
+
+## Resource Routing
+
+- [core-principles.md](./references/core-principles.md): Read for every task.
+- [repo-shape.md](./references/repo-shape.md): Read before planning files in an unfamiliar repository or directory.
+- [output-shape.md](./references/output-shape.md): Use to format the final decision.
+- [anti-patterns.md](./references/anti-patterns.md): Read when the local codebase already shows fragmentation, giant files, or `shared/utils/common` sprawl.
+- [artifact-ui-component.md](./references/artifact-ui-component.md): Use for UI pages, components, composables, or view-focused work.
+- [artifact-service-endpoint.md](./references/artifact-service-endpoint.md): Use for request/response handlers, services, and persistence edges.
+- [artifact-cli-command.md](./references/artifact-cli-command.md): Use for commands, scripts, and operator tools.
+- [artifact-data-pipeline-step.md](./references/artifact-data-pipeline-step.md): Use for ETL, jobs, stream stages, or batch steps.
+- [artifact-library-module.md](./references/artifact-library-module.md): Use for reusable modules and library-facing code.
+- [stack-python.md](./references/stack-python.md): Read when Python materially shapes module boundaries.
+- [stack-typescript-javascript.md](./references/stack-typescript-javascript.md): Read when TypeScript or JavaScript materially shapes module boundaries.
+- [stack-vue.md](./references/stack-vue.md): Read when Vue single-file components or composables are involved.
+- [stack-go.md](./references/stack-go.md): Read when Go package cohesion or public API shape is involved.
+
+## Critical Rules
+
+- Default to a small number of high-cohesion files rather than the smallest possible files.
+- Keep this skill limited to concrete file-boundary decisions for the target slice; do not turn it into dependency analysis, repository summarization, or generic module-context explanation.
+- Split files only when change reasons, side-effect boundaries, test boundaries, or real reuse needs are materially separate.
+- Keep private helpers, local types, and one-off mappers inline until they clearly interfere with reading or gain a second real consumer.
+- Avoid thin pass-through wrappers whose only job is forwarding calls or re-exporting local logic.
+- Keep a common bug or common change readable through roughly one to three files, not a long ping-pong chain.
+- Let repository reality win over generic advice only when baseline docs do not explicitly define a different target state.
+- If one baseline doc states the long-term target and another gives temporary rollout guidance for the same slice, follow the temporary rollout guidance for the current plan and note the long-term target in `risks`.
+- If multiple target-area docs all describe the current phase, follow the one that most concretely assigns file roles, framework glue, or seam ownership for the slice under discussion.
+- Hold the core boundary decision stable even when role labels, confidence wording, or local file names could reasonably vary.
+- Keep `target_area` exact; do not add explanatory prefixes, suffixes, or migration notes to the anchor field.
+- Do not widen an exact file-path anchor into its parent directory, and do not collapse a directory or feature anchor down to one file unless the request itself anchors on that file.
+- Use upstream results to clarify semantic role and impact, not to rewrite the request anchor or enlarge the implementation slice.
+- Keep the recommendation scoped to the concrete target slice; do not widen the `files` list to sibling helpers, comparison examples, or the whole directory just because those files were shown as context.
+- Never include comparison files, support docs, or nearby evidence files in `files` unless the user explicitly expands the implementation scope to include them.
+- If baseline docs and local code conflict, plan toward the documented target state and treat the local layout as legacy evidence to migrate away from.
+
+## Validation
+
+- Confirm the plan is anchored to one target area rather than drifting into repository redesign.
+- Confirm the plan stays a file-boundary decision and does not drift into dependency mapping or semantic layer explanation.
+- Confirm `target_area` is copied from the concrete request anchor rather than rewritten into a prose label.
+- Confirm exact file-path anchors stay exact file-path anchors, and directory or feature anchors stay directory or feature anchors.
+- Confirm the `files` list covers only the target implementation slice and not nearby comparison files.
+- Confirm any upstream results were consumed as optional evidence and did not widen `target_area` or `files`.
+- Confirm each proposed file has a distinct role and is not a naming-only split.
+- Confirm the plan respects nearby directory conventions, package layout, and import style.
+- Confirm explicit baseline docs are honored when they conflict with the local slice layout.
+- Confirm conflicting baseline docs are resolved in favor of the one that most directly names the current target slice or migration phase.
+- Confirm same-phase target-area docs with different boundary granularity are resolved in favor of the more concrete seam guidance.
+- Confirm the plan explains why the boundary is not smaller and not larger.
+- Confirm mixed repositories are treated locally rather than forcing one global stack model onto everything.
+
+## Pre-Return Check
+
+- Recheck that `target_area` exactly matches the request anchor.
+- Recheck that anchor granularity stayed intact: file-path anchors remain file-path anchors, and directory or feature anchors were not narrowed.
+- Recheck that every entry in `files` is a production file for the target slice itself.
+- Recheck that no comparison file, support doc, or sibling example leaked into `files`.
+- Recheck that any upstream-result consumption only informed role, impact, or confidence and did not expand the plan scope.
+- Recheck whether conflicting signals, partial visibility, or anchor recovery uncertainty should lower `confidence`.
+
+## Output Contract
+
+Done means:
+
+- The final answer uses the structure in [output-shape.md](./references/output-shape.md).
+- The answer returns `keep`, `split`, or `merge`.
+- The answer lists the recommended files and each file's responsibility.
+- The answer includes the core decision fields `strategy`, `target_area`, `files`, `why_not_fewer`, and `why_not_more`.
+- The answer includes the explanatory fields `repo_shape`, `artifact_type`, `stack`, and `confidence`, and it uses `keep_inline`, `avoid`, and `risks` when those lists have content.
+- `keep_inline`, `avoid`, and `risks` may be omitted when they would otherwise be empty; when present, keep their existing meanings and list shape.
+- `target_area` stays equal to the concrete path or file anchor from the request.
+- `target_area` also preserves the request's anchor granularity instead of widening a file anchor or narrowing a directory anchor.
+- `files` excludes comparison files, support docs, and repository context files that were shown only as evidence.
+- The answer is narrow enough that an implementation workflow can consume it directly.
+
+## Failure Handling
+
+- If the target area is missing, stop and recover the directory, file, or feature anchor.
+- Recover missing anchors in this order: explicit path in the request, explicit current file, uniquely named file or directory from the request, one unambiguous nearby candidate from local context. If more than one candidate remains, stop and ask for the anchor.
+- If upstream results disagree with the explicit request anchor, keep the explicit request anchor and treat the upstream mismatch as a confidence-lowering signal rather than a reason to rewrite `target_area`.
+- If nearby code conflicts with explicit baseline docs, follow the baseline docs and call out relocation or migration cost in `risks`.
+- If baseline docs conflict with each other, follow the one that most directly names the target slice's current migration phase, mention the competing long-term target in `risks`, and lower confidence if the cutover state is still uncertain.
+- If baseline docs agree on the current phase but disagree on boundary granularity, follow the more concrete seam rule and mention the broader or looser alternative in `risks` when it materially changes the plan.
+- If nearby code gives conflicting local signals without an explicit baseline-doc override, follow the strongest signal according to the precedence above and lower confidence.
+- If the task is really asking for dependency facts, hand off to `current-file-dependency-analysis` instead of stretching this skill.
+- If the task is really asking for layer ownership, module responsibility, or semantic routing, stop and treat that as a local reasoning question instead of stretching this skill.
+- If the task expands into repository-wide restructuring or architecture redesign, hand off to a broader workflow instead of stretching this skill.
+- If the stack is unknown, return a repository-aligned generic plan and explicitly mark the stack uncertainty.
+
+Cannot set property. Property setting is supported only on core types in this language mode.
+At line:1 char:1
++ [Console]::OutputEncoding=[System.Text.Encoding]::UTF8;
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : PropertySetterNotSupportedInConstrainedLanguage
+ 
+
+ succeeded in 479ms:
+services/node-refund-api/src/features\refund-webhooks\refundWebhookRoute.ts
+services/node-refund-api/src/features\refund-preview\refundPreviewRoute.ts
+services/node-refund-api/src/features\refund-batch\refundBatchRoute.ts
+services/node-refund-api/src/features\refund-batch\refundBatchClient.ts
+services/node-refund-api/src/features\refund-audit\refundAuditRoute.ts
+services/node-refund-api/src/features\refund-audit\refundAuditService.ts
+Cannot set property. Property setting is supported only on core types in this language mode.
+At line:1 char:1
++ [Console]::OutputEncoding=[System.Text.Encoding]::UTF8;
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : PropertySetterNotSupportedInConstrainedLanguage
+ 
+
+2026-04-21T14:13:45.072607Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+Cannot set property. Property setting is supported only on core types in this language mode.
+At line:1 char:1
++ [Console]::OutputEncoding=[System.Text.Encoding]::UTF8;
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : PropertySetterNotSupportedInConstrainedLanguage
+ 
+
+ exited 1 in 388ms:
+Cannot set property. Property setting is supported only on core types in this language mode.
+At line:1 char:1
++ [Console]::OutputEncoding=[System.Text.Encoding]::UTF8;
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : PropertySetterNotSupportedInConstrainedLanguage
+ 
+
+codex
+我已经确认锚点保持为目录级别，不会缩成单文件。下一步补足本地证据：看 `node-refund-api` 附近是否已有稳定的按功能拆分模式，以及仓库里是否有覆盖该区域的基线文档。
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-ChildItem -Recurse 'services/node-refund-api/src/features' | Select-Object FullName" in D:\yongyongmoban
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-Content -Raw 'services/node-refund-api/src/features/refund-audit/refundAuditRoute.ts'" in D:\yongyongmoban
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-Content -Raw 'services/node-refund-api/src/features/refund-audit/refundAuditService.ts'" in D:\yongyongmoban
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command 'Get-ChildItem -Recurse -File | Where-Object { $_.Name -match '"'README|ARCHITECTURE|ADR|docs|migration' -or "'$_.FullName -match '"'node-refund-api' } | Select-Object FullName" in D:\yongyongmoban
+2026-04-21T14:13:54.741253Z ERROR codex_core::tools::router: error=`"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command 'Get-ChildItem -Recurse -File | Where-Object { $_.Name -match '"'README|ARCHITECTURE|ADR|docs|migration' -or "'$_.FullName -match '"'node-refund-api' } | Select-Object FullName"` rejected: blocked by policy
+ declined in 0ms:
+`"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command 'Get-ChildItem -Recurse -File | Where-Object { $_.Name -match '"'README|ARCHITECTURE|ADR|docs|migration' -or "'$_.FullName -match '"'node-refund-api' } | Select-Object FullName"` rejected: blocked by policy
+ succeeded in 488ms:
+
+FullName                                                                                    
+--------                                                                                    
+D:\yongyongmoban\services\node-refund-api\src\features\refund-audit                         
+D:\yongyongmoban\services\node-refund-api\src\features\refund-batch                         
+D:\yongyongmoban\services\node-refund-api\src\features\refund-preview                       
+D:\yongyongmoban\services\node-refund-api\src\features\refund-webhooks                      
+D:\yongyongmoban\services\node-refund-api\src\features\refund-audit\refundAuditRoute.ts     
+D:\yongyongmoban\services\node-refund-api\src\features\refund-audit\refundAuditService.ts   
+D:\yongyongmoban\services\node-refund-api\src\features\refund-batch\refundBatchClient.ts    
+D:\yongyongmoban\services\node-refund-api\src\features\refund-batch\refundBatchRoute.ts     
+D:\yongyongmoban\services\node-refund-api\src\features\refund-preview\refundPreviewRoute.ts 
+D:\yongyongmoban\services\node-refund-api\src\features\refund-webhooks\refundWebhookRoute.ts
+
+
+Cannot set property. Property setting is supported only on core types in this language mode.
+At line:1 char:1
++ [Console]::OutputEncoding=[System.Text.Encoding]::UTF8;
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : PropertySetterNotSupportedInConstrainedLanguage
+ 
+
+ succeeded in 417ms:
+export const placeholder = true;
+
+
+Cannot set property. Property setting is supported only on core types in this language mode.
+At line:1 char:1
++ [Console]::OutputEncoding=[System.Text.Encoding]::UTF8;
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : PropertySetterNotSupportedInConstrainedLanguage
+ 
+
+ succeeded in 425ms:
+export const placeholder = true;
+
+
+Cannot set property. Property setting is supported only on core types in this language mode.
+At line:1 char:1
++ [Console]::OutputEncoding=[System.Text.Encoding]::UTF8;
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : PropertySetterNotSupportedInConstrainedLanguage
+ 
+
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-ChildItem 'services/node-refund-api/src'" in D:\yongyongmoban
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "rg --files -g 'README*' -g 'ARCHITECTURE*' -g 'ADR*' -g '*.md' 'services/node-refund-api'" in D:\yongyongmoban
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command 'rg -n "refund-webhooks|node-refund-api|refundWebhook|webhook|migration|layer|feature" services/node-refund-api' in D:\yongyongmoban
+2026-04-21T14:14:03.694075Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+Cannot set property. Property setting is supported only on core types in this language mode.
+At line:1 char:1
++ [Console]::OutputEncoding=[System.Text.Encoding]::UTF8;
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : PropertySetterNotSupportedInConstrainedLanguage
+ 
+
+ exited 1 in 392ms:
+Cannot set property. Property setting is supported only on core types in this language mode.
+At line:1 char:1
++ [Console]::OutputEncoding=[System.Text.Encoding]::UTF8;
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : PropertySetterNotSupportedInConstrainedLanguage
+ 
+
+2026-04-21T14:14:03.702568Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+Cannot set property. Property setting is supported only on core types in this language mode.
+At line:1 char:1
++ [Console]::OutputEncoding=[System.Text.Encoding]::UTF8;
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : PropertySetterNotSupportedInConstrainedLanguage
+ 
+
+ exited 1 in 427ms:
+Cannot set property. Property setting is supported only on core types in this language mode.
+At line:1 char:1
++ [Console]::OutputEncoding=[System.Text.Encoding]::UTF8;
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : PropertySetterNotSupportedInConstrainedLanguage
+ 
+
+ succeeded in 435ms:
+
+
+    目录: D:\yongyongmoban\services\node-refund-api\src
+
+
+Mode                 LastWriteTime         Length Name                                                                 
+----                 -------------         ------ ----                                                                 
+d-----         2026/4/21      7:01                features                                                             
+
+
+Cannot set property. Property setting is supported only on core types in this language mode.
+At line:1 char:1
++ [Console]::OutputEncoding=[System.Text.Encoding]::UTF8;
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : PropertySetterNotSupportedInConstrainedLanguage
+ 
+
+2026-04-21T14:14:12.001207Z  WARN codex_core::plugins::startup_sync: git sync failed for curated plugin sync; falling back to GitHub HTTP error=git ls-remote curated plugins repo timed out after 30s: error: RPC failed; curl 28 Recv failure: Connection was reset
+fatal: expected flush after ref listing git_binary="git"
+codex
+现有实现文件几乎都是占位，局部代码信号很弱，所以这次判断主要依赖目标目录的现有布局和同层特征目录的命名模式，而不是函数细节。再补一轮目录与文档存在性检查后我就收敛到 `keep` / `split` / `merge`。
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-ChildItem -Recurse -File 'services/node-refund-api' -Filter *.md | Select-Object FullName" in D:\yongyongmoban
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-ChildItem 'services/node-refund-api/src/features/refund-webhooks'" in D:\yongyongmoban
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-ChildItem 'services/node-refund-api/src/features/refund-preview'" in D:\yongyongmoban
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-ChildItem 'services/node-refund-api/src/features/refund-batch'" in D:\yongyongmoban
+2026-04-21T14:14:13.139057Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: prompt must be at most 128 characters path=\\?\C:\Users\admin\CodexManager-SharedKey\codex-home\.tmp\plugins\plugins\build-ios-apps\.codex-plugin\plugin.json
+2026-04-21T14:14:13.141661Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=\\?\C:\Users\admin\CodexManager-SharedKey\codex-home\.tmp\plugins\plugins\plugin-eval\.codex-plugin\plugin.json
+ succeeded in 487ms:
+
+
+    目录: D:\yongyongmoban\services\node-refund-api\src\features\refund-preview
+
+
+Mode                 LastWriteTime         Length Name                                                                 
+----                 -------------         ------ ----                                                                 
+-a----         2026/4/21      7:01             38 refundPreviewRoute.ts                                                
+
+
+Cannot set property. Property setting is supported only on core types in this language mode.
+At line:1 char:1
++ [Console]::OutputEncoding=[System.Text.Encoding]::UTF8;
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : PropertySetterNotSupportedInConstrainedLanguage
+ 
+
+ succeeded in 494ms:
+
+
+    目录: D:\yongyongmoban\services\node-refund-api\src\features\refund-webhooks
+
+
+Mode                 LastWriteTime         Length Name                                                                 
+----                 -------------         ------ ----                                                                 
+-a----         2026/4/21      7:01             38 refundWebhookRoute.ts                                                
+
+
+Cannot set property. Property setting is supported only on core types in this language mode.
+At line:1 char:1
++ [Console]::OutputEncoding=[System.Text.Encoding]::UTF8;
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : PropertySetterNotSupportedInConstrainedLanguage
+ 
+
+ succeeded in 494ms:
+
+
+    目录: D:\yongyongmoban\services\node-refund-api\src\features\refund-batch
+
+
+Mode                 LastWriteTime         Length Name                                                                 
+----                 -------------         ------ ----                                                                 
+-a----         2026/4/21      7:01             38 refundBatchClient.ts                                                 
+-a----         2026/4/21      7:01             38 refundBatchRoute.ts                                                  
+
+
+Cannot set property. Property setting is supported only on core types in this language mode.
+At line:1 char:1
++ [Console]::OutputEncoding=[System.Text.Encoding]::UTF8;
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : PropertySetterNotSupportedInConstrainedLanguage
+ 
+
+ succeeded in 498ms:
+Cannot set property. Property setting is supported only on core types in this language mode.
+At line:1 char:1
++ [Console]::OutputEncoding=[System.Text.Encoding]::UTF8;
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : PropertySetterNotSupportedInConstrainedLanguage
+ 
+
+2026-04-21T14:14:19.983831Z ERROR codex_core::tools::router: error=`"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-ChildItem -Recurse -File -Filter *.md | Select-String -Pattern 'node-refund-api|refund-webhooks|refund webhook|webhook' | Select-Object Path, LineNumber, Line"` rejected: blocked by policy
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-ChildItem -Recurse -File -Filter *.md | Select-String -Pattern 'node-refund-api|refund-webhooks|refund webhook|webhook' | Select-Object Path, LineNumber, Line" in D:\yongyongmoban
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-ChildItem 'services'" in D:\yongyongmoban
+ declined in 0ms:
+`"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-ChildItem -Recurse -File -Filter *.md | Select-String -Pattern 'node-refund-api|refund-webhooks|refund webhook|webhook' | Select-Object Path, LineNumber, Line"` rejected: blocked by policy
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-ChildItem 'services/node-refund-api'" in D:\yongyongmoban
+ succeeded in 333ms:
+
+
+    目录: D:\yongyongmoban\services
+
+
+Mode                 LastWriteTime         Length Name                                                                 
+----                 -------------         ------ ----                                                                 
+d-----         2026/4/21      7:01                etl-pipeline                                                         
+d-----         2026/4/21      7:01                node-refund-api                                                      
+d-----         2026/4/21      7:01                python-order-api                                                     
+d-----         2026/4/21      7:01                python-refund-jobs                                                   
+
+
+Cannot set property. Property setting is supported only on core types in this language mode.
+At line:1 char:1
++ [Console]::OutputEncoding=[System.Text.Encoding]::UTF8;
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : PropertySetterNotSupportedInConstrainedLanguage
+ 
+
+ succeeded in 386ms:
+
+
+    目录: D:\yongyongmoban\services\node-refund-api
+
+
+Mode                 LastWriteTime         Length Name                                                                 
+----                 -------------         ------ ----                                                                 
+d-----         2026/4/21      7:01                src                                                                  
+
+
+Cannot set property. Property setting is supported only on core types in this language mode.
+At line:1 char:1
++ [Console]::OutputEncoding=[System.Text.Encoding]::UTF8;
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : PropertySetterNotSupportedInConstrainedLanguage
+ 
+
+codex
+decision:
+  strategy: split
+  target_area: services/node-refund-api/src/features/refund-webhooks
+  repo_shape: feature-first
+  artifact_type: service-endpoint
+  stack: typescript-javascript
+  files:
+    - path: services/node-refund-api/src/features/refund-webhooks/refundWebhookRoute.ts
+      role: "路由入口"
+      responsibility: "处理 webhook 框架接入、读取原始请求与头信息、按顺序编排签名校验、合作方查询与事件落库，并返回最终响应。"
+      reason: "入口文件应保留可读的主流程，但不再承载具体安全校验或外部 IO 细节。"
+    - path: services/node-refund-api/src/features/refund-webhooks/refundWebhookSignatureVerifier.ts
+      role: "签名校验"
+      responsibility: "封装 webhook 签名规则、原始载荷参与的校验过程，以及校验失败时暴露给路由的明确结果。"
+      reason: "签名验证是独立的安全与测试边界，留在路由内会把框架胶水和安全规则混在一起。"
+    - path: services/node-refund-api/src/features/refund-webhooks/refundWebhookPartnerClient.ts
+      role: "合作方客户端"
+      responsibility: "负责按 webhook 标识查询合作方配置、密钥或映射信息，并隔离远程调用或数据读取细节。"
+      reason: "合作方查询属于独立外部 IO 失败面，和路由编排、事件持久化分开后更容易调试与替换。"
+    - path: services/node-refund-api/src/features/refund-webhooks/refundWebhookEventRepository.ts
+      role: "事件持久化"
+      responsibility: "负责 webhook 事件的幂等写入、状态记录与持久化模型映射。"
+      reason: "事件落库是单独的持久化边界，拆出后可以独立测试重复事件、写入失败和审计记录。"
+  keep_inline:
+    - "路由专用的响应映射与少量参数解包逻辑留在 refundWebhookRoute.ts 内，不单独抽文件。"
+    - "仅供持久化使用的事件到记录映射和本地类型留在 refundWebhookEventRepository.ts 内，暂不拆 contract 文件。"
+  avoid:
+    - "不要新增 refundWebhookService.ts 这类只转发参数的薄服务层。"
+    - "不要为单个特性目录增加 index.ts barrel 或 shared/common 工具文件。"
+    - "不要把兼容性桥接、过渡 shim 或 rollout 专用路径放进该目录的正式 files 计划。"
+  why_not_fewer: "将签名校验、合作方查询和事件落库继续塞回 refundWebhookRoute.ts，会把框架入口、安全校验、外部读取和持久化四类变更原因混在一起，削弱测试与故障定位边界。"
+  why_not_more: "再继续拆成额外的 orchestration/service、schema、mapper 或 barrel 文件，大多只会增加跳转层级；按当前局部约定，保留一个可读路由加三个真实边界文件已经足够。"
+  risks:
+    - "当前可见实现文件都是占位内容，本地证据主要来自目录命名而不是实际逻辑，命名细节后续可能需要按真实依赖微调。"
+    - "如果仓库中另有未展示的基线文档明确规定持久化文件应使用不同后缀或共享适配器目录，应保留这次 split 的边界判断，但按文档调整文件名与落点。"
+    - "如果合作方查询最终只是一次极轻量的本地查表而非独立 IO，refundWebhookPartnerClient.ts 可能可以回收到路由；当前建议仍按请求描述中的 partner lookups 作为独立失败面处理。"
+  confidence: medium
+tokens used
+60,095
+

@@ -1,0 +1,15 @@
+id: "sample-output-example"
+user_request: |
+  输出一个最小规则工作簿方案，至少包含工作表、导入目标和已发布规则包映射。
+notes: "这是最小输出骨架示例，用于校准必须存在的核心字段。"
+sample_output:
+  rule_asset_plan:
+    workbook_tabs:
+      - "01_目标画像规则表"
+      - "02_问题策略表"
+      - "03_派生事实规则表"
+    draft_import_targets:
+      - "python_tools/policy_importer"
+    published_pack_targets:
+      - "internal/rules/compiler"
+      - "compiled rule package"

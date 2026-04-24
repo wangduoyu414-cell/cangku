@@ -1,0 +1,17 @@
+decision:
+  strategy: keep | split | merge
+  target_area: ""
+  repo_shape: feature-first | layer-first | package-first | mixed
+  artifact_type: ui-component | service-endpoint | cli-command | data-pipeline-step | library-module
+  stack: python | typescript-javascript | vue | go | mixed | unknown
+  files:
+    - path: ""
+      role: ""
+      responsibility: ""
+      reason: ""
+  keep_inline: []
+  avoid: []
+  why_not_fewer: ""
+  why_not_more: ""
+  risks: []
+  confidence: high | medium | low

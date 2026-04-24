@@ -1,0 +1,14 @@
+cases:
+  - id: upgraded-model-removes-scaffolding
+    prompt: "新模型已能稳定处理长上下文与格式遵守，检查是否删除了旧版冗余分步提示。"
+    assertions:
+      - "保留 stable core（稳定内核）。"
+      - "删减 model-sensitive layer（模型敏感层） 中的冗余内容。"
+      - "保留 validation loop（验证闭环）。"
+
+  - id: upgraded-model-no-regression
+    prompt: "在升模后比较旧版与瘦身版 skill 的质量和成本。"
+    assertions:
+      - "不得降低关键质量指标。"
+      - "若成本未下降，必须解释原因。"
+      - "必须记录新的误用模式。"

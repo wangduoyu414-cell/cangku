@@ -1,0 +1,2980 @@
+{
+  "repo_root": "D:/yongyongmoban",
+  "cases": [
+    {
+      "id": "python_endpoint",
+      "prompt": "Should this new Python endpoint stay in one module or split into handler and client files? Anchor the decision in services/python-order-api/features/refunds and compare it with the nearby shipments feature.",
+      "target_area": "services/python-order-api/features/refunds",
+      "source_paths": [
+        "services/python-order-api/features/refunds/quote_endpoint.py",
+        "services/python-order-api/features/shipments/tracking_handler.py",
+        "services/python-order-api/features/shipments/tracking_gateway.py"
+      ],
+      "expected": {
+        "strategy": "split",
+        "repo_shape": "feature-first",
+        "artifact_type": "service-endpoint",
+        "stack": "python",
+        "files": [
+          "services/python-order-api/features/refunds/quote_handler.py",
+          "services/python-order-api/features/refunds/pricing_gateway.py"
+        ],
+        "keep_inline": [
+          "Request and response dataclasses",
+          "input validation"
+        ],
+        "avoid": [
+          "schemas.py",
+          "service.py",
+          "utils.py"
+        ],
+        "confidence": "high"
+      },
+      "semantic": {
+        "allowed_repo_shape": ["feature-first"],
+        "allowed_artifact_type": ["service-endpoint"],
+        "allowed_confidence": ["high", "medium"],
+        "required_file_groups": [
+          ["services/python-order-api/features/refunds/quote_handler.py", "services/python-order-api/features/refunds/quote_endpoint.py"],
+          ["services/python-order-api/features/refunds/pricing_gateway.py", "services/python-order-api/features/refunds/pricing_client.py", "services/python-order-api/features/refunds/refund_pricing_gateway.py"]
+        ],
+        "max_files": 3,
+        "required_term_groups": [
+          ["dataclass", "request", "response"],
+          ["validation"],
+          ["pricing", "carrier", "remote", "gateway"],
+          ["service", "utils", "ceremony"]
+        ]
+      }
+    },
+    {
+      "id": "ts_ui_feature",
+      "prompt": "Help me decide the file layout for a new TypeScript UI feature in this repo. Target packages/web-dashboard/src/features/subscription-optimizer before implementation starts.",
+      "target_area": "packages/web-dashboard/src/features/subscription-optimizer",
+      "source_paths": [
+        "packages/web-dashboard/src/features/subscription-optimizer/SubscriptionOptimizerPanel.tsx",
+        "packages/web-dashboard/src/features/invoice-alerts/InvoiceAlertsPanel.tsx",
+        "packages/web-dashboard/src/features/invoice-alerts/invoiceAlertsApi.ts"
+      ],
+      "expected": {
+        "strategy": "split",
+        "repo_shape": "feature-first",
+        "artifact_type": "ui-component",
+        "stack": "typescript-javascript",
+        "files": [
+          "packages/web-dashboard/src/features/subscription-optimizer/SubscriptionOptimizerPanel.tsx",
+          "packages/web-dashboard/src/features/subscription-optimizer/subscriptionOptimizerApi.ts"
+        ],
+        "keep_inline": [
+          "OptimizerRule type",
+          "threshold validator"
+        ],
+        "avoid": [
+          "types.ts",
+          "validators.ts",
+          "useSubscriptionOptimizer.ts"
+        ],
+        "confidence": "high"
+      },
+      "semantic": {
+        "allowed_repo_shape": ["feature-first"],
+        "allowed_artifact_type": ["ui-component"],
+        "allowed_confidence": ["high", "medium"],
+        "required_file_groups": [
+          ["packages/web-dashboard/src/features/subscription-optimizer/SubscriptionOptimizerPanel.tsx"],
+          ["packages/web-dashboard/src/features/subscription-optimizer/subscriptionOptimizerApi.ts", "packages/web-dashboard/src/features/subscription-optimizer/subscriptionOptimizerService.ts", "packages/web-dashboard/src/features/subscription-optimizer/subscriptionOptimizerClient.ts"]
+        ],
+        "max_files": 3,
+        "required_term_groups": [
+          ["optimizer", "panel"],
+          ["api", "service", "adapter"],
+          ["type", "validator", "inline"],
+          ["hook", "types", "validators", "ceremony", "pass-through"]
+        ]
+      }
+    },
+    {
+      "id": "vue_page",
+      "prompt": "Plan how many files to create for this Vue feature before we start coding. Anchor the decision on packages/admin-portal/src/pages/audit/AuditReplayPage.vue.",
+      "target_area": "packages/admin-portal/src/pages/audit",
+      "source_paths": [
+        "packages/admin-portal/src/pages/audit/AuditReplayPage.vue",
+        "packages/admin-portal/src/components/audit/ReplayResultCard.vue",
+        "packages/admin-portal/src/services/auditApi.ts",
+        "packages/admin-portal/src/composables/useToast.ts"
+      ],
+      "expected": {
+        "strategy": "keep",
+        "repo_shape": "mixed",
+        "artifact_type": "ui-component",
+        "stack": "vue",
+        "files": [
+          "packages/admin-portal/src/pages/audit/AuditReplayPage.vue"
+        ],
+        "keep_inline": [
+          "form state",
+          "loading and error handling"
+        ],
+        "avoid": [
+          "useAuditReplay.ts",
+          "AuditReplayForm.vue",
+          "auditReplay.types.ts"
+        ],
+        "confidence": "high"
+      },
+      "semantic": {
+        "allowed_repo_shape": ["mixed", "layer-first"],
+        "allowed_artifact_type": ["ui-component"],
+        "allowed_confidence": ["high", "medium"],
+        "required_file_groups": [
+          ["packages/admin-portal/src/pages/audit/AuditReplayPage.vue"]
+        ],
+        "max_files": 1,
+        "required_term_groups": [
+          ["form"],
+          ["loading", "error"],
+          ["single file", "page", "sfc"],
+          ["composable", "types", "ceremony"]
+        ]
+      }
+    },
+    {
+      "id": "go_package",
+      "prompt": "Should I extract helpers from this Go package or keep the change in one file? Target packages/go/amountcodec.",
+      "target_area": "packages/go/amountcodec",
+      "source_paths": [
+        "packages/go/amountcodec/format.go",
+        "packages/go/amountcodec/format_test.go",
+        "packages/go/taxcalc/calc.go"
+      ],
+      "expected": {
+        "strategy": "keep",
+        "repo_shape": "package-first",
+        "artifact_type": "library-module",
+        "stack": "go",
+        "files": [
+          "packages/go/amountcodec/format.go"
+        ],
+        "keep_inline": [
+          "trimZeros helper",
+          "small parse and format helpers"
+        ],
+        "avoid": [
+          "helpers.go",
+          "types.go",
+          "codec_interface.go"
+        ],
+        "confidence": "high"
+      },
+      "semantic": {
+        "allowed_repo_shape": ["package-first"],
+        "allowed_artifact_type": ["library-module"],
+        "allowed_confidence": ["high", "medium"],
+        "required_file_groups": [
+          ["packages/go/amountcodec/format.go"]
+        ],
+        "max_files": 1,
+        "required_term_groups": [
+          ["trimzeros", "helper"],
+          ["parse", "format"],
+          ["package", "cohesion"],
+          ["helpers", "types", "interface"]
+        ]
+      }
+    },
+    {
+      "id": "cli_command",
+      "prompt": "Design the file boundaries for this CLI command so it stays easy to debug. Target scripts/ops/sync_partner_catalog.py.",
+      "target_area": "scripts/ops",
+      "source_paths": [
+        "scripts/ops/sync_partner_catalog.py",
+        "scripts/ops/rebuild_search_index.py",
+        "configs/base/partner-sync.yml",
+        "data/sample/partner_catalog.csv"
+      ],
+      "expected": {
+        "strategy": "split",
+        "repo_shape": "mixed",
+        "artifact_type": "cli-command",
+        "stack": "python",
+        "files": [
+          "scripts/ops/sync_partner_catalog.py",
+          "scripts/ops/partner_catalog_client.py"
+        ],
+        "keep_inline": [
+          "argparse options",
+          "row normalization",
+          "report summary formatting"
+        ],
+        "avoid": [
+          "utils.py",
+          "models.py",
+          "command_base.py"
+        ],
+        "confidence": "high"
+      },
+      "semantic": {
+        "allowed_repo_shape": ["mixed"],
+        "allowed_artifact_type": ["cli-command"],
+        "allowed_confidence": ["high", "medium"],
+        "required_file_groups": [
+          ["scripts/ops/sync_partner_catalog.py"],
+          ["scripts/ops/partner_catalog_client.py", "scripts/ops/sync_partner_catalog_client.py", "scripts/ops/partnerCatalogClient.py"]
+        ],
+        "max_files": 3,
+        "required_term_groups": [
+          ["argparse", "argument"],
+          ["row", "normalize", "csv"],
+          ["report"],
+          ["client", "partner"],
+          ["command_base", "utils", "ceremony"]
+        ]
+      }
+    },
+    {
+      "id": "data_pipeline",
+      "prompt": "Before implementation, tell me what files this data pipeline step should have. Anchor the decision on services/etl-pipeline/src/jobs/publishCustomerHealth.ts.",
+      "target_area": "services/etl-pipeline/src",
+      "source_paths": [
+        "services/etl-pipeline/src/jobs/publishCustomerHealth.ts",
+        "services/etl-pipeline/src/jobs/publishInvoiceAging.ts",
+        "services/etl-pipeline/src/transforms/buildInvoiceAgingSnapshot.ts",
+        "services/etl-pipeline/src/sinks/writeInvoiceAgingSnapshot.ts"
+      ],
+      "expected": {
+        "strategy": "split",
+        "repo_shape": "layer-first",
+        "artifact_type": "data-pipeline-step",
+        "stack": "typescript-javascript",
+        "files": [
+          "services/etl-pipeline/src/jobs/publishCustomerHealth.ts",
+          "services/etl-pipeline/src/transforms/buildCustomerHealthSnapshot.ts",
+          "services/etl-pipeline/src/sinks/writeCustomerHealthSnapshot.ts"
+        ],
+        "keep_inline": [
+          "small score clamp helper",
+          "job-local config types"
+        ],
+        "avoid": [
+          "helpers.ts",
+          "formatters.ts",
+          "index.ts"
+        ],
+        "confidence": "high"
+      },
+      "semantic": {
+        "allowed_repo_shape": ["layer-first"],
+        "allowed_artifact_type": ["data-pipeline-step"],
+        "allowed_confidence": ["high", "medium"],
+        "required_file_groups": [
+          ["services/etl-pipeline/src/jobs/publishCustomerHealth.ts"],
+          ["services/etl-pipeline/src/transforms/buildCustomerHealthSnapshot.ts", "services/etl-pipeline/src/transforms/buildCustomerHealth.ts"],
+          ["services/etl-pipeline/src/sinks/writeCustomerHealthSnapshot.ts", "services/etl-pipeline/src/sinks/writeCustomerHealth.ts"]
+        ],
+        "max_files": 4,
+        "required_term_groups": [
+          ["job"],
+          ["transform", "snapshot"],
+          ["sink", "write"],
+          ["score", "config"],
+          ["helpers", "index", "ceremony"]
+        ]
+      }
+    },
+    {
+      "id": "merge_ui_feature",
+      "prompt": "Decide whether this refactor should merge two files or keep them separate. Target packages/web-dashboard/src/features/invoice-alerts, where a tiny component currently jumps to a tiny API helper.",
+      "target_area": "packages/web-dashboard/src/features/invoice-alerts",
+      "source_paths": [
+        "packages/web-dashboard/src/features/invoice-alerts/InvoiceAlertsPanel.tsx",
+        "packages/web-dashboard/src/features/invoice-alerts/invoiceAlertsApi.ts",
+        "packages/web-dashboard/src/features/invoice-alerts/index.ts"
+      ],
+      "expected": {
+        "strategy": "merge",
+        "repo_shape": "feature-first",
+        "artifact_type": "ui-component",
+        "stack": "typescript-javascript",
+        "files": [
+          "packages/web-dashboard/src/features/invoice-alerts/InvoiceAlertsPanel.tsx"
+        ],
+        "keep_inline": [
+          "tiny fetch helper",
+          "alert list mapping"
+        ],
+        "avoid": [
+          "invoiceAlertsApi.ts",
+          "index.ts",
+          "types.ts"
+        ],
+        "confidence": "high",
+        "must_contain": [
+          "pass-through",
+          "same panel",
+          "ceremony"
+        ]
+      },
+      "semantic": {
+        "allowed_repo_shape": [
+          "feature-first"
+        ],
+        "allowed_artifact_type": [
+          "ui-component"
+        ],
+        "allowed_confidence": [
+          "high",
+          "medium"
+        ],
+        "required_file_groups": [
+          [
+            "packages/web-dashboard/src/features/invoice-alerts/InvoiceAlertsPanel.tsx"
+          ]
+        ],
+        "max_files": 1,
+        "required_term_groups": [
+          [
+            "panel",
+            "component"
+          ],
+          [
+            "same panel",
+            "single panel"
+          ],
+          [
+            "pass-through",
+            "tiny api helper",
+            "same feature"
+          ],
+          [
+            "ceremony",
+            "indirection"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "legacy_conflict",
+      "prompt": "Help me decide the file layout for this Python refund sync slice in src/app/services/legacy_refunds. The repository docs describe Clean Architecture layers, so prefer the documented layer model over the local services folder under src/app and call out migration cost where needed.",
+      "target_area": "src/app/services/legacy_refunds",
+      "source_paths": [
+        "src/app/services/legacy_refunds/refund_sync.py",
+        "src/app/application/refunds/sync_refunds_use_case.py",
+        "src/app/infrastructure/external/refunds/legacy_refund_client.py",
+        "src/app/infrastructure/persistence/refunds/refund_sql_repository.py"
+      ],
+      "expected": {
+        "strategy": "split",
+        "repo_shape": "layer-first",
+        "artifact_type": "data-pipeline-step",
+        "stack": "python",
+        "files": [
+          "src/app/application/refunds/sync_refunds_use_case.py",
+          "src/app/infrastructure/external/refunds/legacy_refund_client.py",
+          "src/app/infrastructure/persistence/refunds/refund_sql_repository.py"
+        ],
+        "keep_inline": [
+          "RefundRecord dataclass",
+          "batch-size validation"
+        ],
+        "avoid": [
+          "src/app/services/legacy_refunds",
+          "utils.py",
+          "interfaces.py"
+        ],
+        "confidence": "medium",
+        "must_contain": [
+          "baseline docs take precedence",
+          "documented layer",
+          "relocation"
+        ]
+      },
+      "semantic": {
+        "allowed_repo_shape": ["layer-first", "mixed"],
+        "allowed_artifact_type": ["data-pipeline-step"],
+        "allowed_target_area_prefixes": [
+          "Legacy refund sync slice currently rooted at src/app/services/legacy_refunds",
+          "Refund sync slice currently rooted at src/app/services/legacy_refunds",
+          "Refund sync slice currently anchored at src/app/services/legacy_refunds"
+        ],
+        "allowed_confidence": ["medium", "high"],
+        "required_file_groups": [
+          ["src/app/application/refunds/sync_refunds_use_case.py", "src/app/application/refunds/refund_sync_use_case.py"],
+          ["src/app/infrastructure/external/refunds/legacy_refund_client.py", "src/app/infrastructure/external/refunds/refund_partner_client.py", "src/app/infrastructure/external/refunds/refund_partner_gateway.py"],
+          ["src/app/infrastructure/persistence/refunds/refund_sql_repository.py", "src/app/infrastructure/persistence/refunds/refund_repository.py", "src/app/infrastructure/persistence/refunds/refund_store.py"]
+        ],
+        "max_files": 4,
+        "forbidden_paths": [
+          "src/app/services/legacy_refunds/refund_sync.py",
+          "src/app/services/legacy_refunds/refund_partner_gateway.py",
+          "src/app/services/legacy_refunds/refund_store.py"
+        ],
+        "required_term_groups": [
+          ["baseline", "documented layer", "layering"],
+          ["relocation", "move", "migrate", "migration", "migrating"],
+          ["application", "use case", "orchestration"],
+          ["infrastructure", "external", "persistence", "client", "repository"],
+          ["batch", "validation", "dataclass"]
+        ]
+      }
+    },
+    {
+      "id": "python_endpoint_keep_small",
+      "prompt": "Should this Python refund-status endpoint stay in one module or split into handler and service files? Anchor the decision in services/python-order-api/features/refund-status and compare it with the nearby shipments feature. This slice only validates request fields, applies local refund-window rules, and shapes a response.",
+      "target_area": "services/python-order-api/features/refund-status",
+      "source_paths": [
+        "services/python-order-api/features/refund-status/status_endpoint.py",
+        "services/python-order-api/features/shipments/tracking_handler.py",
+        "services/python-order-api/features/shipments/tracking_gateway.py"
+      ],
+      "expected": {
+        "strategy": "keep",
+        "repo_shape": "feature-first",
+        "artifact_type": "service-endpoint",
+        "stack": "python",
+        "files": [
+          "services/python-order-api/features/refund-status/status_endpoint.py"
+        ],
+        "keep_inline": [
+          "Request and response dataclasses",
+          "local refund window helper"
+        ],
+        "avoid": [
+          "schemas.py",
+          "service.py",
+          "validators.py"
+        ],
+        "confidence": "high"
+      },
+      "semantic": {
+        "allowed_repo_shape": [
+          "feature-first"
+        ],
+        "allowed_artifact_type": [
+          "service-endpoint"
+        ],
+        "allowed_confidence": [
+          "high",
+          "medium"
+        ],
+        "required_file_groups": [
+          [
+            "services/python-order-api/features/refund-status/status_endpoint.py"
+          ]
+        ],
+        "max_files": 1,
+        "required_term_groups": [
+          [
+            "dataclass"
+            ,
+            "request and response data shapes",
+            "request and response shape",
+            "request and response"
+          ],
+          [
+            "refund-window",
+            "eligibility"
+          ],
+          [
+            "service.py",
+            "status_service.py",
+            "schema",
+            "validator"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "python_cli_merge_pass_through",
+      "prompt": "Decide whether this refund backlog ops script should merge its tiny client helper back into the main command or keep them separate. Target scripts/ops/reconcile_refund_backlog.py and compare it with sync_partner_catalog.py, where the network boundary is heavier.",
+      "target_area": "scripts/ops",
+      "source_paths": [
+        "scripts/ops/reconcile_refund_backlog.py",
+        "scripts/ops/refund_backlog_client.py",
+        "scripts/ops/sync_partner_catalog.py"
+      ],
+      "expected": {
+        "strategy": "merge",
+        "repo_shape": "mixed",
+        "artifact_type": "cli-command",
+        "stack": "python",
+        "files": [
+          "scripts/ops/reconcile_refund_backlog.py"
+        ],
+        "keep_inline": [
+          "argparse options",
+          "tiny backlog fetch helper",
+          "summary formatter"
+        ],
+        "avoid": [
+          "refund_backlog_client.py",
+          "models.py",
+          "command_base.py"
+        ],
+        "confidence": "high",
+        "must_contain": [
+          "single-command helper",
+          "pass-through",
+          "same command",
+          "ceremony"
+        ]
+      },
+      "semantic": {
+        "allowed_repo_shape": [
+          "mixed"
+        ],
+        "allowed_artifact_type": [
+          "cli-command"
+        ],
+        "allowed_target_area_prefixes": [
+          "scripts/ops"
+        ],
+        "allowed_confidence": [
+          "high",
+          "medium"
+        ],
+        "required_file_groups": [
+          [
+            "scripts/ops/reconcile_refund_backlog.py"
+          ]
+        ],
+        "max_files": 1,
+        "required_term_groups": [
+          [
+            "command"
+          ],
+          [
+            "helper",
+            "client"
+          ],
+          [
+            "same command",
+            "single-command",
+            "same script",
+            "one caller",
+            "single cohesive command",
+            "one consumer",
+            "single-get flow"
+          ],
+          [
+            "ceremony",
+            "pass-through",
+            "indirection",
+            "wrapper module"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "ts_backend_endpoint_keep_small",
+      "prompt": "Should this TypeScript refund preview endpoint stay in one route file or split into route, service, and schema files? Anchor the decision in services/node-refund-api/src/features/refund-preview and compare it with the nearby refund-batch feature, which already split a real network adapter.",
+      "target_area": "services/node-refund-api/src/features/refund-preview",
+      "source_paths": [
+        "services/node-refund-api/src/features/refund-preview/refundPreviewRoute.ts",
+        "services/node-refund-api/src/features/refund-batch/refundBatchRoute.ts",
+        "services/node-refund-api/src/features/refund-batch/refundBatchClient.ts"
+      ],
+      "expected": {
+        "strategy": "keep",
+        "repo_shape": "feature-first",
+        "artifact_type": "service-endpoint",
+        "stack": "typescript-javascript",
+        "files": [
+          "services/node-refund-api/src/features/refund-preview/refundPreviewRoute.ts"
+        ],
+        "keep_inline": [
+          "RefundPreviewRequest type",
+          "request parser"
+        ],
+        "avoid": [
+          "refundPreviewSchema.ts",
+          "refundPreviewService.ts",
+          "types.ts"
+        ],
+        "confidence": "high"
+      },
+      "semantic": {
+        "allowed_repo_shape": ["feature-first"],
+        "allowed_artifact_type": ["service-endpoint"],
+        "allowed_confidence": ["high", "medium"],
+        "required_file_groups": [
+          ["services/node-refund-api/src/features/refund-preview/refundPreviewRoute.ts"]
+        ],
+        "max_files": 1,
+        "required_term_groups": [
+          ["request", "parser"],
+          ["preview", "local rules"],
+          ["schema", "service", "ceremony"]
+        ]
+      }
+    },
+    {
+      "id": "ts_backend_endpoint_split_io",
+      "prompt": "Plan the file layout for this TypeScript webhook endpoint before implementation moves further. Anchor the decision in services/node-refund-api/src/features/refund-webhooks, where one route currently mixes signature checks, partner lookups, and event persistence.",
+      "target_area": "services/node-refund-api/src/features/refund-webhooks",
+      "source_paths": [
+        "services/node-refund-api/src/features/refund-webhooks/refundWebhookRoute.ts",
+        "services/node-refund-api/src/features/refund-preview/refundPreviewRoute.ts",
+        "services/node-refund-api/src/features/refund-batch/refundBatchRoute.ts",
+        "services/node-refund-api/src/features/refund-batch/refundBatchClient.ts"
+      ],
+      "expected": {
+        "strategy": "split",
+        "repo_shape": "feature-first",
+        "artifact_type": "service-endpoint",
+        "stack": "typescript-javascript",
+        "files": [
+          "services/node-refund-api/src/features/refund-webhooks/refundWebhookRoute.ts",
+          "services/node-refund-api/src/features/refund-webhooks/refundPartnerClient.ts",
+          "services/node-refund-api/src/features/refund-webhooks/refundEventStore.ts"
+        ],
+        "keep_inline": [
+          "RefundWebhookPayload type",
+          "header parsing helper"
+        ],
+        "avoid": [
+          "refundWebhookService.ts",
+          "index.ts",
+          "types.ts"
+        ],
+        "confidence": "high"
+      },
+      "semantic": {
+        "allowed_repo_shape": [
+          "feature-first"
+        ],
+        "allowed_artifact_type": [
+          "service-endpoint"
+        ],
+        "allowed_confidence": [
+          "high",
+          "medium"
+        ],
+        "required_file_groups": [
+          [
+            "services/node-refund-api/src/features/refund-webhooks/refundWebhookRoute.ts"
+          ],
+          [
+            "services/node-refund-api/src/features/refund-webhooks/refundPartnerClient.ts",
+            "services/node-refund-api/src/features/refund-webhooks/refundWebhookPartnerClient.ts"
+          ],
+          [
+            "services/node-refund-api/src/features/refund-webhooks/refundEventStore.ts",
+            "services/node-refund-api/src/features/refund-webhooks/refundWebhookEventStore.ts",
+            "services/node-refund-api/src/features/refund-webhooks/refundWebhookEventRepository.ts"
+          ]
+        ],
+        "max_files": 3,
+        "required_term_groups": [
+          [
+            "payload"
+          ],
+          [
+            "header",
+            "signature"
+          ],
+          [
+            "partner"
+          ],
+          [
+            "store",
+            "persistence"
+          ],
+          [
+            "service",
+            "ceremony",
+            "pass-through"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "react_feature_keep_local",
+      "prompt": "Plan how many files to create for this React feature before implementation. Target packages/web-dashboard/src/features/discount-simulator and compare it with nearby dashboard features that already show when API extraction is or is not worth it.",
+      "target_area": "packages/web-dashboard/src/features/discount-simulator",
+      "source_paths": [
+        "packages/web-dashboard/src/features/discount-simulator/DiscountSimulatorPanel.tsx",
+        "packages/web-dashboard/src/features/subscription-optimizer/SubscriptionOptimizerPanel.tsx",
+        "packages/web-dashboard/src/features/invoice-alerts/InvoiceAlertsPanel.tsx",
+        "packages/web-dashboard/src/features/invoice-alerts/invoiceAlertsApi.ts"
+      ],
+      "expected": {
+        "strategy": "keep",
+        "repo_shape": "feature-first",
+        "artifact_type": "ui-component",
+        "stack": "typescript-javascript",
+        "files": [
+          "packages/web-dashboard/src/features/discount-simulator/DiscountSimulatorPanel.tsx"
+        ],
+        "keep_inline": [
+          "panel-local form state",
+          "local validation and preview math"
+        ],
+        "avoid": [
+          "useDiscountSimulator.ts",
+          "discountSimulator.types.ts",
+          "validators.ts"
+        ],
+        "confidence": "high"
+      },
+      "semantic": {
+        "allowed_repo_shape": ["feature-first"],
+        "allowed_artifact_type": ["ui-component"],
+        "allowed_confidence": ["high", "medium"],
+        "required_file_groups": [
+          ["packages/web-dashboard/src/features/discount-simulator/DiscountSimulatorPanel.tsx"]
+        ],
+        "max_files": 1,
+        "required_term_groups": [
+          ["panel", "form state"],
+          ["validation", "preview"],
+          ["hook", "types", "ceremony"]
+        ]
+      }
+    },
+    {
+      "id": "vue_page_split_reusable_async_flow",
+      "prompt": "Plan the file layout for this Vue export feature before implementation. Anchor the decision in packages/admin-portal/src/pages/exports, where both the page and the retry dialog need the same polling and retry flow.",
+      "target_area": "packages/admin-portal/src/pages/exports",
+      "source_paths": [
+        "packages/admin-portal/src/pages/exports/AuditExportPage.vue",
+        "packages/admin-portal/src/components/audit/AuditExportRetryDialog.vue",
+        "packages/admin-portal/src/services/auditExportApi.ts",
+        "packages/admin-portal/src/pages/audit/AuditReplayPage.vue"
+      ],
+      "expected": {
+        "strategy": "split",
+        "repo_shape": "mixed",
+        "artifact_type": "ui-component",
+        "stack": "vue",
+        "files": [
+          "packages/admin-portal/src/pages/exports/AuditExportPage.vue",
+          "packages/admin-portal/src/composables/useAuditExportJob.ts"
+        ],
+        "keep_inline": [
+          "export form state",
+          "small status label copy"
+        ],
+        "avoid": [
+          "auditExport.types.ts",
+          "usePollingState.ts",
+          "ExportProgressCard.vue"
+        ],
+        "confidence": "high"
+      },
+      "semantic": {
+        "allowed_repo_shape": ["mixed", "layer-first"],
+        "allowed_artifact_type": ["ui-component"],
+        "allowed_confidence": ["high", "medium"],
+        "required_file_groups": [
+          ["packages/admin-portal/src/pages/exports/AuditExportPage.vue"],
+          ["packages/admin-portal/src/composables/useAuditExportJob.ts", "packages/admin-portal/src/composables/useExportJob.ts", "packages/admin-portal/src/composables/useAuditExportFlow.ts"]
+        ],
+        "max_files": 3,
+        "required_term_groups": [
+          ["poll", "polling"],
+          ["retry"],
+          ["shared", "cross-component", "both"],
+          ["composable", "state"],
+          ["export form", "status", "copy"]
+        ]
+      }
+    },
+    {
+      "id": "vue_page_merge_local_composable",
+      "prompt": "Decide whether this Vue refund review page should keep its local filter composable or merge it back into the page. Target packages/admin-portal/src/pages/refunds/RefundReviewPage.vue. The composable is only used by this page and only manages local filter refs and computed labels.",
+      "target_area": "packages/admin-portal/src/pages/refunds",
+      "source_paths": [
+        "packages/admin-portal/src/pages/refunds/RefundReviewPage.vue",
+        "packages/admin-portal/src/composables/useRefundReviewFilters.ts",
+        "packages/admin-portal/src/pages/audit/AuditReplayPage.vue"
+      ],
+      "expected": {
+        "strategy": "merge",
+        "repo_shape": "mixed",
+        "artifact_type": "ui-component",
+        "stack": "vue",
+        "files": [
+          "packages/admin-portal/src/pages/refunds/RefundReviewPage.vue"
+        ],
+        "keep_inline": [
+          "filter refs",
+          "status label mapping"
+        ],
+        "avoid": [
+          "useRefundReviewFilters.ts",
+          "refundReview.types.ts",
+          "index.ts"
+        ],
+        "confidence": "high",
+        "must_contain": [
+          "page-only composable",
+          "only used",
+          "ceremony"
+        ]
+      },
+      "semantic": {
+        "allowed_repo_shape": [
+          "mixed",
+          "layer-first"
+        ],
+        "allowed_artifact_type": [
+          "ui-component"
+        ],
+        "allowed_target_area_prefixes": [
+          "packages/admin-portal/src/pages/refunds"
+        ],
+        "allowed_confidence": [
+          "high",
+          "medium"
+        ],
+        "required_file_groups": [
+          [
+            "packages/admin-portal/src/pages/refunds/RefundReviewPage.vue"
+          ]
+        ],
+        "max_files": 1,
+        "required_term_groups": [
+          [
+            "filter"
+          ],
+          [
+            "computed",
+            "label"
+          ],
+          [
+            "single page",
+            "only used here",
+            "page-only",
+            "only used by this page",
+            "single consumer",
+            "one page consumer",
+            "page-private",
+            "page-local state"
+          ],
+          [
+            "composable"
+          ],
+          [
+            "ceremony",
+            "indirection",
+            "extra jump",
+            "same test surface",
+            "no independent side-effect boundary",
+            "shared abstraction",
+            "cross-file",
+            "ping-pong",
+            "thin wrapper",
+            "more than clarity"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "go_package_split_same_package",
+      "prompt": "Should this Go package stay in one file or split into a few files without creating new packages? Target packages/go/partnerrefunds and compare it with the smaller amountcodec package.",
+      "target_area": "packages/go/partnerrefunds",
+      "source_paths": [
+        "packages/go/partnerrefunds/sync.go",
+        "packages/go/amountcodec/format.go",
+        "packages/go/taxcalc/calc.go"
+      ],
+      "expected": {
+        "strategy": "split",
+        "repo_shape": "package-first",
+        "artifact_type": "library-module",
+        "stack": "go",
+        "files": [
+          "packages/go/partnerrefunds/sync.go",
+          "packages/go/partnerrefunds/partner_client.go",
+          "packages/go/partnerrefunds/refund_store.go"
+        ],
+        "keep_inline": [
+          "RefundRow struct",
+          "small normalization helper"
+        ],
+        "avoid": [
+          "helpers.go",
+          "interfaces.go",
+          "new subpackage"
+        ],
+        "confidence": "high",
+        "must_contain": [
+          "same package",
+          "package cohesion"
+        ]
+      },
+      "semantic": {
+        "allowed_repo_shape": [
+          "package-first"
+        ],
+        "allowed_artifact_type": [
+          "library-module",
+          "data-pipeline-step"
+        ],
+        "allowed_confidence": [
+          "high",
+          "medium"
+        ],
+        "required_file_groups": [
+          [
+            "packages/go/partnerrefunds/sync.go"
+          ],
+          [
+            "packages/go/partnerrefunds/partner_client.go",
+            "packages/go/partnerrefunds/fetch.go"
+          ],
+          [
+            "packages/go/partnerrefunds/refund_store.go",
+            "packages/go/partnerrefunds/store.go",
+            "packages/go/partnerrefunds/refund_sync_store.go",
+            "packages/go/partnerrefunds/persist.go",
+            "packages/go/partnerrefunds/sync_store.go"
+          ]
+        ],
+        "max_files": 3,
+        "required_term_groups": [
+          [
+            "refundrow",
+            "refund row",
+            "row carrier type",
+            "package-local records"
+          ],
+          [
+            "normalize"
+          ],
+          [
+            "package",
+            "package-first"
+          ],
+          [
+            "interface",
+            "helpers",
+            "subpackage"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "python_library_keep_shared_helper",
+      "prompt": "Plan the file layout for the shared refund reason slice in src/app/shared/utils. create_refund_use_case.py and refund_summary_card.py both need the same normalization and display behavior, and the nearby money helper shows how small shared utilities usually live in this repository.",
+      "target_area": "src/app/shared/utils",
+      "source_paths": [
+        "src/app/shared/utils/refund_reason.py",
+        "src/app/shared/utils/money.py",
+        "src/app/application/refunds/create_refund_use_case.py",
+        "src/app/shared/components/refund_summary_card.py"
+      ],
+      "expected": {
+        "strategy": "keep",
+        "repo_shape": "mixed",
+        "artifact_type": "library-module",
+        "stack": "python",
+        "files": [
+          "src/app/shared/utils/refund_reason.py"
+        ],
+        "keep_inline": [
+          "reason alias map",
+          "fallback display label helper"
+        ],
+        "avoid": [
+          "labels.py",
+          "constants.py",
+          "parser.py"
+        ],
+        "confidence": "high"
+      },
+      "semantic": {
+        "allowed_repo_shape": ["mixed", "layer-first"],
+        "allowed_artifact_type": ["library-module"],
+        "allowed_confidence": ["high", "medium"],
+        "required_file_groups": [
+          ["src/app/shared/utils/refund_reason.py"]
+        ],
+        "max_files": 1,
+        "required_term_groups": [
+          ["shared", "helper"],
+          ["alias", "reason"],
+          ["display", "label"],
+          ["cohesive", "single file", "small surface"]
+        ]
+      }
+    },
+    {
+      "id": "python_pipeline_keep_single_job",
+      "prompt": "Before implementation, tell me what files this Python refund health snapshot job should have. Anchor the decision on services/python-refund-jobs/jobs/publish_refund_health.py and compare it with the nearby chargeback snapshot job in the same jobs directory.",
+      "target_area": "services/python-refund-jobs/jobs",
+      "source_paths": [
+        "services/python-refund-jobs/jobs/publish_refund_health.py",
+        "services/python-refund-jobs/jobs/publish_chargeback_snapshot.py"
+      ],
+      "expected": {
+        "strategy": "keep",
+        "repo_shape": "layer-first",
+        "artifact_type": "data-pipeline-step",
+        "stack": "python",
+        "files": [
+          "services/python-refund-jobs/jobs/publish_refund_health.py"
+        ],
+        "keep_inline": [
+          "small risk bucket helper",
+          "job-local row parser"
+        ],
+        "avoid": [
+          "extract.py",
+          "transform.py",
+          "load.py"
+        ],
+        "confidence": "high"
+      },
+      "semantic": {
+        "allowed_repo_shape": ["layer-first"],
+        "allowed_artifact_type": ["data-pipeline-step"],
+        "allowed_confidence": ["high", "medium"],
+        "required_file_groups": [
+          ["services/python-refund-jobs/jobs/publish_refund_health.py"]
+        ],
+        "max_files": 1,
+        "required_term_groups": [
+          ["risk", "bucket"],
+          ["row", "parser"],
+          ["single job", "one flow", "simple pipeline"],
+          ["extract", "transform", "load", "ceremony"]
+        ]
+      }
+    },
+    {
+      "id": "react_feature_split_shared_hook",
+      "prompt": "Plan the file boundaries for this refund triage UI slice before implementation goes further. Anchor the decision in packages/web-dashboard/src/features/refund-triage, where the panel and the decision drawer both participate in loading the queue and saving review decisions.",
+      "target_area": "packages/web-dashboard/src/features/refund-triage",
+      "source_paths": [
+        "packages/web-dashboard/src/features/refund-triage/RefundTriagePanel.tsx",
+        "packages/web-dashboard/src/features/refund-triage/RefundDecisionDrawer.tsx",
+        "packages/web-dashboard/src/features/subscription-optimizer/SubscriptionOptimizerPanel.tsx"
+      ],
+      "expected": {
+        "strategy": "split",
+        "repo_shape": "feature-first",
+        "artifact_type": "ui-component",
+        "stack": "typescript-javascript",
+        "files": [
+          "packages/web-dashboard/src/features/refund-triage/RefundTriagePanel.tsx",
+          "packages/web-dashboard/src/features/refund-triage/RefundDecisionDrawer.tsx",
+          "packages/web-dashboard/src/features/refund-triage/useRefundDecisionQueue.ts"
+        ],
+        "keep_inline": [
+          "drawer visibility state",
+          "row label formatting"
+        ],
+        "avoid": [
+          "refundTriage.types.ts",
+          "index.ts",
+          "refundDecisionActions.ts"
+        ],
+        "confidence": "high"
+      },
+      "semantic": {
+        "allowed_repo_shape": ["feature-first"],
+        "allowed_artifact_type": ["ui-component"],
+        "allowed_confidence": ["high", "medium"],
+        "required_file_groups": [
+          ["packages/web-dashboard/src/features/refund-triage/RefundTriagePanel.tsx"],
+          ["packages/web-dashboard/src/features/refund-triage/RefundDecisionDrawer.tsx"],
+          ["packages/web-dashboard/src/features/refund-triage/useRefundDecisionQueue.ts", "packages/web-dashboard/src/features/refund-triage/useRefundTriageQueue.ts", "packages/web-dashboard/src/features/refund-triage/useRefundQueue.ts"]
+        ],
+        "max_files": 4,
+        "required_term_groups": [
+          ["queue"],
+          ["decision", "review"],
+          ["shared", "hook", "stateful"],
+          ["drawer", "visibility"],
+          ["ceremony", "duplicate", "async"]
+        ]
+      }
+    },
+    {
+      "id": "go_package_merge_tiny_files",
+      "prompt": "Decide whether packages/go/refundlabels should stay split across several tiny files or collapse into fewer files. Compare it with amountcodec when planning the package layout.",
+      "target_area": "packages/go/refundlabels",
+      "source_paths": [
+        "packages/go/refundlabels/parse.go",
+        "packages/go/refundlabels/format.go",
+        "packages/go/refundlabels/errors.go",
+        "packages/go/amountcodec/format.go"
+      ],
+      "expected": {
+        "strategy": "merge",
+        "repo_shape": "package-first",
+        "artifact_type": "library-module",
+        "stack": "go",
+        "files": [
+          "packages/go/refundlabels/labels.go"
+        ],
+        "keep_inline": [
+          "parseCode helper",
+          "unknown label fallback"
+        ],
+        "avoid": [
+          "parse.go",
+          "format.go",
+          "errors.go"
+        ],
+        "confidence": "high"
+      },
+      "semantic": {
+        "allowed_repo_shape": [
+          "package-first"
+        ],
+        "allowed_artifact_type": [
+          "library-module"
+        ],
+        "allowed_confidence": [
+          "high",
+          "medium"
+        ],
+        "required_file_groups": [
+          [
+            "packages/go/refundlabels/labels.go",
+            "packages/go/refundlabels/refundlabels.go"
+          ]
+        ],
+        "max_files": 2,
+        "required_term_groups": [
+          [
+            "label"
+          ],
+          [
+            "parse"
+          ],
+          [
+            "format"
+          ],
+          [
+            "error"
+          ],
+          [
+            "cohesion",
+            "tiny files",
+            "ceremony"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "python_pipeline_split_source_sink",
+      "prompt": "Plan the file layout for this Python refund sync job before implementation continues. Anchor the decision on services/python-refund-jobs/jobs/sync_partner_refunds.py and compare it with the simpler refund health job in the same jobs area.",
+      "target_area": "services/python-refund-jobs/jobs",
+      "source_paths": [
+        "services/python-refund-jobs/jobs/sync_partner_refunds.py",
+        "services/python-refund-jobs/jobs/publish_refund_health.py"
+      ],
+      "expected": {
+        "strategy": "split",
+        "repo_shape": "layer-first",
+        "artifact_type": "data-pipeline-step",
+        "stack": "python",
+        "files": [
+          "services/python-refund-jobs/jobs/sync_partner_refunds.py",
+          "services/python-refund-jobs/jobs/partner_refund_source.py",
+          "services/python-refund-jobs/jobs/refund_sync_store.py"
+        ],
+        "keep_inline": [
+          "sync counters",
+          "small row normalization helper"
+        ],
+        "avoid": [
+          "utils.py",
+          "transform.py",
+          "job_types.py"
+        ],
+        "confidence": "high"
+      },
+      "semantic": {
+        "allowed_repo_shape": [
+          "layer-first"
+        ],
+        "allowed_artifact_type": [
+          "data-pipeline-step"
+        ],
+        "allowed_confidence": [
+          "high",
+          "medium"
+        ],
+        "required_file_groups": [
+          [
+            "services/python-refund-jobs/jobs/sync_partner_refunds.py"
+          ],
+          [
+            "services/python-refund-jobs/jobs/partner_refund_source.py",
+            "services/python-refund-jobs/jobs/fetch.py",
+            "services/python-refund-jobs/jobs/partner_refunds_client.py"
+          ],
+          [
+            "services/python-refund-jobs/jobs/refund_sync_store.py",
+            "services/python-refund-jobs/jobs/store.py",
+            "services/python-refund-jobs/jobs/refund_store.py"
+          ]
+        ],
+        "max_files": 4,
+        "required_term_groups": [
+          [
+            "sync"
+          ],
+          [
+            "counter",
+            "synced",
+            "skipped"
+          ],
+          [
+            "normalize"
+          ],
+          [
+            "source",
+            "fetch",
+            "partner"
+          ],
+          [
+            "store",
+            "database",
+            "persistence"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "ts_backend_merge_pass_through_service",
+      "prompt": "Decide whether this TypeScript refund audit endpoint should keep its current route and service split or merge them. Target services/node-refund-api/src/features/refund-audit and compare it with the nearby refund-batch feature, where the adapter split is heavier.",
+      "target_area": "services/node-refund-api/src/features/refund-audit",
+      "source_paths": [
+        "services/node-refund-api/src/features/refund-audit/refundAuditRoute.ts",
+        "services/node-refund-api/src/features/refund-audit/refundAuditService.ts",
+        "services/node-refund-api/src/features/refund-batch/refundBatchRoute.ts",
+        "services/node-refund-api/src/features/refund-batch/refundBatchClient.ts"
+      ],
+      "expected": {
+        "strategy": "merge",
+        "repo_shape": "feature-first",
+        "artifact_type": "service-endpoint",
+        "stack": "typescript-javascript",
+        "files": [
+          "services/node-refund-api/src/features/refund-audit/refundAuditRoute.ts"
+        ],
+        "keep_inline": [
+          "route-local response shaping",
+          "tiny audit fetch helper"
+        ],
+        "avoid": [
+          "refundAuditService.ts",
+          "index.ts",
+          "types.ts"
+        ],
+        "confidence": "high",
+        "must_contain": [
+          "route-forwarding split",
+          "same route",
+          "ceremony"
+        ]
+      },
+      "semantic": {
+        "allowed_repo_shape": [
+          "feature-first"
+        ],
+        "allowed_artifact_type": [
+          "service-endpoint"
+        ],
+        "allowed_confidence": [
+          "high",
+          "medium"
+        ],
+        "required_file_groups": [
+          [
+            "services/node-refund-api/src/features/refund-audit/refundAuditRoute.ts"
+          ]
+        ],
+        "max_files": 1,
+        "required_term_groups": [
+          [
+            "route"
+          ],
+          [
+            "service"
+          ],
+          [
+            "same route",
+            "same endpoint",
+            "route file",
+            "endpoint flow end to end"
+          ],
+          [
+            "pass-through",
+            "forwarding",
+            "one direct import edge",
+            "one fetch call",
+            "no independent validation or reuse seam"
+          ],
+          [
+            "ceremony",
+            "indirection"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "react_feature_merge_local_hook",
+      "prompt": "Decide whether this React refund insights feature should keep its current panel and hook split or merge them. Target packages/web-dashboard/src/features/refund-insights and compare it with the nearby refund triage feature, where state is shared across more than one component.",
+      "target_area": "packages/web-dashboard/src/features/refund-insights",
+      "source_paths": [
+        "packages/web-dashboard/src/features/refund-insights/RefundInsightsPanel.tsx",
+        "packages/web-dashboard/src/features/refund-insights/useRefundInsightFilters.ts",
+        "packages/web-dashboard/src/features/refund-triage/RefundTriagePanel.tsx",
+        "packages/web-dashboard/src/features/refund-triage/RefundDecisionDrawer.tsx"
+      ],
+      "expected": {
+        "strategy": "merge",
+        "repo_shape": "feature-first",
+        "artifact_type": "ui-component",
+        "stack": "typescript-javascript",
+        "files": [
+          "packages/web-dashboard/src/features/refund-insights/RefundInsightsPanel.tsx"
+        ],
+        "keep_inline": [
+          "panel filter state",
+          "header label helper"
+        ],
+        "avoid": [
+          "useRefundInsightFilters.ts",
+          "refundInsights.types.ts",
+          "index.ts"
+        ],
+        "confidence": "high",
+        "must_contain": [
+          "panel-local hook seam",
+          "same panel",
+          "ceremony"
+        ]
+      },
+      "semantic": {
+        "allowed_repo_shape": [
+          "feature-first"
+        ],
+        "allowed_artifact_type": [
+          "ui-component"
+        ],
+        "allowed_confidence": [
+          "high",
+          "medium"
+        ],
+        "required_file_groups": [
+          [
+            "packages/web-dashboard/src/features/refund-insights/RefundInsightsPanel.tsx"
+          ]
+        ],
+        "max_files": 1,
+        "required_term_groups": [
+          [
+            "panel"
+          ],
+          [
+            "hook"
+          ],
+          [
+            "same panel",
+            "single panel"
+          ],
+          [
+            "ceremony",
+            "indirection",
+            "extra jump"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "go_package_split_codec_surface",
+      "prompt": "Should packages/go/refundexports stay in one file or split its package surface into a few files? Compare it with amountcodec and partnerrefunds when deciding whether the codec details deserve their own file.",
+      "target_area": "packages/go/refundexports",
+      "source_paths": [
+        "packages/go/refundexports/export.go",
+        "packages/go/amountcodec/format.go",
+        "packages/go/partnerrefunds/sync.go"
+      ],
+      "expected": {
+        "strategy": "split",
+        "repo_shape": "package-first",
+        "artifact_type": "library-module",
+        "stack": "go",
+        "files": [
+          "packages/go/refundexports/export.go",
+          "packages/go/refundexports/csv_codec.go"
+        ],
+        "keep_inline": [
+          "ExportRow struct",
+          "small reason normalizer"
+        ],
+        "avoid": [
+          "helpers.go",
+          "interfaces.go",
+          "new subpackage"
+        ],
+        "confidence": "high",
+        "must_contain": [
+          "csv-codec seam",
+          "codec details"
+        ]
+      },
+      "semantic": {
+        "allowed_repo_shape": [
+          "package-first"
+        ],
+        "allowed_artifact_type": [
+          "library-module"
+        ],
+        "allowed_confidence": [
+          "high",
+          "medium"
+        ],
+        "required_file_groups": [
+          [
+            "packages/go/refundexports/export.go"
+          ],
+          [
+            "packages/go/refundexports/csv_codec.go",
+            "packages/go/refundexports/codec.go",
+            "packages/go/refundexports/csv.go"
+          ]
+        ],
+        "max_files": 3,
+        "required_term_groups": [
+          [
+            "exportrow"
+          ],
+          [
+            "codec"
+          ],
+          [
+            "csv"
+          ],
+          [
+            "same package",
+            "package cohesion",
+            "subpackage"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "python_library_split_mature_api",
+      "prompt": "Plan the file layout for the shared refund export formatting slice in src/app/shared/utils. The same module now serves both export_partner_refunds.py and review_refund_export.py, and compare it with the smaller money helper nearby when deciding whether the export API and CSV details should stay together.",
+      "target_area": "src/app/shared/utils",
+      "source_paths": [
+        "src/app/shared/utils/refund_export_format.py",
+        "src/app/shared/utils/money.py",
+        "services/python-refund-jobs/jobs/export_partner_refunds.py",
+        "scripts/ops/review_refund_export.py"
+      ],
+      "expected": {
+        "strategy": "split",
+        "repo_shape": "mixed",
+        "artifact_type": "library-module",
+        "stack": "python",
+        "files": [
+          "src/app/shared/utils/refund_export_format.py",
+          "src/app/shared/utils/refund_export_csv.py"
+        ],
+        "keep_inline": [
+          "RefundExportRow dataclass",
+          "small reason normalizer"
+        ],
+        "avoid": [
+          "constants.py",
+          "types.py",
+          "shared_export_utils.py"
+        ],
+        "confidence": "high"
+      },
+      "semantic": {
+        "allowed_repo_shape": [
+          "mixed"
+        ],
+        "allowed_artifact_type": [
+          "library-module"
+        ],
+        "allowed_confidence": [
+          "high",
+          "medium"
+        ],
+        "required_file_groups": [
+          [
+            "src/app/shared/utils/refund_export_format.py"
+          ],
+          [
+            "src/app/shared/utils/refund_export_csv.py",
+            "src/app/shared/utils/refund_export_codec.py",
+            "src/app/shared/utils/export_csv.py"
+          ]
+        ],
+        "max_files": 3,
+        "required_term_groups": [
+          [
+            "refundexportrow"
+          ],
+          [
+            "csv"
+          ],
+          [
+            "shared"
+          ],
+          [
+            "public surface",
+            "stable api",
+            "codec"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "typescript_pipeline_keep_small",
+      "prompt": "Before implementation, tell me what files this TypeScript refund watchlist job should have. Anchor the decision on services/etl-pipeline/src/jobs/publishRefundWatchlist.ts and compare it with the nearby publishInvoiceAging job, transform, and sink files.",
+      "target_area": "services/etl-pipeline/src/jobs",
+      "source_paths": [
+        "services/etl-pipeline/src/jobs/publishRefundWatchlist.ts",
+        "services/etl-pipeline/src/jobs/publishInvoiceAging.ts",
+        "services/etl-pipeline/src/transforms/buildInvoiceAgingSnapshot.ts",
+        "services/etl-pipeline/src/sinks/writeInvoiceAgingSnapshot.ts"
+      ],
+      "expected": {
+        "strategy": "keep",
+        "repo_shape": "layer-first",
+        "artifact_type": "data-pipeline-step",
+        "stack": "typescript-javascript",
+        "files": [
+          "services/etl-pipeline/src/jobs/publishRefundWatchlist.ts"
+        ],
+        "keep_inline": [
+          "watchlist bucket helper",
+          "job-local row type"
+        ],
+        "avoid": [
+          "buildRefundWatchlist.ts",
+          "writeRefundWatchlist.ts",
+          "index.ts"
+        ],
+        "confidence": "high"
+      },
+      "semantic": {
+        "allowed_repo_shape": [
+          "layer-first"
+        ],
+        "allowed_artifact_type": [
+          "data-pipeline-step"
+        ],
+        "allowed_confidence": [
+          "high",
+          "medium"
+        ],
+        "required_file_groups": [
+          [
+            "services/etl-pipeline/src/jobs/publishRefundWatchlist.ts"
+          ]
+        ],
+        "max_files": 1,
+        "required_term_groups": [
+          [
+            "watchlist"
+          ],
+          [
+            "bucket",
+            "urgency"
+          ],
+          [
+            "job"
+          ],
+          [
+            "ceremony",
+            "transform",
+            "sink"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "python_cli_keep_single",
+      "prompt": "Decide how many files this refund queue summary command should have before implementation grows. Target scripts/ops/summarize_refund_queue.py and compare it with the heavier sync_partner_catalog command in the same ops area.",
+      "target_area": "scripts/ops",
+      "source_paths": [
+        "scripts/ops/summarize_refund_queue.py",
+        "scripts/ops/sync_partner_catalog.py",
+        "scripts/ops/rebuild_search_index.py"
+      ],
+      "expected": {
+        "strategy": "keep",
+        "repo_shape": "mixed",
+        "artifact_type": "cli-command",
+        "stack": "python",
+        "files": [
+          "scripts/ops/summarize_refund_queue.py"
+        ],
+        "keep_inline": [
+          "argparse options",
+          "local queue summary helper",
+          "report formatting"
+        ],
+        "avoid": [
+          "utils.py",
+          "models.py",
+          "formatter.py"
+        ],
+        "confidence": "high"
+      },
+      "semantic": {
+        "allowed_repo_shape": [
+          "mixed"
+        ],
+        "allowed_artifact_type": [
+          "cli-command"
+        ],
+        "allowed_confidence": [
+          "high",
+          "medium"
+        ],
+        "required_file_groups": [
+          [
+            "scripts/ops/summarize_refund_queue.py"
+          ]
+        ],
+        "max_files": 1,
+        "required_term_groups": [
+          [
+            "summary"
+          ],
+          [
+            "argparse",
+            "argument"
+          ],
+          [
+            "report"
+          ],
+          [
+            "single file",
+            "local flow",
+            "ceremony"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "python_endpoint_merge_pass_through_service",
+      "prompt": "Decide whether this Python refund audit endpoint should keep its current handler and service split or merge them. Target services/python-order-api/features/refund-audit and compare it with the nearby refunds and refund-status features.",
+      "target_area": "services/python-order-api/features/refund-audit",
+      "source_paths": [
+        "services/python-order-api/features/refund-audit/audit_handler.py",
+        "services/python-order-api/features/refund-audit/audit_service.py",
+        "services/python-order-api/features/refunds/quote_endpoint.py",
+        "services/python-order-api/features/refund-status/status_endpoint.py"
+      ],
+      "expected": {
+        "strategy": "merge",
+        "repo_shape": "feature-first",
+        "artifact_type": "service-endpoint",
+        "stack": "python",
+        "files": [
+          "services/python-order-api/features/refund-audit/audit_handler.py"
+        ],
+        "keep_inline": [
+          "input validation",
+          "tiny audit row mapper"
+        ],
+        "avoid": [
+          "audit_service.py",
+          "service.py",
+          "schemas.py"
+        ],
+        "confidence": "high",
+        "must_contain": [
+          "endpoint-local service hop",
+          "same endpoint",
+          "ceremony"
+        ]
+      },
+      "semantic": {
+        "allowed_repo_shape": [
+          "feature-first"
+        ],
+        "allowed_artifact_type": [
+          "service-endpoint"
+        ],
+        "allowed_confidence": [
+          "high",
+          "medium"
+        ],
+        "required_file_groups": [
+          [
+            "services/python-order-api/features/refund-audit/audit_handler.py"
+          ]
+        ],
+        "max_files": 1,
+        "required_term_groups": [
+          [
+            "endpoint",
+            "handler"
+          ],
+          [
+            "service"
+          ],
+          [
+            "same endpoint",
+            "single endpoint"
+          ],
+          [
+            "ceremony",
+            "service hop",
+            "indirection"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "python_endpoint_split_remote_and_store",
+      "prompt": "Should this Python dispute review endpoint stay in one module or split into a handler, partner gateway, and store files? Anchor the decision in skill-evals/plan-code-file-layout-lab/feature-first/python-payments-api/features/dispute-review and compare it with the nearby chargeback-webhook feature, where partner and store boundaries are already separate.",
+      "target_area": "skill-evals/plan-code-file-layout-lab/feature-first/python-payments-api/features/dispute-review",
+      "source_paths": [
+        "skill-evals/plan-code-file-layout-lab/feature-first/python-payments-api/features/dispute-review/review_handler.py",
+        "skill-evals/plan-code-file-layout-lab/feature-first/python-payments-api/features/chargeback-webhook/webhook_handler.py",
+        "skill-evals/plan-code-file-layout-lab/feature-first/python-payments-api/features/chargeback-webhook/chargeback_partner_gateway.py",
+        "skill-evals/plan-code-file-layout-lab/feature-first/python-payments-api/features/chargeback-webhook/chargeback_event_store.py"
+      ],
+      "focus_paths": [
+        "skill-evals/plan-code-file-layout-lab/feature-first/python-payments-api/features/dispute-review/review_handler.py"
+      ],
+      "comparison_paths": [
+        "skill-evals/plan-code-file-layout-lab/feature-first/python-payments-api/features/chargeback-webhook/webhook_handler.py",
+        "skill-evals/plan-code-file-layout-lab/feature-first/python-payments-api/features/chargeback-webhook/chargeback_partner_gateway.py",
+        "skill-evals/plan-code-file-layout-lab/feature-first/python-payments-api/features/chargeback-webhook/chargeback_event_store.py"
+      ],
+      "expected": {
+        "strategy": "split",
+        "repo_shape": "feature-first",
+        "artifact_type": "service-endpoint",
+        "stack": "python",
+        "files": [
+          "skill-evals/plan-code-file-layout-lab/feature-first/python-payments-api/features/dispute-review/review_handler.py",
+          "skill-evals/plan-code-file-layout-lab/feature-first/python-payments-api/features/dispute-review/dispute_partner_gateway.py",
+          "skill-evals/plan-code-file-layout-lab/feature-first/python-payments-api/features/dispute-review/dispute_decision_store.py"
+        ],
+        "keep_inline": [
+          "ReviewDecisionRequest dataclass",
+          "hold-code validator"
+        ],
+        "avoid": [
+          "review_service.py",
+          "schemas.py",
+          "service.py"
+        ],
+        "confidence": "high"
+      },
+      "semantic": {
+        "allowed_repo_shape": [
+          "feature-first"
+        ],
+        "allowed_artifact_type": [
+          "service-endpoint"
+        ],
+        "allowed_confidence": [
+          "high",
+          "medium"
+        ],
+        "required_file_groups": [
+          [
+            "skill-evals/plan-code-file-layout-lab/feature-first/python-payments-api/features/dispute-review/review_handler.py"
+          ],
+          [
+            "skill-evals/plan-code-file-layout-lab/feature-first/python-payments-api/features/dispute-review/dispute_partner_gateway.py",
+            "skill-evals/plan-code-file-layout-lab/feature-first/python-payments-api/features/dispute-review/partner_gateway.py",
+            "skill-evals/plan-code-file-layout-lab/feature-first/python-payments-api/features/dispute-review/dispute_partner_client.py",
+            "skill-evals/plan-code-file-layout-lab/feature-first/python-payments-api/features/dispute-review/review_partner_gateway.py"
+          ],
+          [
+            "skill-evals/plan-code-file-layout-lab/feature-first/python-payments-api/features/dispute-review/dispute_decision_store.py",
+            "skill-evals/plan-code-file-layout-lab/feature-first/python-payments-api/features/dispute-review/review_store.py",
+            "skill-evals/plan-code-file-layout-lab/feature-first/python-payments-api/features/dispute-review/dispute_store.py",
+            "skill-evals/plan-code-file-layout-lab/feature-first/python-payments-api/features/dispute-review/dispute_review_store.py",
+            "skill-evals/plan-code-file-layout-lab/feature-first/python-payments-api/features/dispute-review/review_decision_store.py"
+          ]
+        ],
+        "max_files": 4,
+        "forbidden_paths": [
+          "skill-evals/plan-code-file-layout-lab/feature-first/python-payments-api/features/chargeback-webhook/webhook_handler.py",
+          "skill-evals/plan-code-file-layout-lab/feature-first/python-payments-api/features/chargeback-webhook/chargeback_partner_gateway.py",
+          "skill-evals/plan-code-file-layout-lab/feature-first/python-payments-api/features/chargeback-webhook/chargeback_event_store.py"
+        ],
+        "required_term_groups": [
+          [
+            "dataclass",
+            "request"
+          ],
+          [
+            "validation",
+            "hold-code",
+            "hold code"
+          ],
+          [
+            "partner",
+            "gateway",
+            "remote"
+          ],
+          [
+            "store",
+            "persistence",
+            "database"
+          ],
+          [
+            "review_service",
+            "service.py",
+            "ceremony"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "typescript_pipeline_merge_local_transform",
+      "prompt": "Decide whether this TypeScript refund lag report job should keep its current job and tiny transform split or merge them. Anchor the decision on skill-evals/plan-code-file-layout-lab/layer-first/refund-ops-pipeline/src/jobs/publishRefundLagReport.ts and compare it with the nearby payout exposure pipeline, where transform and sink files separate real stage boundaries.",
+      "target_area": "skill-evals/plan-code-file-layout-lab/layer-first/refund-ops-pipeline/src/jobs",
+      "source_paths": [
+        "skill-evals/plan-code-file-layout-lab/layer-first/refund-ops-pipeline/src/jobs/publishRefundLagReport.ts",
+        "skill-evals/plan-code-file-layout-lab/layer-first/refund-ops-pipeline/src/transforms/normalizeRefundLagRows.ts",
+        "skill-evals/plan-code-file-layout-lab/layer-first/refund-ops-pipeline/src/jobs/publishPayoutExposure.ts",
+        "skill-evals/plan-code-file-layout-lab/layer-first/refund-ops-pipeline/src/transforms/buildPayoutExposureSnapshot.ts",
+        "skill-evals/plan-code-file-layout-lab/layer-first/refund-ops-pipeline/src/sinks/writePayoutExposureSnapshot.ts"
+      ],
+      "focus_paths": [
+        "skill-evals/plan-code-file-layout-lab/layer-first/refund-ops-pipeline/src/jobs/publishRefundLagReport.ts",
+        "skill-evals/plan-code-file-layout-lab/layer-first/refund-ops-pipeline/src/transforms/normalizeRefundLagRows.ts"
+      ],
+      "comparison_paths": [
+        "skill-evals/plan-code-file-layout-lab/layer-first/refund-ops-pipeline/src/jobs/publishPayoutExposure.ts",
+        "skill-evals/plan-code-file-layout-lab/layer-first/refund-ops-pipeline/src/transforms/buildPayoutExposureSnapshot.ts",
+        "skill-evals/plan-code-file-layout-lab/layer-first/refund-ops-pipeline/src/sinks/writePayoutExposureSnapshot.ts"
+      ],
+      "expected": {
+        "strategy": "merge",
+        "repo_shape": "layer-first",
+        "artifact_type": "data-pipeline-step",
+        "stack": "typescript-javascript",
+        "files": [
+          "skill-evals/plan-code-file-layout-lab/layer-first/refund-ops-pipeline/src/jobs/publishRefundLagReport.ts"
+        ],
+        "keep_inline": [
+          "lag bucket helper",
+          "job-local RefundLagRow type"
+        ],
+        "avoid": [
+          "normalizeRefundLagRows.ts",
+          "refundLag.types.ts",
+          "index.ts"
+        ],
+        "confidence": "high",
+        "must_contain": [
+          "ceremony",
+          "same job",
+          "transform-only split"
+        ]
+      },
+      "semantic": {
+        "allowed_repo_shape": [
+          "layer-first"
+        ],
+        "allowed_artifact_type": [
+          "data-pipeline-step"
+        ],
+        "allowed_target_area_prefixes": [
+          "skill-evals/plan-code-file-layout-lab/layer-first/refund-ops-pipeline/src/jobs"
+        ],
+        "allowed_confidence": [
+          "high",
+          "medium"
+        ],
+        "required_file_groups": [
+          [
+            "skill-evals/plan-code-file-layout-lab/layer-first/refund-ops-pipeline/src/jobs/publishRefundLagReport.ts"
+          ]
+        ],
+        "max_files": 1,
+        "forbidden_paths": [
+          "skill-evals/plan-code-file-layout-lab/layer-first/refund-ops-pipeline/src/jobs/publishPayoutExposure.ts",
+          "skill-evals/plan-code-file-layout-lab/layer-first/refund-ops-pipeline/src/transforms/buildPayoutExposureSnapshot.ts",
+          "skill-evals/plan-code-file-layout-lab/layer-first/refund-ops-pipeline/src/sinks/writePayoutExposureSnapshot.ts"
+        ],
+        "required_term_groups": [
+          [
+            "lag"
+          ],
+          [
+            "bucket"
+          ],
+          [
+            "transform",
+            "normalize"
+          ],
+          [
+            "same job",
+            "single flow",
+            "single-consumer",
+            "job-local",
+            "one file"
+          ],
+          [
+            "ceremony",
+            "stage"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "python_library_merge_tiny_aliases",
+      "prompt": "Decide whether this Python hold reason helper should keep its current split across tiny modules or merge them. Anchor the decision in skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds and compare it with the nearby partner export helper, where a stable CSV surface now deserves its own file.",
+      "target_area": "skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds",
+      "source_paths": [
+        "skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds/hold_reason_labels.py",
+        "skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds/hold_reason_aliases.py",
+        "skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds/partner_export_format.py",
+        "skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds/partner_export_csv.py"
+      ],
+      "focus_paths": [
+        "skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds/hold_reason_labels.py",
+        "skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds/hold_reason_aliases.py"
+      ],
+      "comparison_paths": [
+        "skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds/partner_export_format.py",
+        "skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds/partner_export_csv.py"
+      ],
+      "expected": {
+        "strategy": "merge",
+        "repo_shape": "mixed",
+        "artifact_type": "library-module",
+        "stack": "python",
+        "files": [
+          "skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds/hold_reason.py"
+        ],
+        "keep_inline": [
+          "reason alias map",
+          "display fallback"
+        ],
+        "avoid": [
+          "hold_reason_aliases.py",
+          "constants.py",
+          "types.py"
+        ],
+        "confidence": "high",
+        "must_contain": [
+          "ceremony",
+          "tiny shared helper"
+        ]
+      },
+      "semantic": {
+        "allowed_repo_shape": [
+          "mixed"
+        ],
+        "allowed_artifact_type": [
+          "library-module"
+        ],
+        "allowed_confidence": [
+          "high",
+          "medium"
+        ],
+        "required_file_groups": [
+          [
+            "skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds/hold_reason.py",
+            "skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds/hold_reason_labels.py"
+          ]
+        ],
+        "max_files": 1,
+        "forbidden_paths": [
+          "skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds/partner_export_format.py",
+          "skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds/partner_export_csv.py"
+        ],
+        "required_term_groups": [
+          [
+            "alias",
+            "normalize"
+          ],
+          [
+            "display",
+            "label"
+          ],
+          [
+            "tiny shared helper",
+            "small shared surface",
+            "same change reason",
+            "side-effect-free helper",
+            "pure in-memory rule set",
+            "pure shared-library concern",
+            "no stable second public surface",
+            "one normalization-and-labeling flow",
+            "shared refund hold reason vocabulary"
+          ],
+          [
+            "csv",
+            "stable api",
+            "public surface"
+          ],
+          [
+            "ceremony",
+            "indirection"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "python_cli_keep_partial_visibility",
+      "prompt": "Plan the file layout for review_refund_export.py before implementation. I only have that command file open right now.",
+      "target_area": "scripts/ops",
+      "source_paths": [
+        "scripts/ops/review_refund_export.py"
+      ],
+      "expected": {
+        "strategy": "keep",
+        "repo_shape": "mixed",
+        "artifact_type": "cli-command",
+        "stack": "python",
+        "files": [
+          "scripts/ops/review_refund_export.py"
+        ],
+        "keep_inline": [
+          "argparse options",
+          "preview row loop",
+          "JSON preview formatting"
+        ],
+        "avoid": [
+          "review_refund_export_service.py",
+          "review_refund_export_client.py",
+          "command_base.py"
+        ],
+        "confidence": "low",
+        "must_contain": [
+          "partial visibility",
+          "only one command file"
+        ]
+      },
+      "semantic": {
+        "allowed_repo_shape": [
+          "mixed"
+        ],
+        "allowed_artifact_type": [
+          "cli-command"
+        ],
+        "allowed_confidence": [
+          "low",
+          "medium"
+        ],
+        "required_file_groups": [
+          [
+            "scripts/ops/review_refund_export.py"
+          ]
+        ],
+        "max_files": 1,
+        "required_term_groups": [
+          [
+            "argparse",
+            "argument"
+          ],
+          [
+            "preview",
+            "json",
+            "rows"
+          ],
+          [
+            "single file",
+            "one file",
+            "single command"
+          ],
+          [
+            "partial visibility",
+            "limited context",
+            "only one command file",
+            "one visible file"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "python_cli_keep_filename_anchor",
+      "prompt": "How many files should review_refund_export.py have before implementation grows? Use that file as the anchor and compare it with summarize_refund_queue.py and sync_partner_catalog.py in the same ops area.",
+      "target_area": "scripts/ops",
+      "source_paths": [
+        "scripts/ops/review_refund_export.py",
+        "scripts/ops/summarize_refund_queue.py",
+        "scripts/ops/sync_partner_catalog.py"
+      ],
+      "focus_paths": [
+        "scripts/ops/review_refund_export.py"
+      ],
+      "comparison_paths": [
+        "scripts/ops/summarize_refund_queue.py",
+        "scripts/ops/sync_partner_catalog.py"
+      ],
+      "expected": {
+        "strategy": "keep",
+        "repo_shape": "mixed",
+        "artifact_type": "cli-command",
+        "stack": "python",
+        "files": [
+          "scripts/ops/review_refund_export.py"
+        ],
+        "keep_inline": [
+          "argparse options",
+          "preview row loop",
+          "JSON preview formatting"
+        ],
+        "avoid": [
+          "review_refund_export_service.py",
+          "review_refund_export_client.py",
+          "command_base.py"
+        ],
+        "confidence": "medium",
+        "must_contain": [
+          "mixed local signals",
+          "same command"
+        ]
+      },
+      "semantic": {
+        "allowed_repo_shape": [
+          "mixed"
+        ],
+        "allowed_artifact_type": [
+          "cli-command"
+        ],
+        "allowed_confidence": [
+          "medium",
+          "high"
+        ],
+        "required_file_groups": [
+          [
+            "scripts/ops/review_refund_export.py"
+          ]
+        ],
+        "max_files": 1,
+        "required_term_groups": [
+          [
+            "preview",
+            "json",
+            "csv"
+          ],
+          [
+            "same command",
+            "single command",
+            "one file"
+          ],
+          [
+            "mixed local signals",
+            "same ops area",
+            "heavier command"
+          ],
+          [
+            "command_base",
+            "client",
+            "ceremony"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "ts_backend_keep_filename_anchor",
+      "prompt": "Should refundPreviewRoute.ts stay in one route file or split into route and service files? Use that file as the anchor and compare it with refundBatchRoute.ts in the nearby backend features.",
+      "target_area": "services/node-refund-api/src/features/refund-preview",
+      "source_paths": [
+        "services/node-refund-api/src/features/refund-preview/refundPreviewRoute.ts",
+        "services/node-refund-api/src/features/refund-batch/refundBatchRoute.ts"
+      ],
+      "focus_paths": [
+        "services/node-refund-api/src/features/refund-preview/refundPreviewRoute.ts"
+      ],
+      "comparison_paths": [
+        "services/node-refund-api/src/features/refund-batch/refundBatchRoute.ts"
+      ],
+      "expected": {
+        "strategy": "keep",
+        "repo_shape": "feature-first",
+        "artifact_type": "service-endpoint",
+        "stack": "typescript-javascript",
+        "files": [
+          "services/node-refund-api/src/features/refund-preview/refundPreviewRoute.ts"
+        ],
+        "keep_inline": [
+          "RefundPreviewRequest type",
+          "request parser and fee estimator"
+        ],
+        "avoid": [
+          "refundPreviewService.ts",
+          "refundPreviewSchema.ts",
+          "service.ts"
+        ],
+        "confidence": "high"
+      },
+      "semantic": {
+        "allowed_repo_shape": [
+          "feature-first"
+        ],
+        "allowed_artifact_type": [
+          "service-endpoint"
+        ],
+        "allowed_confidence": [
+          "high",
+          "medium"
+        ],
+        "required_file_groups": [
+          [
+            "services/node-refund-api/src/features/refund-preview/refundPreviewRoute.ts"
+          ]
+        ],
+        "max_files": 1,
+        "required_term_groups": [
+          [
+            "route",
+            "endpoint"
+          ],
+          [
+            "request parser",
+            "fee estimator",
+            "local rules"
+          ],
+          [
+            "single route",
+            "one file",
+            "same route"
+          ],
+          [
+            "service",
+            "schema",
+            "ceremony"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "python_entrypoint_merge_compat_controller",
+      "prompt": "Decide whether this refund creation HTTP slice should keep its current route and controller split or merge them. Anchor the decision on src/app/entrypoints/http/refund_routes.py. The repository docs now treat entrypoints/http as the migration target for refund HTTP transport, while interfaces/refunds/create_refund_controller.py remains a short compatibility shim during rollout.",
+      "target_area": "src/app/entrypoints/http",
+      "source_paths": [
+        "src/app/entrypoints/http/refund_routes.py",
+        "src/app/interfaces/refunds/create_refund_controller.py",
+        "src/app/application/refunds/create_refund_use_case.py"
+      ],
+      "focus_paths": [
+        "src/app/entrypoints/http/refund_routes.py",
+        "src/app/interfaces/refunds/create_refund_controller.py"
+      ],
+      "expected": {
+        "strategy": "merge",
+        "repo_shape": "layer-first",
+        "artifact_type": "service-endpoint",
+        "stack": "python",
+        "files": [
+          "src/app/entrypoints/http/refund_routes.py"
+        ],
+        "keep_inline": [
+          "payload-to-use-case call",
+          "response shaping"
+        ],
+        "avoid": [
+          "src/app/interfaces/refunds/create_refund_controller.py",
+          "refund_service.py",
+          "schemas.py"
+        ],
+        "confidence": "medium",
+        "must_contain": [
+          "entrypoints/http as the migration target",
+          "compatibility shim",
+          "same HTTP slice"
+        ]
+      },
+      "semantic": {
+        "allowed_repo_shape": [
+          "layer-first",
+          "mixed"
+        ],
+        "allowed_artifact_type": [
+          "service-endpoint"
+        ],
+        "allowed_confidence": [
+          "medium",
+          "high"
+        ],
+        "required_file_groups": [
+          [
+            "src/app/entrypoints/http/refund_routes.py"
+          ]
+        ],
+        "max_files": 1,
+        "forbidden_paths": [
+          "src/app/interfaces/refunds/create_refund_controller.py"
+        ],
+        "required_term_groups": [
+          [
+            "entrypoints",
+            "route",
+            "http"
+          ],
+          [
+            "compatibility shim",
+            "shim"
+          ],
+          [
+            "migration target",
+            "documented target",
+            "rollout"
+          ],
+          [
+            "same http slice",
+            "same route",
+            "same endpoint"
+          ],
+          [
+            "controller",
+            "service",
+            "ceremony"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "python_persistence_keep_documented_target",
+      "prompt": "Help me decide the file layout for this refund persistence slice currently rooted at src/app/infrastructure/refunds. The repository docs now route new refund persistence work to src/app/infrastructure/persistence/refunds, but the older refund_repository.py path still exists. Prefer the documented target and call out migration cost.",
+      "target_area": "src/app/infrastructure/refunds",
+      "source_paths": [
+        "src/app/infrastructure/refunds/refund_repository.py",
+        "src/app/infrastructure/persistence/refunds/refund_sql_repository.py",
+        "src/app/application/refunds/create_refund_use_case.py"
+      ],
+      "expected": {
+        "strategy": "keep",
+        "repo_shape": "layer-first",
+        "artifact_type": "library-module",
+        "stack": "python",
+        "files": [
+          "src/app/infrastructure/persistence/refunds/refund_sql_repository.py"
+        ],
+        "keep_inline": [
+          "save_batch loop",
+          "small sqlite row tuple handling"
+        ],
+        "avoid": [
+          "src/app/infrastructure/refunds/refund_repository.py",
+          "refund_mapper.py",
+          "persistence_helpers.py"
+        ],
+        "confidence": "medium",
+        "must_contain": [
+          "documented persistence boundary",
+          "relocation",
+          "pre-migration path"
+        ]
+      },
+      "semantic": {
+        "allowed_repo_shape": [
+          "layer-first",
+          "mixed"
+        ],
+        "allowed_artifact_type": [
+          "library-module"
+        ],
+        "allowed_confidence": [
+          "medium",
+          "high"
+        ],
+        "required_file_groups": [
+          [
+            "src/app/infrastructure/persistence/refunds/refund_sql_repository.py"
+          ]
+        ],
+        "max_files": 1,
+        "forbidden_paths": [
+          "src/app/infrastructure/refunds/refund_repository.py"
+        ],
+        "required_term_groups": [
+          [
+            "persistence",
+            "repository"
+          ],
+          [
+            "documented target",
+            "migration target",
+            "persistence/refunds"
+          ],
+          [
+            "relocation",
+            "move",
+            "migrate",
+            "migration"
+          ],
+          [
+            "pre-migration path",
+            "legacy path",
+            "compatibility"
+          ],
+          [
+            "mapper",
+            "helper",
+            "ceremony"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "python_interfaces_http_relocate_doc_conflict",
+      "prompt": "Help me decide the file layout for this refund HTTP transport slice currently rooted at src/app/interfaces/refunds. README.md still broadly describes interfaces as the HTTP/CLI adapter layer, but the layering rules and refund module docs name src/app/entrypoints/http/refund_routes.py as the target home for refund HTTP transport. Prefer the target-area docs over the broader repo docs and call out migration cost.",
+      "target_area": "src/app/interfaces/refunds",
+      "source_paths": [
+        "src/app/interfaces/refunds/create_refund_controller.py",
+        "src/app/entrypoints/http/refund_routes.py",
+        "src/app/application/refunds/create_refund_use_case.py"
+      ],
+      "focus_paths": [
+        "src/app/entrypoints/http/refund_routes.py"
+      ],
+      "legacy_paths": [
+        "src/app/interfaces/refunds/create_refund_controller.py"
+      ],
+      "comparison_paths": [
+        "src/app/application/refunds/create_refund_use_case.py"
+      ],
+      "expected": {
+        "strategy": "merge",
+        "repo_shape": "layer-first",
+        "artifact_type": "service-endpoint",
+        "stack": "python",
+        "files": [
+          "src/app/entrypoints/http/refund_routes.py"
+        ],
+        "keep_inline": [
+          "payload-to-use-case call",
+          "response shaping"
+        ],
+        "avoid": [
+          "src/app/interfaces/refunds/create_refund_controller.py",
+          "refund_service.py",
+          "schemas.py"
+        ],
+        "confidence": "medium",
+        "must_contain": [
+          "target-area baseline docs win over broader repo guidance",
+          "compatibility shim",
+          "relocation"
+        ]
+      },
+      "semantic": {
+        "allowed_repo_shape": [
+          "layer-first",
+          "mixed"
+        ],
+        "allowed_artifact_type": [
+          "service-endpoint"
+        ],
+        "allowed_confidence": [
+          "medium",
+          "high"
+        ],
+        "required_file_groups": [
+          [
+            "src/app/entrypoints/http/refund_routes.py"
+          ]
+        ],
+        "max_files": 1,
+        "forbidden_paths": [
+          "src/app/interfaces/refunds/create_refund_controller.py"
+        ],
+        "required_term_groups": [
+          [
+            "readme",
+            "broader repo docs"
+          ],
+          [
+            "target-area baseline docs win over broader repo guidance",
+            "target-area docs",
+            "explicit baseline docs",
+            "migration notes explicitly move",
+            "broader repo docs",
+            "broader readme guidance"
+          ],
+          [
+            "entrypoints",
+            "http",
+            "route"
+          ],
+          [
+            "compatibility shim",
+            "shim"
+          ],
+          [
+            "relocation",
+            "move",
+            "migration"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "python_http_rollout_note_over_long_term_target",
+      "prompt": "Help me decide the file layout for this refund export HTTP slice currently rooted at src/app/interfaces/refund_exports. docs/architecture/HTTP_TRANSPORT_TARGETS.md says the long-term target is src/app/entrypoints/http/refund_export_routes.py, but docs/architecture/HTTP_TRANSPORT_MIGRATION.md says the downstream cutover is incomplete and refund_export_controller.py remains the active ingress seam. Prefer the baseline doc that most directly defines the current migration phase and call out the long-term target.",
+      "target_area": "src/app/interfaces/refund_exports",
+      "source_paths": [
+        "src/app/interfaces/refund_exports/refund_export_controller.py",
+        "src/app/entrypoints/http/refund_export_routes.py",
+        "src/app/application/refund_exports/export_refund_use_case.py"
+      ],
+      "focus_paths": [
+        "src/app/interfaces/refund_exports/refund_export_controller.py",
+        "src/app/entrypoints/http/refund_export_routes.py"
+      ],
+      "expected": {
+        "strategy": "merge",
+        "repo_shape": "layer-first",
+        "artifact_type": "service-endpoint",
+        "stack": "python",
+        "files": [
+          "src/app/interfaces/refund_exports/refund_export_controller.py"
+        ],
+        "keep_inline": [
+          "payload-to-use-case call",
+          "response shaping"
+        ],
+        "avoid": [
+          "src/app/entrypoints/http/refund_export_routes.py",
+          "refund_export_service.py",
+          "schemas.py"
+        ],
+        "confidence": "medium",
+        "must_contain": [
+          "current migration-phase note wins",
+          "downstream cutover",
+          "long-term target"
+        ]
+      },
+      "semantic": {
+        "allowed_repo_shape": [
+          "layer-first",
+          "mixed"
+        ],
+        "allowed_artifact_type": [
+          "service-endpoint"
+        ],
+        "allowed_confidence": [
+          "medium",
+          "high"
+        ],
+        "required_file_groups": [
+          [
+            "src/app/interfaces/refund_exports/refund_export_controller.py"
+          ]
+        ],
+        "max_files": 1,
+        "forbidden_paths": [
+          "src/app/entrypoints/http/refund_export_routes.py"
+        ],
+        "required_term_groups": [
+          [
+            "migration",
+            "cutover",
+            "rollout"
+          ],
+          [
+            "current migration-phase note wins",
+            "current migration phase",
+            "current rollout note",
+            "active ingress seam for the current phase",
+            "active ingress seam"
+          ],
+          [
+            "long-term target",
+            "long term target",
+            "entrypoints/http"
+          ],
+          [
+            "controller",
+            "same http slice",
+            "same ingress seam"
+          ],
+          [
+            "service",
+            "schema",
+            "ceremony"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "python_http_same_phase_granularity_merge_wrapper",
+      "prompt": "Decide whether this refund export HTTP slice should keep both refund_export_controller.py and refund_export_routes.py during the current rollout. docs/architecture/HTTP_TRANSPORT_MIGRATION.md and docs/architecture/HTTP_TRANSPORT_SEAMS.md both agree that the current ingress seam stays in src/app/interfaces/refund_exports, but the seam guidance says a route wrapper should only survive if it owns real framework glue. Anchor the decision on src/app/interfaces/refund_exports.",
+      "target_area": "src/app/interfaces/refund_exports",
+      "source_paths": [
+        "src/app/interfaces/refund_exports/refund_export_controller.py",
+        "src/app/entrypoints/http/refund_export_routes.py",
+        "src/app/application/refund_exports/export_refund_use_case.py"
+      ],
+      "expected": {
+        "strategy": "merge",
+        "repo_shape": "layer-first",
+        "artifact_type": "service-endpoint",
+        "stack": "python",
+        "files": [
+          "src/app/interfaces/refund_exports/refund_export_controller.py"
+        ],
+        "keep_inline": [
+          "payload translation",
+          "response shaping"
+        ],
+        "avoid": [
+          "src/app/entrypoints/http/refund_export_routes.py",
+          "refund_export_service.py",
+          "schemas.py"
+        ],
+        "confidence": "medium",
+        "must_contain": [
+          "current-phase seam guidance wins",
+          "thin route wrapper",
+          "framework glue"
+        ]
+      },
+      "semantic": {
+        "allowed_repo_shape": [
+          "layer-first",
+          "mixed"
+        ],
+        "allowed_artifact_type": [
+          "service-endpoint"
+        ],
+        "allowed_confidence": [
+          "medium",
+          "high"
+        ],
+        "required_file_groups": [
+          [
+            "src/app/interfaces/refund_exports/refund_export_controller.py"
+          ]
+        ],
+        "max_files": 1,
+        "forbidden_paths": [
+          "src/app/entrypoints/http/refund_export_routes.py"
+        ],
+        "required_term_groups": [
+          [
+            "current-phase seam guidance wins",
+            "seam guidance",
+            "same phase",
+            "current-phase docs keep ingress",
+            "rollout phase",
+            "active ingress seam here",
+            "current migration-phase docs explicitly keep one ingress file"
+          ],
+          [
+            "thin route wrapper",
+            "route wrapper",
+            "wrapper"
+          ],
+          [
+            "framework glue",
+            "transport glue"
+          ],
+          [
+            "controller",
+            "response shaping",
+            "payload translation"
+          ],
+          [
+            "service",
+            "schema",
+            "ceremony"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "python_endpoint_keep_conflicting_siblings",
+      "prompt": "Should this Python refund note endpoint stay in one module or split further? Anchor the decision in services/python-order-api/features/refund-note and compare it with the nearby refunds feature, which split around real IO, and the nearby refund-audit feature, which merged away a thin service hop.",
+      "target_area": "services/python-order-api/features/refund-note",
+      "source_paths": [
+        "services/python-order-api/features/refund-note/note_endpoint.py",
+        "services/python-order-api/features/refunds/quote_endpoint.py",
+        "services/python-order-api/features/refund-audit/audit_handler.py",
+        "services/python-order-api/features/refund-audit/audit_service.py"
+      ],
+      "expected": {
+        "strategy": "keep",
+        "repo_shape": "feature-first",
+        "artifact_type": "service-endpoint",
+        "stack": "python",
+        "files": [
+          "services/python-order-api/features/refund-note/note_endpoint.py"
+        ],
+        "keep_inline": [
+          "Request and response dataclasses",
+          "note normalization and preview label logic"
+        ],
+        "avoid": [
+          "note_service.py",
+          "schemas.py",
+          "validators.py"
+        ],
+        "confidence": "medium",
+        "must_contain": [
+          "strongest local signal wins",
+          "conflicting sibling examples",
+          "no real IO seam"
+        ]
+      },
+      "semantic": {
+        "allowed_repo_shape": [
+          "feature-first"
+        ],
+        "allowed_artifact_type": [
+          "service-endpoint"
+        ],
+        "allowed_confidence": [
+          "medium",
+          "high"
+        ],
+        "required_file_groups": [
+          [
+            "services/python-order-api/features/refund-note/note_endpoint.py"
+          ]
+        ],
+        "max_files": 1,
+        "required_term_groups": [
+          [
+            "dataclass",
+            "request",
+            "response"
+          ],
+          [
+            "note normalization",
+            "preview label",
+            "local rules"
+          ],
+          [
+            "strongest local signal wins",
+            "strongest local signal",
+            "local slice itself",
+            "one shared change reason",
+            "no database, network, framework, or persistence seam",
+            "one cohesive change reason",
+            "no separate database, network, or framework adapter seam"
+          ],
+          [
+            "conflicting sibling examples",
+            "nearby sibling examples",
+            "mixed nearby patterns",
+            "comparison signal is slightly inconsistent",
+            "nearby refunds slice",
+            "requested refunds comparison is only partial",
+            "comparison is only partial in the visible local files",
+            "comparison narrative in the request is stronger",
+            "literal nearby python file layout"
+          ],
+          [
+            "service",
+            "schema",
+            "validator",
+            "no real io seam"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "react_feature_merge_exact_file_anchor",
+      "prompt": "Decide whether skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-timeline/RefundTimelinePanel.tsx should keep its current panel and local hook split or merge them. Use that exact file path as the anchor and compare it with the nearby refund-detail feature, where the panel already separates a real API file.",
+      "target_area": "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-timeline/RefundTimelinePanel.tsx",
+      "source_paths": [
+        "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-timeline/RefundTimelinePanel.tsx",
+        "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-timeline/useRefundTimelineFilters.ts",
+        "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-detail/RefundDetailPanel.tsx",
+        "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-detail/refundDetailApi.ts"
+      ],
+      "focus_paths": [
+        "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-timeline/RefundTimelinePanel.tsx",
+        "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-timeline/useRefundTimelineFilters.ts"
+      ],
+      "comparison_paths": [
+        "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-detail/RefundDetailPanel.tsx",
+        "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-detail/refundDetailApi.ts"
+      ],
+      "expected": {
+        "strategy": "merge",
+        "repo_shape": "feature-first",
+        "artifact_type": "ui-component",
+        "stack": "typescript-javascript",
+        "files": [
+          "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-timeline/RefundTimelinePanel.tsx"
+        ],
+        "keep_inline": [
+          "timeline filter state",
+          "status label helper"
+        ],
+        "avoid": [
+          "useRefundTimelineFilters.ts",
+          "refundTimeline.types.ts",
+          "index.ts"
+        ],
+        "confidence": "high",
+        "must_contain": [
+          "exact file anchor",
+          "panel-local hook",
+          "comparison context only"
+        ]
+      },
+      "semantic": {
+        "allowed_repo_shape": [
+          "feature-first"
+        ],
+        "allowed_artifact_type": [
+          "ui-component"
+        ],
+        "allowed_confidence": [
+          "high",
+          "medium"
+        ],
+        "required_file_groups": [
+          [
+            "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-timeline/RefundTimelinePanel.tsx"
+          ]
+        ],
+        "max_files": 1,
+        "forbidden_paths": [
+          "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-timeline/useRefundTimelineFilters.ts"
+        ],
+        "required_term_groups": [
+          [
+            "timeline",
+            "panel"
+          ],
+          [
+            "panel-local hook",
+            "same panel",
+            "single panel",
+            "one component file",
+            "one file",
+            "same change reason",
+            "local ui state"
+          ],
+          [
+            "exact file anchor",
+            "exact file path",
+            "file anchor",
+            "exact slice",
+            "this exact slice"
+          ],
+          [
+            "comparison context only",
+            "comparison only",
+            "reference only",
+            "nearby refund-detail example",
+            "comparison evidence",
+            "nearby comparison"
+          ],
+          [
+            "hook",
+            "types",
+            "ceremony"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "react_feature_split_exact_file_anchor",
+      "prompt": "Should skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-detail/RefundDetailPanel.tsx stay in one panel file or split into panel and API files? Use that exact file path as the anchor and compare it with refund-timeline/RefundTimelinePanel.tsx, where a panel-local hook should collapse back into the component.",
+      "target_area": "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-detail/RefundDetailPanel.tsx",
+      "source_paths": [
+        "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-detail/RefundDetailPanel.tsx",
+        "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-detail/refundDetailApi.ts",
+        "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-timeline/RefundTimelinePanel.tsx",
+        "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-timeline/useRefundTimelineFilters.ts"
+      ],
+      "focus_paths": [
+        "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-detail/RefundDetailPanel.tsx",
+        "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-detail/refundDetailApi.ts"
+      ],
+      "comparison_paths": [
+        "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-timeline/RefundTimelinePanel.tsx",
+        "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-timeline/useRefundTimelineFilters.ts"
+      ],
+      "expected": {
+        "strategy": "split",
+        "repo_shape": "feature-first",
+        "artifact_type": "ui-component",
+        "stack": "typescript-javascript",
+        "files": [
+          "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-detail/RefundDetailPanel.tsx",
+          "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-detail/refundDetailApi.ts"
+        ],
+        "keep_inline": [
+          "RefundDetailTab type",
+          "currency badge formatter"
+        ],
+        "avoid": [
+          "useRefundDetail.ts",
+          "refundDetail.types.ts",
+          "index.ts"
+        ],
+        "confidence": "high",
+        "must_contain": [
+          "exact file anchor",
+          "real API boundary",
+          "comparison context only"
+        ]
+      },
+      "semantic": {
+        "allowed_repo_shape": [
+          "feature-first"
+        ],
+        "allowed_artifact_type": [
+          "ui-component"
+        ],
+        "allowed_confidence": [
+          "high",
+          "medium"
+        ],
+        "required_file_groups": [
+          [
+            "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-detail/RefundDetailPanel.tsx"
+          ],
+          [
+            "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-detail/refundDetailApi.ts",
+            "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-detail/refundDetailClient.ts",
+            "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-detail/refundDetailService.ts"
+          ]
+        ],
+        "max_files": 3,
+        "required_term_groups": [
+          [
+            "detail",
+            "panel"
+          ],
+          [
+            "api",
+            "client",
+            "fetch"
+          ],
+          [
+            "real API boundary",
+            "real api seam",
+            "remote load",
+            "real external io seam",
+            "external io seam",
+            "network behavior",
+            "transport failures"
+          ],
+          [
+            "comparison context only",
+            "comparison only",
+            "reference only",
+            "refund-timeline comparison",
+            "comparison",
+            "nearby comparison"
+          ],
+          [
+            "hook",
+            "types",
+            "ceremony"
+          ]
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+id: "sample-output-example"
+user_request: |
+  输出一个最小输入锚点方案，至少包含高频表达和锚点绑定规则。
+notes: "这是最小输出骨架示例，用于校准必须存在的核心字段。"
+sample_output:
+  intake_anchor_plan:
+    high_frequency_patterns:
+      - "预算八千"
+      - "白色最好但不是必须"
+      - "静音"
+    anchor_binding_rules:
+      - "field_key 必须绑定到具体偏好项"
+      - "高频标准表达默认零 LLM 调用"

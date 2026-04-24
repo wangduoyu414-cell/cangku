@@ -1,0 +1,26 @@
+suite_id: "intake-anchor-curator-trigger-core"
+cases:
+  - id: "positive-intake-anchor-plan"
+    goal: "输入锚点方案请求应触发"
+    input: "请输出 task 04 的高频表达模式、软偏好、冲突候选和原话锚点绑定规则。"
+    expected: true
+    type: "positive"
+    notes: "典型输入锚点整理请求。"
+  - id: "positive-soft-preference-conflict"
+    goal: "软偏好和冲突候选请求应触发"
+    input: "把输入里的 soft preference 和 conflict candidates 整理成正式 intake anchor 方案。"
+    expected: true
+    type: "positive"
+    notes: "明确指向软偏好和冲突候选。"
+  - id: "negative-runtime-state-truth"
+    goal: "运行时状态真值请求不应触发"
+    input: "请直接判断当前用户的最终状态真相。"
+    expected: false
+    type: "negative"
+    notes: "这是运行时状态推理请求。"
+  - id: "negative-generic-summary"
+    goal: "泛化总结请求不应触发"
+    input: "帮我总结一下这份输入基线文档。"
+    expected: false
+    type: "negative"
+    notes: "只有总结，不是锚点方案。"

@@ -1,0 +1,14 @@
+skill_name: federated-incident-governor-simplified
+scores:
+  scope_and_signal: {score: 5, reason: "强简化下边界仍然牢靠。"}
+  knowledge_packaging: {score: 5, reason: "复杂约束被压缩但未丢失。"}
+  instruction_to_action: {score: 4, reason: "说明仍然可执行。"}
+  limits_and_interfaces: {score: 5, reason: "治理边界和 UTF-8 链路都保留。"}
+  learning_and_lift: {score: 5, reason: "能解释简化收益并保留回归闭环。"}
+hard_checks:
+  has_non_scope: true
+  has_output_contract: true
+  has_trigger_eval: true
+  has_quality_eval: true
+  has_baseline_plan: true
+  has_simplification_pass: true

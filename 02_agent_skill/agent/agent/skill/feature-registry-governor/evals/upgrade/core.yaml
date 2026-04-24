@@ -1,0 +1,16 @@
+suite_id: "feature-registry-governor-upgrade-core"
+baseline:
+  previous_version: "pre-unified-2026-04-23"
+  baseline_artifact: "evals/upgrade/frozen-baseline.md"
+cases:
+  - id: "keep-registry-constraints-and-blocks"
+    goal: "升级统一结构后仍保留版本约束与未登记特征阻断"
+    before:
+      - "旧版只有目标、输入、输出、脚本、红线"
+    after:
+      - "新版补齐设计目标、边界、不变量和正式评测资产"
+    expected:
+      - "仍要求显式 version_constraints"
+      - "仍不允许未登记特征进入正式规则包"
+      - "仍不扩展成运行时特征逻辑"
+    notes: "验证结构迁移不破坏原有语义。"

@@ -1,0 +1,4 @@
+id: "localized-edit-preserve-layout"
+user_request: |
+  基于已有活动海报，只把日期从“2025”改成“2026”，其余构图、颜色、产品图、标题、品牌标识全部不变。请帮我整理成适合 gpt-image-2 的提示词包。
+notes: "代表 localized-edit（局部编辑） 在 campaign-key-visual（营销主视觉） 场景下的典型请求。重点验证该技能是否会明确 change_only（仅改动） 与 preserve（保持不变） 边界，并输出后续微调补丁。"

@@ -1,0 +1,31 @@
+decision:
+  strategy: split
+  target_area: "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-detail/RefundDetailPanel.tsx"
+  repo_shape: feature-first
+  artifact_type: ui-component
+  stack: typescript-javascript
+  files:
+    - path: "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-detail/RefundDetailPanel.tsx"
+      role: "panel component"
+      responsibility: "Own the refund-detail render flow, tab switching, load triggering, local loading and error state, and presentation-only formatting."
+      reason: "This is the feature entry UI, so operators should be able to read the main screen behavior in one component file."
+    - path: "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-detail/refundDetailApi.ts"
+      role: "feature-local API adapter"
+      responsibility: "Own the refund-detail fetch call, status checking, and transport-shaped response types returned to the panel."
+      reason: "This is the real external IO seam, so separating it keeps network behavior and transport failures traceable without polluting the render file."
+  keep_inline:
+    - "RefundDetailTab"
+    - "DEFAULT_REFUND_ID"
+    - "formatCurrencyBadge"
+    - "component-local loading, error, and selected-tab state"
+  avoid:
+    - "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-detail/useRefundDetail.ts for this single-panel fetch flow"
+    - "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-detail/refundDetail.types.ts when the types only describe this API response"
+    - "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-detail/index.ts barrel indirection"
+  why_not_fewer: "Collapsing the API file back into the panel would mix view state, effect lifecycle, request construction, HTTP status handling, and transport contracts in one place. Unlike the refund-timeline comparison, this is not a panel-local state extraction; it is the only real side-effect boundary in the slice."
+  why_not_more: "Splitting further into a hook, formatter file, or extra type file would mostly add ceremony. The common trace still fits cleanly in two files, and the refund-timeline example is exactly the kind of panel-local hook that should collapse back into the component because it has one consumer and no separate IO boundary."
+  risks:
+    - "The baseline architecture docs mainly govern backend src/app seams, so they provide general maintainability guidance here but no target-area-specific migration rule for this lab frontend slice."
+    - "If refund detail loading later adds caching, route-param coordination, refresh policies, or a second consumer, a dedicated feature-local hook may become warranted."
+    - "If response normalization or schema validation grows beyond simple transport typing, refundDetailApi.ts may need an additional mapper or schema seam later."
+  confidence: high

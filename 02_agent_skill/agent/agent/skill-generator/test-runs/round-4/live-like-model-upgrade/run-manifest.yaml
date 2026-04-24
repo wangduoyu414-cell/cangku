@@ -1,0 +1,13 @@
+skill_name: federated-incident-governor
+mode: model-upgrade
+request_summary: After another model upgrade, simplify the federated incident-governor
+  skill while preserving contradictory constraints, governance boundaries, and UTF-8
+  safety.
+created_at: '2026-03-27'
+created_files:
+- request.md
+- skill-brief.md
+- iteration-backlog.md
+- baseline-comparison.md
+- experience-ledger.yaml
+- model-upgrade-note.md

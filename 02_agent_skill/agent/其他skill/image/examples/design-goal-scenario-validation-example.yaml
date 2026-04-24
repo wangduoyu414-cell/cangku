@@ -1,0 +1,4 @@
+id: "design-goal-scenario-validation"
+user_request: |
+  我已经把字段补齐了。请围绕同一个设计目标拉 3 个不同场景的 gpt-image-2 测试样例并交叉校验，最后告诉我哪个场景最适合作为默认起点。设计目标是“把同一款护肤精华做成既适合电商头图又能延展到社媒封面的稳定视觉基线”。三个场景分别是：1）电商商品主图，要求瓶身轮廓和标签文字稳定；2）Instagram reel 封面，要求缩略图可识别和标题安全区；3）已有海报的局部编辑，只改活动年份，其余不变。
+notes: "代表字段已齐全时的 design-goal（设计目标） 跨场景验证请求。重点验证技能是否会输出 Scenario Validation Report（场景验证报告），并在 product-hero（商品主图）、instagram-reel-cover（Instagram 短视频封面） 和 localized-edit（局部编辑） 之间做交叉检验，而不是只给单一路径答案。"

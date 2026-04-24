@@ -1,0 +1,8 @@
+interface:
+  display_name: "current-file-dependency-analysis"
+  short_description: "当前文件依赖或影响范围不明确"
+  default_prompt: "Use $current-file-dependency-analysis when the current file's dependency facts, impact scope, or config/build linkage are unclear."
+
+policy:
+  allow_implicit_invocation: true
+

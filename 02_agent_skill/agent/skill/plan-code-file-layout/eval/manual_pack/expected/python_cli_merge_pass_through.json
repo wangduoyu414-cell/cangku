@@ -1,0 +1,21 @@
+{
+  "id": "python_cli_merge_pass_through",
+  "prompt": "Decide whether this refund backlog ops script should merge its tiny client helper back into the main command or keep them separate. Target scripts/ops/reconcile_refund_backlog.py and compare it with sync_partner_catalog.py, where the network boundary is heavier.",
+  "target_area": "scripts/ops",
+  "source_paths": [
+    "scripts/ops/reconcile_refund_backlog.py",
+    "scripts/ops/refund_backlog_client.py",
+    "scripts/ops/sync_partner_catalog.py"
+  ],
+  "expected_summary": {
+    "strategy": "merge",
+    "repo_shape": "mixed",
+    "artifact_type": "cli-command",
+    "stack": "python",
+    "confidence": "high",
+    "files": [
+      "scripts/ops/reconcile_refund_backlog.py"
+    ]
+  },
+  "validation_command": "python eval/validate_saved_output.py --case python_cli_merge_pass_through --output outputs/python_cli_merge_pass_through.yaml"
+}

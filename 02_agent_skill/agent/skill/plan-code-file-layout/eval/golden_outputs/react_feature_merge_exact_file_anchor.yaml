@@ -1,0 +1,24 @@
+decision:
+  strategy: merge
+  target_area: "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-timeline/RefundTimelinePanel.tsx"
+  repo_shape: feature-first
+  artifact_type: ui-component
+  stack: typescript-javascript
+  files:
+    - path: "skill-evals/plan-code-file-layout-lab/feature-first/react-refund-console/src/features/refund-timeline/RefundTimelinePanel.tsx"
+      role: "panel-component"
+      responsibility: "Own the timeline filter state, row filtering, and single-panel rendering in one component file."
+      reason: "The current split only extracts a panel-local hook for state that still belongs to the same panel."
+  keep_inline:
+    - "timeline filter state"
+    - "status label helper"
+  avoid:
+    - "useRefundTimelineFilters.ts"
+    - "refundTimeline.types.ts"
+    - "index.ts"
+  why_not_fewer: "One panel file is already the smallest useful boundary for this timeline slice."
+  why_not_more: "The visible split is still a panel-local hook for the same panel. The nearby refund-detail feature is comparison context only and separates because it owns a real API file, so keeping a separate hook file here would mostly add ceremony."
+  risks:
+    - "If the timeline filters start serving multiple panels or a reusable URL-sync flow, extracting the hook again may become worthwhile."
+    - "Keep the exact file anchor literal in target_area instead of widening it to the feature directory."
+  confidence: high

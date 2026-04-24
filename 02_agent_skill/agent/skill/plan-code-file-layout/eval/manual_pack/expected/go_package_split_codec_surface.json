@@ -1,0 +1,22 @@
+{
+  "id": "go_package_split_codec_surface",
+  "prompt": "Should packages/go/refundexports stay in one file or split its package surface into a few files? Compare it with amountcodec and partnerrefunds when deciding whether the codec details deserve their own file.",
+  "target_area": "packages/go/refundexports",
+  "source_paths": [
+    "packages/go/refundexports/export.go",
+    "packages/go/amountcodec/format.go",
+    "packages/go/partnerrefunds/sync.go"
+  ],
+  "expected_summary": {
+    "strategy": "split",
+    "repo_shape": "package-first",
+    "artifact_type": "library-module",
+    "stack": "go",
+    "confidence": "high",
+    "files": [
+      "packages/go/refundexports/export.go",
+      "packages/go/refundexports/csv_codec.go"
+    ]
+  },
+  "validation_command": "python eval/validate_saved_output.py --case go_package_split_codec_surface --output outputs/go_package_split_codec_surface.yaml"
+}

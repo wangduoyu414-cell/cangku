@@ -1,0 +1,622 @@
+{
+  "repo_root": "D:\\yongyongmoban",
+  "cases": [
+    {
+      "id": "python_endpoint",
+      "prompt": "Should this new Python endpoint stay in one module or split into handler and client files? Anchor the decision in services/python-order-api/features/refunds and compare it with the nearby shipments feature.",
+      "target_area": "services/python-order-api/features/refunds",
+      "source_paths": [
+        "services/python-order-api/features/refunds/quote_endpoint.py",
+        "services/python-order-api/features/shipments/tracking_handler.py",
+        "services/python-order-api/features/shipments/tracking_gateway.py"
+      ],
+      "expected_summary": {
+        "strategy": "split",
+        "repo_shape": "feature-first",
+        "artifact_type": "service-endpoint",
+        "stack": "python",
+        "confidence": "high",
+        "files": [
+          "services/python-order-api/features/refunds/quote_handler.py",
+          "services/python-order-api/features/refunds/pricing_gateway.py"
+        ]
+      },
+      "validation_command": "python eval/validate_saved_output.py --case python_endpoint --output outputs/python_endpoint.yaml"
+    },
+    {
+      "id": "ts_ui_feature",
+      "prompt": "Help me decide the file layout for a new TypeScript UI feature in this repo. Target packages/web-dashboard/src/features/subscription-optimizer before implementation starts.",
+      "target_area": "packages/web-dashboard/src/features/subscription-optimizer",
+      "source_paths": [
+        "packages/web-dashboard/src/features/subscription-optimizer/SubscriptionOptimizerPanel.tsx",
+        "packages/web-dashboard/src/features/invoice-alerts/InvoiceAlertsPanel.tsx",
+        "packages/web-dashboard/src/features/invoice-alerts/invoiceAlertsApi.ts"
+      ],
+      "expected_summary": {
+        "strategy": "split",
+        "repo_shape": "feature-first",
+        "artifact_type": "ui-component",
+        "stack": "typescript-javascript",
+        "confidence": "high",
+        "files": [
+          "packages/web-dashboard/src/features/subscription-optimizer/SubscriptionOptimizerPanel.tsx",
+          "packages/web-dashboard/src/features/subscription-optimizer/subscriptionOptimizerApi.ts"
+        ]
+      },
+      "validation_command": "python eval/validate_saved_output.py --case ts_ui_feature --output outputs/ts_ui_feature.yaml"
+    },
+    {
+      "id": "vue_page",
+      "prompt": "Plan how many files to create for this Vue feature before we start coding. Anchor the decision on packages/admin-portal/src/pages/audit/AuditReplayPage.vue.",
+      "target_area": "packages/admin-portal/src/pages/audit",
+      "source_paths": [
+        "packages/admin-portal/src/pages/audit/AuditReplayPage.vue",
+        "packages/admin-portal/src/components/audit/ReplayResultCard.vue",
+        "packages/admin-portal/src/services/auditApi.ts",
+        "packages/admin-portal/src/composables/useToast.ts"
+      ],
+      "expected_summary": {
+        "strategy": "keep",
+        "repo_shape": "mixed",
+        "artifact_type": "ui-component",
+        "stack": "vue",
+        "confidence": "high",
+        "files": [
+          "packages/admin-portal/src/pages/audit/AuditReplayPage.vue"
+        ]
+      },
+      "validation_command": "python eval/validate_saved_output.py --case vue_page --output outputs/vue_page.yaml"
+    },
+    {
+      "id": "go_package",
+      "prompt": "Should I extract helpers from this Go package or keep the change in one file? Target packages/go/amountcodec.",
+      "target_area": "packages/go/amountcodec",
+      "source_paths": [
+        "packages/go/amountcodec/format.go",
+        "packages/go/amountcodec/format_test.go",
+        "packages/go/taxcalc/calc.go"
+      ],
+      "expected_summary": {
+        "strategy": "keep",
+        "repo_shape": "package-first",
+        "artifact_type": "library-module",
+        "stack": "go",
+        "confidence": "high",
+        "files": [
+          "packages/go/amountcodec/format.go"
+        ]
+      },
+      "validation_command": "python eval/validate_saved_output.py --case go_package --output outputs/go_package.yaml"
+    },
+    {
+      "id": "cli_command",
+      "prompt": "Design the file boundaries for this CLI command so it stays easy to debug. Target scripts/ops/sync_partner_catalog.py.",
+      "target_area": "scripts/ops",
+      "source_paths": [
+        "scripts/ops/sync_partner_catalog.py",
+        "scripts/ops/rebuild_search_index.py",
+        "configs/base/partner-sync.yml",
+        "data/sample/partner_catalog.csv"
+      ],
+      "expected_summary": {
+        "strategy": "split",
+        "repo_shape": "mixed",
+        "artifact_type": "cli-command",
+        "stack": "python",
+        "confidence": "high",
+        "files": [
+          "scripts/ops/sync_partner_catalog.py",
+          "scripts/ops/partner_catalog_client.py"
+        ]
+      },
+      "validation_command": "python eval/validate_saved_output.py --case cli_command --output outputs/cli_command.yaml"
+    },
+    {
+      "id": "data_pipeline",
+      "prompt": "Before implementation, tell me what files this data pipeline step should have. Anchor the decision on services/etl-pipeline/src/jobs/publishCustomerHealth.ts.",
+      "target_area": "services/etl-pipeline/src",
+      "source_paths": [
+        "services/etl-pipeline/src/jobs/publishCustomerHealth.ts",
+        "services/etl-pipeline/src/jobs/publishInvoiceAging.ts",
+        "services/etl-pipeline/src/transforms/buildInvoiceAgingSnapshot.ts",
+        "services/etl-pipeline/src/sinks/writeInvoiceAgingSnapshot.ts"
+      ],
+      "expected_summary": {
+        "strategy": "split",
+        "repo_shape": "layer-first",
+        "artifact_type": "data-pipeline-step",
+        "stack": "typescript-javascript",
+        "confidence": "high",
+        "files": [
+          "services/etl-pipeline/src/jobs/publishCustomerHealth.ts",
+          "services/etl-pipeline/src/transforms/buildCustomerHealthSnapshot.ts",
+          "services/etl-pipeline/src/sinks/writeCustomerHealthSnapshot.ts"
+        ]
+      },
+      "validation_command": "python eval/validate_saved_output.py --case data_pipeline --output outputs/data_pipeline.yaml"
+    },
+    {
+      "id": "merge_ui_feature",
+      "prompt": "Decide whether this refactor should merge two files or keep them separate. Target packages/web-dashboard/src/features/invoice-alerts, where a tiny component currently jumps to a tiny API helper.",
+      "target_area": "packages/web-dashboard/src/features/invoice-alerts",
+      "source_paths": [
+        "packages/web-dashboard/src/features/invoice-alerts/InvoiceAlertsPanel.tsx",
+        "packages/web-dashboard/src/features/invoice-alerts/invoiceAlertsApi.ts",
+        "packages/web-dashboard/src/features/invoice-alerts/index.ts"
+      ],
+      "expected_summary": {
+        "strategy": "merge",
+        "repo_shape": "feature-first",
+        "artifact_type": "ui-component",
+        "stack": "typescript-javascript",
+        "confidence": "high",
+        "files": [
+          "packages/web-dashboard/src/features/invoice-alerts/InvoiceAlertsPanel.tsx"
+        ]
+      },
+      "validation_command": "python eval/validate_saved_output.py --case merge_ui_feature --output outputs/merge_ui_feature.yaml"
+    },
+    {
+      "id": "legacy_conflict",
+      "prompt": "Help me decide the file layout for this Python refund sync slice in src/app/services/legacy_refunds. The repository docs describe Clean Architecture layers, but this local area already has a services folder under src/app, so please plan the files and call out uncertainty.",
+      "target_area": "src/app/services/legacy_refunds",
+      "source_paths": [
+        "src/app/services/legacy_refunds/refund_sync.py",
+        "src/app/interfaces/refunds/refund_controller.py",
+        "src/app/application/refunds/sync_refunds_use_case.py"
+      ],
+      "expected_summary": {
+        "strategy": "split",
+        "repo_shape": "mixed",
+        "artifact_type": "data-pipeline-step",
+        "stack": "python",
+        "confidence": "low",
+        "files": [
+          "src/app/services/legacy_refunds/refund_sync.py",
+          "src/app/services/legacy_refunds/refund_partner_gateway.py",
+          "src/app/services/legacy_refunds/refund_store.py"
+        ]
+      },
+      "validation_command": "python eval/validate_saved_output.py --case legacy_conflict --output outputs/legacy_conflict.yaml"
+    },
+    {
+      "id": "python_endpoint_keep_small",
+      "prompt": "Should this Python refund-status endpoint stay in one module or split into handler and service files? Anchor the decision in services/python-order-api/features/refund-status and compare it with the nearby shipments feature. This slice only validates request fields, applies local refund-window rules, and shapes a response.",
+      "target_area": "services/python-order-api/features/refund-status",
+      "source_paths": [
+        "services/python-order-api/features/refund-status/status_endpoint.py",
+        "services/python-order-api/features/shipments/tracking_handler.py",
+        "services/python-order-api/features/shipments/tracking_gateway.py"
+      ],
+      "expected_summary": {
+        "strategy": "keep",
+        "repo_shape": "feature-first",
+        "artifact_type": "service-endpoint",
+        "stack": "python",
+        "confidence": "high",
+        "files": [
+          "services/python-order-api/features/refund-status/status_endpoint.py"
+        ]
+      },
+      "validation_command": "python eval/validate_saved_output.py --case python_endpoint_keep_small --output outputs/python_endpoint_keep_small.yaml"
+    },
+    {
+      "id": "python_cli_merge_pass_through",
+      "prompt": "Decide whether this refund backlog ops script should merge its tiny client helper back into the main command or keep them separate. Target scripts/ops/reconcile_refund_backlog.py and compare it with sync_partner_catalog.py, where the network boundary is heavier.",
+      "target_area": "scripts/ops",
+      "source_paths": [
+        "scripts/ops/reconcile_refund_backlog.py",
+        "scripts/ops/refund_backlog_client.py",
+        "scripts/ops/sync_partner_catalog.py"
+      ],
+      "expected_summary": {
+        "strategy": "merge",
+        "repo_shape": "mixed",
+        "artifact_type": "cli-command",
+        "stack": "python",
+        "confidence": "high",
+        "files": [
+          "scripts/ops/reconcile_refund_backlog.py"
+        ]
+      },
+      "validation_command": "python eval/validate_saved_output.py --case python_cli_merge_pass_through --output outputs/python_cli_merge_pass_through.yaml"
+    },
+    {
+      "id": "ts_backend_endpoint_keep_small",
+      "prompt": "Should this TypeScript refund preview endpoint stay in one route file or split into route, service, and schema files? Anchor the decision in services/node-refund-api/src/features/refund-preview and compare it with the nearby refund-batch feature, which already split a real network adapter.",
+      "target_area": "services/node-refund-api/src/features/refund-preview",
+      "source_paths": [
+        "services/node-refund-api/src/features/refund-preview/refundPreviewRoute.ts",
+        "services/node-refund-api/src/features/refund-batch/refundBatchRoute.ts",
+        "services/node-refund-api/src/features/refund-batch/refundBatchClient.ts"
+      ],
+      "expected_summary": {
+        "strategy": "keep",
+        "repo_shape": "feature-first",
+        "artifact_type": "service-endpoint",
+        "stack": "typescript-javascript",
+        "confidence": "high",
+        "files": [
+          "services/node-refund-api/src/features/refund-preview/refundPreviewRoute.ts"
+        ]
+      },
+      "validation_command": "python eval/validate_saved_output.py --case ts_backend_endpoint_keep_small --output outputs/ts_backend_endpoint_keep_small.yaml"
+    },
+    {
+      "id": "ts_backend_endpoint_split_io",
+      "prompt": "Plan the file layout for this TypeScript webhook endpoint before implementation moves further. Anchor the decision in services/node-refund-api/src/features/refund-webhooks, where one route currently mixes signature checks, partner lookups, and event persistence.",
+      "target_area": "services/node-refund-api/src/features/refund-webhooks",
+      "source_paths": [
+        "services/node-refund-api/src/features/refund-webhooks/refundWebhookRoute.ts",
+        "services/node-refund-api/src/features/refund-preview/refundPreviewRoute.ts",
+        "services/node-refund-api/src/features/refund-batch/refundBatchRoute.ts",
+        "services/node-refund-api/src/features/refund-batch/refundBatchClient.ts"
+      ],
+      "expected_summary": {
+        "strategy": "split",
+        "repo_shape": "feature-first",
+        "artifact_type": "service-endpoint",
+        "stack": "typescript-javascript",
+        "confidence": "high",
+        "files": [
+          "services/node-refund-api/src/features/refund-webhooks/refundWebhookRoute.ts",
+          "services/node-refund-api/src/features/refund-webhooks/refundPartnerClient.ts",
+          "services/node-refund-api/src/features/refund-webhooks/refundEventStore.ts"
+        ]
+      },
+      "validation_command": "python eval/validate_saved_output.py --case ts_backend_endpoint_split_io --output outputs/ts_backend_endpoint_split_io.yaml"
+    },
+    {
+      "id": "react_feature_keep_local",
+      "prompt": "Plan how many files to create for this React feature before implementation. Target packages/web-dashboard/src/features/discount-simulator and compare it with nearby dashboard features that already show when API extraction is or is not worth it.",
+      "target_area": "packages/web-dashboard/src/features/discount-simulator",
+      "source_paths": [
+        "packages/web-dashboard/src/features/discount-simulator/DiscountSimulatorPanel.tsx",
+        "packages/web-dashboard/src/features/subscription-optimizer/SubscriptionOptimizerPanel.tsx",
+        "packages/web-dashboard/src/features/invoice-alerts/InvoiceAlertsPanel.tsx",
+        "packages/web-dashboard/src/features/invoice-alerts/invoiceAlertsApi.ts"
+      ],
+      "expected_summary": {
+        "strategy": "keep",
+        "repo_shape": "feature-first",
+        "artifact_type": "ui-component",
+        "stack": "typescript-javascript",
+        "confidence": "high",
+        "files": [
+          "packages/web-dashboard/src/features/discount-simulator/DiscountSimulatorPanel.tsx"
+        ]
+      },
+      "validation_command": "python eval/validate_saved_output.py --case react_feature_keep_local --output outputs/react_feature_keep_local.yaml"
+    },
+    {
+      "id": "vue_page_split_reusable_async_flow",
+      "prompt": "Plan the file layout for this Vue export feature before implementation. Anchor the decision in packages/admin-portal/src/pages/exports, where both the page and the retry dialog need the same polling and retry flow.",
+      "target_area": "packages/admin-portal/src/pages/exports",
+      "source_paths": [
+        "packages/admin-portal/src/pages/exports/AuditExportPage.vue",
+        "packages/admin-portal/src/components/audit/AuditExportRetryDialog.vue",
+        "packages/admin-portal/src/services/auditExportApi.ts",
+        "packages/admin-portal/src/pages/audit/AuditReplayPage.vue"
+      ],
+      "expected_summary": {
+        "strategy": "split",
+        "repo_shape": "mixed",
+        "artifact_type": "ui-component",
+        "stack": "vue",
+        "confidence": "high",
+        "files": [
+          "packages/admin-portal/src/pages/exports/AuditExportPage.vue",
+          "packages/admin-portal/src/composables/useAuditExportJob.ts"
+        ]
+      },
+      "validation_command": "python eval/validate_saved_output.py --case vue_page_split_reusable_async_flow --output outputs/vue_page_split_reusable_async_flow.yaml"
+    },
+    {
+      "id": "vue_page_merge_local_composable",
+      "prompt": "Decide whether this Vue refund review page should keep its local filter composable or merge it back into the page. Target packages/admin-portal/src/pages/refunds/RefundReviewPage.vue. The composable is only used by this page and only manages local filter refs and computed labels.",
+      "target_area": "packages/admin-portal/src/pages/refunds",
+      "source_paths": [
+        "packages/admin-portal/src/pages/refunds/RefundReviewPage.vue",
+        "packages/admin-portal/src/composables/useRefundReviewFilters.ts",
+        "packages/admin-portal/src/pages/audit/AuditReplayPage.vue"
+      ],
+      "expected_summary": {
+        "strategy": "merge",
+        "repo_shape": "mixed",
+        "artifact_type": "ui-component",
+        "stack": "vue",
+        "confidence": "high",
+        "files": [
+          "packages/admin-portal/src/pages/refunds/RefundReviewPage.vue"
+        ]
+      },
+      "validation_command": "python eval/validate_saved_output.py --case vue_page_merge_local_composable --output outputs/vue_page_merge_local_composable.yaml"
+    },
+    {
+      "id": "go_package_split_same_package",
+      "prompt": "Should this Go package stay in one file or split into a few files without creating new packages? Target packages/go/partnerrefunds and compare it with the smaller amountcodec package.",
+      "target_area": "packages/go/partnerrefunds",
+      "source_paths": [
+        "packages/go/partnerrefunds/sync.go",
+        "packages/go/amountcodec/format.go",
+        "packages/go/taxcalc/calc.go"
+      ],
+      "expected_summary": {
+        "strategy": "split",
+        "repo_shape": "package-first",
+        "artifact_type": "library-module",
+        "stack": "go",
+        "confidence": "high",
+        "files": [
+          "packages/go/partnerrefunds/sync.go",
+          "packages/go/partnerrefunds/partner_client.go",
+          "packages/go/partnerrefunds/refund_store.go"
+        ]
+      },
+      "validation_command": "python eval/validate_saved_output.py --case go_package_split_same_package --output outputs/go_package_split_same_package.yaml"
+    },
+    {
+      "id": "python_library_keep_shared_helper",
+      "prompt": "Plan the file layout for the shared refund reason slice in src/app/shared/utils. create_refund_use_case.py and refund_summary_card.py both need the same normalization and display behavior, and the nearby money helper shows how small shared utilities usually live in this repository.",
+      "target_area": "src/app/shared/utils",
+      "source_paths": [
+        "src/app/shared/utils/refund_reason.py",
+        "src/app/shared/utils/money.py",
+        "src/app/application/refunds/create_refund_use_case.py",
+        "src/app/shared/components/refund_summary_card.py"
+      ],
+      "expected_summary": {
+        "strategy": "keep",
+        "repo_shape": "mixed",
+        "artifact_type": "library-module",
+        "stack": "python",
+        "confidence": "high",
+        "files": [
+          "src/app/shared/utils/refund_reason.py"
+        ]
+      },
+      "validation_command": "python eval/validate_saved_output.py --case python_library_keep_shared_helper --output outputs/python_library_keep_shared_helper.yaml"
+    },
+    {
+      "id": "python_pipeline_keep_single_job",
+      "prompt": "Before implementation, tell me what files this Python refund health snapshot job should have. Anchor the decision on services/python-refund-jobs/jobs/publish_refund_health.py and compare it with the nearby chargeback snapshot job in the same jobs directory.",
+      "target_area": "services/python-refund-jobs/jobs",
+      "source_paths": [
+        "services/python-refund-jobs/jobs/publish_refund_health.py",
+        "services/python-refund-jobs/jobs/publish_chargeback_snapshot.py"
+      ],
+      "expected_summary": {
+        "strategy": "keep",
+        "repo_shape": "layer-first",
+        "artifact_type": "data-pipeline-step",
+        "stack": "python",
+        "confidence": "high",
+        "files": [
+          "services/python-refund-jobs/jobs/publish_refund_health.py"
+        ]
+      },
+      "validation_command": "python eval/validate_saved_output.py --case python_pipeline_keep_single_job --output outputs/python_pipeline_keep_single_job.yaml"
+    },
+    {
+      "id": "react_feature_split_shared_hook",
+      "prompt": "Plan the file boundaries for this refund triage UI slice before implementation goes further. Anchor the decision in packages/web-dashboard/src/features/refund-triage, where the panel and the decision drawer both participate in loading the queue and saving review decisions.",
+      "target_area": "packages/web-dashboard/src/features/refund-triage",
+      "source_paths": [
+        "packages/web-dashboard/src/features/refund-triage/RefundTriagePanel.tsx",
+        "packages/web-dashboard/src/features/refund-triage/RefundDecisionDrawer.tsx",
+        "packages/web-dashboard/src/features/subscription-optimizer/SubscriptionOptimizerPanel.tsx"
+      ],
+      "expected_summary": {
+        "strategy": "split",
+        "repo_shape": "feature-first",
+        "artifact_type": "ui-component",
+        "stack": "typescript-javascript",
+        "confidence": "high",
+        "files": [
+          "packages/web-dashboard/src/features/refund-triage/RefundTriagePanel.tsx",
+          "packages/web-dashboard/src/features/refund-triage/RefundDecisionDrawer.tsx",
+          "packages/web-dashboard/src/features/refund-triage/useRefundDecisionQueue.ts"
+        ]
+      },
+      "validation_command": "python eval/validate_saved_output.py --case react_feature_split_shared_hook --output outputs/react_feature_split_shared_hook.yaml"
+    },
+    {
+      "id": "go_package_merge_tiny_files",
+      "prompt": "Decide whether packages/go/refundlabels should stay split across several tiny files or collapse into fewer files. Compare it with amountcodec when planning the package layout.",
+      "target_area": "packages/go/refundlabels",
+      "source_paths": [
+        "packages/go/refundlabels/parse.go",
+        "packages/go/refundlabels/format.go",
+        "packages/go/refundlabels/errors.go",
+        "packages/go/amountcodec/format.go"
+      ],
+      "expected_summary": {
+        "strategy": "merge",
+        "repo_shape": "package-first",
+        "artifact_type": "library-module",
+        "stack": "go",
+        "confidence": "high",
+        "files": [
+          "packages/go/refundlabels/labels.go"
+        ]
+      },
+      "validation_command": "python eval/validate_saved_output.py --case go_package_merge_tiny_files --output outputs/go_package_merge_tiny_files.yaml"
+    },
+    {
+      "id": "python_pipeline_split_source_sink",
+      "prompt": "Plan the file layout for this Python refund sync job before implementation continues. Anchor the decision on services/python-refund-jobs/jobs/sync_partner_refunds.py and compare it with the simpler refund health job in the same jobs area.",
+      "target_area": "services/python-refund-jobs/jobs",
+      "source_paths": [
+        "services/python-refund-jobs/jobs/sync_partner_refunds.py",
+        "services/python-refund-jobs/jobs/publish_refund_health.py"
+      ],
+      "expected_summary": {
+        "strategy": "split",
+        "repo_shape": "layer-first",
+        "artifact_type": "data-pipeline-step",
+        "stack": "python",
+        "confidence": "high",
+        "files": [
+          "services/python-refund-jobs/jobs/sync_partner_refunds.py",
+          "services/python-refund-jobs/jobs/partner_refund_source.py",
+          "services/python-refund-jobs/jobs/refund_sync_store.py"
+        ]
+      },
+      "validation_command": "python eval/validate_saved_output.py --case python_pipeline_split_source_sink --output outputs/python_pipeline_split_source_sink.yaml"
+    },
+    {
+      "id": "ts_backend_merge_pass_through_service",
+      "prompt": "Decide whether this TypeScript refund audit endpoint should keep its current route and service split or merge them. Target services/node-refund-api/src/features/refund-audit and compare it with the nearby refund-batch feature, where the adapter split is heavier.",
+      "target_area": "services/node-refund-api/src/features/refund-audit",
+      "source_paths": [
+        "services/node-refund-api/src/features/refund-audit/refundAuditRoute.ts",
+        "services/node-refund-api/src/features/refund-audit/refundAuditService.ts",
+        "services/node-refund-api/src/features/refund-batch/refundBatchRoute.ts",
+        "services/node-refund-api/src/features/refund-batch/refundBatchClient.ts"
+      ],
+      "expected_summary": {
+        "strategy": "merge",
+        "repo_shape": "feature-first",
+        "artifact_type": "service-endpoint",
+        "stack": "typescript-javascript",
+        "confidence": "high",
+        "files": [
+          "services/node-refund-api/src/features/refund-audit/refundAuditRoute.ts"
+        ]
+      },
+      "validation_command": "python eval/validate_saved_output.py --case ts_backend_merge_pass_through_service --output outputs/ts_backend_merge_pass_through_service.yaml"
+    },
+    {
+      "id": "react_feature_merge_local_hook",
+      "prompt": "Decide whether this React refund insights feature should keep its current panel and hook split or merge them. Target packages/web-dashboard/src/features/refund-insights and compare it with the nearby refund triage feature, where state is shared across more than one component.",
+      "target_area": "packages/web-dashboard/src/features/refund-insights",
+      "source_paths": [
+        "packages/web-dashboard/src/features/refund-insights/RefundInsightsPanel.tsx",
+        "packages/web-dashboard/src/features/refund-insights/useRefundInsightFilters.ts",
+        "packages/web-dashboard/src/features/refund-triage/RefundTriagePanel.tsx",
+        "packages/web-dashboard/src/features/refund-triage/RefundDecisionDrawer.tsx"
+      ],
+      "expected_summary": {
+        "strategy": "merge",
+        "repo_shape": "feature-first",
+        "artifact_type": "ui-component",
+        "stack": "typescript-javascript",
+        "confidence": "high",
+        "files": [
+          "packages/web-dashboard/src/features/refund-insights/RefundInsightsPanel.tsx"
+        ]
+      },
+      "validation_command": "python eval/validate_saved_output.py --case react_feature_merge_local_hook --output outputs/react_feature_merge_local_hook.yaml"
+    },
+    {
+      "id": "go_package_split_codec_surface",
+      "prompt": "Should packages/go/refundexports stay in one file or split its package surface into a few files? Compare it with amountcodec and partnerrefunds when deciding whether the codec details deserve their own file.",
+      "target_area": "packages/go/refundexports",
+      "source_paths": [
+        "packages/go/refundexports/export.go",
+        "packages/go/amountcodec/format.go",
+        "packages/go/partnerrefunds/sync.go"
+      ],
+      "expected_summary": {
+        "strategy": "split",
+        "repo_shape": "package-first",
+        "artifact_type": "library-module",
+        "stack": "go",
+        "confidence": "high",
+        "files": [
+          "packages/go/refundexports/export.go",
+          "packages/go/refundexports/csv_codec.go"
+        ]
+      },
+      "validation_command": "python eval/validate_saved_output.py --case go_package_split_codec_surface --output outputs/go_package_split_codec_surface.yaml"
+    },
+    {
+      "id": "python_library_split_mature_api",
+      "prompt": "Plan the file layout for the shared refund export formatting slice in src/app/shared/utils. The same module now serves both export_partner_refunds.py and review_refund_export.py, and compare it with the smaller money helper nearby when deciding whether the export API and CSV details should stay together.",
+      "target_area": "src/app/shared/utils",
+      "source_paths": [
+        "src/app/shared/utils/refund_export_format.py",
+        "src/app/shared/utils/money.py",
+        "services/python-refund-jobs/jobs/export_partner_refunds.py",
+        "scripts/ops/review_refund_export.py"
+      ],
+      "expected_summary": {
+        "strategy": "split",
+        "repo_shape": "mixed",
+        "artifact_type": "library-module",
+        "stack": "python",
+        "confidence": "high",
+        "files": [
+          "src/app/shared/utils/refund_export_format.py",
+          "src/app/shared/utils/refund_export_csv.py"
+        ]
+      },
+      "validation_command": "python eval/validate_saved_output.py --case python_library_split_mature_api --output outputs/python_library_split_mature_api.yaml"
+    },
+    {
+      "id": "typescript_pipeline_keep_small",
+      "prompt": "Before implementation, tell me what files this TypeScript refund watchlist job should have. Anchor the decision on services/etl-pipeline/src/jobs/publishRefundWatchlist.ts and compare it with the nearby publishInvoiceAging job, transform, and sink files.",
+      "target_area": "services/etl-pipeline/src/jobs",
+      "source_paths": [
+        "services/etl-pipeline/src/jobs/publishRefundWatchlist.ts",
+        "services/etl-pipeline/src/jobs/publishInvoiceAging.ts",
+        "services/etl-pipeline/src/transforms/buildInvoiceAgingSnapshot.ts",
+        "services/etl-pipeline/src/sinks/writeInvoiceAgingSnapshot.ts"
+      ],
+      "expected_summary": {
+        "strategy": "keep",
+        "repo_shape": "layer-first",
+        "artifact_type": "data-pipeline-step",
+        "stack": "typescript-javascript",
+        "confidence": "high",
+        "files": [
+          "services/etl-pipeline/src/jobs/publishRefundWatchlist.ts"
+        ]
+      },
+      "validation_command": "python eval/validate_saved_output.py --case typescript_pipeline_keep_small --output outputs/typescript_pipeline_keep_small.yaml"
+    },
+    {
+      "id": "python_cli_keep_single",
+      "prompt": "Decide how many files this refund queue summary command should have before implementation grows. Target scripts/ops/summarize_refund_queue.py and compare it with the heavier sync_partner_catalog command in the same ops area.",
+      "target_area": "scripts/ops",
+      "source_paths": [
+        "scripts/ops/summarize_refund_queue.py",
+        "scripts/ops/sync_partner_catalog.py",
+        "scripts/ops/rebuild_search_index.py"
+      ],
+      "expected_summary": {
+        "strategy": "keep",
+        "repo_shape": "mixed",
+        "artifact_type": "cli-command",
+        "stack": "python",
+        "confidence": "high",
+        "files": [
+          "scripts/ops/summarize_refund_queue.py"
+        ]
+      },
+      "validation_command": "python eval/validate_saved_output.py --case python_cli_keep_single --output outputs/python_cli_keep_single.yaml"
+    },
+    {
+      "id": "python_endpoint_merge_pass_through_service",
+      "prompt": "Decide whether this Python refund audit endpoint should keep its current handler and service split or merge them. Target services/python-order-api/features/refund-audit and compare it with the nearby refunds and refund-status features.",
+      "target_area": "services/python-order-api/features/refund-audit",
+      "source_paths": [
+        "services/python-order-api/features/refund-audit/audit_handler.py",
+        "services/python-order-api/features/refund-audit/audit_service.py",
+        "services/python-order-api/features/refunds/quote_endpoint.py",
+        "services/python-order-api/features/refund-status/status_endpoint.py"
+      ],
+      "expected_summary": {
+        "strategy": "merge",
+        "repo_shape": "feature-first",
+        "artifact_type": "service-endpoint",
+        "stack": "python",
+        "confidence": "high",
+        "files": [
+          "services/python-order-api/features/refund-audit/audit_handler.py"
+        ]
+      },
+      "validation_command": "python eval/validate_saved_output.py --case python_endpoint_merge_pass_through_service --output outputs/python_endpoint_merge_pass_through_service.yaml"
+    }
+  ]
+}

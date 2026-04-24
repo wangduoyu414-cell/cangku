@@ -1,0 +1,9 @@
+{
+  "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow/.tmp/codex-skill-targeted-20260323/build_repo",
+  "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/.tmp/codex-skill-targeted-20260323/build_repo/src/helper.ts",
+  "repo_relative_path": "src/helper.ts",
+  "symbol": "",
+  "selection_range": "",
+  "language": "typescript",
+  "role_hint": "source"
+}

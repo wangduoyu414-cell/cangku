@@ -1,0 +1,26 @@
+{
+  "anchor": {
+    "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+    "file_path": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis/src/app/interfaces/order_controller.py",
+    "repo_relative_path": "src/app/interfaces/order_controller.py",
+    "symbol": "",
+    "selection_range": "",
+    "language": "python",
+    "role_hint": "source"
+  },
+  "stack": {
+    "stack_family": "python",
+    "stack_id": "python-stack",
+    "confidence": "medium",
+    "reasons": [
+      "file extension suggests python"
+    ],
+    "reference_file": "references/py-edge-rules.md",
+    "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+    "file_path": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis/src/app/interfaces/order_controller.py"
+  },
+  "edges": [],
+  "blind_spots": [
+    "Context links are search-based and may miss framework-specific runtime wiring."
+  ]
+}

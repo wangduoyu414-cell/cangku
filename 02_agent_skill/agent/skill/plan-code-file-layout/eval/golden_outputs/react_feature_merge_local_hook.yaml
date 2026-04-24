@@ -1,0 +1,23 @@
+decision:
+  strategy: merge
+  target_area: "packages/web-dashboard/src/features/refund-insights"
+  repo_shape: feature-first
+  artifact_type: ui-component
+  stack: typescript-javascript
+  files:
+    - path: "packages/web-dashboard/src/features/refund-insights/RefundInsightsPanel.tsx"
+      role: "panel-component"
+      responsibility: "Own the refund insights filters, loading flow, and single-panel rendering in one component file."
+      reason: "The current panel-local hook seam only creates a single-panel hook for state that serves the same panel."
+  keep_inline:
+    - "The panel filter state."
+    - "The header label helper."
+  avoid:
+    - "useRefundInsightFilters.ts"
+    - "refundInsights.types.ts"
+    - "index.ts"
+  why_not_fewer: "One panel file is already the smallest useful boundary for this refund insights slice."
+  why_not_more: "Keeping a separate single-panel hook for the same panel mostly adds another jump and ceremony without the shared async boundary seen in the triage feature."
+  risks:
+    - "If another insights component starts sharing the same filters, the hook may deserve extraction again."
+  confidence: high

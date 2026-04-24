@@ -1,0 +1,56 @@
+skill_name: multilingual-risk-triage
+mode: generate
+request_summary: "Generate a reusable multilingual risk triage skill from repeated incidents, failure clusters, and stricter audit constraints."
+constraints:
+  - "Preserve multilingual evidence and cross-team escalation notes."
+  - "Must remain compatible with UTF-8（统一编码） and audit trace requirements."
+quality_goals:
+  - "Higher trigger precision（触发精确率） under mixed Chinese（中文） and English（英文） prompts."
+  - "Higher coverage of lifecycle stages."
+scope:
+  - "Convert repeated incident triage requests into a reusable bounded skill."
+  - "Record evidence, escalation class, and regression follow-up."
+non_scope:
+  - "Do not resolve incidents directly."
+  - "Do not replace incident commander decisions."
+inputs:
+  - "incident reports（事件报告）"
+  - "failure clusters（失败簇）"
+  - "audit constraints（审计约束）"
+outputs:
+  - "risk triage skill draft（风险分诊技能草案）"
+  - "baseline and score outputs（基线与评分输出）"
+risks:
+  - "Trigger confusion with ordinary incident summaries."
+  - "Losing rollback nuance in compressed evidence."
+success_bar:
+  - "Must generate semantically filled planning artifacts."
+  - "Must survive UTF-8（统一编码） metadata generation."
+repeated_signals:
+  - "Incident triage requests repeat across multiple teams and languages."
+success_patterns:
+  - "Separate severity, evidence, and next action as distinct blocks."
+failure_feedback:
+  - "Earlier triage plans mixed summary text with action items."
+baseline:
+  candidate: "multilingual-risk-triage（多语言风险分诊）"
+  baseline: "manual triage checklist（手工分诊清单）"
+  quality_delta:
+    correctness: "higher"
+    actionability: "higher"
+    scope_clarity: "higher"
+    contract_completeness: "higher"
+  cost_delta:
+    token_estimate: "similar"
+    wall_clock_estimate: "similar"
+    tool_call_estimate: "similar"
+  notes:
+    - "Quality gains should come from bounded triage categories and better follow-up."
+iteration_backlog:
+  next_fixes:
+    - "Add more false-trigger prompts around ordinary summaries."
+    - "Add more cross-team escalation replay samples."
+  deferred_work:
+    - "Integrate real incident telemetry."
+  why_now:
+    - "Mixed-language incident triage is now recurring enough to justify a skill."

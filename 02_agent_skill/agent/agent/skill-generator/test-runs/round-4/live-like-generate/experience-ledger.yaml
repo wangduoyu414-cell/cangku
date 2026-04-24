@@ -1,0 +1,23 @@
+entries:
+- id: federated-incident-governor-generate-001
+  timestamp: '2026-03-27'
+  scenario: generate
+  signal: Long, multilingual incident-governor requests recur during major outages.
+  context: Must keep UTF-8（统一编码） safe content across Chinese（中文）, English（英文）, and
+    mixed glossary evidence.
+  action: Separate governance boundaries from execution actions.
+  outcome: success
+  baseline: without_skill
+  quality_delta: higher
+  cost_delta:
+    token_estimate: slightly_higher
+    wall_clock_estimate: similar
+    tool_call_estimate: similar
+  rule_candidate: Earlier drafts erased contradiction between security and legal instructions.
+  confidence: repeated-observation
+  freshness: stable
+  affected_dimension: scope_and_signal
+  evidence_refs:
+  - request.md
+  - baseline-comparison.md
+  follow_up: promote-to-default-path

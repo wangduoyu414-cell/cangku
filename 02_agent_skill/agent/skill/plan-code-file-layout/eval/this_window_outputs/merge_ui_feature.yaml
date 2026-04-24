@@ -1,0 +1,23 @@
+decision:
+  strategy: merge
+  target_area: "packages/web-dashboard/src/features/invoice-alerts"
+  repo_shape: feature-first
+  artifact_type: ui-component
+  stack: typescript-javascript
+  files:
+    - path: "packages/web-dashboard/src/features/invoice-alerts/InvoiceAlertsPanel.tsx"
+      role: "page-component"
+      responsibility: "Own invoice alert loading and rendering in the same panel component."
+      reason: "The current API helper and barrel are pass-through files that only serve this same panel."
+  keep_inline:
+    - "A tiny fetch helper should stay beside the component until a second consumer appears."
+    - "Alert list mapping should remain in the same panel while it only supports this same panel."
+  avoid:
+    - "invoiceAlertsApi.ts"
+    - "index.ts"
+    - "types.ts"
+  why_not_fewer: "One component file is already the smallest useful boundary for this feature slice."
+  why_not_more: "Keeping separate pass-through helper and barrel files adds ceremony without giving the same panel a clearer ownership boundary."
+  risks:
+    - "If another page or hook starts sharing invoice alert loading, re-extracting an API helper could become justified."
+  confidence: high

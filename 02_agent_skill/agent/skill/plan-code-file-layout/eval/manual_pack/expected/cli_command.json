@@ -1,0 +1,23 @@
+{
+  "id": "cli_command",
+  "prompt": "Design the file boundaries for this CLI command so it stays easy to debug. Target scripts/ops/sync_partner_catalog.py.",
+  "target_area": "scripts/ops",
+  "source_paths": [
+    "scripts/ops/sync_partner_catalog.py",
+    "scripts/ops/rebuild_search_index.py",
+    "configs/base/partner-sync.yml",
+    "data/sample/partner_catalog.csv"
+  ],
+  "expected_summary": {
+    "strategy": "split",
+    "repo_shape": "mixed",
+    "artifact_type": "cli-command",
+    "stack": "python",
+    "confidence": "high",
+    "files": [
+      "scripts/ops/sync_partner_catalog.py",
+      "scripts/ops/partner_catalog_client.py"
+    ]
+  },
+  "validation_command": "python eval/validate_saved_output.py --case cli_command --output outputs/cli_command.yaml"
+}

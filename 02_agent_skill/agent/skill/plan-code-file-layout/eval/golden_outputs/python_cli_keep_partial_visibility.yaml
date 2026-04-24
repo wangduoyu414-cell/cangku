@@ -1,0 +1,26 @@
+decision:
+  strategy: keep
+  target_area: "scripts/ops"
+  repo_shape: mixed
+  artifact_type: cli-command
+  stack: python
+  files:
+    - path: "scripts/ops/review_refund_export.py"
+      role: "command"
+      responsibility: "Own argparse handling, preview row loading, JSON preview formatting, and command output for the refund export review flow."
+      reason: "The visible slice is one command-local flow with file input, preview assembly, and output printing in the same place."
+  keep_inline:
+    - "argparse options"
+    - "preview row loop"
+    - "JSON preview formatting"
+  avoid:
+    - "review_refund_export_service.py"
+    - "review_refund_export_client.py"
+    - "command_base.py"
+  why_not_fewer: "One single command file is already the smallest useful boundary for this refund export review script."
+  why_not_more: "With only one command file visible, splitting now would likely invent ceremony rather than reveal a real adapter or test boundary."
+  risks:
+    - "This recommendation is based on partial visibility, because only one command file is in view and nearby ops patterns are not fully shown."
+    - "If review_refund_export.py later grows outbound network calls, reusable export adapters, or a second operator-facing consumer, revisit the boundary."
+    - "The current command delegates CSV decoding and JSON encoding to imported helpers already, so no extra command-local wrapper file is justified from the visible slice."
+  confidence: low

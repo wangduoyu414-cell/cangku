@@ -1,0 +1,29 @@
+decision:
+  strategy: merge
+  target_area: src/app/interfaces/refund_exports
+  repo_shape: layer-first
+  artifact_type: service-endpoint
+  stack: python
+  files:
+    - path: src/app/interfaces/refund_exports/refund_export_controller.py
+      role: active ingress controller
+      responsibility: Own payload translation, invoke the refund export use case, and shape the HTTP-facing response during the current migration phase.
+      reason: HTTP_TRANSPORT_MIGRATION.md keeps this controller as the active ingress seam, and HTTP_TRANSPORT_SEAMS.md gives it the concrete current-phase ownership.
+    - path: src/app/application/refund_exports/export_refund_use_case.py
+      role: application use case
+      responsibility: Hold refund export orchestration and normalization that should stay outside the HTTP transport seam.
+      reason: Keeps transport concerns in Interfaces and application behavior in Application, matching the documented layer boundaries.
+  keep_inline:
+    - Keep request field extraction and response dict shaping inline in refund_export_controller.py.
+    - Keep simple export_id and requested_by normalization inline in export_refund_use_case.py until a second real consumer or richer contract appears.
+  avoid:
+    - Keeping src/app/entrypoints/http/refund_export_routes.py as a forwarding-only wrapper while the cutover is incomplete.
+    - Adding a pass-through service layer between refund_export_controller.py and export_refund_use_case.py.
+    - Extracting standalone DTO, mapper, or presenter files for the current two-field request and response.
+  why_not_fewer: A one-file layout would collapse the active HTTP ingress seam into the application logic or pull transport shaping into the use case, which conflicts with the current migration-phase docs and weakens traceability.
+  why_not_more: Extra route, service, DTO, or presenter files would mostly add ceremony; the common refund export path stays readable through one ingress file and one application file, and the current route file has no real framework glue.
+  risks:
+    - The long-term target is still src/app/entrypoints/http/refund_export_routes.py, so this slice will need a follow-up relocation once the cutover note in HTTP_TRANSPORT_MIGRATION.md is retired.
+    - If real framework registration must exist in EntryPoints before the cutover finishes, a minimal refund_export_routes.py may need to return, but it should own only framework glue and not duplicate controller behavior.
+    - If validation or response contracts grow beyond trivial dict handling, a dedicated request or response DTO seam may become justified later.
+  confidence: high

@@ -1,0 +1,12 @@
+{
+  "stack_family": "python",
+  "stack_id": "python-stack",
+  "confidence": "high",
+  "reasons": [
+    "file extension suggests python",
+    "found requirements.txt"
+  ],
+  "reference_file": "references/py-edge-rules.md",
+  "repo_root": "D:/LangChain",
+  "file_path": "D:/LangChain/start_mcp.py"
+}

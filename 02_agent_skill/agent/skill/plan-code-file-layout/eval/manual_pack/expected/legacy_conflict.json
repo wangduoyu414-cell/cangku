@@ -1,0 +1,23 @@
+{
+  "id": "legacy_conflict",
+  "prompt": "Help me decide the file layout for this Python refund sync slice in src/app/services/legacy_refunds. The repository docs describe Clean Architecture layers, but this local area already has a services folder under src/app, so please plan the files and call out uncertainty.",
+  "target_area": "src/app/services/legacy_refunds",
+  "source_paths": [
+    "src/app/services/legacy_refunds/refund_sync.py",
+    "src/app/interfaces/refunds/refund_controller.py",
+    "src/app/application/refunds/sync_refunds_use_case.py"
+  ],
+  "expected_summary": {
+    "strategy": "split",
+    "repo_shape": "mixed",
+    "artifact_type": "data-pipeline-step",
+    "stack": "python",
+    "confidence": "low",
+    "files": [
+      "src/app/services/legacy_refunds/refund_sync.py",
+      "src/app/services/legacy_refunds/refund_partner_gateway.py",
+      "src/app/services/legacy_refunds/refund_store.py"
+    ]
+  },
+  "validation_command": "python eval/validate_saved_output.py --case legacy_conflict --output outputs/legacy_conflict.yaml"
+}

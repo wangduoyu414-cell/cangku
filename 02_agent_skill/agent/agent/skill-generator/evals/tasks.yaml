@@ -1,0 +1,49 @@
+tasks:
+  - id: recurring-work-to-new-skill
+    phase: generate
+    eval_refs:
+      - trigger-evals.yaml
+      - quality-evals.yaml
+      - baseline-evals.yaml
+    expected_focus:
+      - skill-qi-target
+      - scope-and-signal
+      - lean-core
+      - eval-pack
+      - iteration-backlog
+    hard_checks:
+      - has-non-scope
+      - has-trigger-eval
+      - has-baseline-plan
+
+  - id: failure-cluster-to-skill-upgrade
+    phase: iterate
+    eval_refs:
+      - quality-evals.yaml
+      - baseline-evals.yaml
+    expected_focus:
+      - failure-attribution
+      - guardrail-promotion
+      - regression-pack
+      - scorecard-refresh
+      - model-sensitive-demotion
+    hard_checks:
+      - cites-failure-cluster
+      - updates-evals
+      - preserves-stable-core
+
+  - id: model-upgrade-simplification
+    phase: model-upgrade
+    eval_refs:
+      - baseline-evals.yaml
+      - model-upgrade-evals.yaml
+    expected_focus:
+      - simplification-pass
+      - stable-core
+      - model-sensitive-layer
+      - refreshed-baseline
+      - retained-safety-contract
+    hard_checks:
+      - removes-redundant-scaffolding
+      - keeps-validation-loop
+      - records-delta

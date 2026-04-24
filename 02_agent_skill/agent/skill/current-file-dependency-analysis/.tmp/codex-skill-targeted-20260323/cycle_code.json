@@ -1,0 +1,25 @@
+{
+  "edges": [
+    {
+      "from": "A.py",
+      "to": "B.py",
+      "direction": "outbound",
+      "edge_kind": "import",
+      "symbol": "",
+      "evidence_ref": "A.py:1",
+      "confidence": "high",
+      "resolution": "resolved"
+    },
+    {
+      "from": "B.py",
+      "to": "A.py",
+      "direction": "inbound",
+      "edge_kind": "import",
+      "symbol": "",
+      "evidence_ref": "B.py:1",
+      "confidence": "high",
+      "resolution": "resolved"
+    }
+  ],
+  "blind_spots": []
+}

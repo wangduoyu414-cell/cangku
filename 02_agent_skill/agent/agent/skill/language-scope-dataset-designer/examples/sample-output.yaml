@@ -1,0 +1,15 @@
+id: "sample-output-example"
+user_request: |
+  输出一个最小语言窄口方案，至少包含允许范围和禁止范围。
+notes: "这是最小输出骨架示例，用于校准必须存在的核心字段。"
+sample_output:
+  language_scope_plan:
+    allowed_scope:
+      - "低置信补解析"
+      - "复杂解释润色"
+      - "安全拒答"
+    forbidden_scope:
+      - "排序决策"
+      - "推送时机"
+      - "证据事实生成"
+      - "状态真相维护"

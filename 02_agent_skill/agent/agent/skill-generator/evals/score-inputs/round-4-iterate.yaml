@@ -1,0 +1,14 @@
+skill_name: federated-incident-governor-v2
+scores:
+  scope_and_signal: {score: 4, reason: "失败修复后仍保持边界。"}
+  knowledge_packaging: {score: 4, reason: "回归与陈旧产物信息被结构化。"}
+  instruction_to_action: {score: 4, reason: "修复方向与待办清晰。"}
+  limits_and_interfaces: {score: 5, reason: "治理与回归接口都很清晰。"}
+  learning_and_lift: {score: 4, reason: "回归报告支持持续改进。"}
+hard_checks:
+  has_non_scope: true
+  has_output_contract: true
+  has_trigger_eval: true
+  has_quality_eval: true
+  has_baseline_plan: true
+  has_simplification_pass: true

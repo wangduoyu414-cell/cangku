@@ -1,0 +1,52 @@
+cases:
+  should_trigger:
+    - id: repeated-review-fix-work
+      prompt: "最近我们总在把代码评审意见整理成修复计划，帮我沉淀成一个可以长期复用的 skill。"
+      reason: "重复任务进入技能化。"
+    - id: upgrade-existing-skill-from-failures
+      prompt: "现有 skill 在跨文件修改时总漏依赖，帮我根据失败记录升级它。"
+      reason: "已有技能升级。"
+    - id: model-upgrade-simplification
+      prompt: "模型升级后旧版 skill 太啰嗦了，帮我重构成更轻的版本。"
+      reason: "升模后的技能瘦身。"
+    - id: recurring-doc-formatting
+      prompt: "我们重复收到把访谈纪要整理成固定模板报告的请求，做一个 skill。"
+      reason: "高频固定交付物。"
+    - id: skill-generator-from-examples
+      prompt: "这里有十个成功案例和四个失败案例，帮我提炼出一个可迭代的 skill 包。"
+      reason: "有案例与失败样本。"
+    - id: quality-loop-missing
+      prompt: "这个 skill 现在没有评测和回归，帮我补齐质量闭环。"
+      reason: "补评测与回归。"
+    - id: org-specific-playbook
+      prompt: "团队内部总做同类发布回滚操作，想变成带模板和验证步骤的 skill。"
+      reason: "组织专有方法沉淀。"
+    - id: baseline-comparison-request
+      prompt: "请把这个 skill 的版本升级做成可与旧版对比的生成器。"
+      reason: "要求基线对比。"
+
+  should_not_trigger:
+    - id: one-off-prompt
+      prompt: "帮我写一个一次性提示词，让模型今天回答更礼貌。"
+      reason: "一次性提示，不是技能包。"
+    - id: repo-wiring-only
+      prompt: "只需要把 skills.yaml 增加一行注册信息。"
+      reason: "只有注册接线。"
+    - id: casual-brainstorm
+      prompt: "随便 brainstorm 一下有哪些技能方向可做。"
+      reason: "头脑风暴，不是生成或升级技能。"
+    - id: direct-code-fix
+      prompt: "修一下这个 Python 脚本的空指针异常。"
+      reason: "直接编码任务。"
+    - id: architecture-review
+      prompt: "给我评审一下整个 Agent 平台的架构。"
+      reason: "系统级设计评审，不是单个技能生成。"
+    - id: pure-document-summary
+      prompt: "把这份规范文档总结成三段话。"
+      reason: "普通总结任务。"
+    - id: ui-copywriting
+      prompt: "给首页写几句营销文案。"
+      reason: "普通文案任务。"
+    - id: bug-report-triage
+      prompt: "帮我对这个 bug 报告分级并给修复建议。"
+      reason: "缺少技能化意图。"

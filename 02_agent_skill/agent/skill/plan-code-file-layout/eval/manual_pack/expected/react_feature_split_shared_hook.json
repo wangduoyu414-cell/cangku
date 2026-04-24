@@ -1,0 +1,23 @@
+{
+  "id": "react_feature_split_shared_hook",
+  "prompt": "Plan the file boundaries for this refund triage UI slice before implementation goes further. Anchor the decision in packages/web-dashboard/src/features/refund-triage, where the panel and the decision drawer both participate in loading the queue and saving review decisions.",
+  "target_area": "packages/web-dashboard/src/features/refund-triage",
+  "source_paths": [
+    "packages/web-dashboard/src/features/refund-triage/RefundTriagePanel.tsx",
+    "packages/web-dashboard/src/features/refund-triage/RefundDecisionDrawer.tsx",
+    "packages/web-dashboard/src/features/subscription-optimizer/SubscriptionOptimizerPanel.tsx"
+  ],
+  "expected_summary": {
+    "strategy": "split",
+    "repo_shape": "feature-first",
+    "artifact_type": "ui-component",
+    "stack": "typescript-javascript",
+    "confidence": "high",
+    "files": [
+      "packages/web-dashboard/src/features/refund-triage/RefundTriagePanel.tsx",
+      "packages/web-dashboard/src/features/refund-triage/RefundDecisionDrawer.tsx",
+      "packages/web-dashboard/src/features/refund-triage/useRefundDecisionQueue.ts"
+    ]
+  },
+  "validation_command": "python eval/validate_saved_output.py --case react_feature_split_shared_hook --output outputs/react_feature_split_shared_hook.yaml"
+}

@@ -1,0 +1,26 @@
+decision:
+  strategy: "merge"
+  target_area: "src/app/interfaces/refund_exports"
+  repo_shape: "layer-first"
+  artifact_type: "service-endpoint"
+  stack: "python"
+  files:
+    - path: "src/app/interfaces/refund_exports/refund_export_controller.py"
+      role: "controller ingress seam"
+      responsibility: "Own refund export HTTP payload translation, invoke the export_refund use case, and shape the HTTP-facing response during the current rollout."
+      reason: "HTTP_TRANSPORT_MIGRATION.md and HTTP_TRANSPORT_SEAMS.md explicitly keep the active ingress seam here, and the existing route file contains no real framework glue."
+  keep_inline:
+    - "Request field extraction and one-off mapping for export_id and requested_by."
+    - "Small response shaping for status and export_id."
+    - "Any endpoint-local TypedDict or lightweight validation that has no second consumer yet."
+  avoid:
+    - "Keeping src/app/entrypoints/http/refund_export_routes.py as a forwarding-only wrapper during the current rollout."
+    - "Adding a local service/orchestrator layer between the controller and src/app/application/refund_exports/export_refund_use_case.py."
+    - "Extracting separate DTO or mapper modules before validation rules or reuse become materially separate."
+  why_not_fewer: "Using fewer files would mean bypassing the documented controller seam or pushing transport translation directly into the application use case. The current migration-phase docs explicitly keep one ingress file in src/app/interfaces/refund_exports, so the controller is the minimum boundary that preserves layering."
+  why_not_more: "Keeping both the controller and the current route file, or adding extra DTO/service files, would mostly add ceremony. The common bug path is readable through the controller and the use case, and there is no separate framework, validation, or IO boundary in the route wrapper today."
+  risks:
+    - "docs/architecture/HTTP_TRANSPORT_TARGETS.md still sets src/app/entrypoints/http/refund_export_routes.py as the long-term home, so this merge is a rollout-phase choice and a later relocation is likely when the migration exception is retired."
+    - "If real framework glue appears in the HTTP entrypoint later, a route file may need to return as a non-trivial adapter rather than a pure forwarder."
+    - "Any existing router registration that currently imports post_refund_export_route will need a small follow-up update when the wrapper is removed."
+  confidence: "high"

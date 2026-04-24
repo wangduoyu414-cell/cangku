@@ -1,0 +1,16 @@
+suite_id: "replay-suite-builder-upgrade-core"
+baseline:
+  previous_version: "pre-unified-2026-04-23"
+  baseline_artifact: "evals/upgrade/frozen-baseline.md"
+cases:
+  - id: "keep-new-core-replay-boundary"
+    goal: "升级统一结构后仍保留新核心回放集边界和旧回放不可替代红线"
+    before:
+      - "旧版只有目标、输入、输出、脚本、红线"
+    after:
+      - "新版补齐设计目标、边界、不变量和正式评测资产"
+    expected:
+      - "仍显式绑定新核心回放集"
+      - "仍不允许用 replayd 样例替代新核心正式回放集"
+      - "仍不扩展成实际回放执行器"
+    notes: "验证结构迁移不破坏原有语义。"

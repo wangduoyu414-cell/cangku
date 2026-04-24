@@ -1,0 +1,28 @@
+decision:
+  strategy: keep
+  target_area: services/python-order-api/features/refund-note
+  repo_shape: feature-first
+  artifact_type: service-endpoint
+  stack: python
+  files:
+    - path: services/python-order-api/features/refund-note/note_endpoint.py
+      role: endpoint
+      responsibility: "Own the refund-note preview slice end to end: parse the request payload, validate feature-local fields, normalize the note text, derive the preview label, and shape the response."
+      reason: "This slice has one shared change reason and no database, network, framework, or persistence seam. Keeping it in one module matches the local feature-first area and the Python guidance to keep local helpers, validators, and types inline."
+  keep_inline:
+    - "RefundNoteRequest and RefundNoteResponse dataclasses"
+    - "_validate_request and the feature-local field rules"
+    - "Whitespace normalization and preview_label derivation"
+    - "Request and response dict translation for this preview endpoint"
+  avoid:
+    - "note_service.py as a thin pass-through wrapper"
+    - "note_gateway.py or note_repository.py before any real external IO exists"
+    - "shared/utils/refund_note.py for hypothetical reuse"
+  why_not_fewer: "One production file is already the minimum coherent boundary. Pulling validation or normalization into shared helpers or another feature file would blur ownership of the refund-note contract without removing any real complexity."
+  why_not_more: "A further split would be naming-only. Unlike the nearby refunds slice, this module has no real IO edge to isolate, and creating a handler/service/helper chain would repeat the thin-hop pattern that adds trace distance without separate ownership or test value."
+  risks:
+    - "The repository's long-term architecture docs point refund work toward layered src/app modules, but they do not explicitly define a current migration rule for services/python-order-api/features/refund-note."
+    - "services/python-order-api/features/refunds/quote_endpoint.py shows the kind of DB and HTTP seams that would justify extraction, but the local implementation there has not yet fully separated them, so it is not a clean structural template."
+    - "The refund-audit comparison signal is slightly inconsistent with the current local files, which still show a small handler/service split; treat that example as a warning against thin wrappers, not as a file list to copy."
+    - "Revisit the boundary if refund-note starts persisting notes, calling moderation or policy services, or sharing normalization logic with a second production consumer."
+  confidence: medium

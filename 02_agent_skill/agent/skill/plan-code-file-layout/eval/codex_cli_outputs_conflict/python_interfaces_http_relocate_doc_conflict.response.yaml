@@ -1,0 +1,27 @@
+decision:
+  strategy: merge
+  target_area: src/app/interfaces/refunds
+  repo_shape: layer-first
+  artifact_type: service-endpoint
+  stack: python
+  files:
+    - path: src/app/entrypoints/http/refund_routes.py
+      role: refund HTTP transport entrypoint
+      responsibility: Own the active refund HTTP ingress seam, including request payload extraction, minimal transport-level validation/normalization, use-case invocation, and response shaping for the create-refund route.
+      reason: The layering rules and refund module migration notes explicitly move new refund HTTP transport work to the entrypoints layer, and the current controller duplicates the same call path without adding a separate side-effect or test boundary.
+  keep_inline:
+    - Keep the four-field payload-to-use-case argument mapping inline in src/app/entrypoints/http/refund_routes.py.
+    - Keep simple response dict shaping inline in src/app/entrypoints/http/refund_routes.py until multiple refund HTTP handlers need the same contract logic.
+    - Keep src/app/application/refunds/create_refund_use_case.py as the next boundary rather than extracting a transport-only helper module.
+  avoid:
+    - Do not keep src/app/interfaces/refunds/create_refund_controller.py as a second active orchestration file for the same HTTP path.
+    - Do not add a route -> controller -> service pass-through chain for this slice.
+    - Do not extract one-off mapper, validator, or utils files for the current payload unless contract logic gains its own independent tests or a second consumer.
+  why_not_fewer: One file is enough for the HTTP transport seam, but not fewer than that because collapsing transport concerns directly into src/app/application/refunds/create_refund_use_case.py would blur the documented entrypoint/application boundary and mix protocol handling with use-case code.
+  why_not_more: More files would mostly recreate the current duplication and add wrapper hops with no real ownership gain, because this slice has one change reason, one side-effect boundary, and a short readable path from route to use case.
+  risks:
+    - Migration cost is real: callers, imports, and tests that still reference src/app/interfaces/refunds/create_refund_controller.py will need a cutover plan or a time-boxed compatibility shim before the legacy path can be removed.
+    - README.md still describes interfaces broadly as the HTTP/CLI adapter layer, so leaving that broader wording unchanged may cause future contributors to reintroduce refund HTTP transport code under src/app/interfaces/.
+    - If downstream rollout is incomplete, src/app/interfaces/refunds/create_refund_controller.py may need to remain temporarily, but only as legacy compatibility evidence and not as the target file for new transport behavior.
+    - If refund HTTP handling later gains framework-specific schema validation, richer status-code mapping, or multiple route actions, revisit whether refund_routes.py needs a second file for contract definitions; the current slice does not justify that split yet.
+  confidence: medium

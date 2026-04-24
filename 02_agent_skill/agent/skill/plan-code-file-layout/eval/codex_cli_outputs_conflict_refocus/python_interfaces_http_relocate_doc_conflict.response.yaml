@@ -1,0 +1,31 @@
+decision:
+  strategy: merge
+  target_area: src/app/interfaces/refunds
+  repo_shape: layer-first
+  artifact_type: service-endpoint
+  stack: python
+  files:
+    - path: src/app/entrypoints/http/refund_routes.py
+      role: primary-http-transport
+      responsibility: Own the refund HTTP ingress, including payload translation, use-case invocation, and response shaping for the create-refund route.
+      reason: The target-area layering rules and refund module docs explicitly place new refund HTTP transport work in the entrypoints HTTP layer.
+    - path: src/app/interfaces/refunds/create_refund_controller.py
+      role: compatibility-shim
+      responsibility: Preserve legacy callers during rollout by delegating to the entrypoint-owned transport seam without adding new orchestration logic.
+      reason: The refund module docs allow this file to remain temporarily for compatibility, but not as an independent transport owner.
+  keep_inline:
+    - payload-to-use-case argument mapping that is specific to this single route
+    - simple response shaping for status and refund_id
+    - any one-off request typing or light validation that is only used by this refund route
+  avoid:
+    - creating a transport service file that only forwards from the route to the use case
+    - keeping duplicated HTTP orchestration in both refund_routes.py and create_refund_controller.py
+    - extracting mapper or presenter helpers before a second real consumer exists
+    - adding separate DTO or presenter files for this trivial dict-to-dict transport flow
+  why_not_fewer: A one-file end state in src/app/entrypoints/http/refund_routes.py is the target, but keeping the compatibility shim temporarily avoids breaking existing imports or callers during migration.
+  why_not_more: This slice has one endpoint and one application use case; additional transport files would mostly add wrapper hops and make bug tracing longer without isolating a distinct side-effect or test boundary.
+  risks:
+    - Migrating transport ownership to src/app/entrypoints/http/refund_routes.py creates rollout cost because any existing imports, tests, or framework wiring that still point at src/app/interfaces/refunds/create_refund_controller.py must be updated or temporarily bridged.
+    - README.md still broadly describes src/app/interfaces as the HTTP/CLI adapter layer, so contributors may continue placing refund HTTP changes in the legacy location until the broader docs are reconciled.
+    - The refund-specific target state is explicit in .cursor/rules/LAYERING.md and docs/architecture/MODULE_RESPONSIBILITIES.md, but the dedicated HTTP transport migration docs shown here only cover refund_exports, so the migration playbook for refunds is inferred rather than fully spelled out.
+  confidence: medium

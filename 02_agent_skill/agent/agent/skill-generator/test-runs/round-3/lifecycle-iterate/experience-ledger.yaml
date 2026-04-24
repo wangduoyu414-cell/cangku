@@ -1,0 +1,23 @@
+entries:
+- id: multilingual-risk-triage-iterate-001
+  timestamp: '2026-03-27'
+  scenario: iterate
+  signal: Upgrade the multilingual risk triage skill from cross-file misses, inconsistent
+    baselines, and human rollback fixes.
+  context: Preserve stable triage categories while tightening failure handling.
+  action: Draft the reusable default path（起草可复用默认路径）
+  outcome: success
+  baseline: without_skill
+  quality_delta: higher
+  cost_delta:
+    token_estimate: slightly_higher
+    wall_clock_estimate: similar
+    tool_call_estimate: similar
+  rule_candidate: Cross-file dependencies keep disappearing in rollback-heavy incidents.
+  confidence: repeated-observation
+  freshness: stable
+  affected_dimension: scope_and_signal
+  evidence_refs:
+  - request.md
+  - baseline-comparison.md
+  follow_up: promote-to-default-path

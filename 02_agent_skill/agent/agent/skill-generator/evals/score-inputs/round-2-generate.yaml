@@ -1,0 +1,14 @@
+skill_name: compliance-rollback-planner
+scores:
+  scope_and_signal: {score: 4, reason: "触发边界足够清楚。"}
+  knowledge_packaging: {score: 2, reason: "多语言样例仍偏少。"}
+  instruction_to_action: {score: 4, reason: "产物形态较清晰。"}
+  limits_and_interfaces: {score: 3, reason: "合规接口明确，但细节仍可收紧。"}
+  learning_and_lift: {score: 2, reason: "增益证明还偏弱。"}
+hard_checks:
+  has_non_scope: true
+  has_output_contract: true
+  has_trigger_eval: true
+  has_quality_eval: true
+  has_baseline_plan: true
+  has_simplification_pass: true

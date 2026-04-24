@@ -1,0 +1,34 @@
+suite_id: "rule-workbook-designer-task-core"
+cases:
+  - id: "standard-generate-workbook-plan"
+    goal: "标准路径应生成规则工作簿方案"
+    input:
+      template_xlsx: "D:\\diypc\\assets\\templates\\核心规则维护模板.xlsx"
+      workbook_json: "D:\\diypc\\assets\\templates\\core_rule_workbook_v1.json"
+      task: "task 02"
+    expected:
+      output_sections:
+        - "workbook_tabs"
+        - "draft_import_targets"
+        - "published_pack_targets"
+        - "workbook_constraints"
+    type: "standard"
+    notes: "标准输出形态来自现有脚本和样例。"
+  - id: "boundary-missing-template"
+    goal: "缺少模板资产时不能伪造完整方案"
+    input:
+      template_xlsx: ""
+      workbook_json: "D:\\diypc\\assets\\templates\\core_rule_workbook_v1.json"
+      task: "task 02"
+    expected:
+      must_stop_for_missing_inputs: true
+    type: "boundary"
+    notes: "边界条件是缺少工作簿模板。"
+  - id: "error-prone-excel-runtime-source"
+    goal: "不得让 runtime 直接读 Excel"
+    input:
+      runtime_reads_excel: true
+    expected:
+      forbid_excel_runtime_read: true
+    type: "error-prone"
+    notes: "这是当前稳定红线。"

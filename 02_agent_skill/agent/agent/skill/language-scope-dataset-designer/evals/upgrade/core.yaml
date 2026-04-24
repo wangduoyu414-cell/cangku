@@ -1,0 +1,16 @@
+suite_id: "language-scope-dataset-designer-upgrade-core"
+baseline:
+  previous_version: "pre-unified-2026-04-23"
+  baseline_artifact: "evals/upgrade/frozen-baseline.md"
+cases:
+  - id: "keep-language-scope-boundaries"
+    goal: "升级统一结构后仍保留语言窄口边界与模板优先规则"
+    before:
+      - "旧版只有目标、输入、输出、脚本、红线"
+    after:
+      - "新版补齐设计目标、边界、不变量和正式评测资产"
+    expected:
+      - "仍不允许设计排序、推送、证据事实、状态真相样本"
+      - "仍要求任何自然语言输出可追溯到模板或证据包"
+      - "仍保持标准推荐结果优先模板"
+    notes: "验证结构迁移不破坏原有语义。"

@@ -1,0 +1,7 @@
+interface:
+  display_name: "codegen-governance"
+  short_description: "高风险代码变更或契约语义不明确"
+  default_prompt: "Use $codegen-governance when a supported local code-writing task may cross the governance threshold or contract-sensitive risk cannot yet be ruled out."
+
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,24 @@
+id: "current-file-dependency-analysis"
+version: "0.1.0"
+owner: "skill-group"
+description: >
+  Analyze a single current file's dependency facts within the repository.
+  Use when the task is to confirm what the current file directly depends on,
+  what directly depends on it, which config or build wiring is directly
+  connected, whether bounded impact analysis or dependency-cycle checks are
+  needed, and where evidence is incomplete. Do not use for repository-wide
+  architecture summaries, module responsibility explanations, file-layout
+  planning, or governance workflows that are not anchored to one current file.
+mode: "instruction"
+complexity: "platform"
+delivery_form: "data"
+side_effect: "local_write"
+skill_execution_requires:
+  - Read
+  - Glob
+  - Grep
+  - Shell
+downstream_allowed_tools:
+  - Read
+  - Glob
+

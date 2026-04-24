@@ -1,0 +1,334 @@
+{
+  "skill": "codegen-governance",
+  "version": "0.3.0",
+  "description": "Trigger evaluation cases for codegen-governance skill",
+  "should_trigger": [
+    {
+      "id": "trigger-001",
+      "text": "修一下这个函数的 bug",
+      "language": "python",
+      "expected_trigger": true,
+      "reason": "代码修改任务，涉及局部实现质量"
+    },
+    {
+      "id": "trigger-002",
+      "text": "补全这个函数的实现",
+      "language": "go",
+      "expected_trigger": true,
+      "reason": "代码生成任务，需要契约前置"
+    },
+    {
+      "id": "trigger-003",
+      "text": "给这个函数加个错误处理",
+      "language": "typescript",
+      "expected_trigger": true,
+      "reason": "涉及错误处理和返回契约"
+    },
+    {
+      "id": "trigger-004",
+      "text": "新增一个缓存逻辑",
+      "language": "python",
+      "expected_trigger": true,
+      "reason": "涉及副作用和运行时行为"
+    },
+    {
+      "id": "trigger-005",
+      "text": "修改这个 Vue 组件的 props 处理",
+      "language": "vue",
+      "expected_trigger": true,
+      "reason": "涉及输入处理和组件契约"
+    },
+    {
+      "id": "trigger-006",
+      "text": "给这个接口加个默认值",
+      "language": "go",
+      "expected_trigger": true,
+      "reason": "涉及默认值和回退逻辑"
+    },
+    {
+      "id": "trigger-007",
+      "text": "写一个解析 JSON 配置的函数",
+      "language": "typescript",
+      "expected_trigger": true,
+      "reason": "涉及输入解析和边界处理"
+    },
+    {
+      "id": "trigger-008",
+      "text": "把这段同步代码改成异步的",
+      "language": "python",
+      "expected_trigger": true,
+      "reason": "涉及异步、时序和并发"
+    },
+    {
+      "id": "trigger-009",
+      "text": "在这个函数里加个重试逻辑",
+      "language": "go",
+      "expected_trigger": true,
+      "reason": "涉及重试、幂等和副作用"
+    },
+    {
+      "id": "trigger-010",
+      "text": "修复这个时间处理的 bug",
+      "language": "typescript",
+      "expected_trigger": true,
+      "reason": "涉及基础值域和边界处理"
+    },
+    {
+      "id": "trigger-011",
+      "text": "给这个 API 调用加日志",
+      "language": "python",
+      "expected_trigger": true,
+      "reason": "涉及可观测性和日志输出"
+    },
+    {
+      "id": "trigger-012",
+      "text": "请帮我完成这个函数",
+      "language": "go",
+      "expected_trigger": true,
+      "reason": "通用代码补全任务"
+    },
+    {
+      "id": "trigger-013",
+      "text": "修复这个 PATCH 更新函数，区分字段缺失、null 清空和保留旧值",
+      "language": "typescript",
+      "expected_trigger": true,
+      "reason": "涉及部分更新语义、默认值与结果契约"
+    },
+    {
+      "id": "trigger-014",
+      "text": "实现一个出站 HTTP client，处理 timeout、429 重试、状态码映射和审计日志",
+      "language": "python",
+      "expected_trigger": true,
+      "reason": "涉及边界协议、副作用、重试和验证契约"
+    },
+    {
+      "id": "trigger-015",
+      "text": "给这个接口增加幂等键去重和缓存回放结果",
+      "language": "go",
+      "expected_trigger": true,
+      "reason": "涉及缓存、幂等和重复请求语义"
+    },
+    {
+      "id": "trigger-016",
+      "text": "修复这个账单导出函数，统一 UTC 时间、金额精度，并输出 UTF-8 CSV",
+      "language": "python",
+      "expected_trigger": true,
+      "reason": "涉及时间金额边界、文件导出和编码语义"
+    },
+    {
+      "id": "trigger-017",
+      "text": "实现一个报表导出函数，校验文件名、写入 CSV，并在审计日志里脱敏 email 和 token",
+      "language": "go",
+      "expected_trigger": true,
+      "reason": "涉及文件导出、副作用、编码和审计脱敏"
+    },
+    {
+      "id": "trigger-018",
+      "text": "给这个审计记录补充敏感字段脱敏规则，保留 request_id 但隐藏 email 和 access token",
+      "language": "typescript",
+      "expected_trigger": true,
+      "reason": "涉及日志副作用与边界脱敏语义"
+    },
+    {
+      "id": "trigger-019",
+      "text": "实现一个批处理函数，返回逐项成功/失败/跳过结果，并把永久失败写到 dead-letter",
+      "language": "go",
+      "expected_trigger": true,
+      "reason": "涉及批量输入、partial success 契约和副作用"
+    },
+    {
+      "id": "trigger-020",
+      "text": "修复 webhook worker：校验签名、区分 duplicate delivery、处理 ack/retry/dead-letter，并保留稳定审计事件",
+      "language": "python",
+      "expected_trigger": true,
+      "reason": "涉及 webhook 边界、worker 运行时和结果契约"
+    },
+    {
+      "id": "trigger-021",
+      "text": "给这个 Python 补丁先出 pre-generation contract，再决定怎么改重试逻辑",
+      "language": "python",
+      "expected_trigger": true,
+      "expected_decision": "activate",
+      "reason": "contract-first 也是实现型入口，且技术栈已明确"
+    },
+    {
+      "id": "trigger-022",
+      "text": "改 Vue SSR hydration mismatch，别让客户端激活阶段吞掉 fallback 状态",
+      "language": "vue",
+      "expected_trigger": true,
+      "expected_decision": "activate",
+      "reason": "支持技术栈内的 SSR/hydration 高风险实现任务应稳定触发"
+    },
+    {
+      "id": "trigger-023",
+      "text": "fix this function bug and explain the architecture impact",
+      "language": "typescript",
+      "expected_trigger": true,
+      "expected_decision": "activate",
+      "reason": "混合请求里只要局部实现意图和本地锚点明确，不应被 architecture 词单独打断"
+    },
+    {
+      "id": "trigger-024",
+      "text": "patch this handler to retry timeout once, not refactor the whole module",
+      "language": "go",
+      "expected_trigger": true,
+      "expected_decision": "activate",
+      "reason": "局部补丁 + 明确风险锚点应优先于弱化的 whole-module refactor 表述"
+    }
+  ],
+  "recover_anchor_then_activate": [
+    {
+      "id": "recover-001",
+      "text": "在这个 monorepo 里先给这个补丁出 pre-generation contract，然后再修登录模块",
+      "language": "unknown",
+      "expected_decision": "recover_anchor_then_activate",
+      "reason": "实现意图明确，但主代码表面和目标语言仍需先恢复"
+    },
+    {
+      "id": "recover-002",
+      "text": "修一下这个模块的 bug，先别写代码，先把 contract 列出来",
+      "language": "unknown",
+      "expected_decision": "recover_anchor_then_activate",
+      "reason": "contract-first 入口明确，但缺少足够锚点来恢复主代码表面"
+    }
+  ],
+  "should_not_trigger": [
+    {
+      "id": "no-trigger-001",
+      "text": "解释一下这段代码在做什么",
+      "language": "python",
+      "expected_trigger": false,
+      "reason": "代码理解任务，不涉及代码生成"
+    },
+    {
+      "id": "no-trigger-002",
+      "text": "画一个这个模块的架构图",
+      "language": "go",
+      "expected_trigger": false,
+      "reason": "架构设计任务，不是局部实现"
+    },
+    {
+      "id": "no-trigger-003",
+      "text": "review 这几个文件的代码",
+      "language": "typescript",
+      "expected_trigger": false,
+      "reason": "代码审查任务，不是代码生成"
+    },
+    {
+      "id": "no-trigger-004",
+      "text": "这个项目应该用什么框架",
+      "language": "vue",
+      "expected_trigger": false,
+      "reason": "技术选型任务，不是代码生成"
+    },
+    {
+      "id": "no-trigger-005",
+      "text": "帮我写一个项目计划",
+      "language": "python",
+      "expected_trigger": false,
+      "reason": "规划任务，不涉及代码生成"
+    },
+    {
+      "id": "no-trigger-006",
+      "text": "这个函数性能怎么样",
+      "language": "go",
+      "expected_trigger": false,
+      "reason": "性能分析任务，不是代码修改"
+    },
+    {
+      "id": "no-trigger-007",
+      "text": "列出这个目录下所有文件",
+      "language": "typescript",
+      "expected_trigger": false,
+      "reason": "文件系统任务，不涉及代码生成"
+    },
+    {
+      "id": "no-trigger-008",
+      "text": "给我一个函数签名的建议",
+      "language": "python",
+      "expected_trigger": false,
+      "reason": "设计咨询任务，不是具体实现"
+    },
+    {
+      "id": "no-trigger-009",
+      "text": "重构整个模块的架构",
+      "language": "go",
+      "expected_trigger": false,
+      "reason": "大范围重构不是局部实现约束范围"
+    },
+    {
+      "id": "no-trigger-010",
+      "text": "帮我找找这段代码的问题",
+      "language": "typescript",
+      "expected_trigger": false,
+      "reason": "调试分析任务，不是代码修改"
+    },
+    {
+      "id": "no-trigger-011",
+      "text": "解释一下 PATCH 更新里字段缺失、null 清空和保留旧值应该怎么设计",
+      "language": "python",
+      "expected_trigger": false,
+      "reason": "概念说明任务，不是代码生成"
+    },
+    {
+      "id": "no-trigger-012",
+      "text": "分析一下出站 HTTP client 的重试策略该怎么选型",
+      "language": "go",
+      "expected_trigger": false,
+      "reason": "方案分析任务，不是局部实现"
+    },
+    {
+      "id": "no-trigger-013",
+      "text": "解释一下 UTC、金额精度和 UTF-8 CSV 导出为什么容易出错",
+      "language": "python",
+      "expected_trigger": false,
+      "reason": "概念说明任务，不是代码生成"
+    },
+    {
+      "id": "no-trigger-014",
+      "text": "给我一个审计日志脱敏策略的建议",
+      "language": "typescript",
+      "expected_trigger": false,
+      "reason": "设计建议任务，不是局部实现"
+    },
+    {
+      "id": "no-trigger-015",
+      "text": "解释一下批处理 partial success 和 dead-letter 应该怎么设计",
+      "language": "go",
+      "expected_trigger": false,
+      "reason": "概念说明任务，不是代码生成"
+    },
+    {
+      "id": "no-trigger-016",
+      "text": "分析一下 webhook worker 的 ack 和 retry 策略应该怎么定",
+      "language": "python",
+      "expected_trigger": false,
+      "reason": "方案分析任务，不是局部实现"
+    },
+    {
+      "id": "no-trigger-017",
+      "text": "修 Rust API client 的 timeout 和 retry 逻辑",
+      "language": "rust",
+      "expected_trigger": false,
+      "expected_decision": "do_not_activate",
+      "reason": "不支持技术栈即便出现高风险词，也不应进入该技能"
+    },
+    {
+      "id": "no-trigger-018",
+      "text": "fix SQL migration retry logic",
+      "language": "sql",
+      "expected_trigger": false,
+      "expected_decision": "do_not_activate",
+      "reason": "SQL migration 不在支持技术栈内，不应被动作词误触发"
+    },
+    {
+      "id": "no-trigger-019",
+      "text": "implement a Kotlin HTTP client with timeout and retry",
+      "language": "kotlin",
+      "expected_trigger": false,
+      "expected_decision": "do_not_activate",
+      "reason": "Kotlin 不在支持范围，即使实现意图明确也不应激活"
+    }
+  ]
+}
+

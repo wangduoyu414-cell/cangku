@@ -1,0 +1,97 @@
+round:
+  id: round-2
+  title: "tri-signal adversarial blend（三信号对抗混合）"
+  amplification:
+    versus_design_target:
+      coverage_multiplier: 2.8
+      functional_strength_multiplier: 2.6
+  goals:
+    - "单轮覆盖 generate（生成）/iterate（迭代）/model-upgrade（升模） 三类信号。"
+    - "校验评分结果除了 markdown（文档） 还要有 machine summary（机器摘要）。"
+    - "要求失败时给出结构化原因，而不是只报 pass/fail（通过/失败）。"
+
+cases:
+  - id: adversarial-generate
+    generator: end_to_end
+    input_file: ../case-inputs/round-2-generate.yaml
+    mode: generate
+    skill_name: compliance-rollback-planner
+    request_summary: "Generate a reusable skill for compliance-sensitive rollback planning with multilingual evidence and baseline measurement."
+    score_input: ../score-inputs/round-2-generate.yaml
+    expected_files:
+      - request.md
+      - skill-brief.md
+      - skill-scorecard.md
+      - skill-score-summary.yaml
+      - iteration-backlog.md
+      - experience-ledger.yaml
+      - baseline-comparison.md
+      - run-manifest.yaml
+    required_snippets:
+      skill-scorecard.md:
+        - "release_recommendation（发布建议）"
+      skill-score-summary.yaml:
+        - "total_score"
+        - "hard_gate_pass"
+    semantic_required_files:
+      - request.md
+      - skill-brief.md
+      - iteration-backlog.md
+      - experience-ledger.yaml
+      - baseline-comparison.md
+      - run-manifest.yaml
+      - skill-score-summary.yaml
+
+  - id: adversarial-model-upgrade
+    generator: end_to_end
+    input_file: ../case-inputs/round-2-model-upgrade.yaml
+    mode: model-upgrade
+    skill_name: compliance-rollback-planner
+    request_summary: "Simplify a compliance rollback skill after a stronger model upgrade while preserving audit rules and baseline guarantees."
+    score_input: ../score-inputs/round-2-model-upgrade.yaml
+    expected_files:
+      - request.md
+      - skill-brief.md
+      - skill-scorecard.md
+      - skill-score-summary.yaml
+      - iteration-backlog.md
+      - experience-ledger.yaml
+      - baseline-comparison.md
+      - model-upgrade-note.md
+      - run-manifest.yaml
+    required_snippets:
+      model-upgrade-note.md:
+        - "Stable Core（稳定内核）"
+        - "Model-Sensitive Layer（模型敏感层）"
+    semantic_required_files:
+      - request.md
+      - skill-brief.md
+      - iteration-backlog.md
+      - experience-ledger.yaml
+      - baseline-comparison.md
+      - model-upgrade-note.md
+      - run-manifest.yaml
+      - skill-score-summary.yaml
+
+trigger_eval:
+  file: ../trigger-evals.yaml
+  thresholds:
+    precision: 0.9
+    recall: 0.85
+
+openai_yaml_check:
+  interface:
+    - "display_name=Skill Generator"
+    - "short_description=Generate and upgrade reusable skills"
+    - "default_prompt=Use $skill-generator to turn repeated work, failures, and model changes into a reusable skill package."
+
+telemetry_eval:
+  thresholds:
+    min_case_telemetry_count: 5
+    min_total_wall_clock_ms: 1
+    min_total_created_bytes: 1
+
+skill_validations:
+  - "@skill_root"
+
+previous_round_summary: ../../test-runs/round-1/summary.yaml

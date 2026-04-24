@@ -1,0 +1,18 @@
+suite_id: "fact-sheet-mapper-regression-core"
+cases:
+  - id: "preserve-version-binding"
+    goal: "持续要求事实版本绑定显式存在"
+    input:
+      output_shape: "fact_asset_plan"
+    expected:
+      requires_fact_version_binding: true
+    type: "regression"
+    notes: "保护版本绑定不退化。"
+  - id: "preserve-non-runtime-boundary"
+    goal: "持续保持非运行时真值边界"
+    input:
+      workbook_as_runtime_truth: false
+    expected:
+      excel_not_runtime_truth: true
+    type: "regression"
+    notes: "保护运行时边界。"

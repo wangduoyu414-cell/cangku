@@ -1,0 +1,22 @@
+entries:
+- id: release-review-orchestrator-generate-001
+  timestamp: '2026-03-27'
+  scenario: generate
+  signal: Release review findings keep recurring across services.
+  context: Preserve clear non-scope（非边界） for direct code edits and deployment execution.
+  action: Group findings by blocking severity before writing action items.
+  outcome: success
+  baseline: without_skill
+  quality_delta: higher
+  cost_delta:
+    token_estimate: slightly_higher
+    wall_clock_estimate: similar
+    tool_call_estimate: similar
+  rule_candidate: Past review plans often forgot post-release validation.
+  confidence: repeated-observation
+  freshness: stable
+  affected_dimension: scope_and_signal
+  evidence_refs:
+  - request.md
+  - baseline-comparison.md
+  follow_up: promote-to-default-path

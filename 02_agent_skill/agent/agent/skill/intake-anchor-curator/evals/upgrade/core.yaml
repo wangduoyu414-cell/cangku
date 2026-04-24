@@ -1,0 +1,16 @@
+suite_id: "intake-anchor-curator-upgrade-core"
+baseline:
+  previous_version: "pre-unified-2026-04-23"
+  baseline_artifact: "evals/upgrade/frozen-baseline.md"
+cases:
+  - id: "keep-zero-llm-and-anchor-binding"
+    goal: "升级统一结构后仍保留零 LLM 默认与锚点绑定边界"
+    before:
+      - "旧版只有目标、输入、输出、脚本、红线"
+    after:
+      - "新版补齐设计目标、边界、不变量和正式评测资产"
+    expected:
+      - "仍要求高频标准表达默认零 LLM 调用"
+      - "仍要求 field_key 绑定到具体偏好项"
+      - "仍不扩展成完整状态推理器"
+    notes: "验证结构迁移不破坏原有语义。"

@@ -1,0 +1,23 @@
+{
+  "id": "vue_page_split_reusable_async_flow",
+  "prompt": "Plan the file layout for this Vue export feature before implementation. Anchor the decision in packages/admin-portal/src/pages/exports, where both the page and the retry dialog need the same polling and retry flow.",
+  "target_area": "packages/admin-portal/src/pages/exports",
+  "source_paths": [
+    "packages/admin-portal/src/pages/exports/AuditExportPage.vue",
+    "packages/admin-portal/src/components/audit/AuditExportRetryDialog.vue",
+    "packages/admin-portal/src/services/auditExportApi.ts",
+    "packages/admin-portal/src/pages/audit/AuditReplayPage.vue"
+  ],
+  "expected_summary": {
+    "strategy": "split",
+    "repo_shape": "mixed",
+    "artifact_type": "ui-component",
+    "stack": "vue",
+    "confidence": "high",
+    "files": [
+      "packages/admin-portal/src/pages/exports/AuditExportPage.vue",
+      "packages/admin-portal/src/composables/useAuditExportJob.ts"
+    ]
+  },
+  "validation_command": "python eval/validate_saved_output.py --case vue_page_split_reusable_async_flow --output outputs/vue_page_split_reusable_async_flow.yaml"
+}

@@ -1,0 +1,23 @@
+decision:
+  strategy: keep
+  target_area: "services/python-order-api/features/refund-status"
+  repo_shape: feature-first
+  artifact_type: service-endpoint
+  stack: python
+  files:
+    - path: "services/python-order-api/features/refund-status/status_endpoint.py"
+      role: "handler"
+      responsibility: "Own request parsing, endpoint validation, refund-window checks, and response shaping for refund status previews."
+      reason: "This slice has one local request flow and no separate external adapter or persistence boundary."
+  keep_inline:
+    - "Request and response dataclasses for this endpoint."
+    - "The local refund window helper and small field validation."
+  avoid:
+    - "schemas.py"
+    - "service.py"
+    - "validators.py"
+  why_not_fewer: "One handler file is already the smallest useful boundary for a request that only validates input, applies local rules, and returns a preview."
+  why_not_more: "Adding service or schema files here would mostly create Java-style ceremony without a second consumer or independent side-effect boundary."
+  risks:
+    - "If this endpoint later adds carrier lookups or refund persistence, a feature-local adapter split may become justified."
+  confidence: high

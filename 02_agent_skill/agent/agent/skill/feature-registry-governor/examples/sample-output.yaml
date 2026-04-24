@@ -1,0 +1,11 @@
+id: "sample-output-example"
+user_request: |
+  输出一个最小特征注册表治理方案，至少包含注册表引用和版本约束。
+notes: "这是最小输出骨架示例，用于校准必须存在的核心字段。"
+sample_output:
+  feature_registry_plan:
+    registry_refs:
+      - 'D:\diypc\assets\templates\core_feature_registry_v1.json'
+    version_constraints:
+      - "规则包必须声明兼容的特征注册表版本"
+      - "未登记特征不得进入正式规则包"

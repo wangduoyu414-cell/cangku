@@ -1,0 +1,10 @@
+request:
+  request_id: "language_adapter_run_001"
+  goal: "围绕真实 replay（回放） 资产持续生成 60000 条原始候选，并保持每批方向、配比和验收一致。"
+  replay_root: "D:\\diypc\\assets\\replay"
+  skill_root: "D:\\agent\\skill\\language-adapter-dataset-builder"
+  prompt_template_ref: "D:\\diypc\\LLMceshi\\llm-candidate-pack-prompt-template.md"
+  fill_template_ref: "D:\\diypc\\LLMceshi\\candidate-pack-fill-template.xlsx"
+  total_candidate_goal: 60000
+  batch_size: 1000
+  batch_input_ref: "D:\\diypc\\LLMceshi\\candidate-pack-fill-generated.xlsx"

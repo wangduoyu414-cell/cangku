@@ -1,0 +1,184 @@
+{
+  "anchor": {
+    "repo_root": "D:/LangChain",
+    "file_path": "D:/LangChain/start_mcp.py",
+    "repo_relative_path": "start_mcp.py",
+    "symbol": "",
+    "selection_range": "",
+    "language": "python",
+    "role_hint": "source"
+  },
+  "stack": {
+    "stack_family": "python",
+    "stack_id": "python-stack",
+    "confidence": "high",
+    "reasons": [
+      "file extension suggests python",
+      "found requirements.txt"
+    ],
+    "reference_file": "references/py-edge-rules.md",
+    "repo_root": "D:/LangChain",
+    "file_path": "D:/LangChain/start_mcp.py"
+  },
+  "edges": [
+    {
+      "from": "tests/test_report_claims.py",
+      "to": "start_mcp.py",
+      "direction": "inbound",
+      "edge_kind": "test",
+      "symbol": "",
+      "evidence_ref": "tests/test_report_claims.py:57",
+      "confidence": "medium",
+      "resolution": "resolved",
+      "match_reason": "relative_path",
+      "matched_value": "start_mcp.py",
+      "evidence_strength": "high"
+    },
+    {
+      "from": "tests/test_start_mcp.py",
+      "to": "start_mcp.py",
+      "direction": "inbound",
+      "edge_kind": "test",
+      "symbol": "",
+      "evidence_ref": "tests/test_start_mcp.py:9",
+      "confidence": "low",
+      "resolution": "resolved",
+      "match_reason": "dotted_path",
+      "matched_value": "start_mcp",
+      "evidence_strength": "medium"
+    },
+    {
+      "from": "tests/test_start_mcp.py",
+      "to": "start_mcp.py",
+      "direction": "inbound",
+      "edge_kind": "test",
+      "symbol": "",
+      "evidence_ref": "tests/test_start_mcp.py:18",
+      "confidence": "low",
+      "resolution": "resolved",
+      "match_reason": "dotted_path",
+      "matched_value": "start_mcp",
+      "evidence_strength": "medium"
+    },
+    {
+      "from": "tests/test_start_mcp.py",
+      "to": "start_mcp.py",
+      "direction": "inbound",
+      "edge_kind": "test",
+      "symbol": "",
+      "evidence_ref": "tests/test_start_mcp.py:22",
+      "confidence": "low",
+      "resolution": "resolved",
+      "match_reason": "dotted_path",
+      "matched_value": "start_mcp",
+      "evidence_strength": "medium"
+    },
+    {
+      "from": "tests/test_start_mcp.py",
+      "to": "start_mcp.py",
+      "direction": "inbound",
+      "edge_kind": "test",
+      "symbol": "",
+      "evidence_ref": "tests/test_start_mcp.py:26",
+      "confidence": "low",
+      "resolution": "resolved",
+      "match_reason": "dotted_path",
+      "matched_value": "start_mcp",
+      "evidence_strength": "medium"
+    },
+    {
+      "from": "tests/test_start_mcp.py",
+      "to": "start_mcp.py",
+      "direction": "inbound",
+      "edge_kind": "test",
+      "symbol": "",
+      "evidence_ref": "tests/test_start_mcp.py:33",
+      "confidence": "low",
+      "resolution": "resolved",
+      "match_reason": "dotted_path",
+      "matched_value": "start_mcp",
+      "evidence_strength": "medium"
+    },
+    {
+      "from": "tests/test_start_mcp.py",
+      "to": "start_mcp.py",
+      "direction": "inbound",
+      "edge_kind": "test",
+      "symbol": "",
+      "evidence_ref": "tests/test_start_mcp.py:37",
+      "confidence": "low",
+      "resolution": "resolved",
+      "match_reason": "dotted_path",
+      "matched_value": "start_mcp",
+      "evidence_strength": "medium"
+    },
+    {
+      "from": "tests/test_start_mcp.py",
+      "to": "start_mcp.py",
+      "direction": "inbound",
+      "edge_kind": "test",
+      "symbol": "",
+      "evidence_ref": "tests/test_start_mcp.py:39",
+      "confidence": "low",
+      "resolution": "resolved",
+      "match_reason": "dotted_path",
+      "matched_value": "start_mcp",
+      "evidence_strength": "medium"
+    },
+    {
+      "from": "tests/test_start_mcp.py",
+      "to": "start_mcp.py",
+      "direction": "inbound",
+      "edge_kind": "test",
+      "symbol": "",
+      "evidence_ref": "tests/test_start_mcp.py:56",
+      "confidence": "low",
+      "resolution": "resolved",
+      "match_reason": "dotted_path",
+      "matched_value": "start_mcp",
+      "evidence_strength": "medium"
+    },
+    {
+      "from": "tests/test_start_mcp.py",
+      "to": "start_mcp.py",
+      "direction": "inbound",
+      "edge_kind": "test",
+      "symbol": "",
+      "evidence_ref": "tests/test_start_mcp.py:57",
+      "confidence": "low",
+      "resolution": "resolved",
+      "match_reason": "dotted_path",
+      "matched_value": "start_mcp",
+      "evidence_strength": "medium"
+    },
+    {
+      "from": "tests/test_start_mcp.py",
+      "to": "start_mcp.py",
+      "direction": "inbound",
+      "edge_kind": "test",
+      "symbol": "",
+      "evidence_ref": "tests/test_start_mcp.py:60",
+      "confidence": "low",
+      "resolution": "resolved",
+      "match_reason": "dotted_path",
+      "matched_value": "start_mcp",
+      "evidence_strength": "medium"
+    },
+    {
+      "from": "tests/test_start_mcp.py",
+      "to": "start_mcp.py",
+      "direction": "inbound",
+      "edge_kind": "test",
+      "symbol": "",
+      "evidence_ref": "tests/test_start_mcp.py:63",
+      "confidence": "low",
+      "resolution": "resolved",
+      "match_reason": "dotted_path",
+      "matched_value": "start_mcp",
+      "evidence_strength": "medium"
+    }
+  ],
+  "blind_spots": [
+    "Context links are search-based and may miss framework-specific runtime wiring."
+  ]
+}

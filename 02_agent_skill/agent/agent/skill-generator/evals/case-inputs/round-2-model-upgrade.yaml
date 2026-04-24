@@ -1,0 +1,54 @@
+skill_name: compliance-rollback-planner
+mode: model-upgrade
+request_summary: "Simplify a compliance rollback skill after a stronger model upgrade while preserving audit rules and baseline guarantees."
+constraints:
+  - "Keep audit and rollback contract language stable."
+quality_goals:
+  - "Remove obsolete scaffolding without weakening baseline guarantees."
+scope:
+  - "Simplify the model-sensitive layer while preserving audit core."
+non_scope:
+  - "Do not remove rollback approval requirements."
+inputs:
+  - "model upgrade signal（模型升级信号）"
+  - "previous failure patterns（旧失败模式）"
+outputs:
+  - "model upgrade note（升模说明）"
+  - "refreshed baseline comparison（刷新后的基线对比）"
+risks:
+  - "Over-prune guidance and lose audit nuance."
+success_bar:
+  - "Must distinguish stable core（稳定内核） from model-sensitive layer（模型敏感层）."
+model_upgrade:
+  stable_core:
+    - "Rollback approval and audit references remain mandatory."
+    - "Baseline comparison and validation loop stay explicit."
+  model_sensitive_layer:
+    - "Verbose step-by-step explanation can be shortened."
+    - "Older model workaround for multilingual ordering can be removed."
+  removed_scaffolding:
+    - "Redundant reminder to restate every evidence source twice."
+    - "Older prompt telling the model to think in five explicit phases."
+  new_misuse_risks:
+    - "The stronger model may compress nuanced policy exceptions too aggressively."
+baseline:
+  candidate: "compliance-rollback-planner simplified（合规回滚规划器精简版）"
+  baseline: "previous_skill（旧版技能）"
+  quality_delta:
+    correctness: "same_or_higher"
+    actionability: "same_or_higher"
+    scope_clarity: "same"
+    contract_completeness: "same"
+  cost_delta:
+    token_estimate: "lower"
+    wall_clock_estimate: "lower"
+    tool_call_estimate: "similar"
+  notes:
+    - "Cost should drop because redundant scaffolding is removed."
+iteration_backlog:
+  next_fixes:
+    - "Stress multilingual exceptions under the new model."
+  deferred_work:
+    - "Compare with real audit logs once available."
+  why_now:
+    - "Current prompt length is no longer justified by model capability."

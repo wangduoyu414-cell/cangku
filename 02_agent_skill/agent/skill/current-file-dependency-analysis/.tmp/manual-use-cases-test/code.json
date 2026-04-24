@@ -1,0 +1,67 @@
+{
+  "anchor": {
+    "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+    "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/application/use_cases.py",
+    "repo_relative_path": "src/app/application/use_cases.py",
+    "symbol": "",
+    "selection_range": "",
+    "language": "python",
+    "role_hint": "source"
+  },
+  "stack": {
+    "stack_family": "python",
+    "stack_id": "python-stack",
+    "confidence": "medium",
+    "reasons": [
+      "file extension suggests python"
+    ],
+    "reference_file": "references/py-edge-rules.md",
+    "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+    "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/application/use_cases.py"
+  },
+  "edges": [
+    {
+      "from": "src/app/application/use_cases.py",
+      "to": "external:__future__",
+      "direction": "outbound",
+      "edge_kind": "import",
+      "symbol": "",
+      "evidence_ref": "src/app/application/use_cases.py:1",
+      "confidence": "medium",
+      "resolution": "resolved"
+    },
+    {
+      "from": "src/app/application/use_cases.py",
+      "to": "src/app/domain/order_service.py",
+      "direction": "outbound",
+      "edge_kind": "import",
+      "symbol": "",
+      "evidence_ref": "src/app/application/use_cases.py:3",
+      "confidence": "high",
+      "resolution": "resolved"
+    },
+    {
+      "from": "src/app/interfaces/http_controller.py",
+      "to": "src/app/application/use_cases.py",
+      "direction": "inbound",
+      "edge_kind": "import",
+      "symbol": "",
+      "evidence_ref": "src/app/interfaces/http_controller.py:3",
+      "confidence": "high",
+      "resolution": "resolved"
+    },
+    {
+      "from": "src/app/interfaces/order_controller.py",
+      "to": "src/app/application/use_cases.py",
+      "direction": "inbound",
+      "edge_kind": "import",
+      "symbol": "",
+      "evidence_ref": "src/app/interfaces/order_controller.py:3",
+      "confidence": "high",
+      "resolution": "resolved"
+    }
+  ],
+  "blind_spots": [
+    "Runtime imports through importlib are not statically resolved."
+  ]
+}

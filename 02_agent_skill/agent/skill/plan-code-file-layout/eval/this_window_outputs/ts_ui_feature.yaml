@@ -1,0 +1,27 @@
+decision:
+  strategy: split
+  target_area: "packages/web-dashboard/src/features/subscription-optimizer"
+  repo_shape: feature-first
+  artifact_type: ui-component
+  stack: typescript-javascript
+  files:
+    - path: "packages/web-dashboard/src/features/subscription-optimizer/SubscriptionOptimizerPanel.tsx"
+      role: "page-component"
+      responsibility: "Own the optimizer UI, local state, and user-driven orchestration for loading and saving rollout rules."
+      reason: "The panel remains the main editing surface and should keep rendering plus local interaction logic together."
+    - path: "packages/web-dashboard/src/features/subscription-optimizer/subscriptionOptimizerApi.ts"
+      role: "ui-service"
+      responsibility: "Load and save optimizer recommendations while isolating remote request handling."
+      reason: "The fetch and save calls are a separate side-effect boundary from the component's rendering work."
+  keep_inline:
+    - "The OptimizerRule type should stay local while it only belongs to this panel."
+    - "The threshold validator should stay inline until another feature reuses it."
+  avoid:
+    - "types.ts"
+    - "validators.ts"
+    - "useSubscriptionOptimizer.ts"
+  why_not_fewer: "Keeping remote requests inside the panel would mix UI rendering concerns with transport failures and request lifecycle handling."
+  why_not_more: "Adding a composable or extra types file now would mostly add ceremony because this panel is still the only real consumer."
+  risks:
+    - "If recommendation state starts serving multiple screens, a composable may become a better extraction point later."
+  confidence: high

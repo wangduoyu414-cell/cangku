@@ -1,0 +1,22 @@
+{
+  "id": "react_feature_keep_local",
+  "prompt": "Plan how many files to create for this React feature before implementation. Target packages/web-dashboard/src/features/discount-simulator and compare it with nearby dashboard features that already show when API extraction is or is not worth it.",
+  "target_area": "packages/web-dashboard/src/features/discount-simulator",
+  "source_paths": [
+    "packages/web-dashboard/src/features/discount-simulator/DiscountSimulatorPanel.tsx",
+    "packages/web-dashboard/src/features/subscription-optimizer/SubscriptionOptimizerPanel.tsx",
+    "packages/web-dashboard/src/features/invoice-alerts/InvoiceAlertsPanel.tsx",
+    "packages/web-dashboard/src/features/invoice-alerts/invoiceAlertsApi.ts"
+  ],
+  "expected_summary": {
+    "strategy": "keep",
+    "repo_shape": "feature-first",
+    "artifact_type": "ui-component",
+    "stack": "typescript-javascript",
+    "confidence": "high",
+    "files": [
+      "packages/web-dashboard/src/features/discount-simulator/DiscountSimulatorPanel.tsx"
+    ]
+  },
+  "validation_command": "python eval/validate_saved_output.py --case react_feature_keep_local --output outputs/react_feature_keep_local.yaml"
+}

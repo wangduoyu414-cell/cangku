@@ -1,0 +1,8 @@
+case_id: adversarial-generate
+command_count: 2
+total_wall_clock_ms: 126
+max_command_wall_clock_ms: 65
+stdout_bytes: 597
+stderr_bytes: 0
+created_file_count: 8
+created_total_bytes: 6358

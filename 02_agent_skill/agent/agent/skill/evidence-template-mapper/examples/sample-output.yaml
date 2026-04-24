@@ -1,0 +1,12 @@
+id: "sample-output-example"
+user_request: |
+  输出一个最小证据模板映射结果，至少包含证据来源和反事实绑定。
+notes: "这是最小输出骨架示例，用于校准必须存在的核心字段。"
+sample_output:
+  evidence_alignment_plan:
+    evidence_sources:
+      - "字段事实"
+      - "规则命中"
+      - "反事实结果"
+    counterfactual_bindings:
+      - "反事实结果必须回接证据包"

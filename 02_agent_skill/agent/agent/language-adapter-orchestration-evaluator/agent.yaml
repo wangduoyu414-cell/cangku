@@ -1,0 +1,79 @@
+agent:
+  agent_id: "language-adapter-orchestration-evaluator"
+  name: "language-adapter-orchestration-evaluator"
+  type: "control"
+  version: "1.0.0"
+  purpose: "为 language-adapter-dataset-builder（语言适配器数据集构建器） 提供持续候选生成编排、覆盖控制与结果测评。"
+  scope:
+    - "基于真实 replay（回放） 资产生成批次运行清单"
+    - "控制 candidate batch（候选批次） 的数量、配比、场景、人群、需求和难点覆盖"
+    - "校验候选产物是否偏离业务方向、来源基线和下层 skill（技能） 契约"
+  non_scope:
+    - "不直接承担大规模正文生成"
+    - "不替代 formalization（正式化） 和 QA gate（质量门禁）"
+    - "不执行模型训练"
+  inputs:
+    - name: "replay_root"
+      description: "真实 replay（回放） 目录"
+      required: true
+    - name: "total_candidate_goal"
+      description: "总候选目标数"
+      required: true
+    - name: "batch_size"
+      description: "单批候选目标数"
+      required: true
+    - name: "candidate_batch_input"
+      description: "候选批次输入，可以是 xlsx（电子表格） 或 candidate_pack json（候选包结构化文本）"
+      required: false
+  outputs:
+    - name: "run_manifest"
+      description: "结构化运行清单"
+      required: true
+    - name: "evaluation_report"
+      description: "结构化测评报告"
+      required: true
+  allowed_skills:
+    - "language-adapter-dataset-builder"
+  allowed_tools:
+    - "D:\\agent\\agent\\language-adapter-orchestration-evaluator\\scripts\\generate_run_manifest.py"
+    - "D:\\agent\\agent\\language-adapter-orchestration-evaluator\\scripts\\evaluate_candidate_batch.py"
+    - "D:\\agent\\skill\\language-adapter-dataset-builder\\scripts\\validate_candidate_pack.py"
+  state_access:
+    run_state_read:
+      - "batch_progress"
+      - "coverage_progress"
+    run_state_write:
+      - "run_manifest"
+      - "evaluation_report"
+    memory_read:
+      - "baseline_scene_pool"
+    memory_write:
+      - "batch_evaluation_history"
+  topology: "planner-executor"
+  autonomy_level: "reversible_write"
+  risk_level: "L2"
+  escalation_rules:
+    - "检测到 demo（演示） 来源污染正式批次时必须阻断"
+    - "检测到追踪引用无法落到真实业务源时必须阻断"
+    - "检测到 label_rule（标注规则） 被错误标为 pass（通过） 时必须阻断"
+  stop_conditions:
+    - "运行清单已生成且验证通过"
+    - "候选批次测评已完成"
+    - "出现高优先级阻断项"
+  failure_signals:
+    - "demo_source_detected"
+    - "ungrounded_trace_detected"
+    - "mix_quota_mismatch"
+    - "validator_rejected_items"
+    - "validator_needs_review_items"
+  observability:
+    trace_required: true
+    audit_required: true
+  eval_metrics:
+    - "scene_family_coverage"
+    - "persona_axis_coverage"
+    - "need_axis_coverage"
+    - "difficulty_axis_coverage"
+    - "mix_quota_match_rate"
+    - "validator_accept_rate"
+  owner: "diypc-language-data"

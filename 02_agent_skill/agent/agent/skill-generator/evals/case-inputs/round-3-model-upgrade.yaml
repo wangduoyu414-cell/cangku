@@ -1,0 +1,53 @@
+skill_name: multilingual-risk-triage
+mode: model-upgrade
+request_summary: "After a stronger model upgrade, simplify the multilingual risk triage skill without weakening audit, rollback, or baseline rules."
+constraints:
+  - "Keep audit and rollback wording stable under simplification."
+quality_goals:
+  - "Reduce prompt mass while preserving lifecycle guarantees."
+scope:
+  - "Simplify triage scaffolding after model improvement."
+non_scope:
+  - "Do not remove validation or baseline requirements."
+inputs:
+  - "model upgrade note（模型升级说明）"
+outputs:
+  - "simplified triage artifacts（精简后的分诊产物）"
+  - "model upgrade note（升模说明）"
+risks:
+  - "Too much simplification may erase escalation nuance."
+success_bar:
+  - "Must list removed scaffolding and new misuse risks."
+model_upgrade:
+  stable_core:
+    - "Audit, rollback, and baseline comparison rules stay mandatory."
+    - "Triage categories remain explicit."
+  model_sensitive_layer:
+    - "Long explanations of evidence ordering can be shortened."
+    - "Explicit multi-phase reasoning hints can be reduced."
+  removed_scaffolding:
+    - "Legacy step-by-step evidence restatement."
+    - "Older bilingual ordering workaround."
+  new_misuse_risks:
+    - "The stronger model may over-generalize incident classes."
+baseline:
+  candidate: "multilingual-risk-triage simplified（多语言风险分诊精简版）"
+  baseline: "previous_skill（旧版技能）"
+  quality_delta:
+    correctness: "same_or_higher"
+    actionability: "same_or_higher"
+    scope_clarity: "same"
+    contract_completeness: "same"
+  cost_delta:
+    token_estimate: "lower"
+    wall_clock_estimate: "lower"
+    tool_call_estimate: "similar"
+  notes:
+    - "The simplified version is only acceptable if lifecycle protections remain explicit."
+iteration_backlog:
+  next_fixes:
+    - "Add one more misuse sample for compressed incident classes."
+  deferred_work:
+    - "Live regression comparison against production summaries."
+  why_now:
+    - "The stronger model makes older scaffolding disproportionately expensive."

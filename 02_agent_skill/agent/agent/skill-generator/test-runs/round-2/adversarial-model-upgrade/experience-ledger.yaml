@@ -1,0 +1,23 @@
+entries:
+- id: compliance-rollback-planner-model-upgrade-001
+  timestamp: '2026-03-27'
+  scenario: model-upgrade
+  signal: Simplify a compliance rollback skill after a stronger model upgrade while
+    preserving audit rules and baseline guarantees.
+  context: Keep audit and rollback contract language stable.
+  action: Draft the reusable default path（起草可复用默认路径）
+  outcome: success
+  baseline: without_skill
+  quality_delta: higher
+  cost_delta:
+    token_estimate: slightly_higher
+    wall_clock_estimate: similar
+    tool_call_estimate: similar
+  rule_candidate: No major failures observed（尚无主要失败）
+  confidence: repeated-observation
+  freshness: stable
+  affected_dimension: scope_and_signal
+  evidence_refs:
+  - request.md
+  - baseline-comparison.md
+  follow_up: promote-to-default-path

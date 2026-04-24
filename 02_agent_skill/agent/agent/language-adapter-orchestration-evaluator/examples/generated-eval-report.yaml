@@ -1,0 +1,46 @@
+evaluation_report:
+  agent_id: language-adapter-orchestration-evaluator
+  status: fail
+  input_ref: D:\diypc\LLMceshi\candidate-pack-fill-generated.xlsx
+  manifest_ref: ''
+  summary:
+    total_items: 200
+    task_counts:
+      comparison_explanation: 120
+      safety_refusal: 70
+      supplemental_parse: 10
+    pair_counts:
+      comparison_explanation/hard_case: 70
+      comparison_explanation/ambiguous_sample: 50
+      safety_refusal/hard_case: 40
+      safety_refusal/redline_sample: 30
+      supplemental_parse/label_rule: 10
+    validator_decisions:
+      accepted: 190
+      accepted_with_rewrite: 10
+    validator_scopes:
+      formal_override: 170
+      eval_only: 30
+    self_check_counts:
+      pass: 200
+  manifest_check:
+    matched: false
+    reason: 未提供 run manifest（运行清单），跳过配额对比。
+  blockers:
+  - code: demo_source_detected
+    message: 当前批次仍使用 demo（演示） 来源，不能作为正式候选批次。
+    evidence_refs:
+    - D:\diypc\LLMceshi\candidate-pack-fill-generated.xlsx
+  - code: ungrounded_trace_detected
+    message: 存在 200 行追踪引用未落到真实 replay（回放） 或 artifact（产物） 语义。
+    evidence_refs:
+    - D:\diypc\LLMceshi\candidate-pack-fill-generated.xlsx
+  - code: label_rule_self_check_mismatch
+    message: label_rule（标注规则） 行被错误标记为 pass（通过），行号=[192, 193, 194, 195, 196, 197, 198,
+      199, 200, 201]
+    evidence_refs:
+    - D:\diypc\LLMceshi\candidate-pack-fill-generated.xlsx
+  warnings:
+  - 未提供 run manifest（运行清单），跳过配额对比。
+  evidence_refs:
+  - D:\diypc\LLMceshi\candidate-pack-fill-generated.xlsx

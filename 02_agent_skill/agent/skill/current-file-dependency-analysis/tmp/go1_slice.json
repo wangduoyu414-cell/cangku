@@ -1,0 +1,75 @@
+{
+  "schema_version": "4.3",
+  "target": {
+    "file": "src/app/entrypoints/main.go",
+    "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+    "stack_family": "go",
+    "analysis_mode": "strict",
+    "payload_level": "L1.5",
+    "graph_scope": "anchor_local_confirmed_file_edges"
+  },
+  "supporting_signals": {
+    "candidate_file_edges": [
+      {
+        "from": "src/app/entrypoints/main.go",
+        "to": "external:example.com/generic-template-repo/src/app/shared/gohelper",
+        "direction": "outbound",
+        "edge_kind": "import",
+        "evidence_ref": "src/app/entrypoints/main.go:6",
+        "confidence": "medium",
+        "resolution": "resolved",
+        "unconfirmed_reason": "lower_confidence_edge"
+      },
+      {
+        "from": "src/app/entrypoints/main.go",
+        "to": "external:fmt",
+        "direction": "outbound",
+        "edge_kind": "import",
+        "evidence_ref": "src/app/entrypoints/main.go:4",
+        "confidence": "medium",
+        "resolution": "resolved",
+        "unconfirmed_reason": "lower_confidence_edge"
+      }
+    ],
+    "symbol_relations": [
+      {
+        "from": "src/app/entrypoints/main.go",
+        "to": "src/app/entrypoints/main.go",
+        "direction": "outbound",
+        "edge_kind": "symbol",
+        "relation_type": "call",
+        "symbol_from": "main",
+        "symbol_to": "NormalizeSKU",
+        "evidence_ref": "src/app/entrypoints/main.go:10",
+        "confidence": "low",
+        "resolution": "resolved"
+      }
+    ],
+    "blind_spots": [
+      "Go imports packages, so edges are package-level rather than file-level.",
+      "Context links are search-based and may miss framework-specific runtime wiring.",
+      "Go interface method set dispatch is approximated at static level.",
+      "Go build tags that change active files are not handled."
+    ]
+  },
+  "estimated_impact": {
+    "graph_scope": "repo_code_graph_plus_confirmed_context",
+    "expansion_status": "repo_scan_success",
+    "summary": {
+      "total_impacted": 0,
+      "direct_consumers": 0,
+      "indirect_consumers": 0,
+      "max_depth_reached": 0,
+      "depth_limit": 3,
+      "depth_limited": false
+    },
+    "impact_confidence": "high",
+    "limitations": [
+      "Direct impact uses confirmed file-level edges and any confirmed config/build links already present in the slice.",
+      "Transitive impact is limited to the anchor-local graph because no repository-wide code graph expansion was available."
+    ]
+  },
+  "pipeline_status": {
+    "overall": "success"
+  }
+}

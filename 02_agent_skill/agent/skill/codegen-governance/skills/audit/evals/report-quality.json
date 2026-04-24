@@ -1,0 +1,26 @@
+{
+  "skill": "audit",
+  "version": "0.3.0",
+  "description": "Implementation report quality fixtures for audit",
+  "tasks": [
+    {
+      "id": "good-report-typescript",
+      "type": "report",
+      "expected_pass": true,
+      "report_file": "../../../examples/good-report-typescript.md"
+    },
+    {
+      "id": "bad-report-fake-validation",
+      "type": "report",
+      "expected_pass": false,
+      "report_file": "../../../examples/bad-report-fake-validation.md"
+    },
+    {
+      "id": "bad-report-missing-distinction",
+      "type": "report",
+      "expected_pass": false,
+      "report_file": "../../../examples/bad-report-missing-distinction.md"
+    }
+  ]
+}
+

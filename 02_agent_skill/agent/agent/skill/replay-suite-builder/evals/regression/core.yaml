@@ -1,0 +1,18 @@
+suite_id: "replay-suite-builder-regression-core"
+cases:
+  - id: "preserve-diff-dimensions"
+    goal: "持续保持差异维度输出"
+    input:
+      output_shape: "replay_eval_plan"
+    expected:
+      requires_diff_dimensions: true
+    type: "regression"
+    notes: "保护差异维度不退化。"
+  - id: "preserve-quality-thresholds"
+    goal: "持续保持质量阈值绑定"
+    input:
+      threshold_binding: true
+    expected:
+      requires_quality_thresholds: true
+    type: "regression"
+    notes: "保护质量阈值不退化。"

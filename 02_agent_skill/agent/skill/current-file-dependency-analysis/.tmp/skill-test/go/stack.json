@@ -1,0 +1,11 @@
+{
+  "stack_family": "go",
+  "stack_id": "go-stack",
+  "confidence": "medium",
+  "reasons": [
+    "file extension suggests go"
+  ],
+  "reference_file": "references/go-edge-rules.md",
+  "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+  "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/shared/gohelper/gohelper.go"
+}

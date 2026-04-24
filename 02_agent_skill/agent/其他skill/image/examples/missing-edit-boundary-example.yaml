@@ -1,0 +1,4 @@
+id: "missing-edit-boundary"
+user_request: |
+  帮我把现有活动海报上的年份改掉，其他大体别变就行。我想继续用 gpt-image-2 做局部修改，但我还没整理清楚到底哪些元素必须完全不变，也没说清楚修改区域边界。
+notes: "代表 localized-edit（局部编辑） 但缺少 preserve scope（保留边界） 与 change_only 边界的请求。重点验证技能会先索取缺失字段，而不是直接输出编辑提示词。"

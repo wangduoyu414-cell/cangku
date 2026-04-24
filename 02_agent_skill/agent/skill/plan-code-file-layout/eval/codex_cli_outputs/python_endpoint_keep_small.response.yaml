@@ -1,0 +1,27 @@
+decision:
+  strategy: keep
+  target_area: services/python-order-api/features/refund-status
+  repo_shape: feature-first
+  artifact_type: service-endpoint
+  stack: python
+  files:
+    - path: services/python-order-api/features/refund-status/status_endpoint.py
+      role: 端点模块
+      responsibility: 负责该切片的请求字段校验、退款时间窗本地规则判断，以及响应结构整形。
+      reason: 当前职责共享同一变更原因与测试面，且没有像 shipments 邻近特征那样的独立外部 IO 或 gateway 边界，拆成 handler 和 service 只会增加跳转。
+  keep_inline:
+    - 请求字段校验
+    - 仅供本端点使用的退款时间窗规则辅助函数
+    - 响应整形与本地返回类型
+  avoid:
+    - services/python-order-api/features/refund-status/status_handler.py
+    - services/python-order-api/features/refund-status/status_service.py
+    - 只做参数透传的薄 service 包装层
+  why_not_fewer: 单文件已经是这个特征切片的最小清晰边界；再缩小只会把 refund-status 的行为混进其他退款特征文件，削弱定位与调试入口。
+  why_not_more: 该切片只做校验、本地规则和响应整形，三者通常一起修改也由同一组测试覆盖。邻近 shipments 之所以拆成 tracking_handler.py 与 tracking_gateway.py，是因为 gateway 承担了真实外部边界；refund-status 目前没有对应的独立适配器职责。
+  risks:
+    - 当前主文件与对比文件都是占位夹具，结论主要依赖目录形状、命名模式和用户给出的职责描述，无法从实现细节进一步验证。
+    - 如果后续加入数据库访问、第三方调用、持久化或需要独立契约测试的复杂序列化，再拆出 service 或 gateway 会更合理。
+    - 邻近 refund-audit 已采用 handler 加 service 形式；如果团队未来把 refund-status 扩展为更长的编排流程，可能出现向该模式收敛的迁移成本。
+    - 未发现覆盖该目标区域的显式基线文档；当前建议以本地 feature-first 现实和邻近特征对比为准。
+  confidence: medium

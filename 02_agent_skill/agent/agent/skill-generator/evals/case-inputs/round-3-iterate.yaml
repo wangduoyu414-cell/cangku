@@ -1,0 +1,61 @@
+skill_name: multilingual-risk-triage
+mode: iterate
+request_summary: "Upgrade the multilingual risk triage skill from cross-file misses, inconsistent baselines, and human rollback fixes."
+constraints:
+  - "Preserve stable triage categories while tightening failure handling."
+quality_goals:
+  - "Improve baseline consistency and reduce rollback-related misses."
+scope:
+  - "Upgrade lifecycle support for failure-heavy triage scenarios."
+non_scope:
+  - "Do not widen into incident remediation."
+inputs:
+  - "rollback fixes（回滚修补）"
+  - "baseline drift reports（基线漂移报告）"
+outputs:
+  - "iterated triage skill artifacts（迭代后的分诊技能产物）"
+  - "failure attribution（失败归因）"
+risks:
+  - "Cross-file misses may reappear if failures are not promoted."
+success_bar:
+  - "Must convert repeated rollback misses into explicit repair directions."
+failure_feedback:
+  - "Cross-file dependencies keep disappearing in rollback-heavy incidents."
+  - "Baseline comparisons differ between teams."
+failure_attribution:
+  failure_cluster:
+    - "Cross-file dependency miss after rollback planning."
+    - "Inconsistent baseline language between team variants."
+  symptoms:
+    - "Humans keep appending missing follow-up tasks."
+    - "Regression steps differ for the same incident class."
+  affected_dimensions:
+    - "Limits & Interfaces（限制与接口）"
+    - "Learning & Lift（学习闭环与增益）"
+  suspected_root_cause:
+    - "Case data was rich enough, but default path and baseline wording were too loose."
+  repair_direction:
+    - "Add stricter dependency guardrails."
+    - "Normalize baseline wording into a reusable structure."
+baseline:
+  candidate: "multilingual-risk-triage v2（多语言风险分诊 v2）"
+  baseline: "previous_skill（旧版技能）"
+  quality_delta:
+    correctness: "higher"
+    actionability: "same_or_higher"
+    scope_clarity: "same_or_higher"
+    contract_completeness: "higher"
+  cost_delta:
+    token_estimate: "slightly_higher"
+    wall_clock_estimate: "similar"
+    tool_call_estimate: "similar"
+  notes:
+    - "Any cost increase must be justified by fewer rollback misses."
+iteration_backlog:
+  next_fixes:
+    - "Replay one more cross-file miss scenario."
+    - "Harden non-scope wording around remediation."
+  deferred_work:
+    - "Live per-team baseline divergence metrics."
+  why_now:
+    - "The same misses remain concentrated in rollback-heavy incidents."

@@ -1,0 +1,138 @@
+{
+  "anchor": {
+    "repo_root": "D:/LangChain",
+    "file_path": "D:/LangChain/start_mcp.py",
+    "repo_relative_path": "start_mcp.py",
+    "symbol": "",
+    "selection_range": "",
+    "language": "python",
+    "role_hint": "source"
+  },
+  "stack": {
+    "stack_family": "python",
+    "stack_id": "python-stack",
+    "confidence": "high",
+    "reasons": [
+      "file extension suggests python",
+      "found requirements.txt"
+    ],
+    "reference_file": "references/py-edge-rules.md",
+    "repo_root": "D:/LangChain",
+    "file_path": "D:/LangChain/start_mcp.py"
+  },
+  "edges": [
+    {
+      "from": "start_mcp.py",
+      "to": "external:__future__",
+      "direction": "outbound",
+      "edge_kind": "import",
+      "symbol": "",
+      "evidence_ref": "start_mcp.py:3",
+      "confidence": "medium",
+      "resolution": "resolved"
+    },
+    {
+      "from": "start_mcp.py",
+      "to": "external:argparse",
+      "direction": "outbound",
+      "edge_kind": "import",
+      "symbol": "",
+      "evidence_ref": "start_mcp.py:5",
+      "confidence": "medium",
+      "resolution": "resolved"
+    },
+    {
+      "from": "start_mcp.py",
+      "to": "external:json",
+      "direction": "outbound",
+      "edge_kind": "import",
+      "symbol": "",
+      "evidence_ref": "start_mcp.py:6",
+      "confidence": "medium",
+      "resolution": "resolved"
+    },
+    {
+      "from": "start_mcp.py",
+      "to": "external:os",
+      "direction": "outbound",
+      "edge_kind": "import",
+      "symbol": "",
+      "evidence_ref": "start_mcp.py:7",
+      "confidence": "medium",
+      "resolution": "resolved"
+    },
+    {
+      "from": "start_mcp.py",
+      "to": "external:subprocess",
+      "direction": "outbound",
+      "edge_kind": "import",
+      "symbol": "",
+      "evidence_ref": "start_mcp.py:8",
+      "confidence": "medium",
+      "resolution": "resolved"
+    },
+    {
+      "from": "start_mcp.py",
+      "to": "external:sys",
+      "direction": "outbound",
+      "edge_kind": "import",
+      "symbol": "",
+      "evidence_ref": "start_mcp.py:9",
+      "confidence": "medium",
+      "resolution": "resolved"
+    },
+    {
+      "from": "start_mcp.py",
+      "to": "external:pathlib",
+      "direction": "outbound",
+      "edge_kind": "import",
+      "symbol": "",
+      "evidence_ref": "start_mcp.py:10",
+      "confidence": "medium",
+      "resolution": "resolved"
+    },
+    {
+      "from": "start_mcp.py",
+      "to": "external:typing",
+      "direction": "outbound",
+      "edge_kind": "import",
+      "symbol": "",
+      "evidence_ref": "start_mcp.py:11",
+      "confidence": "medium",
+      "resolution": "resolved"
+    },
+    {
+      "from": "start_mcp.py",
+      "to": "config/settings.py",
+      "direction": "outbound",
+      "edge_kind": "import",
+      "symbol": "",
+      "evidence_ref": "start_mcp.py:13",
+      "confidence": "high",
+      "resolution": "resolved"
+    },
+    {
+      "from": "start_mcp.py",
+      "to": "mcp_servers/runtime_config.py",
+      "direction": "outbound",
+      "edge_kind": "import",
+      "symbol": "",
+      "evidence_ref": "start_mcp.py:14",
+      "confidence": "high",
+      "resolution": "resolved"
+    },
+    {
+      "from": "tests/test_start_mcp.py",
+      "to": "start_mcp.py",
+      "direction": "inbound",
+      "edge_kind": "import",
+      "symbol": "",
+      "evidence_ref": "tests/test_start_mcp.py:9",
+      "confidence": "high",
+      "resolution": "resolved"
+    }
+  ],
+  "blind_spots": [
+    "Runtime imports through importlib are not statically resolved."
+  ]
+}

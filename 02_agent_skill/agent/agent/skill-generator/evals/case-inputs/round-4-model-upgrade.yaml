@@ -1,0 +1,57 @@
+skill_name: federated-incident-governor
+mode: model-upgrade
+request_summary: "After another model upgrade, simplify the federated incident-governor skill while preserving contradictory constraints, governance boundaries, and UTF-8 safety."
+constraints:
+  - "Keep contradictory constraints visible after simplification."
+  - "Keep UTF-8 safe metadata generation in the standard path."
+quality_goals:
+  - "Reduce scaffolding without collapsing governance nuance."
+  - "Retain regression and trigger evaluation hooks."
+scope:
+  - "Simplify the governor skill after model improvement while preserving hard boundaries."
+non_scope:
+  - "Do not remove governance or audit guardrails."
+inputs:
+  - "stronger model signal（更强模型信号）"
+  - "prior regression reports（既有回归报告）"
+outputs:
+  - "model upgrade note（升模说明）"
+  - "refreshed baseline comparison（刷新后的基线对比）"
+risks:
+  - "The stronger model may over-compress contradictory policy notes."
+success_bar:
+  - "Must list removed scaffolding, preserved core, and new misuse risks."
+model_upgrade:
+  stable_core:
+    - "Governance boundaries, contradictory constraints, and audit requirements remain explicit."
+    - "Trigger, baseline, and regression hooks stay attached."
+  model_sensitive_layer:
+    - "Long-form guidance about sorting multilingual evidence can be shortened."
+    - "Overly explicit prompt choreography can be simplified."
+  removed_scaffolding:
+    - "Legacy reminder to restate every contradictory policy twice."
+    - "Older phase-by-phase incident-governor checklist prose."
+  new_misuse_risks:
+    - "The stronger model may incorrectly merge contradictory policy branches."
+    - "The stronger model may over-trust shorter prompts and skip governance caveats."
+baseline:
+  candidate: "federated-incident-governor simplified（联邦事件治理器精简版）"
+  baseline: "previous_skill（旧版技能）"
+  quality_delta:
+    correctness: "same_or_higher"
+    actionability: "same_or_higher"
+    scope_clarity: "same"
+    contract_completeness: "same"
+  cost_delta:
+    token_estimate: "lower"
+    wall_clock_estimate: "lower"
+    tool_call_estimate: "similar"
+  notes:
+    - "Simplification is acceptable only if contradictory constraints remain visible."
+iteration_backlog:
+  next_fixes:
+    - "Stress-test one even longer contradictory policy sample."
+  deferred_work:
+    - "Bind real telemetry to simplification decisions."
+  why_now:
+    - "Prompt mass is now large enough to justify a stronger simplification pass."

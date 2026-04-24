@@ -1,0 +1,24 @@
+entries:
+- id: release-review-orchestrator-iterate-001
+  timestamp: '2026-03-27'
+  scenario: iterate
+  signal: Upgrade an existing release review skill from clustered failures, missing
+    dependencies, and manual rework.
+  context: Keep stable core（稳定内核） intact while promoting repeated failures into guardrails（护栏）.
+  action: Draft the reusable default path（起草可复用默认路径）
+  outcome: success
+  baseline: without_skill
+  quality_delta: higher
+  cost_delta:
+    token_estimate: slightly_higher
+    wall_clock_estimate: similar
+    tool_call_estimate: similar
+  rule_candidate: Cross-file dependencies were skipped in three consecutive planning
+    tasks.
+  confidence: repeated-observation
+  freshness: stable
+  affected_dimension: scope_and_signal
+  evidence_refs:
+  - request.md
+  - baseline-comparison.md
+  follow_up: promote-to-default-path

@@ -1,0 +1,26 @@
+decision:
+  strategy: merge
+  target_area: "src/app/interfaces/refund_exports"
+  repo_shape: "layer-first"
+  artifact_type: "service-endpoint"
+  stack: "python"
+  files:
+    - path: "src/app/interfaces/refund_exports/refund_export_controller.py"
+      role: "active ingress controller"
+      responsibility: "Own the current refund export HTTP seam by translating the inbound payload, calling export_refund, and shaping the response during the incomplete downstream cutover."
+      reason: "docs/architecture/HTTP_TRANSPORT_MIGRATION.md keeps this file as the active ingress seam for the current phase, and docs/architecture/HTTP_TRANSPORT_SEAMS.md says the existing route wrapper should be merged away unless it carries real framework glue."
+  keep_inline:
+    - "Payload-to-use-case argument mapping for export_id and requested_by."
+    - "Response shaping for status and export_id while the controller remains the active transport seam."
+    - "Any one-off local request or response typing or validation that serves only this endpoint and stays simple."
+  avoid:
+    - "Keeping src/app/entrypoints/http/refund_export_routes.py as a pass-through wrapper before the cutover note is retired."
+    - "Adding a feature-local service or orchestrator file between the controller and export_refund_use_case.py without a distinct side-effect or test boundary."
+    - "Extracting separate mapper, schema, or utils files for the current trivial transport translation."
+  why_not_fewer: "Collapsing further into src/app/application/refund_exports/export_refund_use_case.py would push transport translation into the application layer and remove the controller seam that the current migration docs explicitly keep active."
+  why_not_more: "A second HTTP file does not earn its keep yet because the current route file only forwards to the controller; keeping both files would lengthen tracing without adding a real framework, side-effect, or reuse boundary."
+  risks:
+    - "The long-term target remains src/app/entrypoints/http/refund_export_routes.py after docs/architecture/HTTP_TRANSPORT_MIGRATION.md retires the refund_exports cutover exception."
+    - "If real framework-specific routing, auth, or HTTP error mapping arrives before the migration note changes, src/app/entrypoints/http/refund_export_routes.py may need to return as a genuine entrypoint glue file."
+    - "docs/architecture/MODULE_RESPONSIBILITIES.md does not define refund_exports specifically, so this plan relies on the HTTP transport migration and seam docs plus the general layering rules."
+  confidence: "high"

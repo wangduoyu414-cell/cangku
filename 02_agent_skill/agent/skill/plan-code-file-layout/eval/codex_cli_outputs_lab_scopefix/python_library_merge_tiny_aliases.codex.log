@@ -1,0 +1,1714 @@
+﻿COMMAND:
+codex exec --skip-git-repo-check --ephemeral --sandbox read-only --color never -C D:\yongyongmoban -o eval\codex_cli_outputs_lab_scopefix\python_library_merge_tiny_aliases.response.yaml -c reasoning_effort="medium" -
+
+STDOUT:
+decision:
+  strategy: merge
+  target_area: "skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds"
+  repo_shape: mixed
+  artifact_type: library-module
+  stack: python
+  files:
+    - path: "skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds/hold_reason_labels.py"
+      role: "public shared refund hold-reason helper"
+      responsibility: "Own raw hold-reason normalization, alias lookup, and display-label generation in one cohesive module, with label building as the visible surface and canonicalization kept local."
+      reason: "The current two files are one tiny, side-effect-free helper with the same change reason and test surface. No separate consumer currently justifies a standalone alias module."
+  keep_inline:
+    - "The alias mapping dictionary for canonical hold reasons."
+    - "The display label mapping dictionary for canonical reasons."
+    - "The canonicalization helper as a private local function in the merged module."
+    - "The fallback title-casing logic used when a canonical reason has no explicit label."
+  avoid:
+    - "A standalone hold_reason_aliases.py module."
+    - "A constants-only split such as hold_reason_constants.py for these two small dictionaries."
+    - "A generic refunds/utils.py or shared/utils.py extraction for one local helper."
+  why_not_fewer: "This slice still needs one dedicated shared module so refund callers do not duplicate normalization and label formatting rules or hide them in unrelated constant files."
+  why_not_more: "Further splitting mostly adds ceremony and cross-file ping-pong. Unlike the nearby partner export helper, this slice does not expose a second stable surface like CSV encoding/decoding with its own failure modes and tests."
+  risks:
+    - "If another caller later needs canonicalization as a public API independent of label rendering, the alias helper may deserve its own module again."
+    - "If code outside the target slice imports hold_reason_aliases.py directly, merging will require import updates or a temporary compatibility re-export."
+  confidence: high
+
+
+STDERR:
+2026-03-25T00:32:10.182821Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+OpenAI Codex v0.116.0-alpha.10 (research preview)
+--------
+workdir: D:\yongyongmoban
+model: gpt-5.4
+provider: OpenAI
+approval: never
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019d2267-efc1-7c11-b754-24d39a69a6e5
+--------
+user
+You are executing a repository skill evaluation inside Codex CLI. Follow the skill workflow and references exactly, and return only YAML with no markdown fences.
+
+# Skill
+
+---
+name: plan-code-file-layout
+description: Plan repository-aligned file boundaries for one concrete implementation slice. Use when the user asks whether a change should stay in one file or be split, how many files to create, what each file should own, or how to organize Python, TypeScript/JavaScript, Vue, or Go code for maintainability and debugging inside that slice. Also use for near-miss requests like component/composable split, endpoint file layout, feature-folder planning, or deciding whether to extract helpers. Do not use for dependency analysis, generic module-context explanation, style-only questions, post-hoc code review, or whole-system architecture redesign.
+---
+
+# Plan Code File Layout
+
+## Overview
+
+Plan file boundaries for one concrete change before implementation starts.
+Stay aligned with nearby repository conventions, artifact role, and stack-specific constraints instead of applying generic style advice.
+
+## Quick Reference
+
+- If the target area is unclear, stop and ask for the intended directory, module, or feature anchor.
+- If nearby code already shows a stable organization pattern, align with it unless it is clearly causing maintenance or debug pain.
+- If the repository shape is unclear, read [repo-shape.md](./references/repo-shape.md) and classify it before planning files.
+- If the code role is unclear, choose one artifact path from the `artifact-*` references before reading stack deltas.
+- If the repository is mixed, make the decision around the target area and treat other stacks as surrounding constraints rather than primary drivers.
+- When signals conflict, prefer them in this order: target file reality, nearby sibling examples, target directory convention, repository docs, global architecture docs.
+- Treat file naming as a local clarity choice, not a unique global template; prefer names that express the role clearly inside the target area.
+- Treat nearby examples and comparison files as evidence, not as files to include in the plan unless the user explicitly expands the implementation slice to cover them too.
+
+## Workflow
+
+1. Anchor the request to one concrete implementation slice: feature, endpoint, component, command, pipeline step, or module.
+2. Read nearby files and infer repository shape with [repo-shape.md](./references/repo-shape.md).
+3. Read [core-principles.md](./references/core-principles.md) and pick the closest artifact guide.
+4. Read one stack guide that matches the dominant local stack, or treat the area as mixed if multiple stacks materially shape the boundary.
+5. Decide `keep`, `split`, or `merge`.
+6. Produce a file plan using [output-shape.md](./references/output-shape.md).
+7. Explain `why_not_fewer` and `why_not_more`, then list risks or confidence limits.
+
+## Resource Routing
+
+- [core-principles.md](./references/core-principles.md): Read for every task.
+- [repo-shape.md](./references/repo-shape.md): Read before planning files in an unfamiliar repository or directory.
+- [output-shape.md](./references/output-shape.md): Use to format the final decision.
+- [anti-patterns.md](./references/anti-patterns.md): Read when the local codebase already shows fragmentation, giant files, or `shared/utils/common` sprawl.
+- [artifact-ui-component.md](./references/artifact-ui-component.md): Use for UI pages, components, composables, or view-focused work.
+- [artifact-service-endpoint.md](./references/artifact-service-endpoint.md): Use for request/response handlers, services, and persistence edges.
+- [artifact-cli-command.md](./references/artifact-cli-command.md): Use for commands, scripts, and operator tools.
+- [artifact-data-pipeline-step.md](./references/artifact-data-pipeline-step.md): Use for ETL, jobs, stream stages, or batch steps.
+- [artifact-library-module.md](./references/artifact-library-module.md): Use for reusable modules and library-facing code.
+- [stack-python.md](./references/stack-python.md): Read when Python materially shapes module boundaries.
+- [stack-typescript-javascript.md](./references/stack-typescript-javascript.md): Read when TypeScript or JavaScript materially shapes module boundaries.
+- [stack-vue.md](./references/stack-vue.md): Read when Vue single-file components or composables are involved.
+- [stack-go.md](./references/stack-go.md): Read when Go package cohesion or public API shape is involved.
+
+## Critical Rules
+
+- Default to a small number of high-cohesion files rather than the smallest possible files.
+- Split files only when change reasons, side-effect boundaries, test boundaries, or real reuse needs are materially separate.
+- Keep private helpers, local types, and one-off mappers inline until they clearly interfere with reading or gain a second real consumer.
+- Avoid thin pass-through wrappers whose only job is forwarding calls or re-exporting local logic.
+- Keep a common bug or common change readable through roughly one to three files, not a long ping-pong chain.
+- Let repository reality win over generic advice unless the existing pattern is obviously harming maintainability or debugging.
+- Hold the core boundary decision stable even when role labels, confidence wording, or local file names could reasonably vary.
+- Keep the recommendation scoped to the concrete target slice; do not widen the `files` list to sibling helpers, comparison examples, or the whole directory just because those files were shown as context.
+
+## Validation
+
+- Confirm the plan is anchored to one target area rather than drifting into repository redesign.
+- Confirm the `files` list covers only the target implementation slice and not nearby comparison files.
+- Confirm each proposed file has a distinct role and is not a naming-only split.
+- Confirm the plan respects nearby directory conventions, package layout, and import style.
+- Confirm the plan explains why the boundary is not smaller and not larger.
+- Confirm mixed repositories are treated locally rather than forcing one global stack model onto everything.
+
+## Output Contract
+
+Done means:
+
+- The final answer uses the structure in [output-shape.md](./references/output-shape.md).
+- The answer returns `keep`, `split`, or `merge`.
+- The answer lists the recommended files and each file's responsibility.
+- The answer includes the core decision fields `strategy`, `target_area`, `files`, `why_not_fewer`, and `why_not_more`.
+- The answer also includes the explanatory fields `repo_shape`, `artifact_type`, `stack`, `keep_inline`, `avoid`, `risks`, and `confidence`.
+- The answer is narrow enough that an implementation workflow can consume it directly.
+
+## Failure Handling
+
+- If the target area is missing, stop and recover the directory, file, or feature anchor.
+- If nearby code gives conflicting signals, follow the strongest local signal according to the precedence above and lower confidence.
+- If the task expands into repository-wide restructuring or architecture redesign, hand off to a broader workflow instead of stretching this skill.
+- If the stack is unknown, return a repository-aligned generic plan and explicitly mark the stack uncertainty.
+
+
+# Reference: anti-patterns.md
+
+# Anti-Patterns
+
+Avoid these patterns unless the repository has a very strong reason for them.
+
+## Thin Wrapper Files
+
+Files that only forward calls, re-export local code, or rename a concept without reducing complexity.
+
+## Premature Shared Utils
+
+Creating `shared`, `common`, or `utils` modules before there is a second real consumer.
+
+## Function-Per-File Splits
+
+Breaking one coherent unit into many tiny files so that readers must chase a long import chain.
+
+## Mixed-Layer Giant Files
+
+Keeping route glue, domain logic, persistence, formatting, and recovery logic in one large file.
+
+## Fake Reuse
+
+Extracting code for hypothetical future reuse rather than current duplication or stable API value.
+
+## Cross-File Ping-Pong
+
+A bug or routine change requires repeated jumps across many local files that add little ownership value.
+
+## Package Sprawl
+
+Especially in Go, creating extra packages before there is a real boundary in ownership, dependencies, or API shape.
+
+
+# Reference: artifact-cli-command.md
+
+# Artifact: CLI Command
+
+Use for commands, maintenance tools, and operator-facing scripts.
+
+## Default Boundary
+
+Bias toward fewer files so the main flow is visible in one place.
+
+## Split When
+
+- External integrations or file-system effects deserve isolation.
+- Parsing, validation, or transformation logic gains a real test boundary.
+- The command shell and the core operation can be separated without hiding the main flow.
+
+## Common Roles
+
+- Command entrypoint
+- Core operation
+- External adapter
+
+## Avoid
+
+- Spreading a simple command across many modules.
+- Abstracting command flags or small helpers into generic frameworks too early.
+
+
+# Reference: artifact-data-pipeline-step.md
+
+# Artifact: Data Pipeline Step
+
+Use for ETL stages, jobs, stream processors, and batch pipeline steps.
+
+## Default Boundary
+
+Split by stage or boundary, not by tiny helper function.
+
+## Split When
+
+- Extraction, transformation, and sink logic have different side effects or retry behavior.
+- Schema normalization has its own test surface.
+- One stage is becoming a reusable shared pipeline component.
+
+## Common Roles
+
+- Step entrypoint
+- Transform logic
+- Source or sink adapter
+- Contract or schema mapping
+
+## Avoid
+
+- Creating large shared utility files for one pipeline.
+- Hiding the step flow across many tiny helpers that readers must reassemble.
+
+
+# Reference: artifact-library-module.md
+
+# Artifact: Library Module
+
+Use for reusable modules, internal libraries, and shared business logic packages.
+
+## Default Boundary
+
+Keep one cohesive public surface with private helpers nearby until the API or reuse surface grows.
+
+## Split When
+
+- Public API surface and internal helpers are both large enough to obscure each other.
+- Multiple stable subdomains emerge inside the module.
+- Platform-specific adapters or serialization details deserve isolation.
+
+## Common Roles
+
+- Public entry module
+- Core logic module
+- Adapter or codec module
+
+## Avoid
+
+- Turning every type or function into its own file.
+- Creating a shared library before local duplication or API stability exists.
+
+
+# Reference: artifact-service-endpoint.md
+
+# Artifact: Service Endpoint
+
+Use for HTTP handlers, RPC handlers, controller actions, and service-facing request flows.
+
+## Default Boundary
+
+Small endpoints may keep handler logic and light orchestration together when persistence and external IO are trivial.
+
+## Split When
+
+- Framework entry glue, business orchestration, and external IO are all present.
+- Persistence, network clients, or serialization logic create separate failure modes.
+- Contract validation or schema handling has independent test value.
+- The route can stay as the visible orchestration file while external adapters take the real IO boundaries.
+
+## Common Roles
+
+- Handler or controller
+- Use-case or service orchestration
+- Repository or gateway
+- Contract or schema definition
+
+## Avoid
+
+- One-off repositories that only wrap a single local query with no ownership benefit.
+- Global service layers that just pass through controller parameters unchanged.
+- Feature-local service files whose only extra value is moving a short route orchestration out of the handler while client and store files already hold the real boundaries.
+- Route -> service -> client -> repository chains when the common endpoint path is still readable through route plus the real adapters.
+
+
+# Reference: artifact-ui-component.md
+
+# Artifact: UI Component
+
+Use for pages, feature views, reusable components, and local UI state.
+
+## Default Boundary
+
+Keep view markup, simple local state, and local event handling close together.
+
+## Split When
+
+- Async data access or remote mutations dominate the logic.
+- State logic becomes reusable across multiple components.
+- One file mixes container concerns with reusable presentational concerns.
+- Test strategy clearly separates component rendering from data or side-effect logic.
+
+## Common Roles
+
+- Page or container component
+- Reusable presentational component
+- Local state or composable hook
+- UI-facing service or API adapter
+
+## Avoid
+
+- Splitting every helper into its own file.
+- Extracting components only because the template grew, without a real ownership boundary.
+- Creating generic shared components before a second real usage appears.
+
+
+# Reference: core-principles.md
+
+# Core Principles
+
+Use these rules before reading any artifact or stack guide.
+
+## Decision Order
+
+1. Read the target area and nearby files.
+2. Classify the local repository shape.
+3. Classify the artifact role.
+4. Apply stack deltas.
+5. Decide `keep`, `split`, or `merge`.
+
+## Conflict Precedence
+
+When local signals disagree, prefer them in this order:
+
+1. The target file and the concrete implementation slice itself
+2. Nearby sibling examples in the same local area
+3. The target directory's existing convention
+4. Repository documentation
+5. Global architecture guidance
+
+If the higher-priority local signal wins but the lower-priority guidance still matters, keep the local decision and lower confidence instead of forcing a repository-wide answer.
+
+## Default Bias
+
+- Prefer a small number of high-cohesion files.
+- Prefer boundaries that make common debugging and common edits local.
+- Prefer local helpers over premature extraction.
+- Prefer the shortest file chain that still exposes real side-effect boundaries.
+- Do not insert an extra orchestration layer when the entry file plus the real IO edges already keeps the common path readable.
+- Keep the recommendation scoped to the concrete slice under discussion; nearby examples are there to calibrate the decision, not to be copied into the returned file plan.
+
+## Split Signals
+
+Split when one or more of these become materially separate:
+
+- Change reason
+- Side-effect boundary
+- Test surface
+- Reuse need
+- Public API surface
+
+Treat stronger signals as:
+
+- External IO or framework glue mixed with business rules
+- One file mixing entrypoint, orchestration, and persistence
+- One file hiding multiple independent failure modes
+- One file where the real split is "entry + external adapter + persistence adapter", not "entry + service + adapter"
+
+## Keep Signals
+
+Keep code in one file when most of these are true:
+
+- The change reason is shared.
+- The code is only used locally.
+- The same tests cover the whole slice.
+- Splitting would add wrapper files or longer jumps without clearer ownership.
+- The main flow is still readable in the entry file once real adapter boundaries are extracted.
+
+## Merge Signals
+
+Merge when the current boundary causes more movement than clarity:
+
+- Frequent bug tracing crosses four or more files.
+- A file exists only to forward calls or re-export local code.
+- Two files almost always change together and do not have separate test or side-effect value.
+
+## Heuristic Thresholds
+
+Treat these as warning signs, not hard limits:
+
+- A common change should usually stay readable through one to three files.
+- Very large files are suspicious when they mix multiple abstraction layers.
+- Very small files are suspicious when they exist only for naming or ceremony.
+
+
+# Reference: output-shape.md
+
+# Output Shape
+
+Return the final plan in this structure.
+
+```yaml
+decision:
+  strategy: keep | split | merge
+  target_area: ""
+  repo_shape: feature-first | layer-first | package-first | mixed
+  artifact_type: ui-component | service-endpoint | cli-command | data-pipeline-step | library-module
+  stack: python | typescript-javascript | vue | go | mixed | unknown
+  files:
+    - path: ""
+      role: ""
+      responsibility: ""
+      reason: ""
+  keep_inline: []
+  avoid: []
+  why_not_fewer: ""
+  why_not_more: ""
+  risks: []
+  confidence: high | medium | low
+```
+
+## Field Notes
+
+### Core Decision Fields
+
+- `strategy`: Main boundary decision for this implementation slice.
+- `target_area`: Directory, feature, or module anchor used for the decision.
+- `files`: Recommended production files only.
+- `files` should list only the production files for the target slice itself, not sibling examples or comparison files that were shown as context.
+- `why_not_fewer`: Explain why a smaller layout would blur a real boundary.
+- `why_not_more`: Explain why further splitting would mostly add ceremony.
+
+These fields carry the main implementation decision and should remain stable across reasonable model variations.
+
+### Explanatory Fields
+
+- `repo_shape`: Local repository organization around the target area.
+- `artifact_type`: Primary code role that drives the boundary.
+- `stack`: Dominant local stack, not the entire repository.
+- `keep_inline`: Helpers, types, validators, or mappers that should stay local for now.
+- `avoid`: Unhelpful files or abstractions that should not be created.
+- `risks`: List uncertainty, convention conflicts, or likely follow-up questions.
+- `confidence`: Record how stable the recommendation looks after weighing local signals and conflicts.
+
+These fields explain or classify the decision. They should still be present, but some wording, naming, or classification differences can remain acceptable when the core boundary decision is unchanged.
+
+
+# Reference: repo-shape.md
+
+# Repository Shape
+
+Classify the target area before proposing new files.
+
+## Feature-First
+
+Typical signs:
+
+- Directories grouped by domain or feature
+- UI, service, and tests for one feature live near each other
+
+Planning rule:
+
+- Keep new files near the feature.
+- Prefer local file splits inside the feature instead of creating global shared folders.
+
+## Layer-First
+
+Typical signs:
+
+- Global folders like `controllers/`, `services/`, `repositories/`, `components/`
+- Files for one feature are spread across layer directories
+
+Planning rule:
+
+- Respect the existing layout unless it is clearly being replaced.
+- Avoid introducing a one-off feature island inside a strong layer-first codebase.
+
+## Package-First
+
+Typical signs:
+
+- Package boundaries carry most of the meaning
+- Common in Go and some Python monorepos
+
+Planning rule:
+
+- First choose the right package.
+- Then keep file count modest inside the package unless multiple roles need separation.
+
+## Mixed
+
+Typical signs:
+
+- Different areas follow different patterns
+- Frontend, backend, scripts, and infra each organize differently
+
+Planning rule:
+
+- Make the decision locally around the target area.
+- Do not force one repository-wide shape onto the entire codebase.
+- Let the target artifact type and dominant local stack drive the plan.
+
+
+# Reference: stack-go.md
+
+# Stack: Go
+
+Treat this as a strong override when Go packages define the main boundary.
+
+## Bias
+
+- Package cohesion matters more than file count.
+- A small package with a few files is often healthier than many tiny packages.
+
+## Split When
+
+- The package has clearly separate handler, domain, and external adapter concerns.
+- The public API surface is getting hard to scan.
+- Import pressure or package cycles point to the wrong package boundary.
+
+## Keep Inline
+
+- Local helpers
+- Simple structs used only within one package slice
+- Small validation or mapping helpers
+
+## Avoid
+
+- Creating interfaces before there are multiple meaningful consumers
+- Splitting packages or files only for abstract purity
+- Spreading one flow across many files inside the same package without clear ownership gain
+
+
+# Reference: stack-python.md
+
+# Stack: Python
+
+Use this guide as a delta on top of the core and artifact rules.
+
+## Bias
+
+- Allow thicker modules than Java-style codebases.
+- Prefer package clarity over aggressive file splitting.
+
+## Keep Inline
+
+- Local helpers
+- Local data classes or typed dicts
+- One-off validators and mappers
+
+## Split When
+
+- Pure logic and external side effects are getting tangled.
+- A client, adapter, or persistence edge has clear independent tests.
+- The package now exposes a stable API surface used from multiple places.
+
+## Avoid
+
+- One class per file by default
+- Catch-all `utils.py` growth
+- Over-abstracting small scripts into too many modules
+
+
+# Reference: stack-typescript-javascript.md
+
+# Stack: TypeScript / JavaScript
+
+Use this guide as a delta on top of the core and artifact rules.
+
+## Bias
+
+- Prefer feature-local organization over global layer sprawl when the repository allows it.
+- Keep local types, mappers, and validators close to the feature until reuse is real.
+
+## Split When
+
+- Framework glue, business orchestration, and external IO all coexist in one file.
+- The same file carries both UI concerns and remote data concerns.
+- A contract, schema, or adapter has its own test and failure boundary.
+
+## Avoid
+
+- Pass-through wrapper files
+- Barrel files that add indirection without a public API reason
+- Extracting every helper because import paths look cleaner on paper
+- Adding a feature-local service layer between a route and its real adapters when the route can still visibly orchestrate one short flow.
+
+
+# Reference: stack-vue.md
+
+# Stack: Vue
+
+Treat this as a strong override when Vue single-file components or composables are involved.
+
+## Bias
+
+- A `.vue` single-file component is already a valid boundary.
+- Keep template, simple local state, and local event logic together by default.
+
+## Split When
+
+- Async fetching, mutations, or cross-component state dominate the component.
+- State or behavior deserves a reusable composable.
+- API or persistence logic is obscuring the view role.
+
+## Common Layout
+
+- Page or container `.vue`
+- Reusable child component `.vue`
+- Composable for shared stateful behavior
+- Service or API module for remote calls
+
+## Avoid
+
+- Turning every piece of component state into a composable
+- Creating generic UI abstractions before repeated usage exists
+- Splitting one cohesive component just to reduce template length
+
+
+User request:
+Decide whether this Python hold reason helper should keep its current split across tiny modules or merge them. Anchor the decision in skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds and compare it with the nearby partner export helper, where a stable CSV surface now deserves its own file.
+Repository root: D:\yongyongmoban
+Target area: skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds
+Important scope rule: recommend only the production files for the concrete target slice named in the request. Nearby comparison files are reference only and must not be copied into the returned file plan unless the request explicitly expands scope.
+Target slice files:
+- skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds/hold_reason_labels.py
+- skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds/hold_reason_aliases.py
+Nearby comparison files (reference only):
+- skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds/partner_export_format.py
+- skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds/partner_export_csv.py
+Supporting repository files:
+- AGENTS.md
+- README.md
+- docs/architecture/MODULE_RESPONSIBILITIES.md
+
+Repository context:
+
+Target slice file contents:
+
+## File: skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds/hold_reason_labels.py
+
+```text
+from __future__ import annotations
+
+from .hold_reason_aliases import canonicalize_hold_reason
+
+
+DISPLAY_LABELS = {
+    "partner_review": "Partner Review",
+    "manual_check": "Manual Check",
+    "document_missing": "Document Missing",
+}
+
+
+def build_hold_reason_label(raw_reason: str) -> str:
+    reason = canonicalize_hold_reason(raw_reason)
+    return DISPLAY_LABELS.get(reason, reason.replace("_", " ").title())
+
+```
+
+## File: skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds/hold_reason_aliases.py
+
+```text
+from __future__ import annotations
+
+
+ALIASES = {
+    "partner-review": "partner_review",
+    "manual review": "manual_check",
+    "docs_missing": "document_missing",
+}
+
+
+def canonicalize_hold_reason(raw_reason: str) -> str:
+    cleaned = raw_reason.strip().lower().replace(" ", "_")
+    return ALIASES.get(cleaned, cleaned)
+
+```
+
+Comparison file contents (reference only; do not include these files in the answer unless the request scope explicitly includes them):
+
+## File: skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds/partner_export_format.py
+
+```text
+from __future__ import annotations
+
+from dataclasses import dataclass
+from decimal import Decimal
+
+
+@dataclass(frozen=True)
+class PartnerExportRow:
+    refund_id: str
+    partner_code: str
+    amount: Decimal
+    status: str
+
+
+def build_partner_export_row(refund_id: str, partner_code: str, amount: str, status: str) -> PartnerExportRow:
+    return PartnerExportRow(
+        refund_id=refund_id.strip(),
+        partner_code=partner_code.strip().upper(),
+        amount=Decimal(amount),
+        status=status.strip().lower(),
+    )
+
+```
+
+## File: skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds/partner_export_csv.py
+
+```text
+from __future__ import annotations
+
+from .partner_export_format import PartnerExportRow, build_partner_export_row
+
+
+def encode_partner_export_csv(row: PartnerExportRow) -> str:
+    return ",".join([row.refund_id, row.partner_code, format(row.amount, ".2f"), row.status])
+
+
+def decode_partner_export_csv(line: str) -> PartnerExportRow:
+    refund_id, partner_code, amount, status = [part.strip() for part in line.split(",", maxsplit=3)]
+    return build_partner_export_row(refund_id, partner_code, amount, status)
+
+```
+
+Additional repository context:
+
+## File: AGENTS.md
+
+```text
+# AGENTS
+
+## Global Goal
+
+Build a refund operations workspace that is easy to change, easy to trace, and safe to extend across API, batch, and back-office flows.
+
+本模板用于规范 AI/Codemodel 在仓库中的协作方式。
+
+## 核心原则
+
+1. **优先保证可维护性和可追溯性**。
+2. **重要改动必须同步更新 `docs/`**。
+3. **涉及架构变更时新增 `docs/adr/` 记录**。
+4. **编码前必须获取足够的上下文信息**。
+
+---
+
+## AI/Codemodel 协作工作流
+
+### 编码前：获取上下文
+
+在开始任何编码工作之前，必须先获取足够的上下文信息：
+
+#### 1. 理解模块边界和职责（必须）
+
+触发 Skill: `describe-module-context`
+
+获取当前文件的：
+- 架构层归属（Domain / Application / Interfaces / Infrastructure 等）
+- 模块职责定义
+- 全局目标关联
+- 编码约束
+
+参考文档：
+- `.cursor/rules/LAYERING.md` — Clean Architecture 层职责定义
+- `docs/architecture/MODULE_RESPONSIBILITIES.md` — 模块职责说明
+
+#### 2. 理解依赖关系（建议）
+
+触发 Skill: `analyze-current-file-dependencies-workflow`
+
+获取当前文件的：
+- 入向依赖（谁依赖我）
+- 出向依赖（我依赖谁）
+- 变更影响范围
+- 循环依赖检测
+
+参考文档：
+- `scripts/` 目录中的分析脚本
+- `references/` 目录中的依赖规则文档
+
+### 编码中：遵循规范
+
+#### 架构分层规范
+
+遵循 `.cursor/rules/LAYERING.md` 中定义的 Clean Architecture 分层规则：
+
+| 允许的依赖方向 | 说明 |
+|---------------|------|
+| EntryPoints → Interfaces → Application → Domain | 从外向内的单向依赖 |
+| Infrastructure → Domain | 基础设施实现领域接口 |
+| Shared → 所有层 | 共享工具可被所有层引用 |
+
+**禁止：**
+- Domain 层依赖任何外部系统
+- 跨越多个层的大文件（如同时处理 HTTP 请求和业务逻辑）
+- 违反层间依赖规则的代码
+
+#### 编码规范
+
+- 所有函数和类必须有类型注解
+- 遵循各层对应的编码规范（见 `.cursor/rules/`）
+- 复杂业务逻辑必须添加注释
+- 单个文件不超过 300 行
+
+### 编码后：验证和记录
+
+#### 代码验证
+
+- [ ] 代码符合层归属规范
+- [ ] 无循环依赖
+- [ ] 单元测试覆盖核心逻辑
+- [ ] 集成测试通过
+
+#### 文档更新
+
+- [ ] 涉及模块职责变更时更新 `docs/architecture/MODULE_RESPONSIBILITIES.md`
+- [ ] 涉及架构变更时在 `docs/adr/` 新增记录
+- [ ] 更新 `docs/decisions/CHANGELOG.md`
+
+---
+
+## Skill 索引
+
+### 上下文准备类
+
+| Skill | 触发时机 | 回答的问题 |
+|-------|---------|-----------|
+| `describe-module-context` | 仅在层归属或职责边界阻塞当前切片时启用 | "我在哪个层、应该做什么" |
+| `analyze-current-file-dependencies-workflow` | 仅在依赖关系、影响面或构建/配置连接不清时启用 | "改这个会牵动哪些代码" |
+
+### Skill 组合使用建议
+
+```
+编码前：
+1. 若层归属或职责边界阻塞当前切片，再执行 describe-module-context → 获取语义上下文（层归属、模块职责）
+2. 若依赖关系、影响面或构建/配置连接不清，再执行 analyze-current-file-dependencies-workflow → 获取技术上下文（依赖关系）
+
+编码中：遵循 .cursor/rules/ 中的规范
+
+编码后：验证 + 更新相关文档
+```
+
+### Skill 触发方式
+
+- 当用户说"我想了解一下这个文件"、"这个模块是做什么的"、"先理解再写"
+- 当需要修改一个文件时，先触发上下文 Skill
+- 当需要了解文件影响范围时，触发依赖分析 Skill
+
+---
+
+## 项目结构索引
+
+| 目录/文件 | 说明 | 关联 Skill |
+|-----------|------|-----------|
+| `.cursor/rules/LAYERING.md` | Clean Architecture 层职责定义 | describe-module-context |
+| `.cursor/rules/*.md` | 编码规范文件 | 编码时参考 |
+| `docs/architecture/MODULE_RESPONSIBILITIES.md` | 模块职责说明 | describe-module-context |
+| `docs/adr/` | 架构决策记录 | 架构变更时新增 |
+| `docs/decisions/CHANGELOG.md` | 变更日志 | 重要改动时更新 |
+| `scripts/` | 脚本目录 | 依赖分析时使用 |
+| `src/app/` | 源代码（Clean Architecture 分层） | 按层归属理解 |
+
+---
+
+## 变更管理
+
+### 小改动
+
+- 修改单个文件或函数
+- 不影响模块边界
+- 不需要更新文档
+
+处理流程：
+1. 若层归属或职责边界不清，补充语义上下文（describe-module-context）
+2. 编码
+3. 验证
+
+### 中等改动
+
+- 涉及多个文件
+- 可能影响模块边界
+- 需要更新相关文档
+
+处理流程：
+1. 若层归属或职责边界不清，补充语义上下文（describe-module-context）
+2. 若依赖关系或影响面不清，分析依赖（analyze-current-file-dependencies-workflow）
+3. 编码
+4. 更新 `docs/decisions/CHANGELOG.md`
+5. 验证
+
+### 大改动（架构变更）
+
+- 涉及模块重构
+- 改变层间依赖关系
+- 需要新增模块定义
+
+处理流程：
+1. 若层归属或职责边界不清，补充语义上下文（describe-module-context）
+2. 若依赖关系或影响面不清，分析依赖（analyze-current-file-dependencies-workflow）
+3. 在 `docs/adr/` 新增架构决策记录
+4. 更新 `docs/architecture/MODULE_RESPONSIBILITIES.md`
+5. 编码
+6. 更新 `docs/decisions/CHANGELOG.md`
+7. 验证
+
+---
+
+## 测试要求
+
+| 测试类型 | 目录 | 覆盖率要求 |
+|---------|------|-----------|
+| 单元测试 | `tests/unit/` | 核心业务逻辑 80%+ |
+| 集成测试 | `tests/integration/` | 关键路径全覆盖 |
+| E2E 测试 | `tests/e2e/` | 核心用户路径 |
+| 契约测试 | `tests/contract/` | API 接口全覆盖 |
+
+---
+
+## 协作规范
+
+1. **尊重既有代码风格**：新增代码应与仓库既有风格一致
+2. **不引入不必要的复杂性**：优先使用简单方案
+3. **保持提交原子性**：每个提交只做一件事
+4. **及时沟通不确定性**：遇到不确定的地方，先问再动
+5. **记录决策理由**：重要的架构决策应记录在 `docs/adr/`
+
+---
+
+## 参考文档
+
+- `.cursor/rules/LAYERING.md` — Clean Architecture 层职责定义
+- `docs/architecture/MODULE_RESPONSIBILITIES.md` — 模块职责说明
+- `docs/decisions/CHANGELOG.md` — 变更日志
+- `D:\zidonghua\describe-module-context\SKILL.md` — describe-module-context Skill
+- `D:\zidonghua\analyze-current-file-dependencies-workflow\SKILL.md` — 依赖分析 Skill
+
+```
+
+## File: README.md
+
+```text
+# 通用仓库模板
+
+这个模板用于快速初始化具备工程治理能力的代码仓库，兼顾：
+
+- 业务开发（`src/`、`services/`、`packages/`）
+- 测试分层（`tests/`）
+- 文档治理（`docs/`）
+- 部署与运维（`deployments/`、`observability/`）
+- 安全与合规（`security/`）
+- AI/Codemodel 协作（`AGENTS.md`、`.cursor/rules/`）
+
+## 根目录收敛策略
+
+根目录仅保留高可见、强约定的入口文件，减少散落配置：
+
+- 保留：`README.md`、`LICENSE`、`CONTRIBUTING.md`、`CODE_OF_CONDUCT.md`、`AGENTS.md`、`.gitignore`、`.editorconfig`、`.gitattributes`、`Makefile`
+- 下沉：环境样例到 `configs/local/.env.example`、容器编排到 `deployments/docker/docker-compose.yml`、变更记录到 `docs/decisions/CHANGELOG.md`
+
+## 推荐目录结构
+
+```text
+repo/
+├─ README.md
+├─ LICENSE
+├─ CONTRIBUTING.md
+├─ CODE_OF_CONDUCT.md
+├─ AGENTS.md
+├─ .gitignore
+├─ .editorconfig
+├─ .gitattributes
+├─ pyproject.toml / package.json / go.mod
+├─ Makefile
+├─ .github/
+│  ├─ workflows/
+│  ├─ ISSUE_TEMPLATE/
+│  └─ PULL_REQUEST_TEMPLATE.md
+├─ docs/
+│  ├─ architecture/
+│  ├─ adr/
+│  ├─ api/
+│  ├─ runbooks/
+│  ├─ security/
+│  ├─ data-contracts/
+│  └─ decisions/
+│     └─ CHANGELOG.md
+├─ src/
+│  └─ app/
+│     ├─ entrypoints/
+│     ├─ domain/
+│     ├─ application/
+│     ├─ infrastructure/
+│     ├─ interfaces/
+│     ├─ shared/
+│     └─ config/
+├─ services/
+├─ packages/
+├─ tests/
+│  ├─ unit/
+│  ├─ integration/
+│  ├─ contract/
+│  ├─ e2e/
+│  ├─ performance/
+│  ├─ security/
+│  ├─ regression/
+│  └─ fixtures/
+├─ scripts/
+│  ├─ dev/
+│  ├─ build/
+│  ├─ release/
+│  ├─ migrate/
+│  └─ ops/
+├─ configs/
+│  ├─ base/
+│  ├─ local/
+│  │  └─ .env.example
+│  ├─ dev/
+│  ├─ staging/
+│  └─ prod/
+├─ deployments/
+│  ├─ docker/
+│  │  └─ docker-compose.yml
+│  ├─ kubernetes/
+│  ├─ terraform/
+│  └─ helm/
+├─ migrations/
+│  ├─ sql/
+│  └─ data/
+├─ data/
+│  ├─ sample/
+│  ├─ seeds/
+│  ├─ raw/
+│  ├─ processed/
+│  └─ snapshots/
+├─ observability/
+│  ├─ dashboards/
+│  ├─ alerts/
+│  ├─ logs/
+│  └─ tracing/
+├─ security/
+│  ├─ policies/
+│  ├─ threat-model/
+│  ├─ sbom/
+│  └─ scans/
+├─ tools/
+│  ├─ lint/
+│  ├─ format/
+│  ├─ codegen/
+│  └─ ci/
+├─ examples/
+├─ benchmarks/
+├─ .cursor/
+│  └─ rules/
+└─ tmp/
+```
+
+## 目录职责说明
+
+- `src/app/domain`：核心业务规则，不依赖外部系统。
+- `src/app/application`：用例编排，连接 domain 与接口层。
+- `src/app/infrastructure`：数据库、缓存、消息队列、外部 API 实现。
+- `src/app/interfaces`：HTTP/CLI/Consumer 等输入输出适配层。
+- `tests/unit|integration|contract|e2e`：分层测试，避免职责混杂。
+- `docs/architecture|adr|runbooks`：分别保存架构、决策、操作手册。
+- `configs/*`：按环境管理配置，避免把生产密钥提交入库。
+- `deployments/*`：容器、K8s、IaC 相关部署资产。
+- `observability/*`：监控、告警、日志、链路追踪配置。
+- `security/*`：安全策略、威胁建模、扫描和 SBOM。
+- `tmp/`：临时输出，默认不纳入版本管理。
+
+## 使用建议
+
+- 单体应用可优先使用 `src/`，`services/` 与 `packages/` 后续按需启用。
+- 微服务/Monorepo 可按服务或包逐步填充 `services/`、`packages/`。
+- 新项目先补齐：`README.md`、`AGENTS.md`、`docs/architecture/`、`tests/unit/`、`configs/base/`。
+
+
+```
+
+## File: docs/architecture/MODULE_RESPONSIBILITIES.md
+
+```text
+# Module Responsibilities
+
+本文档定义本仓库中各业务模块的职责、边界和依赖关系。
+
+---
+
+## 模块结构概览
+
+```
+src/app/
+├── domain/           # 领域层
+│   ├── entities/    # 实体定义
+│   ├── services/     # 领域服务
+│   └── events/       # 领域事件
+├── application/      # 应用层
+│   ├── use_cases/   # 用例实现
+│   └── services/     # 应用服务
+├── interfaces/       # 接口层
+│   ├── controllers/ # 控制器
+│   └── dto/         # 数据传输对象
+├── infrastructure/   # 基础设施层
+│   ├── persistence/ # 持久化
+│   └── external/    # 外部服务
+├── shared/          # 共享层
+│   ├── utils/       # 工具函数
+│   └── constants/   # 常量
+└── config/          # 配置层
+```
+
+---
+
+## 模块定义模板
+
+每个模块应该按照以下格式定义：
+
+```markdown
+## {模块名称}
+
+### 基本信息
+- **模块路径**: `src/app/{layer}/{module}/`
+- **架构层**: {所属层}
+- **状态**: {规划中 / 开发中 / 稳定}
+- **维护者**: {团队或个人}
+
+### 核心职责
+{一句话描述模块的核心职责}
+
+### 业务边界
+{模块负责的边界描述，包括：
+1. 模块负责什么
+2. 模块不负责什么
+3. 与其他模块的边界}
+
+### 核心实体
+| 实体名 | 职责 | 主要方法 |
+|--------|------|---------|
+| {实体名} | {职责描述} | {主要方法列表} |
+
+### 公开接口
+| 接口名 | 用途 | 调用方 |
+|--------|------|--------|
+| {接口名} | {用途描述} | {调用方模块} |
+
+### 依赖模块
+| 模块名 | 依赖原因 | 依赖类型 |
+|--------|---------|---------|
+| {模块名} | {为什么依赖} | {必须的 / 可选的} |
+
+### 被依赖关系
+| 模块名 | 依赖方式 |
+|--------|---------|
+| {模块名} | {如何依赖本模块} |
+
+### 编码约束
+- {具体的编码约束}
+
+### 扩展点
+{模块的可扩展点描述}
+```
+
+---
+
+## 业务模块定义
+
+> **提示**：本节为空模板，实际项目需要根据业务需求填充。
+> 创建新模块时，请按照上方模板在此添加模块定义。
+
+### 模块 1（示例模板）
+
+```markdown
+### 基本信息
+- **模块路径**: `src/app/domain/orders/`
+- **架构层**: Domain
+- **状态**: 规划中
+- **维护者**: {团队或个人}
+
+### 核心职责
+订单核心业务逻辑的封装，包括订单创建、状态管理、金额计算。
+
+### 业务边界
+- **模块负责**：
+  - 订单实体的定义和状态流转
+  - 订单金额的计算规则
+  - 订单业务不变式的验证
+  - 订单领域事件的发布
+
+- **模块不负责**：
+  - 订单数据的持久化（由 Infrastructure 层负责）
+  - 订单相关的 HTTP 请求处理（由 Interfaces 层负责）
+  - 订单业务流程的编排（由 Application 层负责）
+
+- **与其他模块的边界**：
+  - 与支付模块：订单负责校验支付状态，支付模块负责实际扣款
+  - 与用户模块：订单引用用户 ID，具体用户信息由用户模块提供
+
+### 核心实体
+| 实体名 | 职责 | 主要方法 |
+|--------|------|---------|
+| Order | 订单主体 | create, place, cancel, complete |
+| OrderItem | 订单项 | add_item, remove_item |
+| OrderStatus | 订单状态值对象 | is_valid_transition |
+
+### 公开接口
+| 接口名 | 用途 | 调用方 |
+|--------|------|--------|
+| OrderService | 订单领域服务 | Application 层 |
+| IOrderRepository | 订单仓储接口 | Application 层 |
+
+### 依赖模块
+| 模块名 | 依赖原因 | 依赖类型 |
+|--------|---------|---------|
+| 无 | Domain 层不依赖其他模块 | — |
+
+### 被依赖关系
+| 模块名 | 依赖方式 |
+|--------|---------|
+| Application 层 | 调用 OrderService 执行订单业务 |
+| Infrastructure 层 | 实现 IOrderRepository 持久化订单 |
+
+### 编码约束
+- 实体状态变更必须通过显式方法
+- 金额计算必须使用高精度类型
+- 所有实体必须有 ID
+- 领域事件必须包含发生时间
+
+### 扩展点
+- 新的订单类型（如预售订单、团购订单）通过继承 Order 实现
+- 新的促销规则通过策略模式注入
+```
+
+---
+
+## 模块依赖图
+
+```mermaid
+flowchart TB
+    subgraph EntryPoints["EntryPoints 层"]
+        E[入口点]
+    end
+
+    subgraph Interfaces["Interfaces 层"]
+        I[接口层]
+    end
+
+    subgraph Application["Application 层"]
+        A[应用层]
+    end
+
+    subgraph Domain["Domain 层"]
+        D[领域层]
+    end
+
+    subgraph Infrastructure["Infrastructure 层"]
+        IN[基础设施层]
+    end
+
+    subgraph Shared["Shared 层"]
+        S[共享层]
+    end
+
+    E --> I
+    I --> A
+    A --> D
+    A --> IN
+    D --> IN
+    S --> E
+    S --> I
+    S --> A
+    S --> D
+    S --> IN
+```
+
+---
+
+## 模块创建流程
+
+当需要创建新模块时，按以下步骤操作：
+
+### 1. 规划模块
+
+- [ ] 确定模块名称和职责
+- [ ] 定义模块的业务边界
+- [ ] 确定模块在架构中的位置
+- [ ] 识别模块的依赖和被依赖关系
+
+### 2. 创建目录结构
+
+```bash
+# 创建领域层模块
+mkdir -p src/app/domain/{module_name}/
+mkdir -p src/app/domain/{module_name}/entities/
+mkdir -p src/app/domain/{module_name}/services/
+mkdir -p src/app/domain/{module_name}/events/
+mkdir -p src/app/domain/{module_name}/repositories/
+
+# 创建对应的测试目录
+mkdir -p tests/unit/domain/{module_name}/
+mkdir -p tests/integration/domain/{module_name}/
+```
+
+### 3. 更新本文档
+
+- [ ] 在本文档中添加模块定义
+- [ ] 更新模块依赖图
+- [ ] 在 CHANGELOG.md 中记录新增模块
+
+### 4. 创建基础文件
+
+```python
+# src/app/domain/{module_name}/__init__.py
+"""Module description."""
+
+# src/app/domain/{module_name}/entities/__init__.py
+"""Entities for {module_name} module."""
+```
+
+### 5. 实现代码
+
+按照 Clean Architecture 各层的编码规范实现代码。
+
+---
+
+## refunds
+
+### Basic Info
+- **module path**: `src/app/{domain,application,interfaces,infrastructure}/refunds/`
+- **architecture layers**: Domain, Application, Interfaces, Infrastructure
+- **status**: active
+- **owner**: operations-platform
+
+### Core Responsibility
+Own the refund review flow, including request validation, approval policy, orchestration, API exposure, and persistence adapters.
+
+### Boundary
+- **In scope**: refund request modeling, approval policy checks, use case orchestration, HTTP input/output translation, repository adapters.
+- **Out of scope**: payment capture, ledger posting, and partner settlement export.
+- **Layer split**:
+  - Domain keeps refund rules and invariants.
+  - Application coordinates approval flow.
+  - Interfaces exposes controller or presenter shapes.
+  - Infrastructure stores or fetches refund records.
+
+### Public Interfaces
+| interface | purpose | called by |
+|-----------|---------|-----------|
+| `RefundPolicyService` | decide whether a request can be auto-approved | Application |
+| `create_refund` use case | create and normalize a refund request | Interfaces / EntryPoints |
+| `RefundRepository` | persist refund snapshots | Application |
+
+### Dependencies
+| dependency | reason | type |
+|------------|--------|------|
+| `shared.utils.money` | normalize decimal values | required |
+| `config.refund_settings` | load operational limits | optional |
+
+### Downstream Consumers
+| consumer | usage |
+|----------|-------|
+| `entrypoints/http/refund_routes.py` | receive HTTP requests and call the use case |
+| `interfaces/refunds/refund_controller.py` | adapt incoming requests to the use case |
+| `scripts/ops/reconcile_refund_backlog.py` | operational follow-up on pending refunds |
+
+---
+
+## 模块演进规则
+
+### 模块拆分
+
+当模块出现以下信号时，应该考虑拆分：
+
+- [ ] 模块代码超过 1000 行
+- [ ] 模块职责不单一
+- [ ] 模块被太多其他模块依赖（超过 5 个）
+- [ ] 模块包含多种类型的实体
+
+### 模块合并
+
+当模块出现以下信号时，应该考虑合并：
+
+- [ ] 模块代码少于 100 行
+- [ ] 模块与其他模块强耦合
+- [ ] 模块只有少量公开接口
+- [ ] 模块被单一其他模块依赖
+
+### 模块废弃
+
+当模块废弃时：
+
+- [ ] 在本文档中标记为"已废弃"
+- [ ] 更新模块依赖图
+- [ ] 在 CHANGELOG.md 中记录废弃计划
+- [ ] 保留废弃代码直到所有调用方迁移完成
+
+---
+
+## 模块质量检查清单
+
+创建或更新模块时，确保以下检查项：
+
+### 职责定义
+- [ ] 模块有明确的职责描述
+- [ ] 模块边界清晰
+- [ ] 模块不与其他模块职责重叠
+
+### 接口设计
+- [ ] 模块有公开接口定义
+- [ ] 接口命名清晰
+- [ ] 接口依赖最小化
+
+### 依赖管理
+- [ ] 模块依赖关系明确
+- [ ] 依赖方向正确（从外向内）
+- [ ] 没有循环依赖
+
+### 编码规范
+- [ ] 遵循 `.cursor/rules/LAYERING.md` 中的编码规范
+- [ ] 代码有适当的注释
+- [ ] 有单元测试覆盖
+
+---
+
+## 参考文档
+
+- `.cursor/rules/LAYERING.md` — Clean Architecture 层职责定义
+- `docs/decisions/CHANGELOG.md` — 架构变更记录
+- `AGENTS.md` — AI 协作总则
+
+```
+
+Return only YAML that follows the skill output contract.
+
+mcp: playwright starting
+mcp: playwright ready
+mcp startup: ready: playwright
+codex
+Using the `plan-code-file-layout` workflow on the requested Python target slice. I’m checking the local repository shape and nearby refund helpers so the merge vs split decision is grounded in the target directory rather than generic advice.
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-Content -Raw 'C:\\Users\\admin\\.codex\\skills\\plan-code-file-layout\\SKILL.md'" in D:\yongyongmobanexec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-ChildItem -Name 'D:\\yongyongmoban\\skill-evals\\plan-code-file-layout-lab\\mixed\\shared-python\\src\\app\\shared\\refunds'" in D:\yongyongmobanexec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-Content -Raw 'D:\\yongyongmoban\\.cursor\\rules\\LAYERING.md'" in D:\yongyongmoban2026-03-25T00:32:30.409395Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+Cannot set property. Property setting is supported only on core types in this language mode.
+At line:1 char:1
++ [Console]::OutputEncoding=[System.Text.Encoding]::UTF8;
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : PropertySetterNotSupportedInConstrainedLanguage
+ 
+Get-Content : Cannot find path 'C:\Users\admin\.codex\skills\plan-code-file-layout\SKILL.md' because it does not exist.
+At line:2 char:1
++ Get-Content -Raw 'C:\Users\admin\.codex\skills\plan-code-file-layout\ ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Users\admin\...layout\SKILL.md:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+
+ succeeded in 294ms:
+hold_reason_aliases.py
+hold_reason_labels.py
+partner_export_csv.py
+partner_export_format.py
+Cannot set property. Property setting is supported only on core types in this language mode.
+At line:1 char:1
++ [Console]::OutputEncoding=[System.Text.Encoding]::UTF8;
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : PropertySetterNotSupportedInConstrainedLanguage
+ 
+ succeeded in 276ms:
+# Clean Architecture Layering Rules
+
+‘oª‘-Ø‘­œ†rs„1%‘oª„¯"†§"‡s, Clean Architecture †ñ,‘ª­‡¯"‘z,a??†?,†ñ,Š?OŠ'œŠ_1‡Oa??†ñ,‚-'„_?Šæ-Š,†^T†'O‡¬-‡ÿ?Š,ŠOŸa?,
+
+## ‡>r†«‡¯"‘z,
+
+```
+src/app/
+ƒ"oƒ"?ƒ"? entrypoints/       # †.†?œ‡,1†ñ,‹¬s†-‚Ÿ"‡3¯‡¯Y„,Z†§"‡""‡s,„§„§'†.†?œ
+ƒ"oƒ"?ƒ"? interfaces/        # ‘Z†?œ†ñ,‹¬s‚?,‚.?†T"a??‘Z†^†T"a??‡«`†.3
+ƒ"oƒ"?ƒ"? application/       # †§"‡""†ñ,‹¬s‡""„_<‡¬-‘Z'a??DTOa??‘Z†?œ†rs„1%
+ƒ"oƒ"?ƒ"? domain/           # ‚›+†YY†ñ,‹¬s†rz„«"a??†?¬†_1Šñ­a??‚›+†YY‘o?†S­a??‚›+†YY„§<„¯
+ƒ"oƒ"?ƒ"? infrastructure/   # †Y§‡­?Šr_‘-«†ñ,‹¬s‘ø‘?r†§"a??†-‚Ÿ"‘o?†S­a??‘^‘?_‚~Y†^-
+ƒ"oƒ"?ƒ"? shared/           # †.ñ„§®†ñ,‹¬s†ú†.ú†Ø«‘øa??†,,‚Ø?a??‚?s‡""‡¯,„¯
+ƒ""ƒ"?ƒ"? config/          # ‚.?‡«r†ñ,‹¬s‚.?‡«r†SÿŠ««a??‡Z_†›Ÿ†?~‚Ø?
+```
+
+## †ñ,‘Ý,Š^
+
+| †ñ,†??‡ø | ‡>r†« | ‘ÿ,†¨ŸŠ?OŠ'œ | „_?Šæ-‘-1†?` |
+ exited 1 in 302ms:
+Cannot set property. Property setting is supported only on core types in this language mode.
+At line:1 char:1
++ [Console]::OutputEncoding=[System.Text.Encoding]::UTF8;
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : PropertySetterNotSupportedInConstrainedLanguage
+ 
+Get-Content : Cannot find path 'C:\Users\admin\.codex\skills\plan-code-file-layout\SKILL.md' because it does not exist.
+At line:2 char:1
++ Get-Content -Raw 'C:\Users\admin\.codex\skills\plan-code-file-layout\ ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Users\admin\...layout\SKILL.md:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+codex
+The target directory is isolated enough to plan locally. I’m checking the lab’s surrounding layout so `repo_shape` and the merge recommendation reflect the local Python/shared area rather than the repository root template.
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-Content -Raw 'D:\\yongyongmoban\\skill-evals\\plan-code-file-layout-lab\\mixed\\shared-python\\src\\app\\shared\\refunds\\hold_reason_labels.py'" in D:\yongyongmobanexec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-ChildItem -Recurse -Depth 4 'D:\\yongyongmoban\\skill-evals\\plan-code-file-layout-lab\\mixed\\shared-python' | Select-Object FullName" in D:\yongyongmobanexec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-Content -Raw 'D:\\yongyongmoban\\skill-evals\\plan-code-file-layout-lab\\mixed\\shared-python\\src\\app\\shared\\refunds\\partner_export_format.py'" in D:\yongyongmobanexec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-Content -Raw 'D:\\yongyongmoban\\skill-evals\\plan-code-file-layout-lab\\mixed\\shared-python\\src\\app\\shared\\refunds\\partner_export_csv.py'" in D:\yongyongmobanexec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-Content -Raw 'D:\\yongyongmoban\\skill-evals\\plan-code-file-layout-lab\\mixed\\shared-python\\src\\app\\shared\\refunds\\hold_reason_aliases.py'" in D:\yongyongmoban succeeded in 259ms:
+from __future__ import annotations
+
+from .hold_reason_aliases import canonicalize_hold_reason
+
+
+DISPLAY_LABELS = {
+    "partner_review": "Partner Review",
+    "manual_check": "Manual Check",
+    "document_missing": "Document Missing",
+}
+
+
+def build_hold_reason_label(raw_reason: str) -> str:
+    reason = canonicalize_hold_reason(raw_reason)
+    return DISPLAY_LABELS.get(reason, reason.replace("_", " ").title())
+
+Cannot set property. Property setting is supported only on core types in this language mode.
+At line:1 char:1
++ [Console]::OutputEncoding=[System.Text.Encoding]::UTF8;
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ succeeded in 228ms:
+from __future__ import annotations
+
+from .partner_export_format import PartnerExportRow, build_partner_export_row
+
+
+def encode_partner_export_csv(row: PartnerExportRow) -> str:
+    return ",".join([row.refund_id, row.partner_code, format(row.amount, ".2f"), row.status])
+
+
+def decode_partner_export_csv(line: str) -> PartnerExportRow:
+    refund_id, partner_code, amount, status = [part.strip() for part in line.split(",", maxsplit=3)]
+    return build_partner_export_row(refund_id, partner_code, amount, status)
+
+Cannot set property. Property setting is supported only on core types in this language mode.
+At line:1 char:1
++ [Console]::OutputEncoding=[System.Text.Encoding]::UTF8;
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : PropertySetterNotSupportedInConstrainedLanguage
+ 
+ succeeded in 245ms:
+from __future__ import annotations
+
+from dataclasses import dataclass
+from decimal import Decimal
+
+
+@dataclass(frozen=True)
+class PartnerExportRow:
+    refund_id: str
+    partner_code: str
+    amount: Decimal
+    status: str
+
+
+def build_partner_export_row(refund_id: str, partner_code: str, amount: str, status: str) -> PartnerExportRow:
+    return PartnerExportRow(
+        refund_id=refund_id.strip(),
+        partner_code=partner_code.strip().upper(),
+        amount=Decimal(amount),
+        status=status.strip().lower(),
+ succeeded in 255ms:
+from __future__ import annotations
+
+
+ALIASES = {
+    "partner-review": "partner_review",
+    "manual review": "manual_check",
+    "docs_missing": "document_missing",
+}
+
+
+def canonicalize_hold_reason(raw_reason: str) -> str:
+    cleaned = raw_reason.strip().lower().replace(" ", "_")
+    return ALIASES.get(cleaned, cleaned)
+
+Cannot set property. Property setting is supported only on core types in this language mode.
+At line:1 char:1
++ [Console]::OutputEncoding=[System.Text.Encoding]::UTF8;
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : PropertySetterNotSupportedInConstrainedLanguage
+ succeeded in 314ms:
+
+FullName                                                                                                               
+--------                                                                                                               
+D:\yongyongmoban\skill-evals\plan-code-file-layout-lab\mixed\shared-python\src                                         
+D:\yongyongmoban\skill-evals\plan-code-file-layout-lab\mixed\shared-python\src\app                                     
+D:\yongyongmoban\skill-evals\plan-code-file-layout-lab\mixed\shared-python\src\app\shared                              
+D:\yongyongmoban\skill-evals\plan-code-file-layout-lab\mixed\shared-python\src\app\shared\refunds                      
+D:\yongyongmoban\skill-evals\plan-code-file-layout-lab\mixed\shared-python\src\app\shared\refunds\hold_reason_aliase...
+D:\yongyongmoban\skill-evals\plan-code-file-layout-lab\mixed\shared-python\src\app\shared\refunds\hold_reason_labels.py
+D:\yongyongmoban\skill-evals\plan-code-file-layout-lab\mixed\shared-python\src\app\shared\refunds\partner_export_csv.py
+D:\yongyongmoban\skill-evals\plan-code-file-layout-lab\mixed\shared-python\src\app\shared\refunds\partner_export_for...
+
+
+Cannot set property. Property setting is supported only on core types in this language mode.
+At line:1 char:1
++ [Console]::OutputEncoding=[System.Text.Encoding]::UTF8;
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : PropertySetterNotSupportedInConstrainedLanguage
+ 
+codex
+The merge signal is strong from the two tiny files themselves, but I’m checking whether `canonicalize_hold_reason` is consumed elsewhere before I lock the plan. That determines whether the second module is a real boundary or just a local indirection.
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "rg -n \"canonicalize_hold_reason|build_hold_reason_label|PartnerExportRow|build_partner_export_row|encode_partner_export_csv|decode_partner_export_csv\" 'D:\\yongyongmoban\\skill-evals\\plan-code-file-layout-lab\\mixed\\shared-python'" in D:\yongyongmobanexec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "rg -n \"shared/refunds|hold_reason|partner_export\" 'D:\\yongyongmoban\\docs' 'D:\\yongyongmoban\\README.md' 'D:\\yongyongmoban\\AGENTS.md'" in D:\yongyongmoban2026-03-25T00:33:25.073251Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.2 seconds
+Output:
+Cannot set property. Property setting is supported only on core types in this language mode.
+At line:1 char:1
++ [Console]::OutputEncoding=[System.Text.Encoding]::UTF8;
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : PropertySetterNotSupportedInConstrainedLanguage
+ 
+
+ exited 1 in 205ms:
+Cannot set property. Property setting is supported only on core types in this language mode.
+At line:1 char:1
++ [Console]::OutputEncoding=[System.Text.Encoding]::UTF8;
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : PropertySetterNotSupportedInConstrainedLanguage
+ 
+ succeeded in 209ms:
+D:\yongyongmoban\skill-evals\plan-code-file-layout-lab\mixed\shared-python\src\app\shared\refunds\partner_export_format.py:8:class PartnerExportRow:
+D:\yongyongmoban\skill-evals\plan-code-file-layout-lab\mixed\shared-python\src\app\shared\refunds\partner_export_format.py:15:def build_partner_export_row(refund_id: str, partner_code: str, amount: str, status: str) -> PartnerExportRow:
+D:\yongyongmoban\skill-evals\plan-code-file-layout-lab\mixed\shared-python\src\app\shared\refunds\partner_export_format.py:16:    return PartnerExportRow(
+D:\yongyongmoban\skill-evals\plan-code-file-layout-lab\mixed\shared-python\src\app\shared\refunds\partner_export_csv.py:3:from .partner_export_format import PartnerExportRow, build_partner_export_row
+D:\yongyongmoban\skill-evals\plan-code-file-layout-lab\mixed\shared-python\src\app\shared\refunds\partner_export_csv.py:6:def encode_partner_export_csv(row: PartnerExportRow) -> str:
+D:\yongyongmoban\skill-evals\plan-code-file-layout-lab\mixed\shared-python\src\app\shared\refunds\partner_export_csv.py:10:def decode_partner_export_csv(line: str) -> PartnerExportRow:
+D:\yongyongmoban\skill-evals\plan-code-file-layout-lab\mixed\shared-python\src\app\shared\refunds\partner_export_csv.py:12:    return build_partner_export_row(refund_id, partner_code, amount, status)
+D:\yongyongmoban\skill-evals\plan-code-file-layout-lab\mixed\shared-python\src\app\shared\refunds\hold_reason_labels.py:3:from .hold_reason_aliases import canonicalize_hold_reason
+D:\yongyongmoban\skill-evals\plan-code-file-layout-lab\mixed\shared-python\src\app\shared\refunds\hold_reason_labels.py:13:def build_hold_reason_label(raw_reason: str) -> str:
+D:\yongyongmoban\skill-evals\plan-code-file-layout-lab\mixed\shared-python\src\app\shared\refunds\hold_reason_labels.py:14:    reason = canonicalize_hold_reason(raw_reason)
+D:\yongyongmoban\skill-evals\plan-code-file-layout-lab\mixed\shared-python\src\app\shared\refunds\hold_reason_aliases.py:11:def canonicalize_hold_reason(raw_reason: str) -> str:
+Cannot set property. Property setting is supported only on core types in this language mode.
+At line:1 char:1
++ [Console]::OutputEncoding=[System.Text.Encoding]::UTF8;
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : PropertySetterNotSupportedInConstrainedLanguage
+ 
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "rg -n \"canonicalize_hold_reason|build_hold_reason_label\" 'D:\\yongyongmoban'" in D:\yongyongmoban succeeded in 579ms:
+D:\yongyongmoban\skill-evals\plan-code-file-layout-lab\mixed\shared-python\src\app\shared\refunds\hold_reason_labels.py:3:from .hold_reason_aliases import canonicalize_hold_reason
+D:\yongyongmoban\skill-evals\plan-code-file-layout-lab\mixed\shared-python\src\app\shared\refunds\hold_reason_labels.py:13:def build_hold_reason_label(raw_reason: str) -> str:
+D:\yongyongmoban\skill-evals\plan-code-file-layout-lab\mixed\shared-python\src\app\shared\refunds\hold_reason_labels.py:14:    reason = canonicalize_hold_reason(raw_reason)
+D:\yongyongmoban\skill-evals\plan-code-file-layout-lab\mixed\shared-python\src\app\shared\refunds\hold_reason_aliases.py:11:def canonicalize_hold_reason(raw_reason: str) -> str:
+Cannot set property. Property setting is supported only on core types in this language mode.
+At line:1 char:1
++ [Console]::OutputEncoding=[System.Text.Encoding]::UTF8;
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : PropertySetterNotSupportedInConstrainedLanguage
+ 
+codex
+decision:
+  strategy: merge
+  target_area: "skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds"
+  repo_shape: mixed
+  artifact_type: library-module
+  stack: python
+  files:
+    - path: "skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds/hold_reason_labels.py"
+      role: "public shared refund hold-reason helper"
+      responsibility: "Own raw hold-reason normalization, alias lookup, and display-label generation in one cohesive module, with label building as the visible surface and canonicalization kept local."
+      reason: "The current two files are one tiny, side-effect-free helper with the same change reason and test surface. No separate consumer currently justifies a standalone alias module."
+  keep_inline:
+    - "The alias mapping dictionary for canonical hold reasons."
+    - "The display label mapping dictionary for canonical reasons."
+    - "The canonicalization helper as a private local function in the merged module."
+    - "The fallback title-casing logic used when a canonical reason has no explicit label."
+  avoid:
+    - "A standalone hold_reason_aliases.py module."
+    - "A constants-only split such as hold_reason_constants.py for these two small dictionaries."
+    - "A generic refunds/utils.py or shared/utils.py extraction for one local helper."
+  why_not_fewer: "This slice still needs one dedicated shared module so refund callers do not duplicate normalization and label formatting rules or hide them in unrelated constant files."
+  why_not_more: "Further splitting mostly adds ceremony and cross-file ping-pong. Unlike the nearby partner export helper, this slice does not expose a second stable surface like CSV encoding/decoding with its own failure modes and tests."
+  risks:
+    - "If another caller later needs canonicalization as a public API independent of label rendering, the alias helper may deserve its own module again."
+    - "If code outside the target slice imports hold_reason_aliases.py directly, merging will require import updates or a temporary compatibility re-export."
+  confidence: high
+tokens used
+39,460
+
+

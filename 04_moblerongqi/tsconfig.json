@@ -1,0 +1,36 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "module": "NodeNext"
+  },
+  "references": [
+    {
+      "path": "./packages/core",
+      "prepend": false
+    },
+    {
+      "path": "./packages/container",
+      "prepend": false
+    },
+    {
+      "path": "./packages/account",
+      "prepend": false
+    },
+    {
+      "path": "./packages/platform",
+      "prepend": false
+    },
+    {
+      "path": "./packages/scheduler",
+      "prepend": false
+    },
+    {
+      "path": "./packages/api",
+      "prepend": false
+    },
+    {
+      "path": "./packages/monitor",
+      "prepend": false
+    }
+  ]
+}

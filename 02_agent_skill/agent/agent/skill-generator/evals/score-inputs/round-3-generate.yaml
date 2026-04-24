@@ -1,0 +1,14 @@
+skill_name: multilingual-risk-triage
+scores:
+  scope_and_signal: {score: 5, reason: "多语言触发边界强。"}
+  knowledge_packaging: {score: 4, reason: "知识封装较紧凑。"}
+  instruction_to_action: {score: 4, reason: "默认路径清晰。"}
+  limits_and_interfaces: {score: 4, reason: "边界与风险明确。"}
+  learning_and_lift: {score: 4, reason: "基线与迭代说明已存在。"}
+hard_checks:
+  has_non_scope: true
+  has_output_contract: true
+  has_trigger_eval: true
+  has_quality_eval: true
+  has_baseline_plan: true
+  has_simplification_pass: true

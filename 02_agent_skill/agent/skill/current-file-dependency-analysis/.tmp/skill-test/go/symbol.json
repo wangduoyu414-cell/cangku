@@ -1,0 +1,52 @@
+{
+  "anchor": {
+    "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+    "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/shared/gohelper/gohelper.go",
+    "repo_relative_path": "src/app/shared/gohelper/gohelper.go",
+    "symbol": "",
+    "selection_range": "",
+    "language": "go",
+    "role_hint": "source"
+  },
+  "stack": {
+    "stack_family": "go",
+    "stack_id": "go-stack",
+    "confidence": "medium",
+    "reasons": [
+      "file extension suggests go"
+    ],
+    "reference_file": "references/go-edge-rules.md",
+    "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+    "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/shared/gohelper/gohelper.go"
+  },
+  "edges": [
+    {
+      "from": "src/app/shared/gohelper/gohelper.go",
+      "to": "src/app/shared/gohelper/gohelper.go",
+      "direction": "outbound",
+      "edge_kind": "symbol",
+      "relation_type": "call",
+      "symbol_from": "NormalizeSKU",
+      "symbol_to": "ToUpper",
+      "evidence_ref": "src/app/shared/gohelper/gohelper.go:6",
+      "confidence": "low",
+      "resolution": "resolved"
+    },
+    {
+      "from": "src/app/shared/gohelper/gohelper.go",
+      "to": "src/app/shared/gohelper/gohelper.go",
+      "direction": "outbound",
+      "edge_kind": "symbol",
+      "relation_type": "call",
+      "symbol_from": "NormalizeSKU",
+      "symbol_to": "TrimSpace",
+      "evidence_ref": "src/app/shared/gohelper/gohelper.go:6",
+      "confidence": "low",
+      "resolution": "resolved"
+    }
+  ],
+  "blind_spots": [
+    "Go interface method set dispatch is approximated at static level.",
+    "Go build tags that change active files are not handled."
+  ]
+}

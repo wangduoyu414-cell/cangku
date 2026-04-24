@@ -1,0 +1,39 @@
+id: "codegen-governance"
+version: "0.3.0"
+owner: "skill-group"
+description: >-
+  Route threshold-crossing or not-yet-ruled-out contract-sensitive Python, Go,
+  TypeScript, JavaScript, or Vue code-writing tasks through risk
+  classification before pre-generation constraints. Use `minimal` only as a
+  closed-whitelist half-exempt path that still keeps the minimum
+  contract/report loop; otherwise use `standard` or `expanded`. Do not use for
+  unsupported stacks, ordinary low-risk edits already proven outside
+  governance, review-only work, or architecture-only requests.
+mode: "instruction"
+complexity: "playbook"
+delivery_form: "specification"
+side_effect: "read_only"
+skill_execution_requires:
+  - Read
+  - Glob
+downstream_allowed_tools:
+  - Read
+  - Write
+  - Glob
+  - Shell
+preferred_over:
+  - "audit"
+conflicts_with: []
+eval_suite:
+  - "evals/trigger.json"
+  - "evals/tasks.json"
+  - "evals/scenario-selection-cases.json"
+  - "evals/validation-plan-cases.json"
+  - "evals/contract-quality-rubric.md"
+target_languages:
+  - python
+  - go
+  - typescript
+  - javascript
+  - vue
+

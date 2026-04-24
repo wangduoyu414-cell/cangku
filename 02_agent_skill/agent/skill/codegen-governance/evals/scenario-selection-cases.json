@@ -1,0 +1,278 @@
+{
+  "skill": "codegen-governance",
+  "version": "0.3.0",
+  "description": "Scenario selection evaluation cases for codegen-governance skill",
+  "cases": [
+    {
+      "id": "selection-001",
+      "title": "输入解析任务应选 Pack A",
+      "task": "实现一个函数来解析用户输入的 JSON 字符串",
+      "language": "typescript",
+      "scenario_packs": ["A", "B"],
+      "expected_packs": ["A", "B"],
+      "correct_selection": true,
+      "reasoning": "JSON 解析涉及输入处理和分支决策（Pack A），解析失败涉及错误处理和回退（Pack B）"
+    },
+    {
+      "id": "selection-002",
+      "title": "纯状态更新应选 Pack C",
+      "task": "在一个函数中更新全局缓存的值",
+      "language": "python",
+      "scenario_packs": ["C"],
+      "expected_packs": ["C"],
+      "correct_selection": true,
+      "reasoning": "状态更新是纯副作用操作，不涉及输入验证或边界协议"
+    },
+    {
+      "id": "selection-003",
+      "title": "网络请求应选多个 Pack",
+      "task": "实现一个从 API 获取数据并缓存的函数",
+      "language": "go",
+      "scenario_packs": ["A", "B", "C"],
+      "expected_packs": ["A", "B", "C"],
+      "correct_selection": true,
+      "reasoning": "涉及输入处理（Pack A）、错误处理和回退（Pack B）、副作用和缓存（Pack C）"
+    },
+    {
+      "id": "selection-004",
+      "title": "时间处理需要 Pack D",
+      "task": "实现一个函数来处理用户输入的日期字符串并转换为 UTC",
+      "language": "python",
+      "scenario_packs": ["A", "D"],
+      "expected_packs": ["A", "D"],
+      "correct_selection": true,
+      "reasoning": "日期解析是输入处理（Pack A），时区转换是基础值域处理（Pack D）"
+    },
+    {
+      "id": "selection-005",
+      "title": "错误的选择：只选一个 Pack",
+      "task": "实现一个复杂的异步函数，包含输入验证、错误处理、重试逻辑和日志",
+      "language": "typescript",
+      "scenario_packs": ["C"],
+      "expected_packs": ["A", "B", "C"],
+      "correct_selection": false,
+      "reasoning": "遗漏了输入验证（Pack A）和错误处理（Pack B）"
+    },
+    {
+      "id": "selection-006",
+      "title": "错误的选择：选择太多 Pack",
+      "task": "写一个简单的加法函数",
+      "language": "python",
+      "scenario_packs": ["A", "B", "C", "D"],
+      "expected_packs_note": "简单函数不需要所有场景包，应该根据具体风险选择。最小加法函数无输入验证、无分支、无副作用、无边界问题，无需选择任何 Pack。",
+      "correct_selection": false,
+      "reasoning": "简单函数不需要所有场景包，应该根据具体风险选择"
+    },
+    {
+      "id": "selection-007",
+      "title": "Vue 组件 Props 处理",
+      "task": "为 Vue 组件添加 props 验证和默认值处理",
+      "language": "vue",
+      "scenario_packs": ["A", "B"],
+      "expected_packs": ["A", "B"],
+      "correct_selection": true,
+      "reasoning": "Props 是输入（Pack A），默认值处理是回退逻辑（Pack B）"
+    },
+    {
+      "id": "selection-008",
+      "title": "Go 文件操作",
+      "task": "实现一个读取文件并返回内容的函数",
+      "language": "go",
+      "scenario_packs": ["A", "C"],
+      "expected_packs": ["A", "C"],
+      "correct_selection": true,
+      "reasoning": "文件路径处理是输入（Pack A），文件读取是副作用和资源管理（Pack C）"
+    },
+    {
+      "id": "selection-009",
+      "title": "PATCH 语义需要 A+B",
+      "task": "实现一个 PATCH 更新函数，区分字段缺失、null 清空、空字符串非法和保留旧值",
+      "language": "typescript",
+      "scenario_packs": ["A", "B"],
+      "expected_packs": ["A", "B"],
+      "correct_selection": true,
+      "reasoning": "部分更新输入判定属于 Pack A，retain/clear/default 结果契约属于 Pack B"
+    },
+    {
+      "id": "selection-010",
+      "title": "出站 HTTP 需要四包组合",
+      "task": "实现一个出站 HTTP client，处理请求 payload、timeout、429 重试、状态码映射和审计日志",
+      "language": "python",
+      "scenario_packs": ["A", "B", "C", "D"],
+      "expected_packs": ["A", "B", "C", "D"],
+      "correct_selection": true,
+      "reasoning": "请求输入是 Pack A，失败映射是 Pack B，重试和超时是 Pack C，协议和审计是 Pack D"
+    },
+    {
+      "id": "selection-011",
+      "title": "幂等去重需要 B+C",
+      "task": "为提交接口增加幂等键去重、缓存回放结果和重复请求可观察状态",
+      "language": "go",
+      "scenario_packs": ["B", "C"],
+      "expected_packs": ["B", "C"],
+      "correct_selection": true,
+      "reasoning": "duplicate/replay 结果契约属于 Pack B，去重缓存和运行时状态属于 Pack C"
+    },
+    {
+      "id": "selection-012",
+      "title": "时间金额精度需要 A+D",
+      "task": "实现一个函数，把账单金额从分转换为两位小数金额字符串，并把 settled_at 统一转成 UTC",
+      "language": "python",
+      "scenario_packs": ["A", "D"],
+      "expected_packs": ["A", "D"],
+      "correct_selection": true,
+      "reasoning": "金额和时间输入解析属于 Pack A，时区与精度语义属于 Pack D"
+    },
+    {
+      "id": "selection-013",
+      "title": "文件导出需要 A+C+D",
+      "task": "实现一个导出 CSV 报表的函数，校验文件名、写入 UTF-8 文件并记录导出审计日志",
+      "language": "go",
+      "scenario_packs": ["A", "C", "D"],
+      "expected_packs": ["A", "C", "D"],
+      "correct_selection": true,
+      "reasoning": "文件名和列结构属于 Pack A，文件写入属于 Pack C，CSV/UTF-8 和审计属于 Pack D"
+    },
+    {
+      "id": "selection-014",
+      "title": "审计脱敏需要 C+D",
+      "task": "为审计日志增加 email 和 token 脱敏，并保留 request_id 与稳定事件名",
+      "language": "typescript",
+      "scenario_packs": ["C", "D"],
+      "expected_packs": ["C", "D"],
+      "correct_selection": true,
+      "reasoning": "写审计日志是副作用属于 Pack C，脱敏和诊断边界属于 Pack D"
+    },
+    {
+      "id": "selection-015",
+      "title": "批处理部分成功需要 A+B+C",
+      "task": "实现一个批处理函数，逐项处理订单并返回 success、failed、skipped 和 partial success 汇总，同时把永久失败写到 dead-letter",
+      "language": "go",
+      "scenario_packs": ["A", "B", "C"],
+      "expected_packs": ["A", "B", "C"],
+      "correct_selection": true,
+      "reasoning": "批量输入分类属于 Pack A，partial success 契约属于 Pack B，dead-letter 副作用属于 Pack C"
+    },
+    {
+      "id": "selection-016",
+      "title": "Webhook worker 需要四包组合",
+      "task": "修复一个 webhook worker，校验签名，处理 delivery_id 和 event_id 去重，区分 ack、retry、dead-letter，并记录稳定审计事件",
+      "language": "python",
+      "scenario_packs": ["A", "B", "C", "D"],
+      "expected_packs": ["A", "B", "C", "D"],
+      "correct_selection": true,
+      "reasoning": "delivery 输入和事件数组属于 Pack A，retry/terminal 契约属于 Pack B，ack/dead-letter 副作用属于 Pack C，webhook 边界和签名属于 Pack D"
+    },
+    {
+      "id": "selection-017",
+      "title": "纯 HTTP 响应边界需要 A+D",
+      "task": "修复一个 Go HTTP 响应构造函数，校验 request_id 和带时区的时间戳，把 settled_at 统一转成 UTC，并把 amount_cents 序列化成两位小数字符串 JSON",
+      "language": "go",
+      "scenario_packs": ["A", "D"],
+      "expected_packs": ["A", "D"],
+      "correct_selection": true,
+      "reasoning": "request_id 与时间戳校验属于 Pack A，UTC 归一化、金额精度和 HTTP JSON 边界语义属于 Pack D；它不是出站 HTTP，不应额外触发 Pack B/C"
+    },
+    {
+      "id": "selection-018",
+      "title": "配置优先级需要 A+B+C+D",
+      "task": "修复一个 Go 配置解析函数，让 timeout_seconds、region 和 idempotency_enabled 按 request override、env、default 的顺序解析，显式拒绝非法值，并在成功后追加带来源字段的审计事件",
+      "language": "go",
+      "scenario_packs": ["A", "B", "C", "D"],
+      "expected_packs": ["A", "B", "C", "D"],
+      "correct_selection": true,
+      "reasoning": "request/env 解析属于 Pack A，优先级与 fallback 契约属于 Pack B，审计写入属于 Pack C，env 边界和来源可观测性属于 Pack D"
+    },
+    {
+      "id": "selection-019",
+      "title": "排序聚合需要 A+B",
+      "task": "修复一个 Python 汇总函数，校验订单项，按 priority、amount_cents、order_id 做稳定排序，并返回显式的 empty summary 和聚合结果",
+      "language": "python",
+      "scenario_packs": ["A", "B"],
+      "expected_packs": ["A", "B"],
+      "correct_selection": true,
+      "reasoning": "输入校验和稳定排序规则属于 Pack A，empty summary 与聚合结果契约属于 Pack B"
+    },
+    {
+      "id": "selection-020",
+      "title": "TypeScript 排序聚合也应保持 A+B",
+      "task": "实现一个 TypeScript leaderboard 汇总函数，校验 entries，按 score 降序和 user_id 升序稳定排序，并返回显式 summary 与空列表返回结构",
+      "language": "typescript",
+      "scenario_packs": ["A", "B"],
+      "expected_packs": ["A", "B"],
+      "correct_selection": true,
+      "reasoning": "entries 输入和排序键属于 Pack A，summary 与 empty result 契约属于 Pack B；没有副作用或外部边界时不应过选 C/D"
+    },
+    {
+      "id": "selection-021",
+      "title": "Go 排序聚合也应保持 A+B",
+      "task": "修复一个 Go 汇总函数，校验订单项，按 priority、amount_cents、order_id 做稳定排序，并返回显式 summary 与空切片结果结构",
+      "language": "go",
+      "scenario_packs": ["A", "B"],
+      "expected_packs": ["A", "B"],
+      "correct_selection": true,
+      "reasoning": "订单项输入和排序键属于 Pack A，summary 与 empty result 契约属于 Pack B；没有副作用或外部边界时不应过选 C/D"
+    },
+    {
+      "id": "selection-022",
+      "title": "分层配置优先级需要 A+B+C+D",
+      "task": "修复一个 Python 配置解析函数，让 timeout_seconds、region 和 idempotency_enabled 按 request、CLI、env、config file、default 的顺序解析，显式拒绝非法值，并在成功后追加带来源字段的审计事件",
+      "language": "python",
+      "scenario_packs": ["A", "B", "C", "D"],
+      "expected_packs": ["A", "B", "C", "D"],
+      "correct_selection": true,
+      "reasoning": "request/CLI/env/config file 解析属于 Pack A，优先级与 fallback 契约属于 Pack B，文件读取和审计写入属于 Pack C，JSON 文件与来源可观测性属于 Pack D"
+    },
+    {
+      "id": "selection-023",
+      "title": "Schema 版本兼容需要 A+B+D",
+      "task": "修复一个 Go 兼容解析函数，让 v1 和 v2 的 JSON 事件都能映射到同一个 canonical event，显式拒绝未知 schema_version，并把 occurred_at 统一转成 UTC",
+      "language": "go",
+      "scenario_packs": ["A", "B", "D"],
+      "expected_packs": ["A", "B", "D"],
+      "correct_selection": true,
+      "reasoning": "versioned JSON 输入解析属于 Pack A，兼容与失败契约属于 Pack B，schema 与 UTC 边界语义属于 Pack D"
+    },
+    {
+      "id": "selection-024",
+      "title": "导入拒收汇总需要 A+B+C+D",
+      "task": "修复一个 Python CSV 导入函数，校验 UTF-8 头部和行字段，对坏行返回稳定 reject summary，区分 ok、partial、rejected_all，并在处理完成后写审计事件",
+      "language": "python",
+      "scenario_packs": ["A", "B", "C", "D"],
+      "expected_packs": ["A", "B", "C", "D"],
+      "correct_selection": true,
+      "reasoning": "头部与行校验属于 Pack A，partial import 契约属于 Pack B，文件读取和审计属于 Pack C，UTF-8 CSV 边界属于 Pack D"
+    },
+    {
+      "id": "selection-025",
+      "title": "分桶 Top-N 分页需要 A+B",
+      "task": "修复一个 Python leaderboard 汇总函数，按 bucket 分组，按 score 做 top-N 截断，并返回显式 page_size、page_number、has_next_page 和 out-of-range 页错误",
+      "language": "python",
+      "scenario_packs": ["A", "B"],
+      "expected_packs": ["A", "B"],
+      "correct_selection": true,
+      "reasoning": "分组和排序键属于 Pack A，top-N 与分页契约属于 Pack B"
+    },
+    {
+      "id": "selection-026",
+      "title": "本地锁竞争与审计需要 A+B+C+D",
+      "task": "修复一个 Go lease-claim 函数，校验 lock_key、owner_id、ttl_steps，显式区分 acquired、busy、already_held、reclaimed，并只在合适分支里改写本地锁状态和审计事件",
+      "language": "go",
+      "scenario_packs": ["A", "B", "C", "D"],
+      "expected_packs": ["A", "B", "C", "D"],
+      "correct_selection": true,
+      "reasoning": "输入校验属于 Pack A，竞争结果契约属于 Pack B，本地锁状态写入属于 Pack C，审计事件的可观测边界属于 Pack D"
+    },
+    {
+      "id": "selection-027",
+      "title": "Vue SSR hydration 需要 C+D",
+      "task": "修复一个 Vue SSR hydration mismatch，确保客户端激活时不覆盖服务端回填状态，并记录稳定的诊断边界",
+      "language": "vue",
+      "scenario_packs": ["C", "D"],
+      "expected_packs": ["C", "D"],
+      "correct_selection": true,
+      "reasoning": "hydration 相位协调属于运行时语义 Pack C，SSR/hydration 边界与诊断属于 Pack D"
+    }
+  ]
+}
+

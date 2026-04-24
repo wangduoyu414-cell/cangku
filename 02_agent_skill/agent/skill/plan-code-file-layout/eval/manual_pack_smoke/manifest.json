@@ -1,0 +1,27 @@
+{
+  "repo_root": "D:\\yongyongmoban",
+  "cases": [
+    {
+      "id": "python_endpoint",
+      "prompt": "Should this new Python endpoint stay in one module or split into handler and client files? Anchor the decision in services/python-order-api/features/refunds and compare it with the nearby shipments feature.",
+      "target_area": "services/python-order-api/features/refunds",
+      "source_paths": [
+        "services/python-order-api/features/refunds/quote_endpoint.py",
+        "services/python-order-api/features/shipments/tracking_handler.py",
+        "services/python-order-api/features/shipments/tracking_gateway.py"
+      ],
+      "expected_summary": {
+        "strategy": "split",
+        "repo_shape": "feature-first",
+        "artifact_type": "service-endpoint",
+        "stack": "python",
+        "confidence": "high",
+        "files": [
+          "services/python-order-api/features/refunds/quote_handler.py",
+          "services/python-order-api/features/refunds/pricing_gateway.py"
+        ]
+      },
+      "validation_command": "python eval/validate_saved_output.py --case python_endpoint --output outputs/python_endpoint.yaml"
+    }
+  ]
+}

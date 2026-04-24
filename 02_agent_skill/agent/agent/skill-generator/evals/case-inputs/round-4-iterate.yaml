@@ -1,0 +1,63 @@
+skill_name: federated-incident-governor
+mode: iterate
+request_summary: "Upgrade the federated incident-governor skill after long-form failures, stale outputs, and cross-round regression drift."
+constraints:
+  - "Do not widen trigger scope while fixing long-form failures."
+  - "Keep stale output detection and regression reporting explicit."
+quality_goals:
+  - "Reduce regression drift across rounds."
+  - "Reduce stale output risk in repeated runs."
+scope:
+  - "Upgrade the governor skill from regression and stale-output failures."
+non_scope:
+  - "Do not turn the skill into a generic incident platform."
+inputs:
+  - "cross-round regressions（跨轮回归）"
+  - "stale output reports（陈旧产物报告）"
+outputs:
+  - "iterated governor artifacts（迭代后的治理产物）"
+  - "failure attribution（失败归因）"
+risks:
+  - "Fixing stale outputs may hide useful historical comparisons."
+success_bar:
+  - "Must explain how regression and stale output failures are addressed."
+failure_feedback:
+  - "Earlier rounds reused stale artifacts and masked missing-file failures."
+  - "Aggregate reporting stayed too shallow under multi-phase rounds."
+failure_attribution:
+  failure_cluster:
+    - "Stale outputs masked true failures."
+    - "Cross-round reporting was too shallow to support governance review."
+  symptoms:
+    - "Old files made rounds appear healthier than they were."
+    - "Governance reviewers could not see fixed versus new failures."
+  affected_dimensions:
+    - "Knowledge Packaging（知识封装）"
+    - "Learning & Lift（学习闭环与增益）"
+  suspected_root_cause:
+    - "Cleanup and regression logic were absent or too weak."
+  repair_direction:
+    - "Enforce per-round cleanup and stale detection."
+    - "Generate explicit regression reports between rounds."
+baseline:
+  candidate: "federated-incident-governor v2（联邦事件治理器 v2）"
+  baseline: "previous_skill（旧版技能）"
+  quality_delta:
+    correctness: "higher"
+    actionability: "higher"
+    scope_clarity: "same_or_higher"
+    contract_completeness: "higher"
+  cost_delta:
+    token_estimate: "similar"
+    wall_clock_estimate: "similar"
+    tool_call_estimate: "similar"
+  notes:
+    - "Any extra complexity must directly reduce stale-output masking."
+iteration_backlog:
+  next_fixes:
+    - "Add a still larger mixed-language regression sample."
+    - "Harden openai.yaml UTF-8 generation checks further."
+  deferred_work:
+    - "Diff real production baselines instead of synthetic ones."
+  why_now:
+    - "Stale-output masking is a systemic trust problem."

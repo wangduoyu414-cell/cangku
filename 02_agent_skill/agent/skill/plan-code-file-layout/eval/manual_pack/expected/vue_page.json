@@ -1,0 +1,22 @@
+{
+  "id": "vue_page",
+  "prompt": "Plan how many files to create for this Vue feature before we start coding. Anchor the decision on packages/admin-portal/src/pages/audit/AuditReplayPage.vue.",
+  "target_area": "packages/admin-portal/src/pages/audit",
+  "source_paths": [
+    "packages/admin-portal/src/pages/audit/AuditReplayPage.vue",
+    "packages/admin-portal/src/components/audit/ReplayResultCard.vue",
+    "packages/admin-portal/src/services/auditApi.ts",
+    "packages/admin-portal/src/composables/useToast.ts"
+  ],
+  "expected_summary": {
+    "strategy": "keep",
+    "repo_shape": "mixed",
+    "artifact_type": "ui-component",
+    "stack": "vue",
+    "confidence": "high",
+    "files": [
+      "packages/admin-portal/src/pages/audit/AuditReplayPage.vue"
+    ]
+  },
+  "validation_command": "python eval/validate_saved_output.py --case vue_page --output outputs/vue_page.yaml"
+}

@@ -1,0 +1,12 @@
+id: "complete-first-pass"
+task_type: "first-pass"
+user_request: |
+  帮我诊断这段短视频口播稿为什么讲完了却记不住：
+  “很多人以为做自媒体就是每天多发，其实不是。真正的问题是你根本没想清楚用户为什么要听你讲。”
+content_slot: "short-video-opening"
+primary_goal: "提高内容价值兑现感并增强关注转化"
+expected_route: "complete-first-pass"
+expected_focus:
+  - "先判断目标层和结构层是否成立"
+  - "不要直接重写成完整新稿"
+notes: "输入完整，应该进入完整首轮输出。"

@@ -1,0 +1,15 @@
+{
+  "name": "@creator-os/scheduler",
+  "version": "0.1.0",
+  "description": "CreatorOS task scheduler - queuing, rate limiting, priority",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@creator-os/core": "*"
+  }
+}

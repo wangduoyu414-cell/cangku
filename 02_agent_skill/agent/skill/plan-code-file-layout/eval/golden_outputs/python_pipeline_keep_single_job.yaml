@@ -1,0 +1,23 @@
+decision:
+  strategy: keep
+  target_area: "services/python-refund-jobs/jobs"
+  repo_shape: layer-first
+  artifact_type: "data-pipeline-step"
+  stack: python
+  files:
+    - path: "services/python-refund-jobs/jobs/publish_refund_health.py"
+      role: "job"
+      responsibility: "Own source parsing, light refund-risk transformation, and snapshot writing for the refund health job."
+      reason: "This job still reads as one simple pipeline flow with no independent source or sink adapter boundary."
+  keep_inline:
+    - "The small risk bucket helper."
+    - "The job-local row parser."
+  avoid:
+    - "extract.py"
+    - "transform.py"
+    - "load.py"
+  why_not_fewer: "One job file is already the smallest useful boundary for this snapshot step."
+  why_not_more: "Splitting extract, transform, and load files here would mostly add ceremony because the source parsing, light transform, and output write still form one readable flow."
+  risks:
+    - "If this job later adds multiple inputs, remote fetches, or reusable sink logic, a split by source or sink boundary may become justified."
+  confidence: high

@@ -1,0 +1,23 @@
+decision:
+  strategy: merge
+  target_area: "packages/admin-portal/src/pages/refunds"
+  repo_shape: mixed
+  artifact_type: ui-component
+  stack: vue
+  files:
+    - path: "packages/admin-portal/src/pages/refunds/RefundReviewPage.vue"
+      role: "page-component"
+      responsibility: "Own the refund review filters, page-local labels, and table rendering in a single page."
+      reason: "The current composable is a page-only composable that is only used by this single page and wraps page-local state."
+  keep_inline:
+    - "The filter refs."
+    - "The status label mapping."
+  avoid:
+    - "useRefundReviewFilters.ts"
+    - "refundReview.types.ts"
+    - "index.ts"
+  why_not_fewer: "One single page file is already the smallest useful boundary for this refund review slice."
+  why_not_more: "Keeping a separate composable for logic only used by this single page mostly adds another jump and ceremony without clearer ownership."
+  risks:
+    - "If a second refund screen starts sharing the same filter state, the composable may deserve extraction again."
+  confidence: high

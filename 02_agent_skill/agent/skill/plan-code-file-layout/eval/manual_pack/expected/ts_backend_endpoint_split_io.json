@@ -1,0 +1,24 @@
+{
+  "id": "ts_backend_endpoint_split_io",
+  "prompt": "Plan the file layout for this TypeScript webhook endpoint before implementation moves further. Anchor the decision in services/node-refund-api/src/features/refund-webhooks, where one route currently mixes signature checks, partner lookups, and event persistence.",
+  "target_area": "services/node-refund-api/src/features/refund-webhooks",
+  "source_paths": [
+    "services/node-refund-api/src/features/refund-webhooks/refundWebhookRoute.ts",
+    "services/node-refund-api/src/features/refund-preview/refundPreviewRoute.ts",
+    "services/node-refund-api/src/features/refund-batch/refundBatchRoute.ts",
+    "services/node-refund-api/src/features/refund-batch/refundBatchClient.ts"
+  ],
+  "expected_summary": {
+    "strategy": "split",
+    "repo_shape": "feature-first",
+    "artifact_type": "service-endpoint",
+    "stack": "typescript-javascript",
+    "confidence": "high",
+    "files": [
+      "services/node-refund-api/src/features/refund-webhooks/refundWebhookRoute.ts",
+      "services/node-refund-api/src/features/refund-webhooks/refundPartnerClient.ts",
+      "services/node-refund-api/src/features/refund-webhooks/refundEventStore.ts"
+    ]
+  },
+  "validation_command": "python eval/validate_saved_output.py --case ts_backend_endpoint_split_io --output outputs/ts_backend_endpoint_split_io.yaml"
+}

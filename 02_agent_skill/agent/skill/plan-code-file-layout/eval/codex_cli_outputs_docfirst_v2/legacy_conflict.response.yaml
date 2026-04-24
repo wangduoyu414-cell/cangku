@@ -1,0 +1,36 @@
+decision:
+  strategy: split
+  target_area: "Legacy refund sync slice currently rooted at src/app/services/legacy_refunds, migrating into the documented refunds layers under src/app."
+  repo_shape: layer-first
+  artifact_type: data-pipeline-step
+  stack: python
+  files:
+    - path: "src/app/application/refunds/sync_refunds_use_case.py"
+      role: "application orchestration"
+      responsibility: "Coordinate the refund sync batch: fetch pending partner refunds, normalize and validate each item, call persistence, and return synced versus skipped counts."
+      reason: "This is the real flow boundary for batching, skip policy, and orchestration; it should not also own HTTP or SQL details."
+    - path: "src/app/infrastructure/external/refunds/legacy_refund_client.py"
+      role: "external source adapter"
+      responsibility: "Call the legacy partner refund endpoint, own timeout and transport behavior, and return raw partner payloads."
+      reason: "Partner API failures and contract drift are a separate side-effect boundary from the sync workflow."
+    - path: "src/app/infrastructure/persistence/refunds/refund_sql_repository.py"
+      role: "persistence sink adapter"
+      responsibility: "Persist normalized refund rows, own SQL insert and idempotency behavior, and commit storage changes."
+      reason: "Database failure modes, duplicate handling, and SQL details should stay isolated from orchestration."
+  keep_inline:
+    - "Keep the local refund record dataclass or typed mapping inside src/app/application/refunds/sync_refunds_use_case.py for now."
+    - "Keep payload-to-row normalization and skipped-count logic inside the use case until a second real consumer appears."
+    - "Keep the concrete upsert SQL inline inside src/app/infrastructure/persistence/refunds/refund_sql_repository.py."
+  avoid:
+    - "Do not keep long-term business orchestration in src/app/services/legacy_refunds/refund_sync.py; that location is legacy evidence, not the documented target state."
+    - "Do not add a pass-through refund_sync_service.py layer between the use case and the real adapters."
+    - "Do not extract a generic utils.py or mapper.py for one-off normalization in this slice."
+    - "Do not keep a permanent compatibility shim that only re-exports the migrated use case."
+  why_not_fewer: "Fewer files would collapse orchestration, partner IO, and SQL persistence back into one mixed-layer module, recreating the current traceability problem and hiding separate network and database failure modes."
+  why_not_more: "More files would mostly separate local types, one-off mappers, or wrapper services without adding a real ownership, side-effect, or test boundary; the common debug path is still readable through these three files."
+  risks:
+    - "Existing callers or tests may still import src/app/services/legacy_refunds/refund_sync.py, so migration will have import-rewiring cost and possible short-lived deprecation handling."
+    - "Because the baseline docs define refunds as a cross-layer module, moving this slice out of src/app/services may require docs/decisions/CHANGELOG.md updates and possibly MODULE_RESPONSIBILITIES maintenance."
+    - "If refund validation grows beyond simple normalization and positive-amount checks, the inline record model may need promotion into src/app/domain/refunds."
+    - "The eventual batch entrypoint is not shown in the provided context, so an entrypoint or interface adapter may still need separate planning outside this slice."
+  confidence: medium

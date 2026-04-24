@@ -1,0 +1,64 @@
+{
+  "anchor": {
+    "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+    "file_path": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis/src/app/interfaces/order_controller.py",
+    "repo_relative_path": "src/app/interfaces/order_controller.py",
+    "symbol": "",
+    "selection_range": "",
+    "language": "python",
+    "role_hint": "source"
+  },
+  "stack": {
+    "stack_family": "python",
+    "stack_id": "python-stack",
+    "confidence": "medium",
+    "reasons": [
+      "file extension suggests python"
+    ],
+    "reference_file": "references/py-edge-rules.md",
+    "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+    "file_path": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis/src/app/interfaces/order_controller.py"
+  },
+  "edges": [
+    {
+      "from": "src/app/interfaces/order_controller.py",
+      "to": "src/app/interfaces/order_controller.py",
+      "direction": "outbound",
+      "edge_kind": "symbol",
+      "relation_type": "inherits",
+      "symbol_from": "OrderController",
+      "symbol_to": "BaseController",
+      "evidence_ref": "src/app/interfaces/order_controller.py:7",
+      "confidence": "high",
+      "resolution": "resolved"
+    },
+    {
+      "from": "src/app/interfaces/order_controller.py",
+      "to": "src/app/interfaces/order_controller.py",
+      "direction": "outbound",
+      "edge_kind": "symbol",
+      "relation_type": "call",
+      "symbol_from": "create",
+      "symbol_to": "create_order",
+      "evidence_ref": "src/app/interfaces/order_controller.py:9",
+      "confidence": "low",
+      "resolution": "resolved"
+    },
+    {
+      "from": "src/app/interfaces/order_controller.py",
+      "to": "src/app/interfaces/order_controller.py",
+      "direction": "outbound",
+      "edge_kind": "symbol",
+      "relation_type": "call",
+      "symbol_from": "create",
+      "symbol_to": "ok",
+      "evidence_ref": "src/app/interfaces/order_controller.py:10",
+      "confidence": "low",
+      "resolution": "resolved"
+    }
+  ],
+  "blind_spots": [
+    "Python dynamic dispatch (monkey patching) is not fully resolved.",
+    "Framework magic via decorators that auto-wire dependencies is not covered."
+  ]
+}

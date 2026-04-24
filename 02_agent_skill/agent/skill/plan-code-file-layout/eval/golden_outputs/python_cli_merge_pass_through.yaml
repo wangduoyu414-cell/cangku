@@ -1,0 +1,24 @@
+decision:
+  strategy: merge
+  target_area: "scripts/ops"
+  repo_shape: mixed
+  artifact_type: cli-command
+  stack: python
+  files:
+    - path: "scripts/ops/reconcile_refund_backlog.py"
+      role: "command"
+      responsibility: "Own argparse handling, the visible command flow, the tiny backlog fetch helper, and summary printing in one place."
+      reason: "The current helper is a single-command helper and pass-through file that only serves this same command."
+  keep_inline:
+    - "argparse options for this command."
+    - "The tiny backlog fetch helper."
+    - "The summary formatter."
+  avoid:
+    - "refund_backlog_client.py"
+    - "models.py"
+    - "command_base.py"
+  why_not_fewer: "One command file is already the smallest useful boundary for this backlog script."
+  why_not_more: "Keeping a separate client file adds a pass-through hop for the same command and mostly creates ceremony without clearer ownership."
+  risks:
+    - "If another script starts reusing the same backlog API calls, a shared client may become worth reintroducing."
+  confidence: high

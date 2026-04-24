@@ -1,0 +1,23 @@
+{
+  "id": "python_library_split_mature_api",
+  "prompt": "Plan the file layout for the shared refund export formatting slice in src/app/shared/utils. The same module now serves both export_partner_refunds.py and review_refund_export.py, and compare it with the smaller money helper nearby when deciding whether the export API and CSV details should stay together.",
+  "target_area": "src/app/shared/utils",
+  "source_paths": [
+    "src/app/shared/utils/refund_export_format.py",
+    "src/app/shared/utils/money.py",
+    "services/python-refund-jobs/jobs/export_partner_refunds.py",
+    "scripts/ops/review_refund_export.py"
+  ],
+  "expected_summary": {
+    "strategy": "split",
+    "repo_shape": "mixed",
+    "artifact_type": "library-module",
+    "stack": "python",
+    "confidence": "high",
+    "files": [
+      "src/app/shared/utils/refund_export_format.py",
+      "src/app/shared/utils/refund_export_csv.py"
+    ]
+  },
+  "validation_command": "python eval/validate_saved_output.py --case python_library_split_mature_api --output outputs/python_library_split_mature_api.yaml"
+}

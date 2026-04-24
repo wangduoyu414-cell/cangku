@@ -1,0 +1,23 @@
+{
+  "id": "go_package_split_same_package",
+  "prompt": "Should this Go package stay in one file or split into a few files without creating new packages? Target packages/go/partnerrefunds and compare it with the smaller amountcodec package.",
+  "target_area": "packages/go/partnerrefunds",
+  "source_paths": [
+    "packages/go/partnerrefunds/sync.go",
+    "packages/go/amountcodec/format.go",
+    "packages/go/taxcalc/calc.go"
+  ],
+  "expected_summary": {
+    "strategy": "split",
+    "repo_shape": "package-first",
+    "artifact_type": "library-module",
+    "stack": "go",
+    "confidence": "high",
+    "files": [
+      "packages/go/partnerrefunds/sync.go",
+      "packages/go/partnerrefunds/partner_client.go",
+      "packages/go/partnerrefunds/refund_store.go"
+    ]
+  },
+  "validation_command": "python eval/validate_saved_output.py --case go_package_split_same_package --output outputs/go_package_split_same_package.yaml"
+}

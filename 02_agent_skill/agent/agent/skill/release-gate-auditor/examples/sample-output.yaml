@@ -1,0 +1,13 @@
+id: "sample-output-example"
+user_request: |
+  输出一个最小发布门禁影响说明，至少包含门禁维度和必需报告。
+notes: "这是最小输出骨架示例，用于校准必须存在的核心字段。"
+sample_output:
+  release_gate_impact:
+    gate_dimensions:
+      - "回放差异"
+      - "LLM 调用率"
+      - "静态依赖方向"
+    required_reports:
+      - "replay_report"
+      - "release_gate"

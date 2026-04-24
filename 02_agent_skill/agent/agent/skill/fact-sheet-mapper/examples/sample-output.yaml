@@ -1,0 +1,14 @@
+id: "sample-output-example"
+user_request: |
+  输出一个最小事实资产方案，至少包含来源工作簿、事实版本绑定和字段映射说明。
+notes: "这是最小输出骨架示例，用于校准必须存在的核心字段。"
+sample_output:
+  fact_asset_plan:
+    source_workbooks:
+      - "D:\\diypc\\电脑配件参数采集规划.xlsx"
+    fact_version_binding:
+      - "商品目录版本"
+      - "价格快照版本"
+      - "事实摘要版本"
+    field_mapping_notes:
+      - "字段必须先进入字段字典，再进入正式事实资产消费路径"

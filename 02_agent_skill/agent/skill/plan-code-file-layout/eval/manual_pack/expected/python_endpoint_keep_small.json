@@ -1,0 +1,21 @@
+{
+  "id": "python_endpoint_keep_small",
+  "prompt": "Should this Python refund-status endpoint stay in one module or split into handler and service files? Anchor the decision in services/python-order-api/features/refund-status and compare it with the nearby shipments feature. This slice only validates request fields, applies local refund-window rules, and shapes a response.",
+  "target_area": "services/python-order-api/features/refund-status",
+  "source_paths": [
+    "services/python-order-api/features/refund-status/status_endpoint.py",
+    "services/python-order-api/features/shipments/tracking_handler.py",
+    "services/python-order-api/features/shipments/tracking_gateway.py"
+  ],
+  "expected_summary": {
+    "strategy": "keep",
+    "repo_shape": "feature-first",
+    "artifact_type": "service-endpoint",
+    "stack": "python",
+    "confidence": "high",
+    "files": [
+      "services/python-order-api/features/refund-status/status_endpoint.py"
+    ]
+  },
+  "validation_command": "python eval/validate_saved_output.py --case python_endpoint_keep_small --output outputs/python_endpoint_keep_small.yaml"
+}

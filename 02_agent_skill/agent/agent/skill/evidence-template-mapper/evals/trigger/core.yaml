@@ -1,0 +1,26 @@
+suite_id: "evidence-template-mapper-trigger-core"
+cases:
+  - id: "positive-evidence-binding-request"
+    goal: "证据模板映射请求应触发"
+    input: "请输出 task 09 和 task 10 的证据来源清单、模板映射和反事实绑定方案。"
+    expected: true
+    type: "positive"
+    notes: "典型证据模板映射请求。"
+  - id: "positive-align-project-assets"
+    goal: "项目资产对齐请求应触发"
+    input: "把 D:\\diypc 的证据资产和核心规则表格化方案对齐成证据模板映射。"
+    expected: true
+    type: "positive"
+    notes: "明确指向项目资产与证据映射。"
+  - id: "negative-render-implementation"
+    goal: "纯渲染实现不应触发"
+    input: "请直接实现 evidence render 的代码。"
+    expected: false
+    type: "negative"
+    notes: "这是实现请求，不是模板映射请求。"
+  - id: "negative-generic-doc-summary"
+    goal: "泛化总结请求不应触发"
+    input: "帮我总结这份核心规则文档。"
+    expected: false
+    type: "negative"
+    notes: "只有总结，不是证据映射。"

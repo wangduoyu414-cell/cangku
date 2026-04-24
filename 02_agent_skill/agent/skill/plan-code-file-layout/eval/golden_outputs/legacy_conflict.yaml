@@ -1,0 +1,33 @@
+decision:
+  strategy: split
+  target_area: "src/app/services/legacy_refunds"
+  repo_shape: layer-first
+  artifact_type: data-pipeline-step
+  stack: python
+  files:
+    - path: "src/app/application/refunds/sync_refunds_use_case.py"
+      role: "use-case"
+      responsibility: "Own refund sync orchestration, batch limits, and the visible application flow under the documented application layer."
+      reason: "The baseline docs place orchestration in the application layer rather than the legacy services folder."
+    - path: "src/app/infrastructure/external/refunds/legacy_refund_client.py"
+      role: "partner-client"
+      responsibility: "Fetch pending refunds from the partner API and translate transport failures under the documented infrastructure external boundary."
+      reason: "Remote partner access belongs in infrastructure/external according to the documented layer model."
+    - path: "src/app/infrastructure/persistence/refunds/refund_sql_repository.py"
+      role: "refund-repository"
+      responsibility: "Persist normalized refunds and own insert or conflict-handling details under the documented persistence boundary."
+      reason: "Database writes belong in infrastructure/persistence instead of staying in the legacy services slice."
+  keep_inline:
+    - "The RefundRecord dataclass while the sync use case still has one local consumer."
+    - "Batch-size validation and tiny normalization helpers."
+  avoid:
+    - "src/app/services/legacy_refunds"
+    - "utils.py"
+    - "interfaces.py"
+  why_not_fewer: "Keeping orchestration, partner IO, and persistence in one legacy services file would preserve the off-pattern layout and blur the documented source and sink boundaries."
+  why_not_more: "Once the flow is relocated into application plus the real infrastructure adapters, additional mapper or validator modules would add ceremony before there is a second consumer or a larger public surface."
+  risks:
+    - "The baseline docs take precedence over the local legacy services folder, so this plan requires relocation out of src/app/services/legacy_refunds."
+    - "Existing imports from the legacy path may need a staged migration or a short compatibility shim."
+    - "The documented layer model is clear, but exact subdirectory names under infrastructure may still depend on broader repo naming conventions."
+  confidence: medium

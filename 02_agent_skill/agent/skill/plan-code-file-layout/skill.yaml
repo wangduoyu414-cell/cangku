@@ -1,0 +1,48 @@
+id: "plan-code-file-layout"
+version: "0.1.0"
+owner: "repo-architecture"
+description: >
+  Plan repository-aligned file boundaries for one concrete implementation
+  slice. Use when the user asks whether a change should stay in one file or be
+  split, how many files to create, what each file should own, or how to
+  organize Python, TypeScript/JavaScript, Vue, or Go code for maintainability
+  and debugging inside that slice. Also use for near-miss requests like
+  component/composable split, endpoint file layout, feature-folder planning,
+  or deciding whether to extract helpers. Do not use for dependency analysis,
+  generic module-context explanation, style-only questions, post-hoc code
+  review, or whole-system architecture redesign.
+mode: "instruction"
+side_effect: "read_only"
+complexity: "router"
+delivery_form: "decision"
+skill_execution_requires:
+  - Read
+  - Glob
+downstream_allowed_tools:
+  - Read
+  - Write
+  - Glob
+preferred_over: []
+conflicts_with: []
+eval_suite:
+  docs:
+    description: "Trigger boundaries and decision guidance remain documented."
+    check: "evals/should-trigger.md, evals/should-not-trigger.md, evals/decision-cases.md"
+  static:
+    description: "Fixture-backed golden outputs cover keep, split, merge, and low-confidence planning."
+    command: "python eval/run_eval.py"
+  mutation:
+    description: "Mutation tests prove the evaluator fails when key output fields are broken."
+    command: "python eval/run_mutation_eval.py"
+  manual_pack:
+    description: "Exports prompt bundles and output slots for zero-key manual or third-party model testing."
+    command: "python eval/export_manual_eval_pack.py"
+  saved_output:
+    description: "Offline validation for manually saved or externally generated YAML outputs."
+    command: "python eval/validate_saved_output.py --case <case-id> --output <file>"
+  live:
+    description: "Optional end-to-end model evaluation that validates returned YAML against the same case expectations."
+    command: "python eval/run_live_eval.py --model <model-name>"
+  codex_cli:
+    description: "Runs a Codex CLI smoke or full suite and validates the CLI's returned YAML with the same evaluator."
+    command: "python eval/run_codex_cli_eval.py --suite smoke"

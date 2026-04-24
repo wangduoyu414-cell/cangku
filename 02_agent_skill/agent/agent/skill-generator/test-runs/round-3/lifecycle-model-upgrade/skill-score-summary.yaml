@@ -1,0 +1,37 @@
+skill_name: multilingual-risk-triage-simplified
+total_score: 89
+hard_gate_pass: true
+release_recommendation: production-ready（可正式使用）
+dimensions:
+  scope_and_signal:
+    label: Scope & Signal（边界与信号）
+    weight: 25
+    score: 5
+    reason: 简化后边界仍稳。
+  knowledge_packaging:
+    label: Knowledge Packaging（知识封装）
+    weight: 15
+    score: 4
+    reason: 模型敏感层缩减有效。
+  instruction_to_action:
+    label: Instruction-to-Action（指令到行动）
+    weight: 20
+    score: 4
+    reason: 说明仍可执行。
+  limits_and_interfaces:
+    label: Limits & Interfaces（限制与接口）
+    weight: 20
+    score: 4
+    reason: 约束未丢。
+  learning_and_lift:
+    label: Learning & Lift（学习闭环与增益）
+    weight: 20
+    score: 5
+    reason: 简化与增益关系清楚。
+hard_checks:
+  has_non_scope: true
+  has_output_contract: true
+  has_trigger_eval: true
+  has_quality_eval: true
+  has_baseline_plan: true
+  has_simplification_pass: true

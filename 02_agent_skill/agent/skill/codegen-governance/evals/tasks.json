@@ -1,0 +1,706 @@
+{
+  "skill": "codegen-governance",
+  "version": "0.3.0",
+  "description": "Task evaluation cases for codegen-governance skill",
+  "tasks": [
+    {
+      "id": "task-001",
+      "title": "Python 函数输入验证",
+      "description": "为一个读取用户输入的 Python 函数添加输入验证",
+      "language": "python",
+      "scenario_packs": ["A", "B"],
+      "expected_packs": ["A", "B"],
+      "difficulty": "easy",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "input_contract_documented": true,
+        "missing_empty_handling": true,
+        "error_handling_present": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    },
+    {
+      "id": "task-002",
+      "title": "Go 错误处理重构",
+      "description": "为一个缺少错误处理的 Go 函数添加完整的错误处理",
+      "language": "go",
+      "scenario_packs": ["B", "C"],
+      "expected_packs": ["B", "C"],
+      "difficulty": "medium",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "error_propagation_correct": true,
+        "no_error_swallowed": true,
+        "side_effects_documented": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    },
+    {
+      "id": "task-003",
+      "title": "TypeScript 异步函数实现",
+      "description": "实现一个从 API 获取数据并处理的 TypeScript 异步函数",
+      "language": "typescript",
+      "scenario_packs": ["A", "B", "C", "D"],
+      "expected_packs": ["A", "B", "C", "D"],
+      "difficulty": "medium",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "async_error_handling": true,
+        "no_unhandled_rejection": true,
+        "boundary_protocols_documented": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    },
+    {
+      "id": "task-004",
+      "title": "Vue 组件属性处理",
+      "description": "为一个 Vue 组件添加 props 验证和默认值处理",
+      "language": "vue",
+      "scenario_packs": ["A", "B"],
+      "expected_packs": ["A", "B"],
+      "difficulty": "easy",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "props_not_mutated": true,
+        "type_validation_present": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    },
+    {
+      "id": "task-005",
+      "title": "Python 重试逻辑",
+      "description": "为一个网络调用添加重试和超时逻辑",
+      "language": "python",
+      "scenario_packs": ["B", "C"],
+      "expected_packs": ["B", "C"],
+      "difficulty": "medium",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "retry_bounds_defined": true,
+        "no_infinite_retry": true,
+        "side_effects_documented": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    },
+    {
+      "id": "task-006",
+      "title": "Go 并发安全",
+      "description": "为一个访问共享状态的 Go 函数添加并发保护",
+      "language": "go",
+      "scenario_packs": ["B", "C"],
+      "expected_packs": ["B", "C"],
+      "difficulty": "hard",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "mutex_correctly_used": true,
+        "no_race_condition": true,
+        "side_effects_documented": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    },
+    {
+      "id": "task-007",
+      "title": "TypeScript 日期时间处理",
+      "description": "实现一个处理日期时间格式化和时区转换的 TypeScript 函数",
+      "language": "typescript",
+      "scenario_packs": ["A", "D"],
+      "expected_packs": ["A", "D"],
+      "difficulty": "medium",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "timezone_handling_correct": true,
+        "no_magic_numbers": true,
+        "boundary_observability_documented": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    },
+    {
+      "id": "task-008",
+      "title": "Vue 异步数据加载",
+      "description": "为一个 Vue 组件实现异步数据加载和状态管理",
+      "language": "vue",
+      "scenario_packs": ["A", "B", "C"],
+      "expected_packs": ["A", "B", "C"],
+      "difficulty": "medium",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "async_handling_correct": true,
+        "no_unnecessary_mutations": true,
+        "error_and_loading_states": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    },
+    {
+      "id": "task-009",
+      "title": "Python 缓存实现",
+      "description": "实现一个带缓存的函数，需要处理缓存失效和并发",
+      "language": "python",
+      "scenario_packs": ["B", "C"],
+      "expected_packs": ["B", "C"],
+      "difficulty": "medium",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "cache_key_documented": true,
+        "cache_invalidation_documented": true,
+        "no_hidden_side_effects": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    },
+    {
+      "id": "task-010",
+      "title": "Go HTTP 请求处理",
+      "description": "实现一个 HTTP 请求处理器，需要处理请求验证和响应序列化",
+      "language": "go",
+      "scenario_packs": ["A", "B", "D"],
+      "expected_packs": ["A", "B", "D"],
+      "difficulty": "hard",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "input_validation_correct": true,
+        "error_responses_correct": true,
+        "boundary_protocols_documented": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    },
+    {
+      "id": "task-011",
+      "title": "TypeScript PATCH 更新语义",
+      "description": "实现一个 PATCH 更新函数，明确字段缺失、null 清空、空字符串非法和 retain 旧值",
+      "language": "typescript",
+      "scenario_packs": ["A", "B"],
+      "expected_packs": ["A", "B"],
+      "difficulty": "medium",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "partial_update_semantics_documented": true,
+        "retain_vs_clear_explicit": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    },
+    {
+      "id": "task-012",
+      "title": "Python PATCH 默认值边界",
+      "description": "为一个局部更新函数补充默认值策略，但不能把显式 null 或非法值吞掉",
+      "language": "python",
+      "scenario_packs": ["A", "B"],
+      "expected_packs": ["A", "B"],
+      "difficulty": "medium",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "absence_vs_invalid_documented": true,
+        "defaults_do_not_mask_clear_semantics": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    },
+    {
+      "id": "task-013",
+      "title": "Go 出站 HTTP client",
+      "description": "实现一个调用第三方 API 的 Go client，处理 timeout、429 重试、状态码映射和审计",
+      "language": "go",
+      "scenario_packs": ["A", "B", "C", "D"],
+      "expected_packs": ["A", "B", "C", "D"],
+      "difficulty": "hard",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "retry_budget_documented": true,
+        "status_mapping_documented": true,
+        "boundary_audit_documented": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    },
+    {
+      "id": "task-014",
+      "title": "Python HTTP 同步函数",
+      "description": "实现一个向 partner API 推送数据的 Python 函数，需要处理 request payload、timeout、重试和响应契约",
+      "language": "python",
+      "scenario_packs": ["A", "B", "C", "D"],
+      "expected_packs": ["A", "B", "C", "D"],
+      "difficulty": "hard",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "request_shape_documented": true,
+        "retryable_vs_terminal_failures_split": true,
+        "boundary_protocols_documented": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    },
+    {
+      "id": "task-015",
+      "title": "TypeScript 幂等去重",
+      "description": "为一个提交接口增加 idempotency key 去重、缓存回放结果和 duplicate 状态返回",
+      "language": "typescript",
+      "scenario_packs": ["B", "C"],
+      "expected_packs": ["B", "C"],
+      "difficulty": "medium",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "duplicate_result_shape_documented": true,
+        "cache_write_timing_documented": true,
+        "no_hidden_side_effects": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    },
+    {
+      "id": "task-016",
+      "title": "Go 去重缓存重放",
+      "description": "实现一个带请求去重和缓存重放的 Go 函数，需要区分 fresh success、duplicate replay 和 terminal failure",
+      "language": "go",
+      "scenario_packs": ["B", "C"],
+      "expected_packs": ["B", "C"],
+      "difficulty": "medium",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "replay_vs_fresh_result_documented": true,
+        "idempotency_scope_documented": true,
+        "side_effects_documented": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    },
+    {
+      "id": "task-017",
+      "title": "Python 时间金额格式化",
+      "description": "实现一个函数，把金额从分转换为固定两位小数字符串，并把结算时间统一规范到 UTC",
+      "language": "python",
+      "scenario_packs": ["A", "D"],
+      "expected_packs": ["A", "D"],
+      "difficulty": "medium",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "timezone_rules_documented": true,
+        "precision_rules_documented": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    },
+    {
+      "id": "task-018",
+      "title": "TypeScript 账单值域规范化",
+      "description": "实现一个 TypeScript 函数，处理货币 minor unit、舍入规则和日期导出格式",
+      "language": "typescript",
+      "scenario_packs": ["A", "D"],
+      "expected_packs": ["A", "D"],
+      "difficulty": "medium",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "minor_unit_contract_documented": true,
+        "rounding_and_timezone_documented": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    },
+    {
+      "id": "task-019",
+      "title": "Go CSV 导出",
+      "description": "实现一个 Go 报表导出函数，校验文件名、写入 UTF-8 CSV，并在成功后记录审计日志",
+      "language": "go",
+      "scenario_packs": ["A", "C", "D"],
+      "expected_packs": ["A", "C", "D"],
+      "difficulty": "medium",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "file_lifecycle_documented": true,
+        "encoding_and_csv_contract_documented": true,
+        "audit_side_effects_documented": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    },
+    {
+      "id": "task-020",
+      "title": "Python 导入文件解析",
+      "description": "实现一个 Python 导入函数，读取 UTF-8 CSV，校验列结构，并显式处理坏行和输出审计",
+      "language": "python",
+      "scenario_packs": ["A", "C", "D"],
+      "expected_packs": ["A", "C", "D"],
+      "difficulty": "medium",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "record_shape_documented": true,
+        "file_resource_rules_documented": true,
+        "encoding_and_audit_documented": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    },
+    {
+      "id": "task-021",
+      "title": "TypeScript 审计脱敏",
+      "description": "为一个 TypeScript 审计记录函数补充 email、token 和 payload 片段的脱敏规则",
+      "language": "typescript",
+      "scenario_packs": ["C", "D"],
+      "expected_packs": ["C", "D"],
+      "difficulty": "medium",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "redaction_rules_documented": true,
+        "stable_audit_fields_documented": true,
+        "side_effects_documented": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    },
+    {
+      "id": "task-022",
+      "title": "Vue 导出与审计",
+      "description": "为一个 Vue 报表导出动作补充文件名校验、CSV 下载、对象 URL 清理和审计脱敏",
+      "language": "vue",
+      "scenario_packs": ["A", "C", "D"],
+      "expected_packs": ["A", "C", "D"],
+      "difficulty": "medium",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "download_filename_documented": true,
+        "resource_cleanup_documented": true,
+        "audit_redaction_documented": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    },
+    {
+      "id": "task-023",
+      "title": "Go 批处理 partial success",
+      "description": "实现一个 Go 批处理函数，返回 per-item 结果、batch summary，并把永久失败写入 dead-letter",
+      "language": "go",
+      "scenario_packs": ["A", "B", "C"],
+      "expected_packs": ["A", "B", "C"],
+      "difficulty": "hard",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "per_item_classification_documented": true,
+        "partial_success_contract_documented": true,
+        "dead_letter_side_effects_documented": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    },
+    {
+      "id": "task-024",
+      "title": "Python 批量结果汇总",
+      "description": "实现一个 Python 批量处理函数，需要区分 success、failed、skipped、retry-required，并返回稳定汇总结果",
+      "language": "python",
+      "scenario_packs": ["A", "B", "C"],
+      "expected_packs": ["A", "B", "C"],
+      "difficulty": "hard",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "batch_summary_matches_items": true,
+        "retry_required_vs_partial_success_split": true,
+        "side_effects_documented": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    },
+    {
+      "id": "task-025",
+      "title": "Python webhook worker",
+      "description": "修复一个 Python webhook worker，校验签名、delivery_id、event_id，明确 ack、retry、dead-letter 规则",
+      "language": "python",
+      "scenario_packs": ["A", "B", "C", "D"],
+      "expected_packs": ["A", "B", "C", "D"],
+      "difficulty": "hard",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "signature_and_delivery_contract_documented": true,
+        "ack_retry_deadletter_documented": true,
+        "boundary_audit_documented": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    },
+    {
+      "id": "task-026",
+      "title": "TypeScript webhook batch handler",
+      "description": "实现一个 TypeScript webhook 批量处理函数，要求 per-item 结果、duplicate event 抑制和稳定审计事件",
+      "language": "typescript",
+      "scenario_packs": ["A", "B", "C", "D"],
+      "expected_packs": ["A", "B", "C", "D"],
+      "difficulty": "hard",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "event_array_shape_documented": true,
+        "duplicate_and_partial_result_documented": true,
+        "worker_boundary_semantics_documented": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    },
+    {
+      "id": "task-027",
+      "title": "Go 配置优先级解析",
+      "description": "修复一个 Go 配置解析函数，让 request override、env 和 default 的优先级顺序显式可检，并在成功时追加带来源字段的审计事件",
+      "language": "go",
+      "scenario_packs": ["A", "B", "C", "D"],
+      "expected_packs": ["A", "B", "C", "D"],
+      "difficulty": "medium",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "precedence_order_documented": true,
+        "invalid_present_values_do_not_fallback": true,
+        "audit_sources_documented": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    },
+    {
+      "id": "task-028",
+      "title": "Python 稳定排序与汇总",
+      "description": "修复一个 Python 汇总函数，校验订单项，按多个键做稳定排序，并返回显式 empty summary 与聚合结果",
+      "language": "python",
+      "scenario_packs": ["A", "B"],
+      "expected_packs": ["A", "B"],
+      "difficulty": "medium",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "stable_ordering_rules_documented": true,
+        "tie_breaker_is_explicit": true,
+        "empty_summary_contract_documented": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    },
+    {
+      "id": "task-029",
+      "title": "TypeScript 排行榜聚合",
+      "description": "实现一个 TypeScript leaderboard 汇总函数，校验 entries，按 score 与 user_id 稳定排序，并返回 summary 和空列表结果结构",
+      "language": "typescript",
+      "scenario_packs": ["A", "B"],
+      "expected_packs": ["A", "B"],
+      "difficulty": "medium",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "sorting_keys_documented": true,
+        "summary_shape_documented": true,
+        "empty_result_is_not_ambiguous": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    },
+    {
+      "id": "task-030",
+      "title": "Go 稳定排序与汇总",
+      "description": "修复一个 Go 汇总函数，校验订单项，按多个键做稳定排序，并返回显式 empty summary 与聚合结果",
+      "language": "go",
+      "scenario_packs": ["A", "B"],
+      "expected_packs": ["A", "B"],
+      "difficulty": "medium",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "stable_ordering_rules_documented": true,
+        "tie_breaker_is_explicit": true,
+        "empty_summary_contract_documented": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    },
+    {
+      "id": "task-031",
+      "title": "Python 分层配置优先级",
+      "description": "修复一个 Python 配置解析函数，让 request、CLI、env、config file、default 的优先级顺序显式可检，并在成功时追加带来源字段的审计事件",
+      "language": "python",
+      "scenario_packs": ["A", "B", "C", "D"],
+      "expected_packs": ["A", "B", "C", "D"],
+      "difficulty": "hard",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "precedence_order_documented": true,
+        "invalid_present_values_do_not_fallback": true,
+        "file_and_cli_layers_documented": true,
+        "audit_sources_documented": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    },
+    {
+      "id": "task-032",
+      "title": "Go Schema 版本兼容",
+      "description": "修复一个 Go 解析函数，让 v1 和 v2 JSON 事件映射到统一 canonical shape，显式拒绝未知 schema_version，并保持 UTC 规范化",
+      "language": "go",
+      "scenario_packs": ["A", "B", "D"],
+      "expected_packs": ["A", "B", "D"],
+      "difficulty": "medium",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "version_branching_documented": true,
+        "unsupported_version_handling_explicit": true,
+        "canonical_mapping_documented": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    },
+    {
+      "id": "task-033",
+      "title": "Python 导入拒收汇总",
+      "description": "修复一个 Python CSV 导入函数，校验头部和行字段，返回稳定 reject summary，并区分 ok、partial、rejected_all 结果",
+      "language": "python",
+      "scenario_packs": ["A", "B", "C", "D"],
+      "expected_packs": ["A", "B", "C", "D"],
+      "difficulty": "hard",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "row_reject_reasons_documented": true,
+        "partial_import_contract_documented": true,
+        "file_lifecycle_and_encoding_documented": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    },
+    {
+      "id": "task-034",
+      "title": "Python 分桶 Top-N 分页",
+      "description": "修复一个 Python leaderboard 页面函数，按 bucket 分组，做 top-N 截断，并返回显式分页结构与越界页错误",
+      "language": "python",
+      "scenario_packs": ["A", "B"],
+      "expected_packs": ["A", "B"],
+      "difficulty": "medium",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "bucket_ordering_documented": true,
+        "topn_and_page_contract_documented": true,
+        "out_of_range_page_is_explicit": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    },
+    {
+      "id": "task-035",
+      "title": "Go 本地锁竞争",
+      "description": "修复一个 Go lease-claim 函数，显式区分 acquired、busy、already_held、reclaimed，限制锁状态改写时机，并写稳定审计事件",
+      "language": "go",
+      "scenario_packs": ["A", "B", "C", "D"],
+      "expected_packs": ["A", "B", "C", "D"],
+      "difficulty": "medium",
+      "evaluation_criteria": {
+        "target_language_filled": true,
+        "contract_fields_complete": true,
+        "input_validation_documented": true,
+        "contention_result_contract_documented": true,
+        "state_write_timing_documented": true,
+        "invalid_input_has_no_audit_write": true,
+        "audit_event_shape_documented": true,
+        "language_rules_applied": true,
+        "prohibited_patterns_checked": true,
+        "validation_plan_executable": true,
+        "validation_distinction": true
+      }
+    }
+  ]
+}
+

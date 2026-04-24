@@ -1,0 +1,27 @@
+decision:
+  strategy: split
+  target_area: "packages/admin-portal/src/pages/exports"
+  repo_shape: mixed
+  artifact_type: ui-component
+  stack: vue
+  files:
+    - path: "packages/admin-portal/src/pages/exports/AuditExportPage.vue"
+      role: "page-component"
+      responsibility: "Own the export page markup, form submission flow, and page-specific rendering decisions."
+      reason: "The page should stay focused on view concerns instead of carrying every polling detail itself."
+    - path: "packages/admin-portal/src/composables/useAuditExportJob.ts"
+      role: "composable"
+      responsibility: "Own shared polling, retry, and job-status state used by the page and retry dialog."
+      reason: "The async export job flow is a reusable cross-component state boundary."
+  keep_inline:
+    - "The export form state."
+    - "Small status label copy."
+  avoid:
+    - "auditExport.types.ts"
+    - "usePollingState.ts"
+    - "ExportProgressCard.vue"
+  why_not_fewer: "Keeping polling and retry logic inside the page would duplicate cross-component async state because the retry dialog needs the same job flow."
+  why_not_more: "The existing API module is already enough for remote calls, so additional types or progress components would mostly add ceremony before reuse is real."
+  risks:
+    - "If export status UI becomes shared across multiple pages, a presentational status component may later become justified."
+  confidence: high

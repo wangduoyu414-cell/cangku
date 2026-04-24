@@ -1,0 +1,33 @@
+suite_id: "feature-registry-governor-task-core"
+cases:
+  - id: "standard-generate-registry-plan"
+    goal: "标准路径应生成注册表治理方案"
+    input:
+      registry: "D:\\diypc\\assets\\templates\\core_feature_registry_v1.json"
+      rule_context: "task 03"
+    expected:
+      output_sections:
+        - "registry_refs"
+        - "version_constraints"
+        - "registered_features"
+        - "governance_notes"
+    type: "standard"
+    notes: "标准输出形态来自现有脚本和样例。"
+  - id: "boundary-missing-registry"
+    goal: "缺少注册表资产时不能伪造完整方案"
+    input:
+      registry: ""
+      rule_context: "task 03"
+    expected:
+      must_stop_for_missing_inputs: true
+    type: "boundary"
+    notes: "边界条件是缺少注册表资产。"
+  - id: "error-prone-unregistered-feature"
+    goal: "不得让未登记特征进入正式规则包"
+    input:
+      registry: "D:\\diypc\\assets\\templates\\core_feature_registry_v1.json"
+      includes_unregistered_feature: true
+    expected:
+      forbid_unregistered_feature_entry: true
+    type: "error-prone"
+    notes: "这是当前稳定红线。"

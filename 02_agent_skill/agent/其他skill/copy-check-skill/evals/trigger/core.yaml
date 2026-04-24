@@ -1,0 +1,50 @@
+suite_id: "copy-check-trigger-core"
+cases:
+  - id: "trigger-diagnose-existing-draft"
+    goal: "已有文案并要求诊断"
+    input: "帮我看下这段口播稿为什么不深：很多人做内容只是把观点喊出来，没有把过程讲清楚。"
+    expected: true
+    type: "positive"
+    notes: "有待校验文本和明确诊断意图。"
+  - id: "trigger-check-by-framework"
+    goal: "按固定框架评审现有文案"
+    input: "按短、平、快和信息增量框架检查这段标题：努力不是答案，结构才是答案。"
+    expected: true
+    type: "positive"
+    notes: "有文本且明确要求按框架评审。"
+  - id: "trigger-recheck-revision"
+    goal: "对修改稿做复检"
+    input: "这是我改过的版本，帮我比较上一版的问题有没有解决。"
+    expected: true
+    type: "positive"
+    notes: "明确是复检任务。"
+  - id: "trigger-why-empty"
+    goal: "解释现有文案为什么空"
+    input: "这段图文文案为什么看起来有道理，但还是很空？原文：不要自我感动，要有结果。"
+    expected: true
+    type: "positive"
+    notes: "典型结构化诊断场景。"
+  - id: "non-trigger-write-for-me"
+    goal: "纯代写请求"
+    input: "帮我写一条自媒体口播稿，主题是成长。"
+    expected: false
+    type: "negative"
+    notes: "没有待校验文本。"
+  - id: "non-trigger-brand-name"
+    goal: "命名任务"
+    input: "帮我想一个更高级的账号名字。"
+    expected: false
+    type: "negative"
+    notes: "不是文案诊断。"
+  - id: "non-trigger-account-strategy"
+    goal: "账号策略设计"
+    input: "帮我做一个三个月的短视频账号增长规划。"
+    expected: false
+    type: "negative"
+    notes: "超出单条文案校验边界。"
+  - id: "non-trigger-brainstorm"
+    goal: "纯脑暴"
+    input: "给我一些关于反常识内容的创意方向。"
+    expected: false
+    type: "negative"
+    notes: "没有现有文本，不应触发。"

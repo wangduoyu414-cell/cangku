@@ -1,0 +1,16 @@
+thresholds:
+  min_case_telemetry_count: 3
+  min_total_wall_clock_ms: 1
+  min_total_created_bytes: 1
+
+required_fields:
+  case_telemetry:
+    - command_count
+    - total_wall_clock_ms
+    - created_file_count
+    - created_total_bytes
+  round_telemetry:
+    - case_telemetry_count
+    - total_command_count
+    - total_wall_clock_ms
+    - total_created_bytes

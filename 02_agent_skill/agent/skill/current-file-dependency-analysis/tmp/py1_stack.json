@@ -1,0 +1,11 @@
+{
+  "stack_family": "python",
+  "stack_id": "python-stack",
+  "confidence": "medium",
+  "reasons": [
+    "file extension suggests python"
+  ],
+  "reference_file": "references/py-edge-rules.md",
+  "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+  "file_path": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis/src/app/interfaces/order_controller.py"
+}

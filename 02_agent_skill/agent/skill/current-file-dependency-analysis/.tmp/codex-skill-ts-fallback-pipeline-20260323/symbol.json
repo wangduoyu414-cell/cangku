@@ -1,0 +1,45 @@
+{
+  "anchor": {
+    "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+    "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/application/use-cases.ts",
+    "repo_relative_path": "src/app/application/use-cases.ts",
+    "symbol": "",
+    "selection_range": "",
+    "language": "typescript",
+    "role_hint": "source"
+  },
+  "stack": {
+    "stack_family": "typescript",
+    "stack_id": "typescript-stack",
+    "confidence": "medium",
+    "reasons": [
+      "file extension suggests typescript"
+    ],
+    "reference_file": "references/ts-edge-rules.md",
+    "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+    "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/application/use-cases.ts"
+  },
+  "edges": [
+    [
+      {
+        "from": "src/app/application/use-cases.ts",
+        "to": "src/app/application/use-cases.ts",
+        "direction": "outbound",
+        "edge_kind": "symbol",
+        "relation_type": "call",
+        "symbol_from": "createOrder",
+        "symbol_to": "buildOrderKey",
+        "evidence_ref": "src/app/application/use-cases.ts:4",
+        "confidence": "low",
+        "resolution": "resolved"
+      }
+    ],
+    [
+      "TypeScript/Vue runtime reactivity side effects are not fully resolved.",
+      "TypeScript symbol parsing is regex-based fallback (not compiler-level)."
+    ]
+  ],
+  "blind_spots": [
+    "TypeScript parser fell back to regex mode (node/typescript not available)."
+  ]
+}

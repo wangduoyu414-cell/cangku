@@ -1,0 +1,23 @@
+entries:
+- id: federated-incident-governor-iterate-001
+  timestamp: '2026-03-27'
+  scenario: iterate
+  signal: Upgrade the federated incident-governor skill after long-form failures,
+    stale outputs, and cross-round regression drift.
+  context: Do not widen trigger scope while fixing long-form failures.
+  action: Draft the reusable default path（起草可复用默认路径）
+  outcome: success
+  baseline: without_skill
+  quality_delta: higher
+  cost_delta:
+    token_estimate: slightly_higher
+    wall_clock_estimate: similar
+    tool_call_estimate: similar
+  rule_candidate: Earlier rounds reused stale artifacts and masked missing-file failures.
+  confidence: repeated-observation
+  freshness: stable
+  affected_dimension: scope_and_signal
+  evidence_refs:
+  - request.md
+  - baseline-comparison.md
+  follow_up: promote-to-default-path

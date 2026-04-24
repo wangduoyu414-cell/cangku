@@ -1,0 +1,84 @@
+{
+  "skill": "codegen-governance",
+  "version": "0.3.0",
+  "description": "Repo-aware validation plan inference cases",
+  "cases": [
+    {
+      "id": "python-uv-tooling",
+      "language": "python",
+      "target": "src/worker.py",
+      "files": {
+        "uv.lock": "",
+        "pyproject.toml": "[tool.pytest.ini_options]\naddopts = \"-q\"\n[tool.ruff]\nline-length = 100\n[tool.mypy]\npython_version = \"3.12\"\n",
+        "src/worker.py": "print(\"hi\")\n",
+        "tests/test_worker.py": "def test_ok():\n    assert True\n"
+      },
+      "expected_signals": [
+        "python target detected",
+        "uv environment detected",
+        "python repo tooling detected"
+      ],
+      "expected_commands": [
+        "uv run python -m py_compile src\\worker.py",
+        "uv run python -m pytest -q tests\\test_worker.py",
+        "uv run ruff check src\\worker.py",
+        "uv run mypy src\\worker.py"
+      ],
+      "unexpected_commands": [
+        "python -m unittest discover"
+      ]
+    },
+    {
+      "id": "go-tooling",
+      "language": "go",
+      "target": "pkg/worker.go",
+      "files": {
+        "go.mod": "module example.com/test\n\ngo 1.22\n",
+        ".golangci.yml": "run: {}\n",
+        "staticcheck.conf": "",
+        "pkg/worker.go": "package pkg\n",
+        "pkg/worker_test.go": "package pkg\n"
+      },
+      "expected_signals": [
+        "go target detected",
+        "go.mod found",
+        "go test files detected"
+      ],
+      "expected_commands": [
+        "go test ./... -v",
+        "go vet ./...",
+        "go build ./...",
+        "go test -race ./...",
+        "golangci-lint run",
+        "staticcheck ./..."
+      ]
+    },
+    {
+      "id": "vue-pnpm-tooling",
+      "language": "vue",
+      "target": "src/App.vue",
+      "files": {
+        "pnpm-lock.yaml": "lockfileVersion: 9.0\n",
+        "package.json": "{\n  \"packageManager\": \"pnpm@9.0.0\",\n  \"devDependencies\": {\n    \"typescript\": \"^5.5.0\",\n    \"vue-tsc\": \"^2.0.0\",\n    \"vitest\": \"^2.0.0\",\n    \"@playwright/test\": \"^1.50.0\",\n    \"eslint\": \"^9.0.0\"\n  },\n  \"scripts\": {\n    \"lint\": \"eslint .\"\n  }\n}\n",
+        "tsconfig.json": "{}\n",
+        "vitest.config.ts": "export default {}\n",
+        "playwright.config.ts": "export default {}\n",
+        "src/App.vue": "<template><div /></template>\n"
+      },
+      "expected_signals": [
+        "package.json found at .",
+        "pnpm package manager inferred"
+      ],
+      "expected_commands": [
+        "pnpm run lint",
+        "pnpm exec vue-tsc --noEmit",
+        "pnpm exec vitest run",
+        "pnpm exec playwright test"
+      ],
+      "expected_cannot_infer": [
+        "No package test script was found in the nearest package.json."
+      ]
+    }
+  ]
+}
+

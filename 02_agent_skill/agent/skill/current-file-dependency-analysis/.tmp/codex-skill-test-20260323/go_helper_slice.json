@@ -1,0 +1,118 @@
+{
+  "schema_version": "4.0",
+  "meta": {
+    "target_file": "src/app/shared/gohelper/gohelper.go",
+    "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+    "stack_family": "go",
+    "analysis_mode": "extended",
+    "payload_level": "L2",
+    "scope_note": "仅表示可证据回溯的依赖关系，不包含改动建议。"
+  },
+  "reading_guide": {
+    "how_to_read": "先看 confirmed_dependencies，再看 candidate_dependencies，最后看 blind_spots。",
+    "confidence_rule": "confirmed 可作为事实；candidate 仅作线索。",
+    "evidence_rule": "每条关系应提供 evidence_ref 以便回溯。"
+  },
+  "interpretation_note": "本结果是面向当前目标文件的依赖事实说明。confirmed_dependencies 为高置信且有证据的关系；candidate_dependencies 为未完全确认线索，不应作为确定事实。若候选或盲区影响当前任务，请请求更高层级明细（L2/L3）。",
+  "anchor": {
+    "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+    "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/shared/gohelper/gohelper.go",
+    "repo_relative_path": "src/app/shared/gohelper/gohelper.go",
+    "symbol": "",
+    "selection_range": "",
+    "language": "go",
+    "role_hint": "source"
+  },
+  "confirmed_dependencies": {
+    "direct_outbound": [],
+    "direct_inbound": [],
+    "config_links": []
+  },
+  "candidate_dependencies": [
+    {
+      "from": "src/app/shared/gohelper/gohelper.go",
+      "to": "external:strings",
+      "direction": "outbound",
+      "edge_kind": "import",
+      "symbol": "",
+      "evidence_ref": "src/app/shared/gohelper/gohelper.go:3",
+      "confidence": "medium",
+      "resolution": "resolved"
+    },
+    {
+      "from": "tmp/test_report_v3.json",
+      "to": "src/app/shared/gohelper/gohelper.go",
+      "direction": "inbound",
+      "edge_kind": "test",
+      "symbol": "",
+      "evidence_ref": "tmp/test_report_v3.json:1108",
+      "confidence": "low",
+      "resolution": "resolved"
+    },
+    {
+      "from": "tmp/test_report_v3.json",
+      "to": "src/app/shared/gohelper/gohelper.go",
+      "direction": "inbound",
+      "edge_kind": "test",
+      "symbol": "",
+      "evidence_ref": "tmp/test_report_v3.json:1795",
+      "confidence": "low",
+      "resolution": "resolved"
+    },
+    {
+      "from": "src/app/shared/gohelper/gohelper.go",
+      "to": "src/app/shared/gohelper/gohelper.go",
+      "direction": "outbound",
+      "edge_kind": "symbol",
+      "relation_type": "call",
+      "symbol_from": "NormalizeSKU",
+      "symbol_to": "TrimSpace",
+      "evidence_ref": "src/app/shared/gohelper/gohelper.go:6",
+      "confidence": "low",
+      "resolution": "resolved"
+    }
+  ],
+  "unresolved_edges": [],
+  "blind_spots": [
+    "Go imports packages, so edges are package-level rather than file-level.",
+    "Context links are search-based and may miss framework-specific runtime wiring.",
+    "Go interface method set dispatch is approximated at static level.",
+    "Go build tags that change active files are not handled."
+  ],
+  "relation_summary": {
+    "confirmed_count": 0,
+    "candidate_count": 4,
+    "outbound_count": 0,
+    "inbound_count": 0,
+    "config_link_count": 0,
+    "unresolved_count": 0
+  },
+  "budget_meta": {
+    "token_estimate": 765,
+    "max_token_estimate": 3000,
+    "truncated": false,
+    "next_level_available": true,
+    "budget_note": "如需更多细节，请拉取 L2/L3 或 deep index，不在当前窗口展开。"
+  },
+  "pipeline_status": {
+    "cycle_detection": "success",
+    "impact_estimation": "success",
+    "build_integration": "success",
+    "overall": "success"
+  },
+  "dependency_cycles": [],
+  "change_impact": {
+    "anchor": "src/app/shared/gohelper/gohelper.go",
+    "impact_summary": {
+      "total_impacted": 0,
+      "direct_consumers": 0,
+      "indirect_consumers": 0,
+      "max_depth_reached": 0,
+      "depth_limit": 3,
+      "depth_limited": false
+    },
+    "high_risk_consumers": [],
+    "all_impacted": []
+  },
+  "build_targets": []
+}

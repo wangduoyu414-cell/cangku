@@ -1,0 +1,12 @@
+skill_name: multilingual-risk-triage
+mode: model-upgrade
+request_summary: After a stronger model upgrade, simplify the multilingual risk triage
+  skill without weakening audit, rollback, or baseline rules.
+created_at: '2026-03-27'
+created_files:
+- request.md
+- skill-brief.md
+- iteration-backlog.md
+- baseline-comparison.md
+- experience-ledger.yaml
+- model-upgrade-note.md

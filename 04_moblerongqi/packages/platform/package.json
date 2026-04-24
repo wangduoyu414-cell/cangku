@@ -1,0 +1,15 @@
+{
+  "name": "@creator-os/platform",
+  "version": "0.1.0",
+  "description": "CreatorOS platform adapters - Douyin, Xiaohongshu, creator economy",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@creator-os/core": "*"
+  }
+}

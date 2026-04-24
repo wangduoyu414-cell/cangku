@@ -1,0 +1,25 @@
+decision:
+  strategy: merge
+  target_area: "skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds"
+  repo_shape: mixed
+  artifact_type: library-module
+  stack: python
+  files:
+    - path: "skill-evals/plan-code-file-layout-lab/mixed/shared-python/src/app/shared/refunds/hold_reason_labels.py"
+      role: "merged hold reason helper"
+      responsibility: "Own the shared refund hold reason vocabulary in one place: alias normalization, canonical reason shaping, display labels, and the fallback label builder."
+      reason: "This slice is one pure shared-library concern with no external IO, no separate failure mode, and no stable second public surface. Splitting aliases from labels only creates a thin local hop."
+  keep_inline:
+    - "Keep the alias table and canonicalize_hold_reason helper inside the merged module, because they only serve the hold reason labeling flow in this slice."
+    - "Keep DISPLAY_LABELS and the title-case fallback in the same file, because the vocabulary, normalization, and display policy change together."
+  avoid:
+    - "Do not keep or add a standalone hold_reason_aliases.py module unless canonicalization gains a second real consumer or an independent test surface."
+    - "Do not introduce generic shared/utils/common refunds helpers for this one vocabulary mapping."
+    - "Do not add a pass-through wrapper layer around the merged helper."
+  why_not_fewer: "Fewer than one dedicated shared module would push hold reason normalization into callers and duplicate the same refund vocabulary rules across API, batch, and back-office flows."
+  why_not_more: "More files would mostly add ceremony. A common hold reason bug currently reads as one normalization-and-labeling flow, so splitting it across tiny modules hurts traceability without exposing a real boundary. The nearby partner export helper is different because its row shape is a stable format surface and the CSV codec is a distinct adapter boundary."
+  risks:
+    - "If canonicalize_hold_reason already has independent downstream imports, merging into hold_reason_labels.py keeps cohesion but leaves the filename narrower than the full surface."
+    - "If hold reason normalization later becomes a stable public API separate from label rendering, a neutral merged filename such as hold_reasons.py may be a better follow-up than reintroducing tiny modules."
+    - "Confidence is limited by the provided slice and repository docs; unobserved imports could raise migration cost."
+  confidence: medium

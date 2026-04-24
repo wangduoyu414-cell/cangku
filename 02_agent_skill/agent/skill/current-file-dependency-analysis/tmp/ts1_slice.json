@@ -1,0 +1,68 @@
+{
+  "schema_version": "4.3",
+  "target": {
+    "file": "src/app/services/orderApi.ts",
+    "repo_root": "C:/Users/admin/CodexManager-SharedKey/codex-home/skills/current-file-dependency-analysis",
+    "stack_family": "typescript",
+    "analysis_mode": "strict",
+    "payload_level": "L1.5",
+    "graph_scope": "anchor_local_confirmed_file_edges"
+  },
+  "hard_facts": {
+    "file_edges": {
+      "outbound": [
+        {
+          "from": "src/app/services/orderApi.ts",
+          "to": "src/app/domain/order-service.ts",
+          "direction": "outbound",
+          "edge_kind": "import",
+          "evidence_ref": "src/app/services/orderApi.ts:1",
+          "confidence": "high",
+          "resolution": "resolved"
+        }
+      ]
+    }
+  },
+  "supporting_signals": {
+    "symbol_relations": [
+      {
+        "from": "src/app/services/orderApi.ts",
+        "to": "src/app/services/orderApi.ts",
+        "direction": "outbound",
+        "edge_kind": "symbol",
+        "relation_type": "call",
+        "symbol_from": "module",
+        "symbol_to": "buildOrderKey",
+        "evidence_ref": "src/app/services/orderApi.ts:4",
+        "confidence": "low",
+        "resolution": "resolved"
+      }
+    ],
+    "blind_spots": [
+      "Dynamic imports only resolve when the specifier is a string literal.",
+      "Context links are search-based and may miss framework-specific runtime wiring.",
+      "TypeScript/Vue runtime reactivity side effects are not fully resolved.",
+      "Framework-specific dependency injection containers are not tracked."
+    ]
+  },
+  "estimated_impact": {
+    "graph_scope": "repo_code_graph_plus_confirmed_context",
+    "expansion_status": "repo_scan_success",
+    "summary": {
+      "total_impacted": 0,
+      "direct_consumers": 0,
+      "indirect_consumers": 0,
+      "max_depth_reached": 0,
+      "depth_limit": 3,
+      "depth_limited": false
+    },
+    "impact_confidence": "high",
+    "limitations": [
+      "Direct impact uses confirmed file-level edges and any confirmed config/build links already present in the slice.",
+      "Transitive impact uses repository-wide confirmed code edges to extend beyond the anchor-local slice when the stack-specific scanner is available."
+    ]
+  },
+  "pipeline_status": {
+    "overall": "success"
+  }
+}

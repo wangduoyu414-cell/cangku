@@ -1,0 +1,31 @@
+decision:
+  strategy: split
+  target_area: "services/etl-pipeline/src"
+  repo_shape: layer-first
+  artifact_type: data-pipeline-step
+  stack: typescript-javascript
+  files:
+    - path: "services/etl-pipeline/src/jobs/publishCustomerHealth.ts"
+      role: "step-entrypoint"
+      responsibility: "Own orchestration for fetching rows, invoking the health snapshot transform, and triggering the sink."
+      reason: "The job file should make the end-to-end pipeline flow visible in one place."
+    - path: "services/etl-pipeline/src/transforms/buildCustomerHealthSnapshot.ts"
+      role: "transform"
+      responsibility: "Convert warehouse rows into health snapshots and compute segment labels."
+      reason: "Pure scoring logic has a separate test surface from job orchestration and sink behavior."
+    - path: "services/etl-pipeline/src/sinks/writeCustomerHealthSnapshot.ts"
+      role: "sink-adapter"
+      responsibility: "Persist customer health snapshots and isolate sink-specific write failures."
+      reason: "The sink boundary changes for different reasons than the transformation logic."
+  keep_inline:
+    - "A small score clamp helper should stay inside the transform."
+    - "Job-local config types should stay with the step until another pipeline reuses them."
+  avoid:
+    - "helpers.ts"
+    - "formatters.ts"
+    - "index.ts"
+  why_not_fewer: "Keeping orchestration, scoring, and sink writes in one file would mix pure transformation logic with side effects."
+  why_not_more: "Splitting the extract side further would add extra files without adding a clearer boundary in this layer-first area."
+  risks:
+    - "If multiple jobs start sharing the same health score logic, the transform may need a more reusable module boundary."
+  confidence: high

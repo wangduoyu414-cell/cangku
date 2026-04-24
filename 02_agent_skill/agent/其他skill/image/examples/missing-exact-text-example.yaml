@@ -1,0 +1,4 @@
+id: "missing-exact-text-poster"
+user_request: |
+  我要做一张电商活动页头图海报，主体是新品咖啡豆，整体要高级、克制，还要有标题和副标题，但我现在还没确定最终文案。请先按这个目标帮我整理适合 gpt-image-2 的输出。
+notes: "代表 text-heavy poster（文本密集海报） 但缺少 exact_text（精确文案） 的请求。重点验证技能会进入 Missing-Fields（缺失字段） 输出，而不是硬写半成品提示词。"

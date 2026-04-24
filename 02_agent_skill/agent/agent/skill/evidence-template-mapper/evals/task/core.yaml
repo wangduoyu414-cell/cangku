@@ -1,0 +1,34 @@
+suite_id: "evidence-template-mapper-task-core"
+cases:
+  - id: "standard-generate-alignment-plan"
+    goal: "标准路径应生成证据对齐方案"
+    input:
+      root_doc: "D:\\diypc\\docs\\核心规则表格化改造方案.md"
+      assets:
+        - "internal/core/evidence"
+        - "internal/core/render"
+    expected:
+      output_sections:
+        - "evidence_sources"
+        - "counterfactual_bindings"
+        - "style_tier_bindings"
+    type: "standard"
+    notes: "标准输出形态来自现有脚本和样例。"
+  - id: "boundary-missing-assets"
+    goal: "缺少项目资产时不能伪造完整方案"
+    input:
+      root_doc: "D:\\diypc\\docs\\核心规则表格化改造方案.md"
+      assets: []
+    expected:
+      must_stop_for_missing_inputs: true
+    type: "boundary"
+    notes: "边界条件是缺少证据相关资产引用。"
+  - id: "error-prone-no-evidence-source"
+    goal: "无证据来源时不得生成解释"
+    input:
+      root_doc: ""
+      assets: []
+    expected:
+      forbid_generated_explanation_without_sources: true
+    type: "error-prone"
+    notes: "这是当前稳定红线。"

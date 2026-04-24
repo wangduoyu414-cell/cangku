@@ -1,0 +1,28 @@
+decision:
+  strategy: "keep"
+  target_area: "services/python-order-api/features/refund-status"
+  repo_shape: "feature-first"
+  artifact_type: "service-endpoint"
+  stack: "python"
+  files:
+    - path: "services/python-order-api/features/refund-status/status_endpoint.py"
+      role: "endpoint"
+      responsibility: "Own payload parsing and validation, evaluate the local refund-window preview rule, and shape the response for this feature slice in one readable module."
+      reason: "This slice has one in-process change reason and no persistence or network adapter seam; splitting would add a handler/service hop without isolating a real failure boundary."
+  keep_inline:
+    - "RefundStatusRequest and RefundStatusResponse data shapes"
+    - "_validate_request field checks"
+    - "eligibility, reason, and restock-fee calculation"
+    - "HTTP-style status/body response shaping for this one endpoint"
+  avoid:
+    - "services/python-order-api/features/refund-status/status_handler.py"
+    - "services/python-order-api/features/refund-status/status_service.py"
+    - "services/python-order-api/features/refund-status/status_mapper.py"
+    - "shared/utils/refund_status.py"
+  why_not_fewer: "The feature already fits in one cohesive production file; collapsing it into a shared helper or package-level catchall would hide the refund-status seam and mix refund-specific request and response rules with unrelated code."
+  why_not_more: "A handler/service split would mostly imitate the nearby shipments feature for the wrong reason. Shipments earns multiple files because tracking_handler.py hands off to a real external IO boundary in tracking_gateway.py. Refund-status only does local validation, local refund-window policy, and response shaping, which change together and stay easier to debug in one file. Nearby pure-local endpoints in this service also follow the single-module pattern."
+  risks:
+    - "Broader refund architecture docs steer new refund work toward layered src/app/refunds modules, so a later migration may move this logic out of services/python-order-api/features/refund-status even if the short-term boundary stays one file."
+    - "If this endpoint gains database access, carrier or payment client calls, or a second real consumer for the eligibility rule, split at that real IO or reuse seam then rather than pre-creating a local service wrapper now."
+    - "The current file mixes transport-style shaping with policy logic; that is acceptable for this small local slice, but it would not be the final boundary if the documented refund layering rollout starts applying to this service."
+  confidence: "medium"

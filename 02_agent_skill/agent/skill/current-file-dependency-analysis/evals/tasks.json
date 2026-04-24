@@ -1,0 +1,23 @@
+[
+  {
+    "name": "typescript-current-file-context",
+    "prompt": "Use $current-file-dependency-analysis to explain how the current TypeScript file depends on the repo and what depends on it."
+  },
+  {
+    "name": "python-current-file-context",
+    "prompt": "Use $current-file-dependency-analysis to map the current Python file's inbound, outbound, and config-related dependencies."
+  },
+  {
+    "name": "go-current-file-context",
+    "prompt": "Use $current-file-dependency-analysis to explain the current Go file's package dependencies and likely impact surface."
+  },
+  {
+    "name": "nodejs-current-file-context",
+    "prompt": "Use $current-file-dependency-analysis to analyze how the current JavaScript Node.js file relates to local modules, tests, and configs."
+  },
+  {
+    "name": "vue-current-file-context",
+    "prompt": "Use $current-file-dependency-analysis to explain a Vue SFC file's imports, symbol-level calls, and likely test impact."
+  }
+]
+

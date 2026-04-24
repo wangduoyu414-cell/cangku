@@ -1,0 +1,24 @@
+decision:
+  strategy: merge
+  target_area: "scripts/ops"
+  repo_shape: layer-first
+  artifact_type: cli-command
+  stack: python
+  files:
+    - path: "scripts/ops/reconcile_refund_backlog.py"
+      role: "command entrypoint + local network edge"
+      responsibility: "Own the operator-facing flow for refund backlog reconciliation, including CLI handling, orchestration, and the small single-consumer request/response logic that currently sits in the helper."
+      reason: "The target area is a top-level ops script layer with mostly single-file commands, and the request describes refund_backlog_client.py as a tiny helper rather than a heavy standalone boundary."
+  keep_inline:
+    - "One-off request construction, response normalization, and small error mapping that only serve reconcile_refund_backlog.py."
+    - "Local types, constants, and validation rules that do not have a second real consumer in scripts/ops."
+  avoid:
+    - "Keeping scripts/ops/refund_backlog_client.py as a thin wrapper if it only forwards one command's network call."
+    - "Creating a generic shared ops client module before another command proves real reuse."
+  why_not_fewer: "The refund backlog workflow still needs its own command file in scripts/ops; folding it into another ops script or a generic shared command would blur separate operator tasks and failure modes."
+  why_not_more: "A second file is worth it when the external boundary is materially heavier, which the request explicitly says about sync_partner_catalog.py. For the refund backlog slice, a tiny client helper would mostly add cross-file ping-pong and hide the main flow without creating a real test or reuse boundary."
+  risks:
+    - "The visible target files are placeholder fixtures, so this plan relies on repository shape and the request's stated tiny-helper-versus-heavier-boundary distinction rather than concrete implementation content."
+    - "If refund_backlog_client.py actually owns retry/backoff, auth/session setup, pagination, or schema translation that another ops command already reuses, keeping it separate would become the stronger boundary."
+    - "No explicit target-area baseline doc was visible in the repository snapshot; if an unseen migration rule requires standalone client modules for ops scripts, that would override this merge recommendation."
+  confidence: medium

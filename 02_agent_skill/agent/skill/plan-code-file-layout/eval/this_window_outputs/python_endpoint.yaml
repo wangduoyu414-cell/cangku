@@ -1,0 +1,27 @@
+decision:
+  strategy: split
+  target_area: "services/python-order-api/features/refunds"
+  repo_shape: feature-first
+  artifact_type: service-endpoint
+  stack: python
+  files:
+    - path: "services/python-order-api/features/refunds/quote_handler.py"
+      role: "handler"
+      responsibility: "Handle request parsing, input validation, response shaping, and the main refund quote flow."
+      reason: "This keeps the endpoint flow readable while separating it from transport-specific network logic."
+    - path: "services/python-order-api/features/refunds/pricing_gateway.py"
+      role: "gateway"
+      responsibility: "Call the remote pricing service and map pricing API failures into feature-local data."
+      reason: "The external request is a distinct side-effect boundary with its own retry and error behavior."
+  keep_inline:
+    - "Request and response dataclasses should stay local to this endpoint for now."
+    - "One-off input validation for shipmentId, orderId, and restockFee should stay inline."
+  avoid:
+    - "schemas.py"
+    - "service.py"
+    - "utils.py"
+  why_not_fewer: "Leaving validation, database work, and remote pricing calls in one file would mix separate failure modes and make endpoint debugging harder."
+  why_not_more: "Adding a repository or extra service layer now would mostly create pass-through ceremony inside one small feature with no second consumer."
+  risks:
+    - "If the insert and lookup logic grow beyond this small slice, a feature-local store file may become reasonable later."
+  confidence: high

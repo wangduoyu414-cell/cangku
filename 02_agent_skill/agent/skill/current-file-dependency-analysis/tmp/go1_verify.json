@@ -1,0 +1,27 @@
+{
+  "status": "pass",
+  "shape_status": "pass",
+  "verification_scope": "minimized_schema_and_evidence_coverage_only",
+  "capability_status": "unknown",
+  "capability_notes": [
+    "This verifier checks the minimized schema shape and evidence coverage only.",
+    "Use dedicated evals to measure recall, symbol retention, build/config promotion, and impact quality."
+  ],
+  "missing_sections": [],
+  "deprecated_fields_present": [],
+  "missing_evidence": [],
+  "low_confidence_claims": [
+    {
+      "from": "src/app/entrypoints/main.go",
+      "to": "src/app/entrypoints/main.go",
+      "direction": "outbound",
+      "edge_kind": "symbol",
+      "relation_type": "call",
+      "symbol_from": "main",
+      "symbol_to": "NormalizeSKU",
+      "evidence_ref": "src/app/entrypoints/main.go:10",
+      "confidence": "low",
+      "resolution": "resolved"
+    }
+  ]
+}

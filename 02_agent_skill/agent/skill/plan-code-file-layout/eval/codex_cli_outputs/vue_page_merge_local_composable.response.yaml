@@ -1,0 +1,27 @@
+decision:
+  strategy: merge
+  target_area: packages/admin-portal/src/pages/refunds
+  repo_shape: layer-first
+  artifact_type: ui-component
+  stack: vue
+  files:
+    - path: packages/admin-portal/src/pages/refunds/RefundReviewPage.vue
+      role: page component
+      responsibility: Render the refund review queue and own the page-local filter refs, computed badge text, reset action, and local loading/data orchestration.
+      reason: The filter state is single-page, synchronous, and tightly coupled to the template, and nearby page patterns extract only reusable UI or real IO boundaries.
+  keep_inline:
+    - reviewer ref
+    - status ref
+    - onlyEscalated ref
+    - filterBadge computed label
+    - resetFilters helper
+    - RefundReviewRow type
+  avoid:
+    - packages/admin-portal/src/composables/useRefundReviewFilters.ts as a page-only wrapper for local refs and computed labels
+    - extra page-to-composable indirection for state with no reuse, side effects, or separate test surface
+  why_not_fewer: One Vue page file is already the minimum meaningful boundary here, and the filter state belongs to that same visible page boundary rather than a separate local abstraction.
+  why_not_more: Keeping a separate composable adds cross-file movement without adding reuse, async isolation, side-effect separation, or an independent contract worth testing on its own.
+  risks:
+    - If these filters later sync with route query params, drive remote fetching, or get reused by other refund pages, extracting a composable again may become justified.
+    - Baseline docs define backend layering under src/app but do not prescribe a stronger frontend boundary for packages/admin-portal, so this recommendation relies on local Vue conventions.
+  confidence: high

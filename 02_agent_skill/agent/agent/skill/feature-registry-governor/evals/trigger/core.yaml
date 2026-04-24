@@ -1,0 +1,26 @@
+suite_id: "feature-registry-governor-trigger-core"
+cases:
+  - id: "positive-registry-governance-plan"
+    goal: "特征注册表治理请求应触发"
+    input: "请输出规则包与 feature registry 的版本兼容约束和发布影响。"
+    expected: true
+    type: "positive"
+    notes: "典型注册表治理请求。"
+  - id: "positive-registered-feature-constraints"
+    goal: "未登记特征阻断请求应触发"
+    input: "把未登记特征不得进入正式规则包的约束和注册表版本绑定成正式方案。"
+    expected: true
+    type: "positive"
+    notes: "明确指向注册表版本与阻断规则。"
+  - id: "negative-runtime-feature-logic"
+    goal: "运行时特征逻辑不应触发"
+    input: "请直接实现运行时特征计算逻辑。"
+    expected: false
+    type: "negative"
+    notes: "这是运行时逻辑请求，不是治理请求。"
+  - id: "negative-generic-summary"
+    goal: "泛化总结请求不应触发"
+    input: "帮我总结一下 feature registry 文档。"
+    expected: false
+    type: "negative"
+    notes: "只有总结，不是治理方案。"

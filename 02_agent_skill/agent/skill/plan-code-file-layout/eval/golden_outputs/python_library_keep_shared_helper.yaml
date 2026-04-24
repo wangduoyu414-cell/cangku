@@ -1,0 +1,23 @@
+decision:
+  strategy: keep
+  target_area: "src/app/shared/utils"
+  repo_shape: mixed
+  artifact_type: library-module
+  stack: python
+  files:
+    - path: "src/app/shared/utils/refund_reason.py"
+      role: "shared-helper"
+      responsibility: "Own refund reason normalization and display labeling for the small shared refund reason surface."
+      reason: "This shared utility has a cohesive public surface used from two consumers without enough API weight to justify more files."
+  keep_inline:
+    - "The reason alias map."
+    - "The fallback display label helper."
+  avoid:
+    - "labels.py"
+    - "constants.py"
+    - "parser.py"
+  why_not_fewer: "One shared helper file is already the smallest useful boundary for this small refund reason surface."
+  why_not_more: "Splitting aliases, parser logic, and labels into separate files would overfit a tiny shared utility and add local indirection before the API surface is large enough."
+  risks:
+    - "If refund reasons later gain platform-specific adapters or a much larger public API, another pass on the module boundary may become worthwhile."
+  confidence: high

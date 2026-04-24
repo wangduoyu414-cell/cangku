@@ -1,0 +1,31 @@
+decision:
+  strategy: split
+  target_area: "services/python-refund-jobs/jobs"
+  repo_shape: layer-first
+  artifact_type: data-pipeline-step
+  stack: python
+  files:
+    - path: "services/python-refund-jobs/jobs/sync_partner_refunds.py"
+      role: "job"
+      responsibility: "Own the visible sync flow, counters, and orchestration for partner refund synchronization."
+      reason: "The main sync path should stay readable without hiding remote fetch or storage details."
+    - path: "services/python-refund-jobs/jobs/partner_refund_source.py"
+      role: "source-adapter"
+      responsibility: "Fetch pending refunds from the partner API and map transport failures for the sync job."
+      reason: "Remote source access is a separate side-effect boundary with its own failure behavior."
+    - path: "services/python-refund-jobs/jobs/refund_sync_store.py"
+      role: "store"
+      responsibility: "Persist normalized refund rows and own SQL details for sync writes."
+      reason: "Database writes are a distinct sink boundary from job orchestration and partner fetches."
+  keep_inline:
+    - "The sync counters."
+    - "The small row normalization helper."
+  avoid:
+    - "utils.py"
+    - "transform.py"
+    - "job_types.py"
+  why_not_fewer: "Keeping partner fetches and database writes in the same job file would blur source and sink failures and make sync debugging harder."
+  why_not_more: "Extra transform or type files would over-split a job whose meaningful boundaries are orchestration, partner IO, and persistence."
+  risks:
+    - "If row normalization later becomes shared with another job, a shared helper may become justified."
+  confidence: high

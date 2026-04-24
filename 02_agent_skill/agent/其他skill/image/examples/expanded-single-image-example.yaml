@@ -1,0 +1,4 @@
+id: "expanded-instagram-cover"
+user_request: |
+  我要给一个收纳改造短视频做 Instagram reel 封面。画面要能在手机缩略图里一眼看出“改造前后差异”，标题区要安全，不要被裁切，整体更像创作者内容，不要像投流广告。请不要给我默认短版，直接给我完整提示词包，包含风险和迭代补丁。
+notes: "代表显式请求 expanded（展开） 的单图输出。重点验证技能会回到完整 Prompt Package（提示词包），而不是继续给默认 model-ready（模型可用） 结果。"

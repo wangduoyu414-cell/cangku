@@ -1,0 +1,27 @@
+decision:
+  strategy: split
+  target_area: "src/app/shared/utils"
+  repo_shape: mixed
+  artifact_type: library-module
+  stack: python
+  files:
+    - path: "src/app/shared/utils/refund_export_format.py"
+      role: "public-surface"
+      responsibility: "Own the shared RefundExportRow type and the public export-format construction surface used by jobs and ops tools."
+      reason: "The stable shared API should stay easy to scan without burying CSV-specific details."
+    - path: "src/app/shared/utils/refund_export_csv.py"
+      role: "codec"
+      responsibility: "Own CSV encode and decode behavior for shared refund export rows."
+      reason: "CSV details are now a real internal codec boundary separate from the shared public surface."
+  keep_inline:
+    - "The RefundExportRow dataclass."
+    - "The small reason normalizer."
+  avoid:
+    - "constants.py"
+    - "types.py"
+    - "shared_export_utils.py"
+  why_not_fewer: "Keeping the shared export row surface and CSV encode or decode details in one file now makes the module harder to scan for both background jobs and ops tooling."
+  why_not_more: "The right split is the public format surface plus one CSV codec file; additional constants or helper files would mostly add ceremony around one shared export module."
+  risks:
+    - "If more wire formats appear later, another pass may be needed to keep serialization boundaries clear."
+  confidence: high

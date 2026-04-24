@@ -1,0 +1,33 @@
+decision:
+  strategy: split
+  target_area: "src/app/services/legacy_refunds"
+  repo_shape: mixed
+  artifact_type: data-pipeline-step
+  stack: python
+  files:
+    - path: "src/app/services/legacy_refunds/refund_sync.py"
+      role: "step-entrypoint"
+      responsibility: "Own refund sync orchestration, batch-size handling, and the visible main flow for the legacy pull job."
+      reason: "The main extract-and-store flow should remain readable in one entry file."
+    - path: "src/app/services/legacy_refunds/refund_partner_gateway.py"
+      role: "source-adapter"
+      responsibility: "Fetch pending refunds from the partner API and isolate remote transport failures."
+      reason: "The partner fetch is a separate source boundary with different retry and error behavior."
+    - path: "src/app/services/legacy_refunds/refund_store.py"
+      role: "sink-adapter"
+      responsibility: "Persist normalized refunds and isolate database insert or conflict-handling details."
+      reason: "Database writes are a distinct sink boundary from the partner fetch."
+  keep_inline:
+    - "The RefundRecord dataclass should stay local while it only serves this slice."
+    - "Batch-size validation and tiny normalization helpers should stay inline for now."
+  avoid:
+    - "utils.py"
+    - "service.py"
+    - "interfaces.py"
+  why_not_fewer: "Keeping remote fetches and database writes in one file would mix source and sink failures inside an already awkward legacy area."
+  why_not_more: "Adding extra mapper or validator modules now would add ceremony before the larger directory-placement issue is resolved."
+  risks:
+    - "This target area conflicts with the documented layer model in the repository because src/app/services is not a documented layer."
+    - "The right long-term move may be relocation into documented layer directories rather than only splitting files in place."
+    - "Because the local directory conflicts with the documented layer guidance, confidence stays low."
+  confidence: low

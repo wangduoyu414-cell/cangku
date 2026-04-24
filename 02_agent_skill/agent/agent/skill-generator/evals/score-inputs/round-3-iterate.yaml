@@ -1,0 +1,14 @@
+skill_name: multilingual-risk-triage-v2
+scores:
+  scope_and_signal: {score: 4, reason: "迭代后边界保持稳定。"}
+  knowledge_packaging: {score: 3, reason: "跨文件失败仍需更多样例。"}
+  instruction_to_action: {score: 4, reason: "修复方向清楚。"}
+  limits_and_interfaces: {score: 4, reason: "接口与约束不乱。"}
+  learning_and_lift: {score: 3, reason: "真实增益仍需更多证据。"}
+hard_checks:
+  has_non_scope: true
+  has_output_contract: true
+  has_trigger_eval: true
+  has_quality_eval: true
+  has_baseline_plan: true
+  has_simplification_pass: true

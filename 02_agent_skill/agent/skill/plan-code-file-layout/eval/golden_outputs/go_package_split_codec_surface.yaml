@@ -1,0 +1,27 @@
+decision:
+  strategy: split
+  target_area: "packages/go/refundexports"
+  repo_shape: package-first
+  artifact_type: library-module
+  stack: go
+  files:
+    - path: "packages/go/refundexports/export.go"
+      role: "package-surface"
+      responsibility: "Own the public export row type and the small public package surface for building export rows."
+      reason: "The package surface should stay easy to scan without burying CSV codec details."
+    - path: "packages/go/refundexports/csv_codec.go"
+      role: "codec"
+      responsibility: "Own CSV encode and decode behavior for refund export rows while staying in the same package."
+      reason: "The csv-codec seam is a real internal boundary that can be separated without creating a new package."
+  keep_inline:
+    - "The ExportRow struct."
+    - "The small reason normalizer."
+  avoid:
+    - "helpers.go"
+    - "interfaces.go"
+    - "A new subpackage."
+  why_not_fewer: "Keeping the public package surface and CSV codec details in one file makes the package harder to scan and hides the codec boundary."
+  why_not_more: "This should still stay in the same package because package cohesion matters more here than introducing extra files or a new subpackage beyond the codec details."
+  risks:
+    - "If more wire formats appear later, another package pass may be needed to keep codec boundaries clear."
+  confidence: high

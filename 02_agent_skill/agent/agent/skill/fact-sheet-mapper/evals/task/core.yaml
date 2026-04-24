@@ -1,0 +1,36 @@
+suite_id: "fact-sheet-mapper-task-core"
+cases:
+  - id: "standard-generate-fact-plan"
+    goal: "标准路径应生成事实资产方案"
+    input:
+      workbook: "D:\\diypc\\电脑配件参数采集规划.xlsx"
+      field_dict: "D:\\diypc\\assets\\compiled\\schemas\\field_dictionary.json"
+      artifact_inputs: ["fact workbook", "field dictionary"]
+    expected:
+      output_sections:
+        - "source_workbooks"
+        - "fact_version_binding"
+        - "field_dictionary_summary"
+        - "field_mapping_notes"
+    type: "standard"
+    notes: "标准输出形态来自现有脚本和样例。"
+  - id: "boundary-missing-field-dict"
+    goal: "缺少字段字典时不能伪造完整方案"
+    input:
+      workbook: "D:\\diypc\\电脑配件参数采集规划.xlsx"
+      field_dict: ""
+      artifact_inputs: []
+    expected:
+      must_stop_for_missing_inputs: true
+    type: "boundary"
+    notes: "边界条件是缺少字段字典或输入资产。"
+  - id: "error-prone-excel-as-runtime-truth"
+    goal: "不得把 Excel 直接当作运行时真值"
+    input:
+      workbook: "D:\\diypc\\电脑配件参数采集规划.xlsx"
+      field_dict: "D:\\diypc\\assets\\compiled\\schemas\\field_dictionary.json"
+      runtime_truth_request: true
+    expected:
+      forbid_excel_as_runtime_truth: true
+    type: "error-prone"
+    notes: "这是当前稳定红线。"

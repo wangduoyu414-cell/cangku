@@ -1,0 +1,18 @@
+suite_id: "rule-workbook-designer-regression-core"
+cases:
+  - id: "preserve-workbook-tabs"
+    goal: "持续保持工作表结构输出"
+    input:
+      output_shape: "rule_asset_plan"
+    expected:
+      requires_workbook_tabs: true
+    type: "regression"
+    notes: "保护工作表结构不退化。"
+  - id: "preserve-no-excel-runtime-read"
+    goal: "持续保持 Excel 不直接进入 runtime"
+    input:
+      runtime_excel_boundary: true
+    expected:
+      blocks_runtime_excel_read: true
+    type: "regression"
+    notes: "保护运行时边界。"

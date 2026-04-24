@@ -1,0 +1,34 @@
+decision:
+  strategy: split
+  target_area: services/node-refund-api/src/features/refund-webhooks
+  repo_shape: feature-first
+  artifact_type: service-endpoint
+  stack: typescript-javascript
+  files:
+    - path: services/node-refund-api/src/features/refund-webhooks/refundWebhookRoute.ts
+      role: route
+      responsibility: Own webhook ingress for this feature by reading the signature header, rejecting invalid requests, parsing the payload, coordinating the partner lookup and persistence call, and shaping the 401 and 202 responses.
+      reason: Keeps the endpoint flow visible in the same feature-local route style as nearby files without leaving network and SQL details inside the route.
+    - path: services/node-refund-api/src/features/refund-webhooks/refundWebhookPartnerClient.ts
+      role: external-client
+      responsibility: Fetch partner refund details by refundId and normalize the partner response shape needed by the route.
+      reason: The partner lookup is a distinct outbound IO boundary with its own failure handling and contract drift.
+    - path: services/node-refund-api/src/features/refund-webhooks/refundWebhookEventRepository.ts
+      role: persistence-adapter
+      responsibility: Persist webhook event records and own the SQL plus parameter mapping for writes to refund_webhook_events.
+      reason: Database writes are a separate IO boundary and should have one traceable home instead of living inside the route.
+  keep_inline:
+    - RefundWebhookPayload parsing and lightweight body validation in refundWebhookRoute.ts
+    - readSignature and verifySignature helpers in refundWebhookRoute.ts
+    - Local adapter-only types such as HeadersLike, DbLike, and the partner response shape in their owning files
+  avoid:
+    - refundWebhookService.ts or refundWebhookUseCase.ts as a pass-through layer between the route and the real IO adapters
+    - refundWebhookController.ts or another wrapper file that only forwards to refundWebhookRoute.ts
+    - refundWebhookTypes.ts, refundWebhookMappers.ts, or index.ts barrel files for one-off local helpers and exports
+  why_not_fewer: Leaving everything in refundWebhookRoute.ts would keep signature gating, partner HTTP lookup, and event persistence in one file, so the endpoint would still own multiple independent failure boundaries and be harder to trace safely.
+  why_not_more: Splitting signature helpers, payload types, or response shaping into extra files would mostly add ceremony and longer jumps; the common webhook change and bug path stays readable through the route plus the two real IO edges.
+  risks:
+    - Broader repository docs describe a layered long-term refund target under src/app, but no baseline document explicitly names this TypeScript webhook slice, so this plan follows the active feature-local seam.
+    - If webhook verification grows beyond simple HMAC comparison, such as timestamp windows or replay protection, the signature logic may need its own dedicated file later.
+    - refundWebhookEventRepository.ts is justified for the current persistence boundary, but if it accumulates unrelated queries it should be split again before it turns into a catch-all data file.
+  confidence: medium

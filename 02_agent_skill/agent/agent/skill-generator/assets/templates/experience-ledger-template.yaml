@@ -1,0 +1,20 @@
+entries:
+  - id: ""
+    timestamp: ""
+    scenario: "generate|iterate|model-upgrade"
+    signal: ""
+    context: ""
+    action: ""
+    outcome: "success|failure|rework|human-handoff"
+    baseline: "without_skill|previous_skill"
+    quality_delta: ""
+    cost_delta:
+      token_estimate: ""
+      wall_clock_estimate: ""
+      tool_call_estimate: ""
+    rule_candidate: ""
+    confidence: "single-observation|repeated-observation|strong-evidence"
+    freshness: "stable|model-sensitive|tool-sensitive|policy-sensitive"
+    affected_dimension: ""
+    evidence_refs: []
+    follow_up: ""

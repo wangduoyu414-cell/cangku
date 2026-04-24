@@ -1,0 +1,4 @@
+id: "multi-image-composite-control"
+user_request: |
+  帮我整理成适合 gpt-image-2 的多图合成提示词包。图 1 是产品瓶身，图 2 是厨房台面场景，图 3 是暖调夕阳氛围参考。我要做一张品牌广告图，把图 1 的产品自然放进图 2 的场景里，整体气氛参考图 3，但不要新增品牌元素，也不要改动产品包装。
+notes: "代表 multi-image-composite（多图合成） 在 campaign-key-visual（营销主视觉） 场景下的请求。重点验证参考图角色拆分、主体保真、场景融合和风格参考不会混成同一用途。"

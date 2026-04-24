@@ -1,0 +1,11 @@
+{
+  "stack_family": "typescript",
+  "stack_id": "typescript-stack",
+  "confidence": "medium",
+  "reasons": [
+    "file extension suggests typescript"
+  ],
+  "reference_file": "references/ts-edge-rules.md",
+  "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+  "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/application/use-cases.ts"
+}

@@ -1,0 +1,57 @@
+{
+  "anchor": {
+    "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+    "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/application/use-cases.ts",
+    "repo_relative_path": "src/app/application/use-cases.ts",
+    "symbol": "",
+    "selection_range": "",
+    "language": "typescript",
+    "role_hint": "source"
+  },
+  "stack": {
+    "stack_family": "typescript",
+    "stack_id": "typescript-stack",
+    "confidence": "medium",
+    "reasons": [
+      "file extension suggests typescript"
+    ],
+    "reference_file": "references/ts-edge-rules.md",
+    "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+    "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/application/use-cases.ts"
+  },
+  "edges": [
+    {
+      "from": ".tmp/env-retest-ts-anchor.json",
+      "to": "src/app/application/use-cases.ts",
+      "direction": "inbound",
+      "edge_kind": "test",
+      "symbol": "",
+      "evidence_ref": ".tmp/env-retest-ts-anchor.json:3",
+      "confidence": "low",
+      "resolution": "resolved"
+    },
+    {
+      "from": ".tmp/env-retest-ts-anchor.json",
+      "to": "src/app/application/use-cases.ts",
+      "direction": "inbound",
+      "edge_kind": "test",
+      "symbol": "",
+      "evidence_ref": ".tmp/env-retest-ts-anchor.json:4",
+      "confidence": "low",
+      "resolution": "resolved"
+    },
+    {
+      "from": ".tmp/env-retest-ts-stack.json",
+      "to": "src/app/application/use-cases.ts",
+      "direction": "inbound",
+      "edge_kind": "test",
+      "symbol": "",
+      "evidence_ref": ".tmp/env-retest-ts-stack.json:10",
+      "confidence": "low",
+      "resolution": "resolved"
+    }
+  ],
+  "blind_spots": [
+    "Context links are search-based and may miss framework-specific runtime wiring."
+  ]
+}

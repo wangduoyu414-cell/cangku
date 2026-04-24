@@ -1,0 +1,5 @@
+skill_name: "{{skill_name}}"
+mode: "{{mode}}"
+request_summary: "{{request_summary}}"
+created_at: "{{today}}"
+created_files: []

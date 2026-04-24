@@ -1,0 +1,5 @@
+2026-04-03 01:43:31.5769-INFO v2rayN start up | v2rayN - V7.16.4 - X64 | F:\奇米Studio\梯子\ | F:\奇米Studio\梯子\v2rayN.exe | Microsoft Windows NT 10.0.22631.0
+2026-04-03 01:43:32.8533-INFO Setup Scheduled Tasks
+2026-04-03 02:44:05.6240-INFO Current_SessionEnding
+2026-04-03 02:44:05.6240-INFO AppExitAsync Begin
+2026-04-03 02:44:05.6828-INFO OnExit

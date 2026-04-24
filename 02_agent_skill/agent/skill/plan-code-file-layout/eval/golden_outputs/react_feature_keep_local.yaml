@@ -1,0 +1,23 @@
+decision:
+  strategy: keep
+  target_area: "packages/web-dashboard/src/features/discount-simulator"
+  repo_shape: feature-first
+  artifact_type: ui-component
+  stack: typescript-javascript
+  files:
+    - path: "packages/web-dashboard/src/features/discount-simulator/DiscountSimulatorPanel.tsx"
+      role: "panel-component"
+      responsibility: "Own the form state, local validation, preview math, and apply action for the discount simulator."
+      reason: "The whole slice serves one panel and does not have a separate API or reusable state boundary."
+  keep_inline:
+    - "The panel-local form state."
+    - "Local validation and preview math."
+  avoid:
+    - "useDiscountSimulator.ts"
+    - "discountSimulator.types.ts"
+    - "validators.ts"
+  why_not_fewer: "One panel file is already the smallest useful boundary for this feature slice."
+  why_not_more: "Splitting hooks, validators, or types out now would mostly add local indirection without a second consumer or remote-data boundary."
+  risks:
+    - "If another screen starts sharing the same simulation rules, a feature-local hook or helper file may become justified."
+  confidence: high

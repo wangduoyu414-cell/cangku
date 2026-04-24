@@ -1,0 +1,20 @@
+{
+  "id": "python_pipeline_keep_single_job",
+  "prompt": "Before implementation, tell me what files this Python refund health snapshot job should have. Anchor the decision on services/python-refund-jobs/jobs/publish_refund_health.py and compare it with the nearby chargeback snapshot job in the same jobs directory.",
+  "target_area": "services/python-refund-jobs/jobs",
+  "source_paths": [
+    "services/python-refund-jobs/jobs/publish_refund_health.py",
+    "services/python-refund-jobs/jobs/publish_chargeback_snapshot.py"
+  ],
+  "expected_summary": {
+    "strategy": "keep",
+    "repo_shape": "layer-first",
+    "artifact_type": "data-pipeline-step",
+    "stack": "python",
+    "confidence": "high",
+    "files": [
+      "services/python-refund-jobs/jobs/publish_refund_health.py"
+    ]
+  },
+  "validation_command": "python eval/validate_saved_output.py --case python_pipeline_keep_single_job --output outputs/python_pipeline_keep_single_job.yaml"
+}

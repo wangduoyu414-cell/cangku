@@ -1,0 +1,4 @@
+interface:
+  display_name: "Skill Generator"
+  short_description: "Generate and upgrade reusable skills"
+  default_prompt: "Use $skill-generator to turn repeated work, failures, and model changes into a reusable skill package."

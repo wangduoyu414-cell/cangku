@@ -1,0 +1,23 @@
+decision:
+  strategy: keep
+  target_area: "services/etl-pipeline/src/jobs"
+  repo_shape: layer-first
+  artifact_type: data-pipeline-step
+  stack: typescript-javascript
+  files:
+    - path: "services/etl-pipeline/src/jobs/publishRefundWatchlist.ts"
+      role: "job"
+      responsibility: "Own row filtering, watchlist urgency calculation, and snapshot writing for the refund watchlist job."
+      reason: "This job still reads as one small pipeline step without enough transform or sink weight to justify more files."
+  keep_inline:
+    - "The watchlist bucket helper."
+    - "The job-local row type."
+  avoid:
+    - "buildRefundWatchlist.ts"
+    - "writeRefundWatchlist.ts"
+    - "index.ts"
+  why_not_fewer: "One job file is already the smallest useful boundary for this watchlist step."
+  why_not_more: "Unlike the nearby invoice aging flow, this job does not yet have enough transform or sink complexity to justify separate files, so splitting now would mostly add ceremony."
+  risks:
+    - "If this job later adds reusable sinks or a much larger transform surface, it may deserve the same split pattern as other ETL jobs."
+  confidence: high

@@ -1,0 +1,21 @@
+id: "copy-check-skill"
+version: "2026-04-23"
+owner: "qimi-studio"
+mode: "instruction"
+side_effect: "read_only"
+requires_tools: []
+preferred_over: []
+conflicts_with: []
+eval_suite:
+  - "evals/trigger/core.yaml"
+  - "evals/task/core.yaml"
+  - "evals/regression/core.yaml"
+  - "evals/upgrade/core.yaml"
+capability_floor: "reasoning-medium"
+capability_target: "reasoning-high"
+scaffolding_removable_above: "reasoning-high"
+upgrade_eval_suite:
+  - "evals/trigger/core.yaml"
+  - "evals/task/core.yaml"
+  - "evals/regression/core.yaml"
+  - "evals/upgrade/core.yaml"

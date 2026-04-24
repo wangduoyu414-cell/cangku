@@ -1,0 +1,34 @@
+decision:
+  strategy: split
+  target_area: "skill-evals/plan-code-file-layout-lab/feature-first/python-payments-api/features/dispute-review"
+  repo_shape: feature-first
+  artifact_type: service-endpoint
+  stack: python
+  files:
+    - path: "skill-evals/plan-code-file-layout-lab/feature-first/python-payments-api/features/dispute-review/review_handler.py"
+      role: "handler"
+      responsibility: "Own request shaping, inline request validation, review decision orchestration, and response formatting while calling the real IO boundaries."
+      reason: "The endpoint entry flow should stay readable in one place, but the handler should stop owning partner lookup and database persistence directly."
+    - path: "skill-evals/plan-code-file-layout-lab/feature-first/python-payments-api/features/dispute-review/review_partner_gateway.py"
+      role: "partner gateway"
+      responsibility: "Fetch and normalize partner dispute data needed by the review flow."
+      reason: "Partner lookup is a separate external IO boundary with its own failure mode and already has a nearby sibling precedent in chargeback-webhook."
+    - path: "skill-evals/plan-code-file-layout-lab/feature-first/python-payments-api/features/dispute-review/review_store.py"
+      role: "store"
+      responsibility: "Persist the review decision and partner case reference for the dispute review flow."
+      reason: "Database writes are a separate persistence boundary and match the local feature pattern used by chargeback-webhook."
+  keep_inline:
+    - "ReviewDecisionRequest dataclass should stay in review_handler.py until another file needs the same request contract."
+    - "Request validation for dispute_id, hold_code, and reviewer should stay in review_handler.py as feature-local endpoint logic."
+    - "The approve vs escalate decision rule should stay in review_handler.py unless multiple entrypoints need the same policy."
+  avoid:
+    - "Do not add a separate review_service.py that only forwards from handler to gateway and store."
+    - "Do not extract validators, mappers, or constants into shared/utils/common modules without a second real consumer."
+    - "Do not split the decision rule into its own file yet; that would create Python ceremony without a new boundary."
+  why_not_fewer: "Keeping everything in review_handler.py would mix endpoint orchestration with partner IO and persistence IO in one module, which hides separate failure modes and weakens traceability. The nearby chargeback-webhook feature already shows the stronger local convention: handler plus partner boundary plus store boundary."
+  why_not_more: "Three production files are enough for this slice because the only materially separate responsibilities are entry orchestration, partner fetch, and persistence. Extra files for service, schema, or helper layers would mostly be thin wrappers, and Python guidance here favors thicker cohesive modules with local helpers kept inline."
+  risks:
+    - "This target area is a skill-eval fixture rather than the main src/app tree, so repository-wide Clean Architecture docs are weaker signals than the local feature-first sibling example."
+    - "If review decision policy is about to be reused by batch or back-office flows, a later extraction into a shared application/domain module may become justified."
+    - "No test layout is shown for this lab slice, so the recommendation assumes tests will follow the same three-boundary shape rather than forcing additional production files now."
+  confidence: high

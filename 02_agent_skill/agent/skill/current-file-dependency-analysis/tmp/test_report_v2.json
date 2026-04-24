@@ -1,0 +1,786 @@
+{
+  "py1": {
+    "file": "src/app/interfaces/order_controller.py",
+    "language": "python",
+    "stages": {
+      "anchor": {
+        "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+        "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/interfaces/order_controller.py",
+        "repo_relative_path": "src/app/interfaces/order_controller.py",
+        "symbol": "",
+        "selection_range": "",
+        "language": "python",
+        "role_hint": "source"
+      },
+      "stack": {
+        "stack_family": "python",
+        "stack_id": "python-stack",
+        "confidence": "medium",
+        "reasons": [
+          "file extension suggests python"
+        ],
+        "reference_file": "references/py-edge-rules.md",
+        "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+        "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/interfaces/order_controller.py"
+      },
+      "code": {
+        "anchor": {
+          "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+          "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/interfaces/order_controller.py",
+          "repo_relative_path": "src/app/interfaces/order_controller.py",
+          "symbol": "",
+          "selection_range": "",
+          "language": "python",
+          "role_hint": "source"
+        },
+        "stack": {
+          "stack_family": "python",
+          "stack_id": "python-stack",
+          "confidence": "medium",
+          "reasons": [
+            "file extension suggests python"
+          ],
+          "reference_file": "references/py-edge-rules.md",
+          "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+          "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/interfaces/order_controller.py"
+        },
+        "edges": [
+          {
+            "from": "src/app/interfaces/order_controller.py",
+            "to": "external:__future__",
+            "direction": "outbound",
+            "edge_kind": "import",
+            "symbol": "",
+            "evidence_ref": "src/app/interfaces/order_controller.py:1",
+            "confidence": "medium",
+            "resolution": "resolved"
+          },
+          {
+            "from": "src/app/interfaces/order_controller.py",
+            "to": "src/app/application/use_cases.py",
+            "direction": "outbound",
+            "edge_kind": "import",
+            "symbol": "",
+            "evidence_ref": "src/app/interfaces/order_controller.py:3",
+            "confidence": "high",
+            "resolution": "resolved"
+          },
+          {
+            "from": "src/app/interfaces/order_controller.py",
+            "to": "src/app/interfaces/base_controller.py",
+            "direction": "outbound",
+            "edge_kind": "import",
+            "symbol": "",
+            "evidence_ref": "src/app/interfaces/order_controller.py:4",
+            "confidence": "high",
+            "resolution": "resolved"
+          }
+        ],
+        "blind_spots": [
+          "Runtime imports through importlib are not statically resolved."
+        ]
+      },
+      "symbol": {
+        "anchor": {
+          "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+          "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/interfaces/order_controller.py",
+          "repo_relative_path": "src/app/interfaces/order_controller.py",
+          "symbol": "",
+          "selection_range": "",
+          "language": "python",
+          "role_hint": "source"
+        },
+        "stack": {
+          "stack_family": "python",
+          "stack_id": "python-stack",
+          "confidence": "medium",
+          "reasons": [
+            "file extension suggests python"
+          ],
+          "reference_file": "references/py-edge-rules.md",
+          "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+          "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/interfaces/order_controller.py"
+        },
+        "edges": [
+          {
+            "from": "src/app/interfaces/order_controller.py",
+            "to": "src/app/interfaces/order_controller.py",
+            "direction": "outbound",
+            "edge_kind": "symbol",
+            "relation_type": "inherits",
+            "symbol_from": "OrderController",
+            "symbol_to": "BaseController",
+            "evidence_ref": "src/app/interfaces/order_controller.py:7",
+            "confidence": "high",
+            "resolution": "resolved"
+          },
+          {
+            "from": "src/app/interfaces/order_controller.py",
+            "to": "src/app/interfaces/order_controller.py",
+            "direction": "outbound",
+            "edge_kind": "symbol",
+            "relation_type": "call",
+            "symbol_from": "create",
+            "symbol_to": "create_order",
+            "evidence_ref": "src/app/interfaces/order_controller.py:9",
+            "confidence": "low",
+            "resolution": "resolved"
+          },
+          {
+            "from": "src/app/interfaces/order_controller.py",
+            "to": "src/app/interfaces/order_controller.py",
+            "direction": "outbound",
+            "edge_kind": "symbol",
+            "relation_type": "call",
+            "symbol_from": "create",
+            "symbol_to": "ok",
+            "evidence_ref": "src/app/interfaces/order_controller.py:10",
+            "confidence": "low",
+            "resolution": "resolved"
+          }
+        ],
+        "blind_spots": [
+          "Python dynamic dispatch (monkey patching) is not fully resolved.",
+          "Framework magic via decorators that auto-wire dependencies is not covered."
+        ]
+      },
+      "context": {
+        "anchor": {
+          "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+          "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/interfaces/order_controller.py",
+          "repo_relative_path": "src/app/interfaces/order_controller.py",
+          "symbol": "",
+          "selection_range": "",
+          "language": "python",
+          "role_hint": "source"
+        },
+        "stack": {
+          "stack_family": "python",
+          "stack_id": "python-stack",
+          "confidence": "medium",
+          "reasons": [
+            "file extension suggests python"
+          ],
+          "reference_file": "references/py-edge-rules.md",
+          "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+          "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/interfaces/order_controller.py"
+        },
+        "edges": [],
+        "blind_spots": [
+          "Context links are search-based and may miss framework-specific runtime wiring."
+        ]
+      },
+      "slice": {
+        "schema_version": "4.0",
+        "meta": {
+          "target_file": "src/app/interfaces/order_controller.py",
+          "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+          "stack_family": "python",
+          "analysis_mode": "strict",
+          "payload_level": "L1.5",
+          "scope_note": "仅表示可证据回溯的依赖关系，不包含改动建议。"
+        },
+        "reading_guide": {
+          "how_to_read": "先看 confirmed_dependencies，再看 candidate_dependencies，最后看 blind_spots。",
+          "confidence_rule": "confirmed 可作为事实；candidate 仅作线索。",
+          "evidence_rule": "每条关系应提供 evidence_ref 以便回溯。"
+        },
+        "interpretation_note": "本结果是面向当前目标文件的依赖事实说明。confirmed_dependencies 为高置信且有证据的关系；candidate_dependencies 为未完全确认线索，不应作为确定事实。若候选或盲区影响当前任务，请请求更高层级明细（L2/L3）。",
+        "anchor": {
+          "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+          "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/interfaces/order_controller.py",
+          "repo_relative_path": "src/app/interfaces/order_controller.py",
+          "symbol": "",
+          "selection_range": "",
+          "language": "python",
+          "role_hint": "source"
+        },
+        "confirmed_dependencies": {
+          "direct_outbound": [
+            {
+              "from": "src/app/interfaces/order_controller.py",
+              "to": "src/app/application/use_cases.py",
+              "direction": "outbound",
+              "edge_kind": "import",
+              "symbol": "",
+              "evidence_ref": "src/app/interfaces/order_controller.py:3",
+              "confidence": "high",
+              "resolution": "resolved"
+            },
+            {
+              "from": "src/app/interfaces/order_controller.py",
+              "to": "src/app/interfaces/base_controller.py",
+              "direction": "outbound",
+              "edge_kind": "import",
+              "symbol": "",
+              "evidence_ref": "src/app/interfaces/order_controller.py:4",
+              "confidence": "high",
+              "resolution": "resolved"
+            }
+          ],
+          "direct_inbound": [],
+          "config_links": []
+        },
+        "candidate_dependencies": [
+          {
+            "from": "src/app/interfaces/order_controller.py",
+            "to": "external:__future__",
+            "direction": "outbound",
+            "edge_kind": "import",
+            "symbol": "",
+            "evidence_ref": "src/app/interfaces/order_controller.py:1",
+            "confidence": "medium",
+            "resolution": "resolved"
+          }
+        ],
+        "unresolved_edges": [],
+        "blind_spots": [
+          "Runtime imports through importlib are not statically resolved.",
+          "Context links are search-based and may miss framework-specific runtime wiring.",
+          "Python dynamic dispatch (monkey patching) is not fully resolved.",
+          "Framework magic via decorators that auto-wire dependencies is not covered."
+        ],
+        "relation_summary": {
+          "confirmed_count": 2,
+          "candidate_count": 1,
+          "outbound_count": 2,
+          "inbound_count": 0,
+          "config_link_count": 0,
+          "unresolved_count": 0
+        },
+        "budget_meta": {
+          "token_estimate": 712,
+          "max_token_estimate": 3000,
+          "truncated": false,
+          "next_level_available": true,
+          "budget_note": "如需更多细节，请拉取 L2/L3 或 deep index，不在当前窗口展开。"
+        },
+        "pipeline_status": {
+          "cycle_detection": "success",
+          "impact_estimation": "success",
+          "build_integration": "success",
+          "overall": "success"
+        },
+        "dependency_cycles": [],
+        "change_impact": {
+          "anchor": "src/app/interfaces/order_controller.py",
+          "impact_summary": {
+            "total_impacted": 0,
+            "direct_consumers": 0,
+            "indirect_consumers": 0,
+            "max_depth_reached": 0,
+            "depth_limit": 3,
+            "depth_limited": false
+          },
+          "high_risk_consumers": [],
+          "all_impacted": []
+        },
+        "build_targets": []
+      },
+      "verify": {
+        "status": "partial",
+        "missing_sections": [],
+        "unsupported_claims": [],
+        "low_confidence_claims": [],
+        "missing_edge_classes": [],
+        "missing_evidence": [],
+        "unresolved_edges": [],
+        "non_high_confirmed_edges": []
+      }
+    }
+  },
+  "ts1": {
+    "file": "src/app/services/orderApi.ts",
+    "language": "typescript",
+    "stages": {
+      "anchor": {
+        "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+        "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/services/orderApi.ts",
+        "repo_relative_path": "src/app/services/orderApi.ts",
+        "symbol": "",
+        "selection_range": "",
+        "language": "typescript",
+        "role_hint": "source"
+      },
+      "stack": {
+        "stack_family": "typescript",
+        "stack_id": "typescript-stack",
+        "confidence": "medium",
+        "reasons": [
+          "file extension suggests typescript"
+        ],
+        "reference_file": "references/ts-edge-rules.md",
+        "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+        "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/services/orderApi.ts"
+      },
+      "code": {
+        "anchor": {
+          "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+          "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/services/orderApi.ts",
+          "repo_relative_path": "src/app/services/orderApi.ts",
+          "symbol": "",
+          "selection_range": "",
+          "language": "typescript",
+          "role_hint": "source"
+        },
+        "stack": {
+          "stack_family": "typescript",
+          "stack_id": "typescript-stack",
+          "confidence": "medium",
+          "reasons": [
+            "file extension suggests typescript"
+          ],
+          "reference_file": "references/ts-edge-rules.md",
+          "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+          "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/services/orderApi.ts"
+        },
+        "edges": [
+          {
+            "from": "src/app/services/orderApi.ts",
+            "to": "src/app/domain/order-service.ts",
+            "direction": "outbound",
+            "edge_kind": "import",
+            "symbol": "",
+            "evidence_ref": "src/app/services/orderApi.ts:1",
+            "confidence": "high",
+            "resolution": "resolved"
+          }
+        ],
+        "blind_spots": [
+          "Dynamic imports only resolve when the specifier is a string literal."
+        ]
+      },
+      "symbol": {
+        "anchor": {
+          "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+          "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/services/orderApi.ts",
+          "repo_relative_path": "src/app/services/orderApi.ts",
+          "symbol": "",
+          "selection_range": "",
+          "language": "typescript",
+          "role_hint": "source"
+        },
+        "stack": {
+          "stack_family": "typescript",
+          "stack_id": "typescript-stack",
+          "confidence": "medium",
+          "reasons": [
+            "file extension suggests typescript"
+          ],
+          "reference_file": "references/ts-edge-rules.md",
+          "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+          "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/services/orderApi.ts"
+        },
+        "edges": [
+          {
+            "from": "src/app/services/orderApi.ts",
+            "to": "src/app/services/orderApi.ts",
+            "direction": "outbound",
+            "edge_kind": "symbol",
+            "relation_type": "call",
+            "symbol_from": "module",
+            "symbol_to": "buildOrderKey",
+            "evidence_ref": "src/app/services/orderApi.ts:4",
+            "confidence": "low",
+            "resolution": "resolved"
+          }
+        ],
+        "blind_spots": [
+          "TypeScript/Vue runtime reactivity side effects are not fully resolved.",
+          "Framework-specific dependency injection containers are not tracked."
+        ]
+      },
+      "context": {
+        "anchor": {
+          "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+          "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/services/orderApi.ts",
+          "repo_relative_path": "src/app/services/orderApi.ts",
+          "symbol": "",
+          "selection_range": "",
+          "language": "typescript",
+          "role_hint": "source"
+        },
+        "stack": {
+          "stack_family": "typescript",
+          "stack_id": "typescript-stack",
+          "confidence": "medium",
+          "reasons": [
+            "file extension suggests typescript"
+          ],
+          "reference_file": "references/ts-edge-rules.md",
+          "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+          "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/services/orderApi.ts"
+        },
+        "edges": [],
+        "blind_spots": [
+          "Context links are search-based and may miss framework-specific runtime wiring."
+        ]
+      },
+      "slice": {
+        "schema_version": "4.0",
+        "meta": {
+          "target_file": "src/app/services/orderApi.ts",
+          "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+          "stack_family": "typescript",
+          "analysis_mode": "strict",
+          "payload_level": "L1.5",
+          "scope_note": "仅表示可证据回溯的依赖关系，不包含改动建议。"
+        },
+        "reading_guide": {
+          "how_to_read": "先看 confirmed_dependencies，再看 candidate_dependencies，最后看 blind_spots。",
+          "confidence_rule": "confirmed 可作为事实；candidate 仅作线索。",
+          "evidence_rule": "每条关系应提供 evidence_ref 以便回溯。"
+        },
+        "interpretation_note": "本结果是面向当前目标文件的依赖事实说明。confirmed_dependencies 为高置信且有证据的关系；candidate_dependencies 为未完全确认线索，不应作为确定事实。若候选或盲区影响当前任务，请请求更高层级明细（L2/L3）。",
+        "anchor": {
+          "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+          "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/services/orderApi.ts",
+          "repo_relative_path": "src/app/services/orderApi.ts",
+          "symbol": "",
+          "selection_range": "",
+          "language": "typescript",
+          "role_hint": "source"
+        },
+        "confirmed_dependencies": {
+          "direct_outbound": [
+            {
+              "from": "src/app/services/orderApi.ts",
+              "to": "src/app/domain/order-service.ts",
+              "direction": "outbound",
+              "edge_kind": "import",
+              "symbol": "",
+              "evidence_ref": "src/app/services/orderApi.ts:1",
+              "confidence": "high",
+              "resolution": "resolved"
+            }
+          ],
+          "direct_inbound": [],
+          "config_links": []
+        },
+        "candidate_dependencies": [],
+        "unresolved_edges": [],
+        "blind_spots": [
+          "Dynamic imports only resolve when the specifier is a string literal.",
+          "Context links are search-based and may miss framework-specific runtime wiring.",
+          "TypeScript/Vue runtime reactivity side effects are not fully resolved.",
+          "Framework-specific dependency injection containers are not tracked."
+        ],
+        "relation_summary": {
+          "confirmed_count": 1,
+          "candidate_count": 0,
+          "outbound_count": 1,
+          "inbound_count": 0,
+          "config_link_count": 0,
+          "unresolved_count": 0
+        },
+        "budget_meta": {
+          "token_estimate": 578,
+          "max_token_estimate": 3000,
+          "truncated": false,
+          "next_level_available": true,
+          "budget_note": "如需更多细节，请拉取 L2/L3 或 deep index，不在当前窗口展开。"
+        },
+        "pipeline_status": {
+          "cycle_detection": "success",
+          "impact_estimation": "success",
+          "build_integration": "success",
+          "overall": "success"
+        },
+        "dependency_cycles": [],
+        "change_impact": {
+          "anchor": "src/app/services/orderApi.ts",
+          "impact_summary": {
+            "total_impacted": 0,
+            "direct_consumers": 0,
+            "indirect_consumers": 0,
+            "max_depth_reached": 0,
+            "depth_limit": 3,
+            "depth_limited": false
+          },
+          "high_risk_consumers": [],
+          "all_impacted": []
+        },
+        "build_targets": []
+      },
+      "verify": {
+        "status": "partial",
+        "missing_sections": [],
+        "unsupported_claims": [],
+        "low_confidence_claims": [],
+        "missing_edge_classes": [],
+        "missing_evidence": [],
+        "unresolved_edges": [],
+        "non_high_confirmed_edges": []
+      }
+    }
+  },
+  "go1": {
+    "file": "src/app/entrypoints/main.go",
+    "language": "go",
+    "stages": {
+      "anchor": {
+        "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+        "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/entrypoints/main.go",
+        "repo_relative_path": "src/app/entrypoints/main.go",
+        "symbol": "",
+        "selection_range": "",
+        "language": "go",
+        "role_hint": "source"
+      },
+      "stack": {
+        "stack_family": "go",
+        "stack_id": "go-stack",
+        "confidence": "medium",
+        "reasons": [
+          "file extension suggests go"
+        ],
+        "reference_file": "references/go-edge-rules.md",
+        "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+        "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/entrypoints/main.go"
+      },
+      "code": {
+        "anchor": {
+          "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+          "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/entrypoints/main.go",
+          "repo_relative_path": "src/app/entrypoints/main.go",
+          "symbol": "",
+          "selection_range": "",
+          "language": "go",
+          "role_hint": "source"
+        },
+        "stack": {
+          "stack_family": "go",
+          "stack_id": "go-stack",
+          "confidence": "medium",
+          "reasons": [
+            "file extension suggests go"
+          ],
+          "reference_file": "references/go-edge-rules.md",
+          "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+          "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/entrypoints/main.go"
+        },
+        "edges": [
+          {
+            "from": "src/app/entrypoints/main.go",
+            "to": "external:fmt",
+            "direction": "outbound",
+            "edge_kind": "import",
+            "symbol": "",
+            "evidence_ref": "src/app/entrypoints/main.go:4",
+            "confidence": "medium",
+            "resolution": "resolved"
+          },
+          {
+            "from": "src/app/entrypoints/main.go",
+            "to": "external:example.com/generic-template-repo/src/app/shared/gohelper",
+            "direction": "outbound",
+            "edge_kind": "import",
+            "symbol": "",
+            "evidence_ref": "src/app/entrypoints/main.go:6",
+            "confidence": "medium",
+            "resolution": "resolved"
+          }
+        ],
+        "blind_spots": [
+          "Go imports packages, so edges are package-level rather than file-level."
+        ]
+      },
+      "symbol": {
+        "anchor": {
+          "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+          "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/entrypoints/main.go",
+          "repo_relative_path": "src/app/entrypoints/main.go",
+          "symbol": "",
+          "selection_range": "",
+          "language": "go",
+          "role_hint": "source"
+        },
+        "stack": {
+          "stack_family": "go",
+          "stack_id": "go-stack",
+          "confidence": "medium",
+          "reasons": [
+            "file extension suggests go"
+          ],
+          "reference_file": "references/go-edge-rules.md",
+          "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+          "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/entrypoints/main.go"
+        },
+        "edges": [
+          {
+            "from": "src/app/entrypoints/main.go",
+            "to": "src/app/entrypoints/main.go",
+            "direction": "outbound",
+            "edge_kind": "symbol",
+            "relation_type": "call",
+            "symbol_from": "module",
+            "symbol_to": "import",
+            "evidence_ref": "src/app/entrypoints/main.go:3",
+            "confidence": "low",
+            "resolution": "resolved"
+          },
+          {
+            "from": "src/app/entrypoints/main.go",
+            "to": "src/app/entrypoints/main.go",
+            "direction": "outbound",
+            "edge_kind": "symbol",
+            "relation_type": "call",
+            "symbol_from": "main",
+            "symbol_to": "Println",
+            "evidence_ref": "src/app/entrypoints/main.go:10",
+            "confidence": "low",
+            "resolution": "resolved"
+          },
+          {
+            "from": "src/app/entrypoints/main.go",
+            "to": "src/app/entrypoints/main.go",
+            "direction": "outbound",
+            "edge_kind": "symbol",
+            "relation_type": "call",
+            "symbol_from": "main",
+            "symbol_to": "NormalizeSKU",
+            "evidence_ref": "src/app/entrypoints/main.go:10",
+            "confidence": "low",
+            "resolution": "resolved"
+          }
+        ],
+        "blind_spots": [
+          "Go interface method set dispatch is approximated at static level.",
+          "Go build tags that change active files are not handled."
+        ]
+      },
+      "context": {
+        "anchor": {
+          "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+          "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/entrypoints/main.go",
+          "repo_relative_path": "src/app/entrypoints/main.go",
+          "symbol": "",
+          "selection_range": "",
+          "language": "go",
+          "role_hint": "source"
+        },
+        "stack": {
+          "stack_family": "go",
+          "stack_id": "go-stack",
+          "confidence": "medium",
+          "reasons": [
+            "file extension suggests go"
+          ],
+          "reference_file": "references/go-edge-rules.md",
+          "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+          "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/entrypoints/main.go"
+        },
+        "edges": [],
+        "blind_spots": [
+          "Context links are search-based and may miss framework-specific runtime wiring."
+        ]
+      },
+      "slice": {
+        "schema_version": "4.0",
+        "meta": {
+          "target_file": "src/app/entrypoints/main.go",
+          "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+          "stack_family": "go",
+          "analysis_mode": "strict",
+          "payload_level": "L1.5",
+          "scope_note": "仅表示可证据回溯的依赖关系，不包含改动建议。"
+        },
+        "reading_guide": {
+          "how_to_read": "先看 confirmed_dependencies，再看 candidate_dependencies，最后看 blind_spots。",
+          "confidence_rule": "confirmed 可作为事实；candidate 仅作线索。",
+          "evidence_rule": "每条关系应提供 evidence_ref 以便回溯。"
+        },
+        "interpretation_note": "本结果是面向当前目标文件的依赖事实说明。confirmed_dependencies 为高置信且有证据的关系；candidate_dependencies 为未完全确认线索，不应作为确定事实。若候选或盲区影响当前任务，请请求更高层级明细（L2/L3）。",
+        "anchor": {
+          "repo_root": "D:/zidonghua/analyze-current-file-dependencies-workflow",
+          "file_path": "D:/zidonghua/analyze-current-file-dependencies-workflow/src/app/entrypoints/main.go",
+          "repo_relative_path": "src/app/entrypoints/main.go",
+          "symbol": "",
+          "selection_range": "",
+          "language": "go",
+          "role_hint": "source"
+        },
+        "confirmed_dependencies": {
+          "direct_outbound": [],
+          "direct_inbound": [],
+          "config_links": []
+        },
+        "candidate_dependencies": [
+          {
+            "from": "src/app/entrypoints/main.go",
+            "to": "external:example.com/generic-template-repo/src/app/shared/gohelper",
+            "direction": "outbound",
+            "edge_kind": "import",
+            "symbol": "",
+            "evidence_ref": "src/app/entrypoints/main.go:6",
+            "confidence": "medium",
+            "resolution": "resolved"
+          },
+          {
+            "from": "src/app/entrypoints/main.go",
+            "to": "external:fmt",
+            "direction": "outbound",
+            "edge_kind": "import",
+            "symbol": "",
+            "evidence_ref": "src/app/entrypoints/main.go:4",
+            "confidence": "medium",
+            "resolution": "resolved"
+          }
+        ],
+        "unresolved_edges": [],
+        "blind_spots": [
+          "Go imports packages, so edges are package-level rather than file-level.",
+          "Context links are search-based and may miss framework-specific runtime wiring.",
+          "Go interface method set dispatch is approximated at static level.",
+          "Go build tags that change active files are not handled."
+        ],
+        "relation_summary": {
+          "confirmed_count": 0,
+          "candidate_count": 2,
+          "outbound_count": 0,
+          "inbound_count": 0,
+          "config_link_count": 0,
+          "unresolved_count": 0
+        },
+        "budget_meta": {
+          "token_estimate": 630,
+          "max_token_estimate": 3000,
+          "truncated": false,
+          "next_level_available": true,
+          "budget_note": "如需更多细节，请拉取 L2/L3 或 deep index，不在当前窗口展开。"
+        },
+        "pipeline_status": {
+          "cycle_detection": "success",
+          "impact_estimation": "success",
+          "build_integration": "success",
+          "overall": "success"
+        },
+        "dependency_cycles": [],
+        "change_impact": {
+          "anchor": "src/app/entrypoints/main.go",
+          "impact_summary": {
+            "total_impacted": 0,
+            "direct_consumers": 0,
+            "indirect_consumers": 0,
+            "max_depth_reached": 0,
+            "depth_limit": 3,
+            "depth_limited": false
+          },
+          "high_risk_consumers": [],
+          "all_impacted": []
+        },
+        "build_targets": []
+      },
+      "verify": {
+        "status": "partial",
+        "missing_sections": [],
+        "unsupported_claims": [],
+        "low_confidence_claims": [],
+        "missing_edge_classes": [],
+        "missing_evidence": [],
+        "unresolved_edges": [],
+        "non_high_confirmed_edges": []
+      }
+    }
+  }
+}
