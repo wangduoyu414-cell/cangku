@@ -99,21 +99,17 @@ try {
     Invoke-Checked "git add" { & git @gitBaseArgs add -A -- . }
     $skippedOversizedPaths = Remove-OversizedFilesFromIndex
 
-    $statusOutput = @(& git @gitBaseArgs status --porcelain)
-    $statusLines = $statusOutput
-    if ($skippedOversizedPaths.Count -gt 0) {
-        $statusLines = $statusOutput | Where-Object {
-            $line = $_
-            if (-not $line.StartsWith("?? ")) {
-                return $true
-            }
-
-            $path = $line.Substring(3)
-            return ($skippedOversizedPaths -notcontains $path)
-        }
+    $trackedStatusLines = @(& git @gitBaseArgs status --porcelain --untracked-files=no)
+    $untrackedPaths = @(& git @gitBaseArgs ls-files --others --exclude-standard)
+    $filteredUntrackedPaths = if ($skippedOversizedPaths.Count -gt 0) {
+        $untrackedPaths | Where-Object { $skippedOversizedPaths -notcontains $_ }
+    }
+    else {
+        $untrackedPaths
     }
 
-    $status = if ($null -eq $statusLines) { "" } else { ($statusLines | Out-String).Trim() }
+    $statusLines = @($trackedStatusLines) + @($filteredUntrackedPaths)
+    $status = if ($statusLines.Count -eq 0) { "" } else { ($statusLines | Out-String).Trim() }
     if (-not $status) {
         Write-Log "No content change detected. Skipping commit."
         exit 0
