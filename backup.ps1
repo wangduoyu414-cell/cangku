@@ -76,27 +76,44 @@ function Remove-OversizedFilesFromIndex {
         Sort-Object FullName -Unique
 
     if (-not $oversizedFiles) {
-        return
+        return @()
     }
 
+    $skippedGitPaths = @()
     foreach ($file in $oversizedFiles) {
         $gitPath = Get-RelativeGitPath -FullPath $file.FullName
+        $skippedGitPaths += $gitPath
         Write-Log ("Skipping oversized file: {0} ({1} bytes)" -f $gitPath, $file.Length)
         & git @gitBaseArgs rm --cached --ignore-unmatch --quiet -- $gitPath
         if ($LASTEXITCODE -ne 0) {
             throw ("git rm --cached failed for oversized file '{0}' with exit code {1}." -f $gitPath, $LASTEXITCODE)
         }
     }
+
+    return $skippedGitPaths
 }
 
 try {
     Write-Log "Backup run started."
 
     Invoke-Checked "git add" { & git @gitBaseArgs add -A -- . }
-    Remove-OversizedFilesFromIndex
+    $skippedOversizedPaths = Remove-OversizedFilesFromIndex
 
-    $statusOutput = & git @gitBaseArgs status --porcelain
-    $status = if ($null -eq $statusOutput) { "" } else { ($statusOutput | Out-String).Trim() }
+    $statusOutput = @(& git @gitBaseArgs status --porcelain)
+    $statusLines = $statusOutput
+    if ($skippedOversizedPaths.Count -gt 0) {
+        $statusLines = $statusOutput | Where-Object {
+            $line = $_
+            if (-not $line.StartsWith("?? ")) {
+                return $true
+            }
+
+            $path = $line.Substring(3)
+            return ($skippedOversizedPaths -notcontains $path)
+        }
+    }
+
+    $status = if ($null -eq $statusLines) { "" } else { ($statusLines | Out-String).Trim() }
     if (-not $status) {
         Write-Log "No content change detected. Skipping commit."
         exit 0
